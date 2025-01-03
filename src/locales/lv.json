@@ -1,0 +1,231 @@
+{
+  "title": {
+    "default": "Akordi",
+    "prefix": "",
+    "fullName": "Akordi",
+    "fullNameFormatted": "Akordi",
+    "subheader": "Dziesmu vārdu, akordu un tabu krātuve",
+    "shortName": "Akordi"
+  },
+  "shell": {
+    "userProfile": "Skatīt profilu",
+    "logOut": "Iziet",
+    "notifications": {
+      "logOut": "Jūsu sesija ir veiksmīgi pabeigta",
+      "agreement": "Jums ir jāpiekrīt lietošanas noteikumiem",
+      "unknownState": "Notika kļūda lietotāja statusa apstrādē",
+      "err401": "Ieejiet sistēmā, lai piekļūtu funkcionalitātei",
+      "sessionContinued": "Sesija veiksmīgi pagarināta",
+      "sessionContinuedFailed": "Sesijas pagarināšana nav izdevusies",
+      "sessionEndingSoon": "Jūsu sesija drīz beigsies"
+    },
+    "sessionExpiring": {
+      "label": "Tuvojas sesijas beigas",
+      "description": "Līdz sesijas beigām ir palikusi {count} sekunde | Līdz sesijas beigām ir palikušas {count} sekundes",
+      "descriptionMinutes": "Līdz sesijas beigām ir palikusi {count} minūte | Līdz sesijas beigām ir palikušas {count} minūtes",
+      "descriptionMinutesSmall": "un {count} sekunde | un {count} sekundes",
+      "primaryLabel": "Turpināt darbu",
+      "secondaryLabel": "Beigt darbu"
+    }
+  },
+  "greeting": {
+    "default": "Sveicināti",
+    "morning": "Labrīt",
+    "day": "Labdien",
+    "evening": "Labvakar",
+    "night": "Arlabunakti"
+  },
+  "pages": {
+    "dashboard": {
+      "title": "Sākumlapa"
+    },
+    "akordiSongList": {
+      "title": "Dziesmu meklētājs",
+      "description": "Izmanto meklētāju un atrodi ko uzspēlēt kādā starp {songCount} akordi.lv dziesmām",
+      "search": {
+        "error": "Kļūda meklējot dziesmas. Lūdzu mēģiniet vēlāk."
+      }
+    },
+    "akordiSongListNew": {
+      "title": "Jaunākās dziesmas",
+      "list": {
+        "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
+      }
+    },
+    "akordiSongListTop": {
+      "title": "Populārākās dziesmas",
+      "description": "Šeit ir pagājušās nedēļas populārākās dziesmas, kuras ir skatījušies spēlējuši citi lietotāji",
+      "list": {
+        "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
+      }
+    },
+    "akordiSongView": {
+      "title": "Akordi.lv dziesmas",
+      "copy": {
+        "label": "Kopēt dziesmu",
+        "description": "Kopēt dziesmas tekstu, lai izveidotu savu versiju"
+      },
+      "hideChords": {
+        "label": "Nerādīt akordus",
+        "description": "Slēpt dziesmas akordu tabulutūru"
+      },
+      "showGuitarChords": {
+        "label": "Rādīt ģitāras akordus",
+        "description": "Rādīt vai slēpt dziesmas akordu tabulutūru ģitārai"
+      },
+      "showUkuleleChords": {
+        "label": "Rādīt ukuleles akordus",
+        "description": "Rādīt vai slēpt dziesmas akordu tabulutūru ukulelei"
+      },
+      "transposeUp": {
+        "label": "Transponēt augšup",
+        "description": "Pārnest dziesmu augšup par pustoni"
+      },
+      "transposeDown": {
+        "label": "Transponēt lejup",
+        "description": "Pārnest dziesmu lejup par pustoni"
+      },
+      "transposeDisabled": "Transponēšana ir atspējota, jo dziesmas tekstā nav atrodami akordi"
+    },
+    "akordiArtistLetter": {
+      "title": "Mākslinieku katalogs A-Z",
+      "description": "Pārlūko mākslinieku sarakstu alfabēta secībā no A līdz Z",
+      "search": {
+        "error": "Kļūda meklējot māksliniekus. Lūdzu mēģiniet vēlāk."
+      }
+    },
+    "tagList": {
+      "title": "Birkas",
+      "description": "Šeit vari pārlūkot tematiskas dziesmu kategorijas",
+      "list": {
+        "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
+      }
+    },
+    "tagView": {
+      "title": "Birka #{title}",
+      "list": {
+        "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
+      }
+    },
+    "login": {
+      "title": "Izvēlieties autentifikācijas veidu",
+      "buttons": {
+        "signIn": "Pieslēgties"
+      },
+      "options": {
+        "google": {
+          "name": "Google",
+          "description": "Pieslēgties ar Google kontu"
+        },
+        "facebook": {
+          "name": "Facebook",
+          "description": "Pieslēgties ar Facebook kontu"
+        }
+      }
+    },
+    "home": {
+      "title": "Akordi",
+      "buttons": {
+        "loginUnauthorized": "Turpināt"
+      }
+    },
+    "sessionEnded": {
+      "title": "Jūsu sesija ir beigusies",
+      "description": "Sesijas atvēlētais laiks ir beidzies. Lai turpinātu darbu, ienāciet sistēmā atkārtoti"
+    },
+    "userProfile": {
+      "title": "Lietotāja profils",
+      "givenNameLabel": "Vārds",
+      "familyNameLabel": "Uzvārds",
+      "phoneLabel": "Kontakttālrunis",
+      "emailLabel": "E-pasta adrese"
+    },
+    "users": {
+      "title": "Lietotāji"
+    },
+    "error": {
+      "goBack": "Atgriezties atpakaļ",
+      "goHome": "Atgriezties uz sākumu",
+      "title": "Notika negaidīta kļūda"
+    },
+    "auth": {
+      "title": "Notiek apstrāde",
+      "description": "Notiek apstrāde. Lūdzu, uzgaidiet!",
+      "errors": {
+        "unknownTitle": "Nezināma autorizācijas kļūda",
+        "unknownDescription": "Mēģiniet veikt atkārtotu autorizāciju.",
+        "blockedTitle": "Lietotājs ir bloķēts",
+        "blockedDescription": "Sazinieties ar sistēmas administratoru.",
+        "invalidRightsTitle": "Jums nav piešķirtas tiesības lietot šo sistēmu",
+        "invalidRightsDescription": "Sazinieties ar sistēmas administratoru.",
+        "invalidRequestTitle": "Kļūdains autorizācijas pieprasījums",
+        "invalidRequestDescription": "Mēģiniet veikt atkārtotu autorizāciju."
+      }
+    },
+    "notFound": {
+      "title": "Lapa nav atrasta",
+      "description": "Pārbaudiet, vai lapas adrese ir pareiza un mēģiniet vēlreiz, vai atgriezieties uz sākumlapu"
+    }
+  },
+  "confirm": {
+    "yes": "Jā",
+    "no": "Nē"
+  },
+  "menu": {
+    "home": "Sākums",
+    "users": "Lietotāji",
+    "login": "Autorizācija",
+    "logout": "Iziet"
+  },
+  "errors": {
+    "logoutFailed": "Radās kļūda, veicot atteikšanos no sistēmas, pārlādējiet lapu un mēģiniet atkārtoti.",
+    "classifierLoadFailed": "Radās kļūda, ielādējot filtra klasifikatorus, pārlādējiet lapu un mēģiniet atkārtoti.",
+    "roleLoadFailed": "Radās kļūda, ielādējot lietotāja lomas, pārlādējiet lapu un mēģiniet atkārtoti.",
+    "institutionLoadFailed": "Radās kļūda, ielādējot lietotājam pieejamās iestādes, pārlādējiet lapu un mēģiniet atkārtoti.",
+    "hospitalLoadFailed": "Radās kļūda, ielādējot lietotājam pieejamās slimnīcas, pārlādējiet lapu un mēģiniet atkārtoti.",
+    "forbidden": "Jums nav tiesību veikt šo darbību!",
+    "loadFailed": "Neizdevās ielādēt datus",
+    "helpLoadFailed": "Neizdevās ielādēt palīdzības informāciju"
+  },
+  "save": "Saglabāt",
+  "edit": "Rediģēt",
+  "delete": "Dzēst",
+  "copy": "Kopēt",
+  "cancel": "Atcelt",
+  "search": "Meklēt",
+  "song": {
+    "title": "Nosaukums",
+    "artist": "Mākslinieks",
+    "lyrics": "Dziesmas vārdi",
+    "body": "Dziemas teksts"
+  },
+  "songs": {
+    "save": {
+      "success": "Dziesma veiksmīgi saglabāta",
+      "error": "Kļūda saglabājot dziesmu"
+    },
+    "delete": {
+      "success": "Dziesma veiksmīgi dzēsta",
+      "error": "Kļūda dzēšot dziesmu"
+    }
+  },
+  "artist": {
+    "title": "Nosaukums"
+  },
+  "artists": {
+    "save": {
+      "success": "Mākslinieks veiksmīgi saglabāts",
+      "error": "Kļūda saglabājot mākslinieku"
+    },
+    "delete": {
+      "success": "Mākslinieks veiksmīgi dzēsts",
+      "error": "Kļūda dzēšot mākslinieku"
+    }
+  },
+  "error": {
+    "validation": "Lūdzu aizpildiet laukus"
+  },
+  "validations": {
+    "required": "Šis lauks ir obligāts"
+  }
+}

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="lv">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+    <!-- <link href="<%= BASE_URL %>meta/16.png" rel="icon" type="image/png" sizes="16x16">
+    <link href="<%= BASE_URL %>meta/32.png" rel="icon" type="image/png" sizes="32x32">
+    <link href="<%= BASE_URL %>meta/48.png" rel="icon" type="image/png" sizes="48x48">
+
+    <link href="<%= BASE_URL %>meta/512.png" rel="apple-touch-icon">
+    <link href="<%= BASE_URL %>meta/76.png" rel="apple-touch-icon" sizes="76x76">
+    <link href="<%= BASE_URL %>meta/120.png" rel="apple-touch-icon" sizes="120x120">
+    <link href="<%= BASE_URL %>meta/152.png" rel="apple-touch-icon" sizes="152x152">
+
+    <link href="<%= BASE_URL %>meta/icon.svg" rel="mask-icon" size="any" color="#00A0B1">
+
+    <link href="<%= BASE_URL %>meta/192.png" rel="icon" sizes="192x192">
+    <link href="<%= BASE_URL %>meta/128.png" rel="icon" sizes="128x128">
+
+    <link href="<%= BASE_URL %>meta/52.png" rel="apple-touch-icon-precomposed" sizes="57x57">
+    <link href="<%= BASE_URL %>meta/72.png" rel="apple-touch-icon" sizes="72x72"> -->
+
+    <link
+      rel="alternate icon"
+      href="<%= BASE_URL %>favicon.ico"
+      type="image/x-icon"
+    />
+    <link rel="icon" href="<%= BASE_URL %>icon.svg" type="image/svg+xml" />
+
+    <meta
+      name="theme-color"
+      content="#222222"
+      media="(prefers-color-scheme: dark)"
+    />
+    <meta
+      name="theme-color"
+      content="#222222"
+      media="(prefers-color-scheme: light)"
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%= BASE_URL %>" />
+    <meta property="og:title" content="<%= VUE_APP_NAME %>" />
+    <meta property="og:image" content="<%= BASE_URL %>meta/og.png" />
+    <meta property="og:description" content="<%= VUE_APP_DESCRIPTION %>" />
+    <meta property="og:site_name" content="<%= VUE_APP_NAME %>" />
+
+    <title><%= VUE_APP_NAME %></title>
+    <!-- <script src="/V3_0_0_eparaksts-hwcrypto.js"></script> -->
+    <script>
+      window.config = {
+        publicUrl: "<%= BASE_URL %>",
+        version: "<%= VUE_APP_VERSION %>",
+        environment: "<%= VUE_APP_ENVIRONMENT %>",
+        serviceUrl: "<%= VUE_APP_SERVICE_URL %>",
+        authUrl: "<%- VUE_APP_AUTH_URL %>",
+      };
+      window.data = {};
+    </script>
+  </head>
+
+  <body class="lx">
+    <noscript>
+      <strong
+        >We're sorry but <%= VUE_APP_NAME %> doesn't work properly without
+        JavaScript enabled. Please enable it to continue.</strong
+      >
+    </noscript>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

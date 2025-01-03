@@ -1,0 +1,13 @@
+{
+  "editor.formatOnSave": true, // false in order to avoid conflicts with editor.codeActionsOnSave -> source.fixAll.eslint
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
+  },
+  "npm.packageManager": "pnpm",
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.localesPaths": ["src/locales"],
+  "eslint.format.enable": true,
+  "eslint.validate": ["javascript"],
+  "cSpell.words": ["akordi", "axios", "wntr"]
+}
