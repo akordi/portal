@@ -69,11 +69,6 @@ function notifyMappedError(message) {
 
 onMounted(() => {
   viewStore.showBack();
-  if (authStore.isAuthorized) {
-    viewStore.showNavBar();
-  } else {
-    viewStore.hideNavBar();
-  }
 
   ory
     .getLoginFlow({ id: flowId.value })
@@ -93,9 +88,9 @@ onMounted(() => {
           oidcNodes.value.push({
             id: node.attributes.value,
 
-            name: t.t("pages.login.options." + node.attributes.value + ".name"),
+            name: t.t(`pages.login.options.${node.attributes.value}.name`),
             description: t.t(
-              "pages.login.options." + node.attributes.value + ".description"
+              `pages.login.options.${node.attributes.value}.description`
             ),
             clickable: true,
             iconSet: providerAttributes?.iconSet || undefined,
@@ -147,71 +142,33 @@ const passwordFormActions = [
 <template>
   <LxLoader :loading="loading" />
   <div v-if="!loading">
-    <LxList
-      v-if="oidcNodes.length > 0"
-      :items="oidcNodes"
-      @actionClick="selectProvider"
-      style="margin-bottom: 20px"
-    >
+    <LxList v-if="oidcNodes.length > 0" :items="oidcNodes" @actionClick="selectProvider" style="margin-bottom: 20px">
     </LxList>
-    <LxForm
-      :showHeader="false"
-      :stickyFooter="false"
-      :action-definitions="passwordFormActions"
-      @buttonClick="passwordFormSubmit"
-      v-if="identifierNode && passwordNode"
-    >
+    <LxForm :showHeader="false" :stickyFooter="false" :action-definitions="passwordFormActions"
+      @buttonClick="passwordFormSubmit" v-if="identifierNode && passwordNode">
       <LxRow :label="identifierNode.meta?.label?.text">
-        <LxTextInput
-          v-model="identifierNode.attributes.value"
-          :required="identifierNode.attributes.required"
-          :invalid="identifierNode.messages.length > 0"
-          :invalidationMessage="
-            identifierNode.messages.length > 0 &&
+        <LxTextInput v-model="identifierNode.attributes.value" :required="identifierNode.attributes.required"
+          :invalid="identifierNode.messages.length > 0" :invalidationMessage="identifierNode.messages.length > 0 &&
             identifierNode.messages[0]?.text
-          "
-        />
+            " />
       </LxRow>
       <LxRow :label="passwordNode.meta?.label?.text">
-        <LxTextInput
-          kind="password"
-          @keyup.enter="passwordFormSubmit()"
-          v-model="passwordNode.attributes.value"
-          :invalid="passwordNode.messages.length > 0"
-          :invalidationMessage="
-            passwordNode.messages.length > 0 && passwordNode.messages[0]?.text
-          "
-        />
+        <LxTextInput kind="password" @keyup.enter="passwordFormSubmit()" v-model="passwordNode.attributes.value"
+          :invalid="passwordNode.messages.length > 0" :invalidationMessage="passwordNode.messages.length > 0 && passwordNode.messages[0]?.text
+            " />
       </LxRow>
     </LxForm>
   </div>
 
-  <form
-    :action="flow.ui.action"
-    :method="flow.ui.method"
-    ref="oidcForm"
-    v-if="flow"
-  >
+  <form :action="flow.ui.action" :method="flow.ui.method" ref="oidcForm" v-if="flow">
     <input type="hidden" name="provider" :value="selectedProvider" />
     <input type="hidden" name="csrf_token" :value="csrfToken" />
   </form>
-  <form
-    :action="flow.ui.action"
-    :method="flow.ui.method"
-    ref="passwordForm"
-    v-if="flow && identifierNode && passwordNode"
-  >
+  <form :action="flow.ui.action" :method="flow.ui.method" ref="passwordForm"
+    v-if="flow && identifierNode && passwordNode">
     <input type="hidden" name="method" value="password" />
-    <input
-      type="hidden"
-      name="identifier"
-      :value="identifierNode.attributes.value"
-    />
-    <input
-      type="hidden"
-      name="password"
-      :value="passwordNode.attributes.value"
-    />
+    <input type="hidden" name="identifier" :value="identifierNode.attributes.value" />
+    <input type="hidden" name="password" :value="passwordNode.attributes.value" />
     <input type="hidden" name="csrf_token" :value="csrfToken" />
   </form>
 </template>

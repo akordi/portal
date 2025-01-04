@@ -324,9 +324,9 @@ function idleModalSecondary() {
         :navigating="appStore.$state.isNavigating" :showIdleModal="idleModalOpened"
         :secondsToLive="authStore.session.secondsToLive" :confirmDialogData="confirmStore"
         :confirmPrimaryButtonBusy="false" :confirmPrimaryButtonDestructive="true"
-        v-model:notifications="notify.notifications" v-model:theme="theme" :hideNavBar="!viewStore.navBar"
-        @confirmModalClosed="confirmModalClosed" @go-home="goHome" @go-back="goBack" @log-out="openConfirmModal"
-        @idleModalPrimary="idleModalPrimary" @idleModalSecondary="idleModalSecondary">
+        v-model:notifications="notify.notifications" v-model:theme="theme" @confirmModalClosed="confirmModalClosed"
+        @go-home="goHome" @go-back="goBack" @log-out="openConfirmModal" @idleModalPrimary="idleModalPrimary"
+        @idleModalSecondary="idleModalSecondary">
         <template #backdrop>
           <CoverBackground />
         </template>
