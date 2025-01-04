@@ -134,7 +134,7 @@
     "home": {
       "title": "Akordi",
       "buttons": {
-        "loginUnauthorized": "Turpināt"
+        "loginUnauthorized": "Ienākt"
       }
     },
     "sessionEnded": {

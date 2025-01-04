@@ -1,5 +1,5 @@
 <script setup>
-import { LxButton, LxList, LxLoader } from "@wntr/lx-ui";
+import { LxList, LxLoader } from "@wntr/lx-ui";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -22,16 +22,11 @@ const page = ref(0);
 const hasMore = ref(false);
 const tag = ref({});
 
-onMounted(async () => {
-  viewStore.goBack = true;
-  await loadSongs();
-});
-
 const loadSongs = async () => {
   loading.value = true;
   try {
-    var tagUrl = "/tag/" + tagUrlParam.value;
-    var tagId = akordiService.parseUrl(tagUrl);
+    const tagUrl = `/tag/${tagUrlParam.value}`;
+    const tagId = akordiService.parseUrl(tagUrl);
     const tagResp = await akordiService.getTag(tagId);
     tag.value = tagResp.data;
     viewStore.title = $t('pages.tagView.title', { title: tag.value.title });
@@ -75,13 +70,19 @@ const loadSongs = async () => {
 };
 function actionClicked(action, id) {
   if (action === "click") {
-    var url = id;
-    router.push({ name: "akordiSongView", params: { url: url } });
+    router.push({ name: "akordiSongView", params: { url: id } });
   }
 }
 function loadMore() {
-  loadSongs(++page.value);
+  page.value += 1
+  loadSongs(page.value);
 }
+
+onMounted(async () => {
+  viewStore.goBack = true;
+  await loadSongs();
+});
+
 </script>
 <template>
   <LxLoader :loading="loading" />

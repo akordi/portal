@@ -1,6 +1,6 @@
 <script setup>
 import akordiService from "@/services/akordiService";
-import { LxButton, LxList, LxLoader } from "@wntr/lx-ui";
+import { LxList, LxLoader } from "@wntr/lx-ui";
 import { onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -22,22 +22,31 @@ onMounted(async () => {
   viewStore.goBack = true;
 });
 
-async function search(search) {
-  if (!search) {
+function titleOrHighlight(song) {
+  return song['@search.highlights'].title?.length ? song['@search.highlights'].title[0] : song.title
+}
+
+async function search(q) {
+  if (!q) {
     return;
   }
   try {
     loading.value = true;
-    let resp = await akordiService.search(search);
+    let resp = await akordiService.search(q);
     if (resp.data.value.length === 0) {
-      resp = await akordiService.search(`${search}*`);
+      resp = await akordiService.search(`${q}*`);
+    }
+    if (resp.data.value.length === 0) {
+      return;
     }
     items.value = resp.data.value.map((song) => ({
       ...song,
-      description: song.mainArtistTitle,
+      id: song.id,
+      name: song.title,
+      title: `${song.mainArtistTitle} - ${titleOrHighlight(song)}`,
+      description: song['@search.highlights'].bodyLyrics?.length ? song['@search.highlights'].bodyLyrics[0] : '',
       clickable: true,
     }));
-
   } catch (err) {
     if (axios.isCancel(err)) {
       return;
@@ -52,7 +61,7 @@ async function search(search) {
 
 function actionClicked(action, id) {
   if (action === "click") {
-    const item = items.value.find((i) => i.id === +id);
+    const item = items.value.find((i) => i.id === id);
     item.url = item.url.replace(/^\/song\//, "");
     router.push({ name: "akordiSongView", params: { url: item.url } });
   }
@@ -68,13 +77,29 @@ function actionClicked(action, id) {
   display: block;
   min-height: 25px;
 }
+
+.pre {
+  white-space: pre;
+}
+
+em {
+  font-style: normal;
+  font-weight: bold;
+  color: var(--color-data)
+}
 </style>
 <template>
   <div class="lx-loader-wrapper">
     <LxLoader :loading="loading" variant="bar" />
   </div>
-
-  <LxList id="id" list-type="2" v-model:items="items" :has-search="true" searchSide="server" primary-attribute="title"
-    secondary-attribute="description" @action-click="actionClicked" @update:searchString="search">
+  <LxList id-attribute="id" list-type="1" v-model:items="items" :has-search="true" searchSide="server"
+    @action-click="actionClicked" @update:search-string="search" icon="next">
+    <template #customItem="{
+      title,
+      description
+    }">
+      <p class="lx-primary" v-html="title"></p>
+      <p class="lx-secondary pre" v-html="description"></p>
+    </template>
   </LxList>
 </template>

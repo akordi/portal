@@ -1,17 +1,14 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { LxForm, LxLoader, LxRow, LxSection } from "@wntr/lx-ui";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { LxForm, LxRow } from "@wntr/lx-ui";
 import { useRoute, useRouter } from "vue-router";
 
-import useNotifyStore from "@/stores/useNotifyStore";
-import useViewStore from "@/stores/useViewStore";
-import { computed } from "vue";
+import ChordSvg from "@/components/ChordSvg.vue";
 import akordiService from "@/services/akordiService";
 import chordsService from "@/services/chordsService";
-import { LxLoader, LxSection } from "@wntr/lx-ui";
-import ChordSvg from "@/components/ChordSvg.vue";
-import { onUnmounted } from "vue";
+import useNotifyStore from "@/stores/useNotifyStore";
+import useViewStore from "@/stores/useViewStore";
 
 const translate = useI18n();
 const $t = translate.t;
@@ -28,15 +25,11 @@ const chords = ref([]);
 const showChords = ref(true);
 const instrument = ref("guitar");
 
-onMounted(async () => {
-  viewStore.goBack = true;
-  await loadSong();
-});
 
 const loadSong = async () => {
   try {
-    var songUrl = "/song/" + songUrlParam.value;
-    var songId = akordiService.parseUrl(songUrl);
+    let songUrl = `/song/${songUrlParam.value}`;
+    const songId = akordiService.parseUrl(songUrl);
     const resp = await akordiService.getSong(songId);
     if (songUrl !== resp.data.url) {
       songUrl = resp.data.url.replace(/^\/song\//, "");
@@ -70,21 +63,21 @@ const formActions = computed(() => [
   },
   {
     id: "hideChords",
-    icon: "config", //TODO: find better icon
+    icon: "config", // TODO: find better icon
     name: $t("pages.akordiSongView.hideChords.label"),
     title: $t("pages.akordiSongView.hideChords.description"),
     kind: "additional",
   },
   {
     id: "showGuitarChords",
-    icon: "config", //TODO: find better icon
+    icon: "config", // TODO: find better icon
     name: $t("pages.akordiSongView.showGuitarChords.label"),
     title: $t("pages.akordiSongView.showGuitarChords.description"),
     kind: "additional",
   },
   {
     id: "showUkuleleChords",
-    icon: "config", //TODO: find better icon
+    icon: "config", // TODO: find better icon
     name: $t("pages.akordiSongView.showUkuleleChords.label"),
     title: $t("pages.akordiSongView.showUkuleleChords.description"),
     kind: "additional",
@@ -130,7 +123,7 @@ async function actionClicked(actionName) {
   }
 
   if (actionName === "transposeUp") {
-    bodyTransposedIndex.value = bodyTransposedIndex.value + 1;
+    bodyTransposedIndex.value += 1;
     item.value.bodyWithMarkup = chordsService.transpose(
       item.value.body,
       bodyTransposedIndex.value
@@ -142,7 +135,7 @@ async function actionClicked(actionName) {
     }
   }
   if (actionName === "transposeDown") {
-    bodyTransposedIndex.value = bodyTransposedIndex.value - 1;
+    bodyTransposedIndex.value -= 1;
     item.value.bodyWithMarkup = chordsService.transpose(
       item.value.body,
       bodyTransposedIndex.value
@@ -154,6 +147,11 @@ async function actionClicked(actionName) {
     }
   }
 }
+
+onMounted(async () => {
+  viewStore.goBack = true;
+  await loadSong();
+});
 onUnmounted(() => {
   viewStore.$reset();
 });

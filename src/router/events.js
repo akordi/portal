@@ -24,10 +24,8 @@ export default (router) => {
 
     appStore.$reset();
     appStore.startNavigating();
-    next();
 
-    // Probably don't need this if no scope system will be used
-    // await lxFlowUtils.beforeEach(to, from, next, appStore, authStore);
+    await lxFlowUtils.beforeEach(to, from, next, appStore, authStore);
   });
   router.afterEach(async (to, from) => {
     const appStore = useAppStore();
