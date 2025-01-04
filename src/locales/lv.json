@@ -59,6 +59,14 @@
         "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
       }
     },
+    "songEdit": {
+      "title": "Dziesmas labojums",
+      "description": "Šeit vari iesniegt dziesmas labojumus"
+    },
+    "songNew": {
+      "title": "Iesniegt dziesmu",
+      "description": "Lapa paredzēta tikai latviešu dziesmām (dziesmas valodai nav nozīmes). Tā tiks pārbaudīta un pievienota datu bāzei."
+    },
     "akordiSongView": {
       "title": "Akordi.lv dziesmas",
       "copy": {
@@ -195,18 +203,19 @@
   "search": "Meklēt",
   "song": {
     "title": "Nosaukums",
-    "artist": "Mākslinieks",
+    "artist": "Izpildītājs",
+    "composer": "Mūzikas autors",
+    "poet": "Vārdu autors",
+    "tags": "Birkas",
+    "youtubeLink": "Youtube video",
     "lyrics": "Dziesmas vārdi",
-    "body": "Dziemas teksts"
+    "body": "Dziesmas teksts ar akordiem",
+    "bodyTooltip": "Vēlams pievienot dziesmas ar pilniem dziesmu tekstiem. Teksta izkārtojumam lietot atstarpes nevis tab."
   },
   "songs": {
     "save": {
-      "success": "Dziesma veiksmīgi saglabāta",
+      "success": "Dziesma veiksmīgi iesniegta apstiprināšanai",
       "error": "Kļūda saglabājot dziesmu"
-    },
-    "delete": {
-      "success": "Dziesma veiksmīgi dzēsta",
-      "error": "Kļūda dzēšot dziesmu"
     }
   },
   "artist": {

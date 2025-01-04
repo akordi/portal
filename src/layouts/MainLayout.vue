@@ -73,6 +73,11 @@ const nav = [
     to: { name: "tagList" },
   },
   {
+    label: $t("pages.songNew.title"),
+    icon: "add-item",
+    to: { name: "songNew" },
+  },
+  {
     label: "Skatīt profilu",
     icon: "user-profile",
     to: { name: "userProfile" },

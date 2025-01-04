@@ -30,7 +30,7 @@ async function search(search) {
     loading.value = true;
     let resp = await akordiService.search(search);
     if (resp.data.value.length === 0) {
-      resp = await akordiService.search(search + "*");
+      resp = await akordiService.search(`${search}*`);
     }
     items.value = resp.data.value.map((song) => ({
       ...song,
@@ -52,7 +52,7 @@ async function search(search) {
 
 function actionClicked(action, id) {
   if (action === "click") {
-    var item = items.value.find((item) => item.id == id);
+    const item = items.value.find((i) => i.id === +id);
     item.url = item.url.replace(/^\/song\//, "");
     router.push({ name: "akordiSongView", params: { url: item.url } });
   }

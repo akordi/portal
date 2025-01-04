@@ -1,15 +1,13 @@
 <script setup>
 import akordiService from "@/services/akordiService";
 import { LxContentSwitcher, LxList } from "@wntr/lx-ui";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { useRoute, useRouter } from "vue-router";
 
 import useNotifyStore from "@/stores/useNotifyStore";
 import useViewStore from "@/stores/useViewStore";
-import { computed } from "vue";
-import { watch } from "vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -49,7 +47,7 @@ async function loadTags() {
 }
 function actionClicked(action, id) {
   if (action === "click") {
-    var item = tags.value.find((item) => item.id == id);
+    const item = tags.value.find((i) => i.id === +id);
     item.url = item.url.replace(/^\/tag\//, "");
     router.push({ name: "tagView", params: { url: item.url } });
   }

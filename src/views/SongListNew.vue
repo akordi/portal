@@ -47,8 +47,7 @@ async function load() {
 
 function actionClicked(action, id) {
   if (action === "click") {
-    var item = items.value.find((item) => item.id == id);
-    console.log({ item, action, id, items });
+    const item = items.value.find((i) => i.id === +id);
     item.url = item.url.replace(/^\/song\//, "");
     router.push({ name: "akordiSongView", params: { url: item.url } });
   }

@@ -69,6 +69,14 @@ export default {
     return http(serviceUrl).get(`/api/v2/songs/${id}`);
   },
 
+  saveEdit(item) {
+    return http(serviceUrl).post(`/api/v2/admin/edits`, item);
+  },
+
+  searchArtist(query) {
+    return http(serviceUrl).get(`/api/v2/artists`, { params: { titleStartsWith: query } });
+  },
+
   search(query) {
     if (abortController) {
       abortController.abort();

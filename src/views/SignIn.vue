@@ -1,19 +1,17 @@
 <script setup>
-import { computed, nextTick, onMounted, ref } from "vue";
-import { LxList, LxLoader, LxForm, LxTextInput, LxRow } from "@wntr/lx-ui";
-import useViewStore from "@/stores/useViewStore";
-import useAuthStore from "@/stores/useAuthStore";
 import useNotifyStore from "@/stores/useNotifyStore";
-import { useRouter, useRoute } from "vue-router";
+import useViewStore from "@/stores/useViewStore";
 import { Configuration, FrontendApi } from "@ory/client";
+import { LxForm, LxList, LxLoader, LxRow, LxTextInput } from "@wntr/lx-ui";
+import { computed, nextTick, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRoute, useRouter } from "vue-router";
 
 const t = useI18n();
 const route = useRoute();
 const notify = useNotifyStore();
 const router = useRouter();
 const viewStore = useViewStore();
-const authStore = useAuthStore();
 
 const loading = ref(true);
 const flowId = computed(() => route.query.flow);
@@ -25,7 +23,7 @@ const csrfToken = ref(null);
 const selectedProvider = ref(null);
 const identifierNode = ref(null);
 const passwordNode = ref({});
-const { authUrl, environment } = window.config;
+const { authUrl } = window.config;
 const ory = new FrontendApi(
   new Configuration({
     basePath: authUrl,

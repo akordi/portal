@@ -42,6 +42,15 @@ const routes = [
         component: () => import('@/views/Dashboard.vue'),
       },
       {
+        path: '/add',
+        name: 'songNew',
+        meta: {
+          title: 'pages.dashboard.title',
+          anonymous: true,
+        },
+        component: () => import('@/views/SongNew.vue'),
+      },
+      {
         path: '/akordi/artists',
         name: 'akordiArtistList',
         meta: {
