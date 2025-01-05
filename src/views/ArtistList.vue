@@ -1,6 +1,6 @@
 <script setup>
 import akordiService from "@/services/akordiService";
-import { LxContentSwitcher, LxList } from "@wntr/lx-ui";
+import { LxContentSwitcher, LxList, LxValuePicker } from "@wntr/lx-ui";
 import { onMounted, ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -25,10 +25,12 @@ const letters = ref([
   {
     id: "0",
     name: "0",
+    clickable: true,
   },
   {
     id: "a",
     name: "A",
+    clickable: true,
   },
   {
     id: "ā",
@@ -216,7 +218,7 @@ onMounted(async () => {
 }
 </style>
 <template>
-  <LxContentSwitcher @update:modelValue="changeLetter" :items="letters" v-model="letter" />
+  <LxValuePicker variant="tags" @update:modelValue="changeLetter" :items="letters" v-model="letter" />
   <br />
   <LxList id="id" :loading="loading" list-type="2" :show-load-more="hasMore" @load-more="loadMore" v-model:items="items"
     primary-attribute="title" @action-click="actionClicked" @update:searchString="search">
