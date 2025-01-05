@@ -24,7 +24,7 @@ const $t = translate.t;
 const viewStore = useViewStore();
 const notificationStore = useNotifyStore();
 const route = useRoute();
-const copyFrom = computed(() => route.query.copyFrom);
+const idParam = computed(() => route.query.id);
 const loading = shallowRef(false);
 const notify = useNotifyStore();
 const withI18nMessage = validations.createI18nMessage({ t: translate.t });
@@ -42,12 +42,12 @@ const props = defineProps({
 const submitting = ref(false);
 const tags = ref([]);
 const loadCopyFrom = async () => {
-  if (!copyFrom.value) {
+  if (!idParam.value) {
     return;
   }
   loading.value = true;
   try {
-    const resp = await akordiService.getSong(copyFrom.value);
+    const resp = await akordiService.getSong(idParam.value);
     item.value.body = resp.data.body;
     item.value.title = resp.data.title;
     item.value.id = resp.data.id;
@@ -155,10 +155,10 @@ async function loadTags() {
       sort: "title,asc",
     });
 
-    tags.value = resp.data.content.map((item) => ({
-      ...item,
+    tags.value = resp.data.content.map((i) => ({
+      ...i,
       clickable: true,
-      name: `${item.title} (${item.songCount})`,
+      name: `${i.title} (${i.songCount})`,
     }));
   } catch (err) {
     console.log(err);

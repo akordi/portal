@@ -62,6 +62,12 @@ const formActions = computed(() => [
     kind: "secondary",
   },
   {
+    id: "suggestEdit",
+    icon: "edit",
+    name: $t("suggestEdit"),
+    kind: "additional",
+  },
+  {
     id: "hideChords",
     icon: "config", // TODO: find better icon
     name: $t("pages.akordiSongView.hideChords.label"),
@@ -107,8 +113,8 @@ async function actionClicked(actionName) {
   if (actionName === "cancel") {
     router.back();
   }
-  if (actionName === "copy") {
-    router.push({ name: "mySongNew", query: { copyFrom: item.value.id } });
+  if (actionName === "suggestEdit") {
+    router.push({ name: "songEdit", query: { id: item.value.id } });
   }
   if (actionName === "hideChords") {
     showChords.value = !showChords.value;
