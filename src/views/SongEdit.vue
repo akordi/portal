@@ -49,6 +49,9 @@ const loadCopyFrom = async () => {
   try {
     const resp = await akordiService.getSong(copyFrom.value);
     item.value.body = resp.data.body;
+    item.value.title = resp.data.title;
+    item.value.id = resp.data.id;
+    item.value.mainArtistId = resp.data.mainArtist.id;
   } catch (err) {
     console.log(err);
     notificationStore.pushError("Failed to load song");
