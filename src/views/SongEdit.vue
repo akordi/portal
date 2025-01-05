@@ -4,7 +4,8 @@ import {
   LxForm,
   LxRow,
   LxTextArea,
-  LxTextInput
+  LxTextInput,
+  LxValuePicker
 } from "@wntr/lx-ui";
 import { computed, onMounted, ref, shallowRef } from "vue";
 import { useI18n } from "vue-i18n";
@@ -39,6 +40,7 @@ const props = defineProps({
   },
 });
 const submitting = ref(false);
+const tags = ref([]);
 const loadCopyFrom = async () => {
   if (!copyFrom.value) {
     return;
@@ -86,6 +88,10 @@ function mapFromId(id) {
   }
 }
 
+function mapTag(id) {
+  return tags.value.find((tag) => tag.id === +id);
+}
+
 async function actionClicked(actionName) {
   if (actionName === "save") {
     const isFormCorrect = await v.value.$validate();
@@ -100,7 +106,8 @@ async function actionClicked(actionName) {
         body: item.value.body,
         mainArtist: mapFromId(item.value.mainArtistId),
         poets: item.value.poets.map((i) => mapFromId(i)),
-        composers: item.value.composers.map((i) => mapFromId(i))
+        composers: item.value.composers.map((i) => mapFromId(i)),
+        tags: item.value.tags.map((i) => mapTag(i))
       }
 
       await akordiService.saveEdit(edit);
@@ -137,6 +144,29 @@ async function searchArtist(query) {
 }
 
 
+async function loadTags() {
+  try {
+    loading.value = true;
+    const resp = await akordiService.getTags({
+      size: 100000,
+      sort: "title,asc",
+    });
+
+    tags.value = resp.data.content.map((item) => ({
+      ...item,
+      clickable: true,
+      name: `${item.title} (${item.songCount})`,
+    }));
+  } catch (err) {
+    console.log(err);
+    notificationStore.pushError($t("pages.tagList.list.error"));
+    throw err;
+  } finally {
+    loading.value = false;
+  }
+}
+
+
 onMounted(async () => {
   viewStore.$reset();
   viewStore.goBack = true;
@@ -148,6 +178,7 @@ onMounted(async () => {
     viewStore.title = translate.t("pages.songEdit.title");
     viewStore.description = translate.t("pages.songEdit.description");
   }
+  loadTags();
 });
 
 </script>
@@ -165,6 +196,10 @@ onMounted(async () => {
         :invalidation-message="v.mainArtistId.$error ? v.mainArtistId.$errors[0].$message : ''" id-attribute="id"
         name-attribute="title" :items="searchArtist" kind="preloaded-func" />
     </LxRow>
+    <LxRow :label="$t('song.title')" :required="true">
+      <LxTextInput class="pre" id="titleInput" v-model="item.title" :invalid="v.title.$error"
+        :invalidation-message="v.title.$error ? v.title.$errors[0].$message : ''" />
+    </LxRow>
     <LxRow :label="$t('song.composer')">
       <LxAutoComplete id="composerInput" v-model="item.composers" id-attribute="id" name-attribute="title"
         selecting-kind="multiple" :items="searchArtist" kind="preloaded-func" />
@@ -173,9 +208,9 @@ onMounted(async () => {
       <LxAutoComplete id="poetInput" v-model="item.poets" id-attribute="id" name-attribute="title"
         selecting-kind="multiple" :items="searchArtist" kind="preloaded-func" />
     </LxRow>
-    <LxRow :label="$t('song.title')" :required="true">
-      <LxTextInput class="pre" id="titleInput" v-model="item.title" :invalid="v.title.$error"
-        :invalidation-message="v.title.$error ? v.title.$errors[0].$message : ''" />
+    <LxRow :label="$t('song.tags')">
+      <LxValuePicker id="tagInput" v-model="item.tags" :items="tags" id-attribute="id" name-attribute="title"
+        kind="multiple" variant="tags" />
     </LxRow>
     <LxRow :label="$t('song.body')" :required="true" inputId="bodyInput">
       <template #info>{{ $t('song.bodyTooltip') }}</template>
