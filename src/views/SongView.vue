@@ -176,11 +176,6 @@ onUnmounted(() => {
         <p class="lx-data">{{ lxDateUtils.formatDateTime(item.updatedDate) }}</p>
       </LxRow>
     </template>
-    <LxSection v-if="showChords">
-      <div style="display: flex; flex-wrap: wrap">
-        <ChordSvg :chord="chord" :instrument="instrument" v-for="chord in chords" :key="chord"></ChordSvg>
-      </div>
-    </LxSection>
     <LxSection>
       <LxRow :label="$t('song.composer')" v-if="item.composers?.length > 0">
         <p class="lx-data">
@@ -197,6 +192,11 @@ onUnmounted(() => {
           {{ item.tags.map((tag) => tag.title).join(", ") }}
         </p>
       </LxRow>
+    </LxSection>
+    <LxSection v-if="showChords">
+      <div style="display: flex; flex-wrap: wrap">
+        <ChordSvg :chord="chord" :instrument="instrument" v-for="chord in chords" :key="chord"></ChordSvg>
+      </div>
     </LxSection>
     <LxSection>
       <LxRow>
