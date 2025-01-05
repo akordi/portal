@@ -1,5 +1,5 @@
 <script setup>
-import { LxForm, LxLoader, LxRow, LxSection } from "@wntr/lx-ui";
+import { lxDateUtils, LxForm, LxLoader, LxRow, LxSection } from "@wntr/lx-ui";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
@@ -39,13 +39,14 @@ const loadSong = async () => {
       });
     }
     item.value = resp.data;
+    item.value.createdAt = lxDateUtils.formatDate(item.value.createdDate);
     item.value.bodyWithMarkup = chordsService.transpose(item.value.body, 0);
     hasChords.value = item.value.bodyWithMarkup?.indexOf("<b>") !== -1;
     if (hasChords.value) {
       chords.value = chordsService.extractChords(item.value.bodyWithMarkup);
     }
     viewStore.title = item.value.title;
-    viewStore.description = item.value.mainArtist?.title;
+    viewStore.description = item.value.performers.map((artist) => artist.title).join(", ")
   } catch (err) {
     console.log(err);
     notificationStore.pushError("Failed to load song");
@@ -165,11 +166,37 @@ onUnmounted(() => {
 <template>
   <LxLoader :loading="loading" />
   <LxForm v-if="!loading" :sticky-footer="false" :sticky-header="false" :action-definitions="formActions"
-    @button-click="actionClicked">
+    @button-click="actionClicked" show-post-header-info="true" kind="compact">
+    <template #post-header>{{ item.createdAt }} </template>
+    <template #post-header-info>
+      <LxRow :label="$t('song.createdAt')">
+        <p class="lx-data">{{ lxDateUtils.formatDateTime(item.createdDate) }}</p>
+      </LxRow>
+      <LxRow :label="$t('song.updatedAt')">
+        <p class="lx-data">{{ lxDateUtils.formatDateTime(item.updatedDate) }}</p>
+      </LxRow>
+    </template>
     <LxSection v-if="showChords">
       <div style="display: flex; flex-wrap: wrap">
         <ChordSvg :chord="chord" :instrument="instrument" v-for="chord in chords" :key="chord"></ChordSvg>
       </div>
+    </LxSection>
+    <LxSection>
+      <LxRow :label="$t('song.composer')" v-if="item.composers?.length > 0">
+        <p class="lx-data">
+          {{ item.composers.map((author) => author.title).join(", ") }}
+        </p>
+      </LxRow>
+      <LxRow :label="$t('song.poet')" v-if="item.poets?.length > 0">
+        <p class="lx-data">
+          {{ item.poets.map((author) => author.title).join(", ") }}
+        </p>
+      </LxRow>
+      <LxRow :label="$t('song.tags')" v-if="item.tags?.length > 0">
+        <p class="lx-data">
+          {{ item.tags.map((tag) => tag.title).join(", ") }}
+        </p>
+      </LxRow>
     </LxSection>
     <LxSection>
       <LxRow>
