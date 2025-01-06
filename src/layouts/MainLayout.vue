@@ -160,7 +160,7 @@ const userInfo = computed(() => {
       firstName: authStore.session?.given_name,
       lastName: authStore.session?.family_name,
       description: authStore.session?.role
-        ? t(`roles.${authStore.session?.role}`)
+        ? $t(`roles.${authStore.session?.role}`)
         : null,
       institution: null,
     };
