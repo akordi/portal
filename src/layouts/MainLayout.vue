@@ -34,7 +34,7 @@ const translate = useI18n();
 const $t = translate.t;
 const route = useRoute();
 const shellMode = computed(() => {
-  let ret = "default";
+  let ret = "public";
   if (route.path === "/") {
     ret = "cover";
   }
@@ -324,11 +324,11 @@ function idleModalSecondary() {
         :system-name-short="systemName" :user-info="userInfo" :nav-items="nav" :nav-items-selected="selectedNavItems"
         :mode="shellMode" :page-label="pageTitle" :page-description="pageDescription"
         :page-back-button-visible="showBackButton" :page-breadcrumbs="breadcrumbs"
-        :page-index-path="{ name: 'dashboard' }" :has-language-picker="false" :has-cover-logo="true" :cover-image="null"
-        :cover-image-dark="null" :cover-logo="coverLogo" :has-alerts="false" :has-help="false" :has-theme-picker="true"
-        :navigating="appStore.$state.isNavigating" :showIdleModal="idleModalOpened"
-        :secondsToLive="authStore.session.secondsToLive" :confirmDialogData="confirmStore"
-        :confirmPrimaryButtonBusy="false" :confirmPrimaryButtonDestructive="true"
+        :page-index-path="{ name: 'dashboard' }" :has-language-picker="false" :has-cover-logo="true"
+        cover-image="/imgs/cover-light.jpg" cover-image-dark="/imgs/cover-dark.jpg" :cover-logo="coverLogo"
+        :has-alerts="false" :has-help="false" :has-theme-picker="true" :navigating="appStore.$state.isNavigating"
+        :showIdleModal="idleModalOpened" :secondsToLive="authStore.session.secondsToLive"
+        :confirmDialogData="confirmStore" :confirmPrimaryButtonBusy="false" :confirmPrimaryButtonDestructive="true"
         v-model:notifications="notify.notifications" v-model:theme="theme" @confirmModalClosed="confirmModalClosed"
         @go-home="goHome" @go-back="goBack" @log-out="openConfirmModal" @idleModalPrimary="idleModalPrimary"
         @idleModalSecondary="idleModalSecondary">
@@ -342,15 +342,9 @@ function idleModalSecondary() {
         </template>
 
         <template #logoSmall>
-          <img id="logo-light"
-            src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pgo8c3ZnIHZlcnNpb249IjEuMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogdmlld0JveD0iMCAwIDE4MC4wMDAwMDAgMTgwLjAwMDAwMCIKIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiPgo8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjAwMDAwMCwxODAuMDAwMDAwKSBzY2FsZSgwLjEwMDAwMCwtMC4xMDAwMDApIgpmaWxsPSIjZmZmIiBzdHJva2U9Im5vbmUiPgo8cGF0aCBkPSJNODAxIDE2NTAgYy0xMzAgLTYyIC0yODMgLTI1NSAtNDE2IC01MjUgLTExMCAtMjIzIC0xNTUgLTM4NyAtMTU1Ci01NTkgMCAtMTc1IDM5IC0yNTAgMTY4IC0zMTkgNTIgLTI4IDIyMiAtOTAgMjI5IC04MyAyIDIgLTUgMjQgLTE2IDQ5IC01NwoxMzQgLTQ5IDIyOCAzMCAzNTIgNTMgODMgNTQgODUgMjQgMTY0IC0yNyA3NCAwIDE0MSA1OCAxNDEgMzIgMCAxMTcgLTQ0IDExNwotNjAgMCAtNiA1IC0xMCAxMiAtMTAgMTUgMCA0IDM5NSAtMTEgNDE0IC02IDcgLTggMTYgLTMgMjAgNCA0IC0xIDEyIC0xMSAxNwotMjQgMTQgLTIxIDI5IDUgMjkgMjEgMCAyMSAwIDIgMTQgLTE4IDE0IC0xOCAxNSA2IDI1IDE0IDUgMTkgMTAgMTMgMTAgLTcgMQotMTMgOCAtMTMgMTcgMCAxMCA2IDE0IDE1IDEwIDggLTMgMTUgLTEgMTUgNCAwIDYgLTQgMTAgLTEwIDEwIC01IDAgLTEwIDcKLTEwIDE1IDAgOCA4IDE1IDE3IDE1IDEzIDAgMTQgMyA1IDEyIC0xNyAxNyAtMTUgMjggNiAyOSAxMCAwIDEyIDMgNSA2IC0xOCA3Ci0xNiAzMyAyIDMzIDkgMCAyNyA3IDQwIDE2IDIzIDE1IDI3IDE1IDUwIDAgMzAgLTIwIDMzIC01NiA2IC04MCAtMTggLTE3IC0xOQotMjEgLTUgLTY0IDE5IC02NSAxOCAtODcgLTggLTEwNSAtMjMgLTE1IC0yMyAtMTUgLTIyIC0yNzEgMSAtMTQyIDQgLTI1OSA3Ci0yNjIgMyAtMyAyNCA0IDQ3IDE2IDIzIDEyIDU0IDIwIDY4IDE4IDM2IC00IDQwIC00NCAxMiAtMTExIC0yNyAtNjEgLTIzIC04NwoyNiAtMTYzIDQ3IC03MyA4MiAtMTYwIDk3IC0yNDAgbDEyIC02MyA4OSAzNCBjMTgxIDY4IDI0OCAxNDEgMjYzIDI4NiAyNCAyMzEKLTcwIDUyMiAtMjc4IDg1OCAtMTE1IDE4NyAtMjgzIDMzMSAtMzg1IDMzMSAtMjMgMCAtNjYgLTEzIC0xMDMgLTMweiIvPgo8L2c+Cjwvc3ZnPgo="
-            alt="Logo" />
-          <img id="logo-dark"
-            src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pgo8c3ZnIHZlcnNpb249IjEuMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogd2lkdGg9IjE4MC4wMDAwMDBwdCIgaGVpZ2h0PSIxODAuMDAwMDAwcHQiIHZpZXdCb3g9IjAgMCAxODAuMDAwMDAwIDE4MC4wMDAwMDAiCiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0Ij4KPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC4wMDAwMDAsMTgwLjAwMDAwMCkgc2NhbGUoMC4xMDAwMDAsLTAuMTAwMDAwKSIKZmlsbD0iI2ZmZiIgc3Ryb2tlPSJub25lIj4KPHBhdGggZD0iTTgwMSAxNjUwIGMtMTMwIC02MiAtMjgzIC0yNTUgLTQxNiAtNTI1IC0xMTAgLTIyMyAtMTU1IC0zODcgLTE1NQotNTU5IDAgLTE3NSAzOSAtMjUwIDE2OCAtMzE5IDUyIC0yOCAyMjIgLTkwIDIyOSAtODMgMiAyIC01IDI0IC0xNiA0OSAtNTcKMTM0IC00OSAyMjggMzAgMzUyIDUzIDgzIDU0IDg1IDI0IDE2NCAtMjcgNzQgMCAxNDEgNTggMTQxIDMyIDAgMTE3IC00NCAxMTcKLTYwIDAgLTYgNSAtMTAgMTIgLTEwIDE1IDAgNCAzOTUgLTExIDQxNCAtNiA3IC04IDE2IC0zIDIwIDQgNCAtMSAxMiAtMTEgMTcKLTI0IDE0IC0yMSAyOSA1IDI5IDIxIDAgMjEgMCAyIDE0IC0xOCAxNCAtMTggMTUgNiAyNSAxNCA1IDE5IDEwIDEzIDEwIC03IDEKLTEzIDggLTEzIDE3IDAgMTAgNiAxNCAxNSAxMCA4IC0zIDE1IC0xIDE1IDQgMCA2IC00IDEwIC0xMCAxMCAtNSAwIC0xMCA3Ci0xMCAxNSAwIDggOCAxNSAxNyAxNSAxMyAwIDE0IDMgNSAxMiAtMTcgMTcgLTE1IDI4IDYgMjkgMTAgMCAxMiAzIDUgNiAtMTggNwotMTYgMzMgMiAzMyA5IDAgMjcgNyA0MCAxNiAyMyAxNSAyNyAxNSA1MCAwIDMwIC0yMCAzMyAtNTYgNiAtODAgLTE4IC0xNyAtMTkKLTIxIC01IC02NCAxOSAtNjUgMTggLTg3IC04IC0xMDUgLTIzIC0xNSAtMjMgLTE1IC0yMiAtMjcxIDEgLTE0MiA0IC0yNTkgNwotMjYyIDMgLTMgMjQgNCA0NyAxNiAyMyAxMiA1NCAyMCA2OCAxOCAzNiAtNCA0MCAtNDQgMTIgLTExMSAtMjcgLTYxIC0yMyAtODcKMjYgLTE2MyA0NyAtNzMgODIgLTE2MCA5NyAtMjQwIGwxMiAtNjMgODkgMzQgYzE4MSA2OCAyNDggMTQxIDI2MyAyODYgMjQgMjMxCi03MCA1MjIgLTI3OCA4NTggLTExNSAxODcgLTI4MyAzMzEgLTM4NSAzMzEgLTIzIDAgLTY2IC0xMyAtMTAzIC0zMHoiLz4KPC9nPgo8L3N2Zz4K"
-            alt="Logo" />
-          <img id="logo-contrast"
-            src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pgo8c3ZnIHZlcnNpb249IjEuMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogdmlld0JveD0iMCAwIDE4MC4wMDAwMDAgMTgwLjAwMDAwMCIKIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiPgo8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjAwMDAwMCwxODAuMDAwMDAwKSBzY2FsZSgwLjEwMDAwMCwtMC4xMDAwMDApIgpmaWxsPSIjZmZmIiBzdHJva2U9Im5vbmUiPgo8cGF0aCBkPSJNODAxIDE2NTAgYy0xMzAgLTYyIC0yODMgLTI1NSAtNDE2IC01MjUgLTExMCAtMjIzIC0xNTUgLTM4NyAtMTU1Ci01NTkgMCAtMTc1IDM5IC0yNTAgMTY4IC0zMTkgNTIgLTI4IDIyMiAtOTAgMjI5IC04MyAyIDIgLTUgMjQgLTE2IDQ5IC01NwoxMzQgLTQ5IDIyOCAzMCAzNTIgNTMgODMgNTQgODUgMjQgMTY0IC0yNyA3NCAwIDE0MSA1OCAxNDEgMzIgMCAxMTcgLTQ0IDExNwotNjAgMCAtNiA1IC0xMCAxMiAtMTAgMTUgMCA0IDM5NSAtMTEgNDE0IC02IDcgLTggMTYgLTMgMjAgNCA0IC0xIDEyIC0xMSAxNwotMjQgMTQgLTIxIDI5IDUgMjkgMjEgMCAyMSAwIDIgMTQgLTE4IDE0IC0xOCAxNSA2IDI1IDE0IDUgMTkgMTAgMTMgMTAgLTcgMQotMTMgOCAtMTMgMTcgMCAxMCA2IDE0IDE1IDEwIDggLTMgMTUgLTEgMTUgNCAwIDYgLTQgMTAgLTEwIDEwIC01IDAgLTEwIDcKLTEwIDE1IDAgOCA4IDE1IDE3IDE1IDEzIDAgMTQgMyA1IDEyIC0xNyAxNyAtMTUgMjggNiAyOSAxMCAwIDEyIDMgNSA2IC0xOCA3Ci0xNiAzMyAyIDMzIDkgMCAyNyA3IDQwIDE2IDIzIDE1IDI3IDE1IDUwIDAgMzAgLTIwIDMzIC01NiA2IC04MCAtMTggLTE3IC0xOQotMjEgLTUgLTY0IDE5IC02NSAxOCAtODcgLTggLTEwNSAtMjMgLTE1IC0yMyAtMTUgLTIyIC0yNzEgMSAtMTQyIDQgLTI1OSA3Ci0yNjIgMyAtMyAyNCA0IDQ3IDE2IDIzIDEyIDU0IDIwIDY4IDE4IDM2IC00IDQwIC00NCAxMiAtMTExIC0yNyAtNjEgLTIzIC04NwoyNiAtMTYzIDQ3IC03MyA4MiAtMTYwIDk3IC0yNDAgbDEyIC02MyA4OSAzNCBjMTgxIDY4IDI0OCAxNDEgMjYzIDI4NiAyNCAyMzEKLTcwIDUyMiAtMjc4IDg1OCAtMTE1IDE4NyAtMjgzIDMzMSAtMzg1IDMzMSAtMjMgMCAtNjYgLTEzIC0xMDMgLTMweiIvPgo8L2c+Cjwvc3ZnPgo="
-            alt="Logo" />
+          <img id="logo-light" src="/imgs/logo-50-dark.svg" alt="Logo" />
+          <img id="logo-dark" src="/imgs/logo-50.svg" alt="Logo" />
+          <img id="logo-contrast" src="/imgs/logo-50-contrast.svg" alt="Logo" />
         </template>
 
         <router-view />

@@ -7,7 +7,7 @@ import {
   LxTextInput,
   LxValuePicker
 } from "@wntr/lx-ui";
-import { computed, onMounted, ref, shallowRef } from "vue";
+import { computed, onMounted, onUnmounted, ref, shallowRef } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { useRoute, useRouter } from "vue-router";
@@ -27,11 +27,13 @@ const route = useRoute();
 const idParam = computed(() => route.query.id);
 const loading = shallowRef(false);
 const notify = useNotifyStore();
+const preloadedArtists = ref([]);
+const preloadedTags = ref([]);
 const withI18nMessage = validations.createI18nMessage({ t: translate.t });
 const item = ref({
   title: "",
-  composers: [],
-  poets: [],
+  composersIds: [],
+  poetsIds: [],
 });
 const props = defineProps({
   isNew: {
@@ -51,7 +53,32 @@ const loadCopyFrom = async () => {
     item.value.body = resp.data.body;
     item.value.title = resp.data.title;
     item.value.id = resp.data.id;
-    item.value.mainArtistId = resp.data.mainArtist.id;
+    item.value.mainArtistId = String(resp.data.mainArtist.id);
+    item.value.composersIds = resp.data.composers.map((i) => String(i.id));
+    item.value.poetsIds = resp.data.poets.map((i) => String(i.id));
+    item.value.tagsIds = resp.data.tags.map((i) => String(i.id));
+
+    const allArtists = [
+      {
+        id: String(resp.data.mainArtist.id),
+        title: resp.data.mainArtist.title
+      },
+      ...resp.data.composers.map((i) => ({
+        id: String(i.id),
+        title: i.title
+      })),
+      ...resp.data.poets.map((i) => ({
+        id: String(i.id),
+        title: i.title
+      }))
+    ];
+
+    preloadedArtists.value = [...new Map(allArtists.map(i => [i.id, i])).values()];
+
+    preloadedTags.value = resp.data.tags.map((i) => ({
+      id: String(i.id),
+      title: i.title
+    }));
   } catch (err) {
     console.log(err);
     notificationStore.pushError("Failed to load song");
@@ -108,9 +135,9 @@ async function actionClicked(actionName) {
         title: item.value.title,
         body: item.value.body,
         mainArtist: mapFromId(item.value.mainArtistId),
-        poets: item.value.poets.map((i) => mapFromId(i)),
-        composers: item.value.composers.map((i) => mapFromId(i)),
-        tags: item.value.tags.map((i) => mapTag(i))
+        poets: item.value.poetsIds.map((i) => mapFromId(i)),
+        composers: item.value.composersIds.map((i) => mapFromId(i)),
+        tags: item.value.tagsIds.map((i) => mapTag(i))
       }
 
       await akordiService.saveEdit(edit);
@@ -183,7 +210,9 @@ onMounted(async () => {
   }
   loadTags();
 });
-
+onUnmounted(() => {
+  viewStore.$reset();
+});
 </script>
 <style>
 #bodyInput {
@@ -197,23 +226,23 @@ onMounted(async () => {
     <LxRow :label="$t('song.artist')" :required="true">
       <LxAutoComplete v-model="item.mainArtistId" :invalid="v.mainArtistId.$error"
         :invalidation-message="v.mainArtistId.$error ? v.mainArtistId.$errors[0].$message : ''" id-attribute="id"
-        name-attribute="title" :items="searchArtist" kind="preloaded-func" />
+        name-attribute="title" :items="searchArtist" kind="preloaded-func" :preloaded-items="preloadedArtists" />
     </LxRow>
     <LxRow :label="$t('song.title')" :required="true">
       <LxTextInput class="pre" id="titleInput" v-model="item.title" :invalid="v.title.$error"
         :invalidation-message="v.title.$error ? v.title.$errors[0].$message : ''" />
     </LxRow>
     <LxRow :label="$t('song.composer')">
-      <LxAutoComplete id="composerInput" v-model="item.composers" id-attribute="id" name-attribute="title"
-        selecting-kind="multiple" :items="searchArtist" kind="preloaded-func" />
+      <LxAutoComplete id="composerInput" v-model="item.composersIds" id-attribute="id" name-attribute="title"
+        selecting-kind="multiple" :items="searchArtist" kind="preloaded-func" :preloaded-items="preloadedArtists" />
     </LxRow>
     <LxRow :label="$t('song.poet')">
-      <LxAutoComplete id="poetInput" v-model="item.poets" id-attribute="id" name-attribute="title"
-        selecting-kind="multiple" :items="searchArtist" kind="preloaded-func" />
+      <LxAutoComplete id="poetInput" v-model="item.poetsIds" id-attribute="id" name-attribute="title"
+        selecting-kind="multiple" :items="searchArtist" kind="preloaded-func" :preloaded-items="preloadedArtists" />
     </LxRow>
     <LxRow :label="$t('song.tags')">
-      <LxValuePicker id="tagInput" v-model="item.tags" :items="tags" id-attribute="id" name-attribute="title"
-        kind="multiple" variant="tags" />
+      <LxValuePicker id="tagInput" v-model="item.tagsIds" :items="tags" id-attribute="id" name-attribute="title"
+        kind="multiple" variant="tags" :preloaded-items="preloadedTags" />
     </LxRow>
     <LxRow :label="$t('song.body')" :required="true" inputId="bodyInput">
       <template #info>{{ $t('song.bodyTooltip') }}</template>

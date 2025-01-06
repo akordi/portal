@@ -3,18 +3,18 @@
 .scene {
   position: absolute;
   inset: 0;
-  background: var(--color-background);
 }
+
 .dots {
   height: 100%;
   background-color: var(--color-background);
   position: absolute;
   inset: 0;
 }
+
 .canvas {
   position: absolute;
   inset: 0;
-  background: url('/imgs/cover-full.png');
   height: 100%;
   background-size: auto 1000%;
   -webkit-mask-image: url('/imgs/dots.svg');
@@ -31,6 +31,7 @@
   0% {
     background-position: 0 0;
   }
+
   100% {
     background-position: 100% 0%;
   }

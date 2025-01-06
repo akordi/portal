@@ -1,16 +1,15 @@
 <script setup>
 import akordiService from "@/services/akordiService";
-import { LxContentSwitcher, LxList } from "@wntr/lx-ui";
-import { onMounted, ref, computed, watch } from "vue";
+import { LxList } from "@wntr/lx-ui";
+import { onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 import useNotifyStore from "@/stores/useNotifyStore";
 import useViewStore from "@/stores/useViewStore";
 
 const router = useRouter();
-const route = useRoute();
 const translate = useI18n();
 const $t = translate.t;
 const viewStore = useViewStore();
@@ -18,11 +17,6 @@ const tag = ref({});
 const notificationStore = useNotifyStore();
 const tags = ref([]);
 const loading = ref(true);
-
-onMounted(async () => {
-  loadTags();
-  viewStore.goBack = true;
-});
 
 async function loadTags() {
   try {
@@ -52,6 +46,12 @@ function actionClicked(action, id) {
     router.push({ name: "tagView", params: { url: item.url } });
   }
 }
+
+onMounted(async () => {
+  loadTags();
+  viewStore.goBack = true;
+});
+
 </script>
 <template>
   <LxList :items="tags" v-model="tag" v-if="tags" @action-click="actionClicked" :loading="loading" />

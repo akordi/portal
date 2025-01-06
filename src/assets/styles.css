@@ -1,19 +1,22 @@
 .lx-main-button .lx-logo img {
-  height: 64px;
+  height: 42px;
   display: none;
   flex-shrink: 0;
 }
-.lx-theme-dark .lx-logo img#logo-dark{
-  display: block;
-}
-.lx-theme-light .lx-logo img#logo-light{
-  display: block;
-}
-.lx-theme-contrast .lx-logo img#logo-contrast{
+
+.lx-theme-dark .lx-logo img#logo-dark {
   display: block;
 }
 
-.lx-cover .lx-logo img{
+.lx-theme-light .lx-logo img#logo-light {
+  display: block;
+}
+
+.lx-theme-contrast .lx-logo img#logo-contrast {
+  display: block;
+}
+
+.lx-cover .lx-logo img {
   display: block;
 }
 
