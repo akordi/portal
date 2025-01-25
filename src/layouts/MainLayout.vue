@@ -50,17 +50,7 @@ const nav = [
   {
     label: $t('pages.akordiSongList.title'),
     icon: 'search-details',
-    to: { name: 'akordiSongList' },
-  },
-  {
-    label: $t('pages.akordiSongListNew.title'),
-    icon: 'time',
-    to: { name: 'akordiSongListNew' },
-  },
-  {
-    label: $t('pages.akordiSongListTop.title'),
-    icon: 'star-filled',
-    to: { name: 'akordiSongListTop' },
+    to: { name: 'akordiSongSearch' },
   },
   {
     label: $t('pages.akordiArtistLetter.title'),

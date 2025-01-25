@@ -90,11 +90,21 @@ const routes = [
         component: () => import('@/views/ArtistView.vue'),
       },
       {
+        path: '/songs',
+        name: 'akordiSongSearch',
+        meta: {
+          title: 'pages.akordiSongList.title',
+          anonymous: true,
+        },
+        component: () => import('@/views/SongSearch.vue'),
+      },
+      {
         path: '/new',
         name: 'akordiSongListNew',
         meta: {
           title: 'pages.akordiSongListNew.title',
           anonymous: true,
+          breadcrumbs: [{ text: 'pages.akordiSongList.title', to: { name: 'akordiSongSearch' } }],
         },
         component: () => import('@/views/SongListNew.vue'),
       },
@@ -104,17 +114,9 @@ const routes = [
         meta: {
           title: 'pages.akordiSongListTop.title',
           anonymous: true,
+          breadcrumbs: [{ text: 'pages.akordiSongList.title', to: { name: 'akordiSongSearch' } }],
         },
         component: () => import('@/views/SongListTop.vue'),
-      },
-      {
-        path: '/akordi/songs',
-        name: 'akordiSongList',
-        meta: {
-          title: 'pages.akordiSongList.title',
-          anonymous: true,
-        },
-        component: () => import('@/views/SongList.vue'),
       },
       {
         path: '/song/:url',

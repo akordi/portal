@@ -46,7 +46,7 @@ onMounted(async () => {
     <div class="lx-dashboard">
       <LxTile icon="search-details" :label="$t('pages.akordiSongList.title')"
         :description="$t('pages.akordiSongList.description', { songCount: songCount })"
-        :to="{ name: 'akordiSongList' }" />
+        :to="{ name: 'akordiSongSearch' }" />
       <LxTile icon="users" :label="$t('pages.akordiArtistLetter.title')"
         :description="$t('pages.akordiArtistLetter.description')"
         :to="{ name: 'akordiArtistLetter', params: { letter: '0' } }" />
