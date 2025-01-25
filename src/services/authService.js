@@ -17,6 +17,8 @@ export default () => ({
   },
 
   logout(routePath) {
-    return http(authUrl).get(`self-service/logout/browser?return_to=${publicUrl}${routePath ?? ''}`);
+    return http(authUrl).get(
+      `self-service/logout/browser?return_to=${publicUrl}${routePath ?? ''}`
+    );
   },
 });

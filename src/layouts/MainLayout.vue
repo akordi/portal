@@ -1,20 +1,20 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
-import { useI18n } from "vue-i18n";
-import { useRoute, useRouter } from "vue-router";
+import { computed, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
 // ToDo: develop login & get session
 // eslint-disable-next-line no-unused-vars
-import CoverBackground from "@/components/CoverBackground.vue";
-import { invoke, until, useIdle, useIntervalFn } from "@vueuse/core";
-import { LxShell } from "@wntr/lx-ui";
+import CoverBackground from '@/components/CoverBackground.vue';
+import { invoke, until, useIdle, useIntervalFn } from '@vueuse/core';
+import { LxShell } from '@wntr/lx-ui';
 
-import useErrors from "@/hooks/useErrors";
-import useAppStore from "@/stores/useAppStore";
-import useAuthStore from "@/stores/useAuthStore";
-import useConfirmStore from "@/stores/useConfirmStore";
-import useNotifyStore from "@/stores/useNotifyStore";
-import useViewStore from "@/stores/useViewStore";
-import LoginView from "@/views/Login.vue";
+import useErrors from '@/hooks/useErrors';
+import useAppStore from '@/stores/useAppStore';
+import useAuthStore from '@/stores/useAuthStore';
+import useConfirmStore from '@/stores/useConfirmStore';
+import useNotifyStore from '@/stores/useNotifyStore';
+import useViewStore from '@/stores/useViewStore';
+import LoginView from '@/views/Login.vue';
 
 const authStore = useAuthStore();
 const notify = useNotifyStore();
@@ -34,74 +34,73 @@ const translate = useI18n();
 const $t = translate.t;
 const route = useRoute();
 const shellMode = computed(() => {
-  let ret = "public";
-  if (route.path === "/") {
-    ret = "cover";
+  let ret = 'public';
+  if (route.path === '/') {
+    ret = 'cover';
   }
   return ret;
 });
 
 const nav = [
   {
-    label: $t("pages.dashboard.title"),
-    icon: "dashboard",
-    to: { name: "dashboard" },
+    label: $t('pages.dashboard.title'),
+    icon: 'dashboard',
+    to: { name: 'dashboard' },
   },
   {
-    label: $t("pages.akordiSongList.title"),
-    icon: "search-details",
-    to: { name: "akordiSongList" },
+    label: $t('pages.akordiSongList.title'),
+    icon: 'search-details',
+    to: { name: 'akordiSongList' },
   },
   {
-    label: $t("pages.akordiSongListNew.title"),
-    icon: "time",
-    to: { name: "akordiSongListNew" },
+    label: $t('pages.akordiSongListNew.title'),
+    icon: 'time',
+    to: { name: 'akordiSongListNew' },
   },
   {
-    label: $t("pages.akordiSongListTop.title"),
-    icon: "star-filled",
-    to: { name: "akordiSongListTop" },
+    label: $t('pages.akordiSongListTop.title'),
+    icon: 'star-filled',
+    to: { name: 'akordiSongListTop' },
   },
   {
-    label: $t("pages.akordiArtistLetter.title"),
-    icon: "users",
-    to: { name: "akordiArtistLetter", params: { letter: "0" } },
+    label: $t('pages.akordiArtistLetter.title'),
+    icon: 'users',
+    to: { name: 'akordiArtistLetter', params: { letter: '0' } },
   },
   {
-    label: $t("pages.tagList.title"),
-    icon: "tag",
-    to: { name: "tagList" },
+    label: $t('pages.tagList.title'),
+    icon: 'tag',
+    to: { name: 'tagList' },
   },
   {
-    label: $t("pages.songNew.title"),
-    icon: "add-item",
-    to: { name: "songNew" },
+    label: $t('pages.songNew.title'),
+    icon: 'add-item',
+    to: { name: 'songNew' },
   },
   {
-    label: "Skatīt profilu",
-    icon: "user-profile",
-    to: { name: "userProfile" },
-    type: "user-menu",
+    label: 'Skatīt profilu',
+    icon: 'user-profile',
+    to: { name: 'userProfile' },
+    type: 'user-menu',
   },
 ];
 
-const coverLogo = ref("/imgs/logo-50.svg");
+const coverLogo = ref('/imgs/logo-50.svg');
 
 const bodyObserver = new MutationObserver((mutationsList) => {
   const classMutation = mutationsList.find(
-    (mutation) =>
-      mutation.type === "attributes" && mutation.attributeName === "class"
+    (mutation) => mutation.type === 'attributes' && mutation.attributeName === 'class'
   );
 
   if (classMutation) {
     const newClass = document.body.className;
 
-    if (newClass.includes("theme-dark")) {
-      coverLogo.value = "/imgs/logo-50.svg";
-    } else if (newClass.includes("theme-contrast")) {
-      coverLogo.value = "/imgs/logo-50.svg";
+    if (newClass.includes('theme-dark')) {
+      coverLogo.value = '/imgs/logo-50.svg';
+    } else if (newClass.includes('theme-contrast')) {
+      coverLogo.value = '/imgs/logo-50.svg';
     } else {
-      coverLogo.value = "/imgs/logo-50-dark.svg";
+      coverLogo.value = '/imgs/logo-50-dark.svg';
     }
   }
 });
@@ -110,10 +109,8 @@ onMounted(() => {
   bodyObserver?.observe(document.body, { attributes: true });
 });
 
-const systemName = computed(() => $t("title.shortName"));
-const pageTitle = computed(
-  () => viewStore.title || $t(router.currentRoute.value.meta.title)
-);
+const systemName = computed(() => $t('title.shortName'));
+const pageTitle = computed(() => viewStore.title || $t(router.currentRoute.value.meta.title));
 const pageDescription = computed(() => viewStore.description);
 
 const breadcrumbs = computed(() => {
@@ -151,7 +148,7 @@ function goBack(path) {
   }
 }
 function goHome() {
-  router.push({ name: "dashboard" });
+  router.push({ name: 'dashboard' });
 }
 
 const userInfo = computed(() => {
@@ -159,16 +156,14 @@ const userInfo = computed(() => {
     return {
       firstName: authStore.session?.given_name,
       lastName: authStore.session?.family_name,
-      description: authStore.session?.role
-        ? $t(`roles.${authStore.session?.role}`)
-        : null,
+      description: authStore.session?.role ? $t(`roles.${authStore.session?.role}`) : null,
       institution: null,
     };
   }
   return null;
 });
 
-const theme = ref("auto");
+const theme = ref('auto');
 
 const closeModal = () => {
   idleModalOpened.value = false;
@@ -178,7 +173,7 @@ const openModal = () => {
   idleModalOpened.value = true;
 };
 
-async function logout(redirectPath = "") {
+async function logout(redirectPath = '') {
   try {
     const resp = await authStore.logout(redirectPath);
     if (resp.status === 200) {
@@ -189,7 +184,7 @@ async function logout(redirectPath = "") {
     const error = errors.get(err);
     if (error.status === 401) {
       authStore.$reset();
-      router.push({ name: "sessionEnded" });
+      router.push({ name: 'sessionEnded' });
       return;
     }
     if (error.status !== 401 && error.data) {
@@ -209,14 +204,7 @@ async function secondary() {
 }
 
 function openConfirmModal() {
-  confirmStore.push(
-    "Iziet",
-    "Vai tiešām vēlaties iziet?",
-    "Jā",
-    "Nē",
-    primary,
-    secondary
-  );
+  confirmStore.push('Iziet', 'Vai tiešām vēlaties iziet?', 'Jā', 'Nē', primary, secondary);
 }
 
 function confirmModalClosed() {
@@ -261,7 +249,7 @@ useIntervalFn(() => {
   if (!authStore.session.active) {
     if (idleModalOpened.value) {
       closeModal();
-      router.push({ name: "sessionEnded" });
+      router.push({ name: 'sessionEnded' });
     }
     return;
   }
@@ -278,11 +266,9 @@ useIntervalFn(() => {
     closeModal();
     return;
   }
-  const refreshIntervals =
-    authStore.session.secondsToLive % secondsCheckApiInterval === 0;
+  const refreshIntervals = authStore.session.secondsToLive % secondsCheckApiInterval === 0;
   const refreshBeforeWarn =
-    authStore.session.secondsToLive - 3 <
-    authStore.session.secondsToCountdown && !idle.value;
+    authStore.session.secondsToLive - 3 < authStore.session.secondsToCountdown && !idle.value;
   const refreshBeforeLogout = authStore.session.secondsToLive === 3;
   if (refreshIntervals || refreshBeforeWarn || refreshBeforeLogout) {
     checkApiSession();
@@ -293,9 +279,9 @@ useIntervalFn(() => {
 async function continueSession() {
   try {
     await authStore.extendSession();
-    notify.pushSuccess($t("shell.notifications.sessionContinued"));
+    notify.pushSuccess($t('shell.notifications.sessionContinued'));
   } catch (err) {
-    notify.pushError($t("shell.notifications.sessionContinuedFailed"));
+    notify.pushError($t('shell.notifications.sessionContinuedFailed'));
     if (err.response.status === 401) {
       logout();
     }
@@ -307,7 +293,7 @@ async function continueSession() {
 invoke(async () => {
   // @ts-ignore
   await until(() => authStore.showSessionEndCountdown).toBe(true);
-  notify.pushWarning($t("shell.notifications.sessionEndingSoon"));
+  notify.pushWarning($t('shell.notifications.sessionEndingSoon'));
 });
 
 function idleModalPrimary() {
@@ -320,18 +306,42 @@ function idleModalSecondary() {
 <template>
   <div>
     <div>
-      <LxShell :system-name="$t('title.fullName')" :system-subheader="$t('title.subheader')"
-        :system-name-short="systemName" :user-info="userInfo" :nav-items="nav" :nav-items-selected="selectedNavItems"
-        :mode="shellMode" :page-label="pageTitle" :page-description="pageDescription"
-        :page-back-button-visible="showBackButton" :page-breadcrumbs="breadcrumbs"
-        :page-index-path="{ name: 'dashboard' }" :has-language-picker="false" :has-cover-logo="true"
-        cover-image="/imgs/cover-light.jpg" cover-image-dark="/imgs/cover-dark.jpg" :cover-logo="coverLogo"
-        :has-alerts="false" :has-help="false" :has-theme-picker="true" :navigating="appStore.$state.isNavigating"
-        :showIdleModal="idleModalOpened" :secondsToLive="authStore.session.secondsToLive"
-        :confirmDialogData="confirmStore" :confirmPrimaryButtonBusy="false" :confirmPrimaryButtonDestructive="true"
-        v-model:notifications="notify.notifications" v-model:theme="theme" @confirmModalClosed="confirmModalClosed"
-        @go-home="goHome" @go-back="goBack" @log-out="openConfirmModal" @idleModalPrimary="idleModalPrimary"
-        @idleModalSecondary="idleModalSecondary">
+      <LxShell
+        :system-name="$t('title.fullName')"
+        :system-subheader="$t('title.subheader')"
+        :system-name-short="systemName"
+        :user-info="userInfo"
+        :nav-items="nav"
+        :nav-items-selected="selectedNavItems"
+        :mode="shellMode"
+        :page-label="pageTitle"
+        :page-description="pageDescription"
+        :page-back-button-visible="showBackButton"
+        :page-breadcrumbs="breadcrumbs"
+        :page-index-path="{ name: 'dashboard' }"
+        :has-language-picker="false"
+        :has-cover-logo="true"
+        cover-image="/imgs/cover-light.jpg"
+        cover-image-dark="/imgs/cover-dark.jpg"
+        :cover-logo="coverLogo"
+        :has-alerts="false"
+        :has-help="false"
+        :has-theme-picker="true"
+        :navigating="appStore.$state.isNavigating"
+        :showIdleModal="idleModalOpened"
+        :secondsToLive="authStore.session.secondsToLive"
+        :confirmDialogData="confirmStore"
+        :confirmPrimaryButtonBusy="false"
+        :confirmPrimaryButtonDestructive="true"
+        v-model:notifications="notify.notifications"
+        v-model:theme="theme"
+        @confirmModalClosed="confirmModalClosed"
+        @go-home="goHome"
+        @go-back="goBack"
+        @log-out="openConfirmModal"
+        @idleModalPrimary="idleModalPrimary"
+        @idleModalSecondary="idleModalSecondary"
+      >
         <template #backdrop>
           <CoverBackground />
         </template>

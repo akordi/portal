@@ -19,7 +19,7 @@ const routes = [
         name: 'signin',
         meta: {
           title: 'pages.login.title',
-          anonymous: true
+          anonymous: true,
         },
         component: () => import('@/views/SignIn.vue'),
       },
@@ -29,7 +29,7 @@ const routes = [
         component: () => import('@/views/SignInError.vue'),
         meta: {
           title: ' ',
-          anonymous: true
+          anonymous: true,
         },
       },
       {
@@ -139,9 +139,7 @@ const routes = [
         meta: {
           title: 'pages.tagView.title',
           anonymous: true,
-          breadcrumbs: [
-            { text: 'pages.tagList.title', to: { name: 'tagList' } },
-          ],
+          breadcrumbs: [{ text: 'pages.tagList.title', to: { name: 'tagList' } }],
         },
         component: () => import('@/views/TagView.vue'),
       },

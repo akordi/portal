@@ -1,5 +1,5 @@
 module.exports = {
-  ignorePatterns: ['vite.config.js', 'jsconfig.js', 'build.js'],
+  ignorePatterns: ['jsconfig.js'],
   settings: {
     'import/resolver': {
       node: {
@@ -7,20 +7,18 @@ module.exports = {
       },
       alias: {
         extensions: ['.js', '.vue'],
-        map: [
-          ['@', './src'],
-          ['pdfjs-dist', './node_modules/pdfjs-dist'],
-        ],
+        map: [['@', './src']],
       },
     },
-    'import/core-modules': ['vue', 'pdfjs-dist'],
   },
   env: {
     browser: true,
-    es2022: true,
+    es2021: true,
   },
   extends: [
     'plugin:vue/vue3-essential',
+    'eslint:recommended',
+    '@vue/eslint-config-prettier',
     'airbnb-base',
     'plugin:import/recommended',
     'plugin:import/errors',
@@ -33,29 +31,33 @@ module.exports = {
   },
   plugins: ['vue', 'prettier'],
   rules: {
-    'comma-dangle': ['error', 'only-multiline'],
-    'object-curly-newline': 'off', // let this be handled by prettier
+    'prettier/prettier': ['error'],
     'no-restricted-imports': [
       'error',
       {
         patterns: ['.*'],
       },
     ],
-    'vue/html-indent': ['off'], // leave it to prettier
-    'vue/multi-word-component-names': 'off',
-    'vuejs-accessibility/label-has-for': 'off',
-    indent: ['off'], // leave it to prettier
-    quotes: ['off'], // leave it to prettier
-    'import/prefer-default-export': 'off',
-    'import/no-unresolved': ['error', { ignore: ['pdfjs-dist/.*\\.mjs\\?url$'] }],
-    'import/no-extraneous-dependencies': [
+    'vue/html-indent': [
       'error',
+      2,
       {
-        devDependencies: true,
-        optionalDependencies: true,
-        peerDependencies: true,
+        attribute: 1,
+        baseIndent: 1,
+        closeBracket: 0,
+        alignAttributesVertically: true,
+        ignores: [],
       },
     ],
+    'vue/multi-word-component-names': 'off',
+    'vuejs-accessibility/label-has-for': 'off',
+    'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: ['state'] }],
+    // use ' instead of "
+    quotes: ['error', 'single'],
+    // use 2 spaces for indentation
+    indent: ['off'], // leave it to prettier
+    // prefer non-default exports
+    'import/prefer-default-export': 'off',
   },
   globals: {
     defineProps: 'readonly',

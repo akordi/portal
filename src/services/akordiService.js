@@ -3,7 +3,6 @@ import http from '@/services/httpAnon';
 const serviceUrl = '';
 let abortController = null;
 export default {
-
   parseUrl(url) {
     const regex = /(\d+).*/;
     if (!regex.exec(url)) {
@@ -23,7 +22,7 @@ export default {
         size: 20,
         page: 0,
         sort: 'createdDate,desc',
-      }
+      };
     }
     return http(serviceUrl).get('/api/v2/artists', { params });
   },
@@ -35,7 +34,7 @@ export default {
         size: 20,
         page: 0,
         sort: 'title,asc',
-      }
+      };
     }
     return http(serviceUrl).get('/api/v2/tags', { params });
   },
@@ -44,7 +43,6 @@ export default {
     return http(serviceUrl).get(`/api/v2/tags/${id}`);
   },
 
-
   getSongs(reqParams) {
     let params = reqParams;
     if (!params) {
@@ -52,7 +50,7 @@ export default {
         size: 20,
         page: 0,
         sort: 'createdDate,desc',
-      }
+      };
     }
     return http(serviceUrl).get('/api/v2/songs', { params });
   },
@@ -60,7 +58,7 @@ export default {
   getSongsCount() {
     const params = {
       size: 0,
-      page: 0
+      page: 0,
     };
     return http(serviceUrl).get('/api/v2/songs', { params });
   },
@@ -70,11 +68,11 @@ export default {
   },
 
   saveEdit(item) {
-    return http(serviceUrl).post(`/api/v2/admin/edits`, item);
+    return http(serviceUrl).post('/api/v2/admin/edits', item);
   },
 
   searchArtist(query) {
-    return http(serviceUrl).get(`/api/v2/artists`, { params: { titleStartsWith: query } });
+    return http(serviceUrl).get('/api/v2/artists', { params: { titleStartsWith: query } });
   },
 
   search(query, reqParams) {
@@ -90,10 +88,9 @@ export default {
       highlight: 'title,bodyLyrics,mainArtistTitle',
       search: query,
     };
-    return http(serviceUrl).get(`/api/search`, {
+    return http(serviceUrl).get('/api/search', {
       params,
-      signal: abortController.signal
+      signal: abortController.signal,
     });
   },
-
 };
