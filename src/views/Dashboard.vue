@@ -1,9 +1,9 @@
 <script setup>
-import { LxTile } from "@wntr/lx-ui";
-import { onMounted, ref } from "vue";
+import { LxTile, LxWidget } from '@wntr/lx-ui';
+import { onMounted, ref } from 'vue';
 
-import akordiService from "@/services/akordiService";
-import { useI18n } from "vue-i18n";
+import akordiService from '@/services/akordiService';
+import { useI18n } from 'vue-i18n';
 
 const songCount = ref(1);
 const songCountTotal = ref(1000);
@@ -34,7 +34,6 @@ async function startCounter() {
   setInterval(incrementToCount, 1);
 }
 
-
 onMounted(async () => {
   startCounter();
   await loadTotalSongCount();
@@ -43,17 +42,44 @@ onMounted(async () => {
 
 <template>
   <div>
+    <p>
+      Viss šeit atrodamais saturs izvietots tikai izglītošanās nolūkā. Liela daļa lapā atrodamo
+      dziesmu ir lietotāju interpretācijas un var precīzi nesakrist ar oriģinālu. Ja te ir kāda Tava
+      dziesma, un negribi, lai to mācās citi, vai arī ir radušies kādi jautājumi vai komentāri, tad
+      raksti uz info@akordi.lv.
+    </p>
+    <div class="lx-divider"></div>
     <div class="lx-dashboard">
-      <LxTile icon="search-details" :label="$t('pages.akordiSongList.title')"
+      <LxTile
+        icon="search-details"
+        :label="$t('pages.akordiSongList.title')"
         :description="$t('pages.akordiSongList.description', { songCount: songCount })"
-        :to="{ name: 'akordiSongSearch' }" />
-      <LxTile icon="users" :label="$t('pages.akordiArtistLetter.title')"
+        :to="{ name: 'akordiSongSearch' }"
+      />
+      <LxTile
+        icon="users"
+        :label="$t('pages.akordiArtistLetter.title')"
         :description="$t('pages.akordiArtistLetter.description')"
-        :to="{ name: 'akordiArtistLetter', params: { letter: '0' } }" />
-      <LxTile icon="star-filled" :label="$t('pages.akordiSongListTop.title')"
-        :description="$t('pages.akordiSongListTop.description')" :to="{ name: 'akordiSongListTop' }" />
-      <LxTile icon="tag" :label="$t('pages.tagList.title')" :description="$t('pages.tagList.description')"
-        :to="{ name: 'tagList' }" />
+        :to="{ name: 'akordiArtistLetter', params: { letter: '0' } }"
+      />
+      <LxTile
+        icon="star-filled"
+        :label="$t('pages.akordiSongListTop.title')"
+        :description="$t('pages.akordiSongListTop.description')"
+        :to="{ name: 'akordiSongListTop' }"
+      />
+      <LxTile
+        icon="time"
+        :label="$t('pages.akordiSongListNew.title')"
+        :description="$t('pages.akordiSongListNew.description')"
+        :to="{ name: 'akordiSongListNew' }"
+      />
+      <LxTile
+        icon="tag"
+        :label="$t('pages.tagList.title')"
+        :description="$t('pages.tagList.description')"
+        :to="{ name: 'tagList' }"
+      />
     </div>
   </div>
 </template>

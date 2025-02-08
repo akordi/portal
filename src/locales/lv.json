@@ -48,13 +48,14 @@
     },
     "akordiSongListNew": {
       "title": "Jaunākās dziesmas",
+      "description": "Nesen pievienotās dziesmas",
       "list": {
         "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
       }
     },
     "akordiSongListTop": {
       "title": "Populārākās dziesmas",
-      "description": "Šeit ir pagājušās nedēļas populārākās dziesmas, kuras ir skatījušies spēlējuši citi lietotāji",
+      "description": "Pagājušās nedēļas populārākās dziesmas, kuras ir skatījušies un spēlējuši citi lietotāji",
       "list": {
         "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
       }
