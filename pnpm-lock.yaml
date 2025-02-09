@@ -11,6 +11,9 @@ importers:
       '@akordi/jtab':
         specifier: 0.0.8
         version: 0.0.8
+      '@ory/client':
+        specifier: ^1.16.6
+        version: 1.16.6
       '@vuelidate/core':
         specifier: ^2.0.3
         version: 2.0.3(vue@3.5.13)
@@ -725,6 +728,9 @@ packages:
 
   '@one-ini/wasm@0.1.1':
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
+
+  '@ory/client@1.16.6':
+    resolution: {integrity: sha512-HM/+FjWX0y4kxskUzE0uvF6J4ke7q8UVz3+LSx8xC726+McaFvxHTy9Mh8rB6e37rbev5f4SWxzsneNeces8OA==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -4757,6 +4763,12 @@ snapshots:
       '@octokit/openapi-types': 22.2.0
 
   '@one-ini/wasm@0.1.1': {}
+
+  '@ory/client@1.16.6':
+    dependencies:
+      axios: 1.7.9(debug@4.3.6)
+    transitivePeerDependencies:
+      - debug
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
