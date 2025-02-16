@@ -90,33 +90,76 @@ const routes = [
         component: () => import('@/views/ArtistView.vue'),
       },
       {
-        path: '/songs',
-        name: 'akordiSongSearch',
+        path: '/search',
+        name: 'songSearch',
         meta: {
-          title: 'pages.akordiSongList.title',
+          title: 'pages.songSearch.title',
           anonymous: true,
         },
         component: () => import('@/views/SongSearch.vue'),
       },
       {
-        path: '/new',
-        name: 'akordiSongListNew',
+        path: '/search/song/:url',
+        name: 'songSearchSongView',
         meta: {
-          title: 'pages.akordiSongListNew.title',
           anonymous: true,
-          breadcrumbs: [{ text: 'pages.akordiSongList.title', to: { name: 'akordiSongSearch' } }],
+          breadcrumbs: [
+            {
+              text: 'pages.songSearch.title',
+              to: { name: 'songSearch' },
+              retainQueryParams: true,
+            },
+          ],
+        },
+        component: () => import('@/views/SongView.vue'),
+      },
+      {
+        path: '/new',
+        name: 'songListNew',
+        meta: {
+          title: 'pages.songListNew.title',
+          anonymous: true,
+          breadcrumbs: [{ text: 'pages.songSearch.title', to: { name: 'songSearch' } }],
         },
         component: () => import('@/views/SongListNew.vue'),
       },
       {
-        path: '/top',
-        name: 'akordiSongListTop',
+        path: '/new/song/:url',
+        name: 'songListNewSongView',
         meta: {
-          title: 'pages.akordiSongListTop.title',
           anonymous: true,
-          breadcrumbs: [{ text: 'pages.akordiSongList.title', to: { name: 'akordiSongSearch' } }],
+          breadcrumbs: [
+            {
+              text: 'pages.songListNew.title',
+              to: { name: 'songListNew' },
+            },
+          ],
+        },
+        component: () => import('@/views/SongView.vue'),
+      },
+      {
+        path: '/top',
+        name: 'songListTop',
+        meta: {
+          title: 'pages.songListTop.title',
+          anonymous: true,
+          breadcrumbs: [{ text: 'pages.songSearch.title', to: { name: 'songSearch' } }],
         },
         component: () => import('@/views/SongListTop.vue'),
+      },
+      {
+        path: '/top/song/:url',
+        name: 'songListTopSongView',
+        meta: {
+          anonymous: true,
+          breadcrumbs: [
+            {
+              text: 'pages.songListTop.title',
+              to: { name: 'songListTop' },
+            },
+          ],
+        },
+        component: () => import('@/views/SongView.vue'),
       },
       {
         path: '/song/:url',

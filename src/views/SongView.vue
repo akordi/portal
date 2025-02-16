@@ -9,7 +9,7 @@ import akordiService from '@/services/akordiService';
 import chordsService from '@/services/chordsService';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
-import { event } from 'vue-gtag';
+import { pageview } from 'vue-gtag';
 
 const translate = useI18n();
 const $t = translate.t;
@@ -26,19 +26,29 @@ const chords = ref([]);
 const showChords = ref(true);
 const instrument = ref('guitar');
 
+const setCanonicalUrl = (canonicalUrl) => {
+  const link = document.querySelector('link[rel="canonical"]');
+  if (link) {
+    link.setAttribute('href', canonicalUrl);
+  } else {
+    const newLink = document.createElement('link');
+    newLink.rel = 'canonical';
+    newLink.href = canonicalUrl;
+    document.head.appendChild(newLink);
+  }
+};
+
 const loadSong = async () => {
   try {
-    let songUrl = `/song/${songUrlParam.value}`;
-    const songId = akordiService.parseUrl(songUrl);
+    const songId = akordiService.parseUrl(songUrlParam.value);
     const resp = await akordiService.getSong(songId);
-    if (songUrl !== resp.data.url) {
-      songUrl = resp.data.url.replace(/^\/song\//, '');
-      router.replace({
-        name: 'akordiSongView',
-        params: { url: songUrl },
-      });
+    if (resp.data.url.indexOf(songUrlParam.value) === -1) {
+      // songUrl = resp.data.url.replace(/^\/song\//, '');
+      // router.replace({
+      //   name: 'akordiSongView',
+      //   params: { url: songUrl },
+      // });
     }
-    event('page_view', { page_location: songUrl, page_title: item.value.title });
     item.value = resp.data;
     item.value.createdAt = lxDateUtils.formatDate(item.value.createdDate);
     item.value.bodyWithMarkup = chordsService.transpose(item.value.body, 0);
@@ -46,8 +56,17 @@ const loadSong = async () => {
     if (hasChords.value) {
       chords.value = chordsService.extractChords(item.value.bodyWithMarkup);
     }
+    const canonicalUrl = `${window.location.origin}/song/${songUrlParam.value}`;
+    const pageTitle = `${item.value.mainArtist.title} - ${item.value.title}`;
+    pageview({
+      page_path: canonicalUrl,
+      page_title: pageTitle,
+    });
+    setCanonicalUrl(canonicalUrl);
+
     viewStore.title = item.value.title;
     viewStore.description = item.value.performers.map((artist) => artist.title).join(', ');
+    viewStore.goBack = true;
   } catch (err) {
     console.log(err);
     notificationStore.pushError('Failed to load song');
@@ -151,7 +170,6 @@ async function actionClicked(actionName) {
 }
 
 onMounted(async () => {
-  viewStore.goBack = true;
   await loadSong();
 });
 onUnmounted(() => {

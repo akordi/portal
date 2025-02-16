@@ -48,9 +48,9 @@ const nav = [
     to: { name: 'dashboard' },
   },
   {
-    label: $t('pages.akordiSongList.title'),
+    label: $t('pages.songs.title'),
     icon: 'search-details',
-    to: { name: 'akordiSongSearch' },
+    to: { name: 'songSearch' },
   },
   {
     label: $t('pages.akordiArtistLetter.title'),
@@ -105,12 +105,12 @@ const pageDescription = computed(() => viewStore.description);
 
 const breadcrumbs = computed(() => {
   const ret = [];
-
   if (route.meta.breadcrumbs) {
     route.meta.breadcrumbs.forEach((item) => {
+      const to = item.retainQueryParams ? { ...item.to, query: route.query } : item.to;
       ret.push({
         label: $t(item.text),
-        to: item.to,
+        to,
       });
     });
   }

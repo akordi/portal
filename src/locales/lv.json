@@ -39,21 +39,24 @@
     "dashboard": {
       "title": "Sākumlapa"
     },
-    "akordiSongList": {
+    "songs": {
+      "title": "Dziesmu katalogs"
+    },
+    "songSearch": {
       "title": "Dziesmu meklētājs",
       "description": "Izmanto meklētāju un atrodi ko uzspēlēt kādā starp {songCount} akordi.lv dziesmām",
       "search": {
         "error": "Kļūda meklējot dziesmas. Lūdzu mēģiniet vēlāk."
       }
     },
-    "akordiSongListNew": {
+    "songListNew": {
       "title": "Jaunākās dziesmas",
       "description": "Nesen pievienotās dziesmas",
       "list": {
         "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
       }
     },
-    "akordiSongListTop": {
+    "songListTop": {
       "title": "Populārākās dziesmas",
       "description": "Pagājušās nedēļas populārākās dziesmas, kuras ir skatījušies un spēlējuši citi lietotāji",
       "list": {
@@ -66,7 +69,7 @@
     },
     "songNew": {
       "title": "Iesniegt dziesmu",
-      "description": "Lapa paredzēta tikai latviešu dziesmām (dziesmas valodai nav nozīmes). Tā tiks pārbaudīta un pievienota datu bāzei."
+      "description": "Šeit jūs varat iesniegt dziesmu, lai tā tiktu pievienota portālā. Lapa paredzēta tikai latviešu dziesmām (dziesmas valodai nav nozīmes). Tā tiks pārbaudīta un pievienota datu bāzei."
     },
     "akordiSongView": {
       "title": "Akordi.lv dziesmas",

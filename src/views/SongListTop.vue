@@ -32,7 +32,7 @@ async function load() {
     }));
   } catch (err) {
     console.log(err);
-    notificationStore.pushError($t('pages.akordiSongListNew.list.error'));
+    notificationStore.pushError($t('pages.songListNew.list.error'));
     throw err;
   } finally {
     loading.value = false;
@@ -48,21 +48,21 @@ function actionClicked(action, id) {
   if (action === 'click') {
     const item = items.value.find((i) => i.id === +id);
     item.url = item.url.replace(/^\/song\//, '');
-    router.push({ name: 'akordiSongView', params: { url: item.url } });
+    router.push({ name: 'songListTopSongView', params: { url: item.url } });
   }
 }
-const currentSection = ref('akordiSongListTop');
+const currentSection = ref('songListTop');
 watch(currentSection, (newVal) => {
-  if (newVal === 'akordiSongSearch') {
-    router.push({ name: 'akordiSongSearch' });
+  if (newVal === 'songSearch') {
+    router.push({ name: 'songSearch' });
     return;
   }
-  if (newVal === 'akordiSongListNew') {
-    router.push({ name: 'akordiSongListNew' });
+  if (newVal === 'songListNew') {
+    router.push({ name: 'songListNew' });
     return;
   }
-  if (newVal === 'akordiSongListTop') {
-    router.push({ name: 'akordiSongListTop' });
+  if (newVal === 'songListTop') {
+    router.push({ name: 'songListTop' });
   }
 });
 </script>
@@ -70,9 +70,9 @@ watch(currentSection, (newVal) => {
   <LxContentSwitcher
     v-model="currentSection"
     :items="[
-      { id: 'akordiSongSearch', name: $t('pages.akordiSongList.title') },
-      { id: 'akordiSongListNew', name: $t('pages.akordiSongListNew.title') },
-      { id: 'akordiSongListTop', name: $t('pages.akordiSongListTop.title') },
+      { id: 'songSearch', name: $t('pages.songSearch.title') },
+      { id: 'songListNew', name: $t('pages.songListNew.title') },
+      { id: 'songListTop', name: $t('pages.songListTop.title') },
     ]"
   />
   <div class="lx-divider"></div>

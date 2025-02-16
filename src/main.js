@@ -77,10 +77,10 @@ myApp.use(VueGtag, {
   config: {
     id: 'G-DSGMXRC1GP',
     params: {
-      anonymize_ip: true,
       send_page_view: false,
     },
   },
+  router,
 });
 
 myApp.mount('#app');

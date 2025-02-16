@@ -4,13 +4,14 @@ import { LxContentSwitcher, LxList, LxLoader } from '@wntr/lx-ui';
 import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
 import axios from 'axios';
 
 const router = useRouter();
+const route = useRoute();
 const translate = useI18n();
 const $t = translate.t;
 const viewStore = useViewStore();
@@ -20,10 +21,6 @@ const loading = ref(false);
 const pageSize = 10;
 const searchString = ref('');
 const totalCount = ref(0);
-
-onMounted(async () => {
-  viewStore.goBack = true;
-});
 
 function titleOrHighlight(song) {
   return song['@search.highlights'].title?.length
@@ -81,18 +78,22 @@ async function search(q, more = false) {
     if (axios.isCancel(err)) {
       return;
     }
-    notificationStore.pushError($t('pages.akordiSongList.search.error'));
+    notificationStore.pushError($t('pages.songSearch.search.error'));
     throw err;
   } finally {
     loading.value = false;
   }
 }
 
-function actionClicked(action, id) {
+async function actionClicked(action, id) {
   if (action === 'click') {
     const item = items.value.find((i) => i.id === id);
     item.url = item.url.replace(/^\/song\//, '');
-    router.push({ name: 'akordiSongView', params: { url: item.url } });
+    router.push({
+      name: 'songSearchSongView',
+      params: { url: item.url },
+      query: { q: searchString.value },
+    });
   }
 }
 
@@ -102,19 +103,26 @@ function hasMore() {
 function loadMore() {
   search(searchString.value, true);
 }
-const currentSection = ref('akordiSongSearch');
+const currentSection = ref('songSearch');
 watch(currentSection, (newVal) => {
-  if (newVal === 'akordiSongSearch') {
-    router.push({ name: 'akordiSongSearch' });
+  if (newVal === 'songSearch') {
+    router.push({ name: 'songSearch' });
     return;
   }
-  if (newVal === 'akordiSongListNew') {
-    router.push({ name: 'akordiSongListNew' });
+  if (newVal === 'songListNew') {
+    router.push({ name: 'songListNew' });
     return;
   }
-  if (newVal === 'akordiSongListTop') {
-    router.push({ name: 'akordiSongListTop' });
+  if (newVal === 'songListTop') {
+    router.push({ name: 'songListTop' });
   }
+});
+onMounted(async () => {
+  if (route.query.q) {
+    searchString.value = route.query.q;
+    search(route.query.q);
+  }
+  viewStore.goBack = true;
 });
 </script>
 <style>
@@ -141,9 +149,9 @@ em {
   <LxContentSwitcher
     v-model="currentSection"
     :items="[
-      { id: 'akordiSongSearch', name: $t('pages.akordiSongList.title') },
-      { id: 'akordiSongListNew', name: $t('pages.akordiSongListNew.title') },
-      { id: 'akordiSongListTop', name: $t('pages.akordiSongListTop.title') },
+      { id: 'songSearch', name: $t('pages.songSearch.title') },
+      { id: 'songListNew', name: $t('pages.songListNew.title') },
+      { id: 'songListTop', name: $t('pages.songListTop.title') },
     ]"
   />
   <div class="lx-divider"></div>
@@ -158,6 +166,7 @@ em {
     searchSide="server"
     @action-click="actionClicked"
     @update:search-string="search"
+    :search-string="searchString"
     icon="next"
     :show-load-more="hasMore()"
     @load-more="loadMore"

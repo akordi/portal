@@ -174,7 +174,7 @@ async function loadArtists() {
     hasMore.value = resp.data.totalElements > items.value.length;
   } catch (err) {
     console.log(err);
-    notificationStore.pushError($t('pages.akordiSongList.search.error'));
+    notificationStore.pushError($t('pages.songSearch.search.error'));
     throw err;
   } finally {
     loading.value = false;
