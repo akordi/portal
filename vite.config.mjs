@@ -23,6 +23,7 @@ const devServerSettings = (env) => {
   return {
     port: url.port,
     https: url.protocol === 'https:',
+    allowedHosts: ['localhost.akordi.lv', 'localhost'],
     proxy: {
       '/api/v1/': {
         target: 'http://127.0.0.1:8080',
@@ -38,7 +39,7 @@ const devServerSettings = (env) => {
         target: 'https://www.akordi.lv/',
         changeOrigin: true,
         secure: false,
-      }
+      },
     },
   };
 };

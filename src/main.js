@@ -7,6 +7,7 @@ import router from '@/router';
 import lv from '@/locales/lv.json';
 import events from '@/router/events';
 import { createLx } from '@wntr/lx-ui';
+import VueGtag from 'vue-gtag';
 
 import '@wntr/lx-ui/dist/styles/lx-reset.css';
 import '@wntr/lx-ui/dist/styles/lx-fonts-carbon.css';
@@ -71,4 +72,15 @@ myApp.use(createLx, {
   publicUrl: window.config.publicUrl,
   environment: window.config.environment,
 });
+
+myApp.use(VueGtag, {
+  config: {
+    id: 'G-DSGMXRC1GP',
+    params: {
+      anonymize_ip: true,
+      send_page_view: false,
+    },
+  },
+});
+
 myApp.mount('#app');
