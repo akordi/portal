@@ -28,7 +28,7 @@ server {
     }
 
     location /api/v2 {
-            proxy_pass https://akordi-api-go.azurewebsites.net/api/v2;
+            proxy_pass ${API_V2_URL};
             proxy_ssl_server_name on;
             proxy_set_header    X-Real-IP       $remote_addr;
             proxy_set_header    X-Forwarded-for $remote_addr;
@@ -40,16 +40,15 @@ server {
     }
 
     location /api/search {
-            proxy_pass https://ambitious-grass-0e78f4303.2.azurestaticapps.net/api/search;
-            proxy_ssl_server_name on;
+            set $args $args&api-version=2023-11-01;
+            proxy_pass ${API_SEARCH_BACKEND_URL};
+            proxy_set_header    api-key         '${API_SEARCH_KEY}';
             proxy_set_header    X-Real-IP       $remote_addr;
             proxy_set_header    X-Forwarded-for $remote_addr;
-            proxy_http_version 1.1;
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection "upgrade";
             port_in_redirect off;
             proxy_connect_timeout 30;
     }
+
 
     error_page   500 502 503 504  /50x.html;
     location = /50x.html {
