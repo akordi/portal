@@ -81,6 +81,10 @@
         "label": "Nerādīt akordus",
         "description": "Slēpt dziesmas akordu tabulutūru"
       },
+      "showSheet": {
+        "label": "Rādīt notis",
+        "description": "Rādīt dziesmas notis"
+      },
       "showGuitarChords": {
         "label": "Rādīt ģitāras akordus",
         "description": "Rādīt vai slēpt dziesmas akordu tabulutūru ģitārai"
@@ -97,7 +101,8 @@
         "label": "Transponēt lejup",
         "description": "Pārnest dziesmu lejup par pustoni"
       },
-      "transposeDisabled": "Transponēšana ir atspējota, jo dziesmas tekstā nav atrodami akordi"
+      "transposeDisabled": "Transponēšana ir atspējota, jo dziesmas tekstā nav atrodami akordi",
+      "audioNotSupported": "Jūsu pārlūks neatbalsta audio"
     },
     "akordiArtistLetter": {
       "title": "Mākslinieku katalogs A-Z",
