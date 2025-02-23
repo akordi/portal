@@ -77,12 +77,6 @@ const loadSong = async () => {
 };
 const formActions = computed(() => [
   {
-    id: 'cancel',
-    icon: 'cancel',
-    name: $t('cancel'),
-    kind: 'secondary',
-  },
-  {
     id: 'suggestEdit',
     icon: 'edit',
     name: $t('suggestEdit'),
@@ -90,7 +84,7 @@ const formActions = computed(() => [
   },
   {
     id: 'hideChords',
-    icon: 'config', // TODO: find better icon
+    icon: 'hidden',
     name: $t('pages.akordiSongView.hideChords.label'),
     title: $t('pages.akordiSongView.hideChords.description'),
     kind: 'additional',
@@ -195,8 +189,6 @@ onUnmounted(() => {
       <LxRow :label="$t('song.updatedAt')">
         <p class="lx-data">{{ lxDateUtils.formatDateTime(item.updatedDate) }}</p>
       </LxRow>
-    </template>
-    <LxSection>
       <LxRow :label="$t('song.composer')" v-if="item.composers?.length > 0">
         <p class="lx-data">
           {{ item.composers.map((author) => author.title).join(', ') }}
@@ -212,7 +204,7 @@ onUnmounted(() => {
           {{ item.tags.map((tag) => tag.title).join(', ') }}
         </p>
       </LxRow>
-    </LxSection>
+    </template>
     <LxSection v-if="showChords">
       <LxRow>
         <div style="display: flex; flex-wrap: wrap">

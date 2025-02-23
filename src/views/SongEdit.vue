@@ -1,22 +1,15 @@
 <script setup>
-import {
-  LxAutoComplete,
-  LxForm,
-  LxRow,
-  LxTextArea,
-  LxTextInput,
-  LxValuePicker
-} from "@wntr/lx-ui";
-import { computed, onMounted, onUnmounted, ref, shallowRef } from "vue";
-import { useI18n } from "vue-i18n";
+import { LxAutoComplete, LxForm, LxRow, LxTextArea, LxTextInput, LxValuePicker } from '@wntr/lx-ui';
+import { computed, onMounted, onUnmounted, ref, shallowRef } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import { useRoute, useRouter } from "vue-router";
+import { useRoute, useRouter } from 'vue-router';
 
-import akordiService from "@/services/akordiService";
-import useNotifyStore from "@/stores/useNotifyStore";
-import useViewStore from "@/stores/useViewStore";
-import useVuelidate from "@vuelidate/core";
-import * as validations from "@vuelidate/validators";
+import akordiService from '@/services/akordiService';
+import useNotifyStore from '@/stores/useNotifyStore';
+import useViewStore from '@/stores/useViewStore';
+import useVuelidate from '@vuelidate/core';
+import * as validations from '@vuelidate/validators';
 
 const router = useRouter();
 const translate = useI18n();
@@ -31,7 +24,7 @@ const preloadedArtists = ref([]);
 const preloadedTags = ref([]);
 const withI18nMessage = validations.createI18nMessage({ t: translate.t });
 const item = ref({
-  title: "",
+  title: '',
   composersIds: [],
   poetsIds: [],
 });
@@ -61,27 +54,27 @@ const loadCopyFrom = async () => {
     const allArtists = [
       {
         id: String(resp.data.mainArtist.id),
-        title: resp.data.mainArtist.title
+        title: resp.data.mainArtist.title,
       },
       ...resp.data.composers.map((i) => ({
         id: String(i.id),
-        title: i.title
+        title: i.title,
       })),
       ...resp.data.poets.map((i) => ({
         id: String(i.id),
-        title: i.title
-      }))
+        title: i.title,
+      })),
     ];
 
-    preloadedArtists.value = [...new Map(allArtists.map(i => [i.id, i])).values()];
+    preloadedArtists.value = [...new Map(allArtists.map((i) => [i.id, i])).values()];
 
     preloadedTags.value = resp.data.tags.map((i) => ({
       id: String(i.id),
-      title: i.title
+      title: i.title,
     }));
   } catch (err) {
     console.log(err);
-    notificationStore.pushError("Failed to load song");
+    notificationStore.pushError('Failed to load song');
     throw err;
   } finally {
     loading.value = false;
@@ -94,13 +87,13 @@ const rules = {
   body: { required },
   mainArtistId: { required },
   composers: {},
-  poets: {}
+  poets: {},
 };
 
 const v = useVuelidate(rules, item);
 const formActions = computed(() => [
-  { id: "save", icon: "save", name: $t("save"), kind: "primary", busy: submitting.value },
-  { id: "cancel", icon: "cancel", name: $t("cancel"), kind: "secondary" },
+  { id: 'save', icon: 'save', name: $t('save'), kind: 'primary', busy: submitting.value },
+  { id: 'cancel', icon: 'cancel', name: $t('cancel'), kind: 'secondary' },
 ]);
 
 /* This method is need because new artists are
@@ -110,12 +103,12 @@ function mapFromId(id) {
   const parts = id.split('title:');
   if (parts.length > 1) {
     return {
-      title: parts[1]
-    }
+      title: parts[1],
+    };
   }
   return {
-    id: Number.isNaN(id) ? id : Number(id)
-  }
+    id: Number.isNaN(id) ? id : Number(id),
+  };
 }
 
 function mapTag(id) {
@@ -123,10 +116,10 @@ function mapTag(id) {
 }
 
 async function actionClicked(actionName) {
-  if (actionName === "save") {
+  if (actionName === 'save') {
     const isFormCorrect = await v.value.$validate();
     if (!isFormCorrect) {
-      notify.pushError($t("error.validation"));
+      notify.pushError($t('error.validation'));
       return;
     }
     try {
@@ -137,21 +130,21 @@ async function actionClicked(actionName) {
         mainArtist: mapFromId(item.value.mainArtistId),
         poets: item.value.poetsIds.map((i) => mapFromId(i)),
         composers: item.value.composersIds.map((i) => mapFromId(i)),
-        tags: item.value.tagsIds.map((i) => mapTag(i))
-      }
+        tags: item.value.tagsIds.map((i) => mapTag(i)),
+      };
 
       await akordiService.saveEdit(edit);
       v.value.$reset();
       item.value = {};
-      notify.pushSuccess($t("songs.save.success"));
+      notify.pushSuccess($t('songs.save.success'));
       submitting.value = false;
     } catch (err) {
       submitting.value = false;
       console.error({ err });
-      notify.pushError($t("songs.save.error"));
+      notify.pushError($t('songs.save.error'));
     }
   }
-  if (actionName === "cancel") {
+  if (actionName === 'cancel') {
     router.back();
   }
 }
@@ -161,25 +154,25 @@ async function searchArtist(query) {
   }
   const resp = await akordiService.searchArtist(query);
   if (!resp.data.content.length) {
-    return [{
-      id: `title:${query}`,
-      title: query
-    }]
+    return [
+      {
+        id: `title:${query}`,
+        title: query,
+      },
+    ];
   }
   return resp.data.content.map((artist) => ({
     id: String(artist.id),
-    title: artist.title
+    title: artist.title,
   }));
-
 }
-
 
 async function loadTags() {
   try {
     loading.value = true;
     const resp = await akordiService.getTags({
       size: 100000,
-      sort: "title,asc",
+      sort: 'title,asc',
     });
 
     tags.value = resp.data.content.map((i) => ({
@@ -189,24 +182,23 @@ async function loadTags() {
     }));
   } catch (err) {
     console.log(err);
-    notificationStore.pushError($t("pages.tagList.list.error"));
+    notificationStore.pushError($t('pages.tagList.list.error'));
     throw err;
   } finally {
     loading.value = false;
   }
 }
 
-
 onMounted(async () => {
   viewStore.$reset();
   viewStore.goBack = true;
   if (props.isNew) {
-    viewStore.title = translate.t("pages.songNew.title");
-    viewStore.description = translate.t("pages.songNew.description");
+    viewStore.title = translate.t('pages.songNew.title');
+    viewStore.description = translate.t('pages.songNew.description');
   } else {
     await loadCopyFrom();
-    viewStore.title = translate.t("pages.songEdit.title");
-    viewStore.description = translate.t("pages.songEdit.description");
+    viewStore.title = translate.t('pages.songEdit.title');
+    viewStore.description = translate.t('pages.songEdit.description');
   }
   loadTags();
 });
@@ -221,33 +213,79 @@ onUnmounted(() => {
 }
 </style>
 <template>
-  <LxForm :action-definitions="formActions" @button-click="actionClicked" :show-header="false" :sticky-footer="false"
-    required-mode="required-asterisk">
+  <LxForm
+    :action-definitions="formActions"
+    @button-click="actionClicked"
+    :show-header="false"
+    :sticky-footer="false"
+    required-mode="required-asterisk"
+  >
     <LxRow :label="$t('song.artist')" :required="true">
-      <LxAutoComplete v-model="item.mainArtistId" :invalid="v.mainArtistId.$error"
-        :invalidation-message="v.mainArtistId.$error ? v.mainArtistId.$errors[0].$message : ''" id-attribute="id"
-        name-attribute="title" :items="searchArtist" kind="preloaded-func" :preloaded-items="preloadedArtists" />
+      <LxAutoComplete
+        v-model="item.mainArtistId"
+        :invalid="v.mainArtistId.$error"
+        :invalidation-message="v.mainArtistId.$error ? v.mainArtistId.$errors[0].$message : ''"
+        id-attribute="id"
+        name-attribute="title"
+        :items="searchArtist"
+        kind="preloaded-func"
+        :preloaded-items="preloadedArtists"
+      />
     </LxRow>
     <LxRow :label="$t('song.title')" :required="true">
-      <LxTextInput class="pre" id="titleInput" v-model="item.title" :invalid="v.title.$error"
-        :invalidation-message="v.title.$error ? v.title.$errors[0].$message : ''" />
+      <LxTextInput
+        class="pre"
+        id="titleInput"
+        v-model="item.title"
+        :invalid="v.title.$error"
+        :invalidation-message="v.title.$error ? v.title.$errors[0].$message : ''"
+      />
     </LxRow>
     <LxRow :label="$t('song.composer')">
-      <LxAutoComplete id="composerInput" v-model="item.composersIds" id-attribute="id" name-attribute="title"
-        selecting-kind="multiple" :items="searchArtist" kind="preloaded-func" :preloaded-items="preloadedArtists" />
+      <LxAutoComplete
+        id="composerInput"
+        v-model="item.composersIds"
+        id-attribute="id"
+        name-attribute="title"
+        selecting-kind="multiple"
+        :items="searchArtist"
+        kind="preloaded-func"
+        :preloaded-items="preloadedArtists"
+      />
     </LxRow>
     <LxRow :label="$t('song.poet')">
-      <LxAutoComplete id="poetInput" v-model="item.poetsIds" id-attribute="id" name-attribute="title"
-        selecting-kind="multiple" :items="searchArtist" kind="preloaded-func" :preloaded-items="preloadedArtists" />
+      <LxAutoComplete
+        id="poetInput"
+        v-model="item.poetsIds"
+        id-attribute="id"
+        name-attribute="title"
+        selecting-kind="multiple"
+        :items="searchArtist"
+        kind="preloaded-func"
+        :preloaded-items="preloadedArtists"
+      />
     </LxRow>
     <LxRow :label="$t('song.tags')">
-      <LxValuePicker id="tagInput" v-model="item.tagsIds" :items="tags" id-attribute="id" name-attribute="title"
-        kind="multiple" variant="tags" :preloaded-items="preloadedTags" />
+      <LxValuePicker
+        id="tagInput"
+        v-model="item.tagsIds"
+        :items="tags"
+        id-attribute="id"
+        name-attribute="title"
+        kind="multiple"
+        variant="tags"
+        :preloaded-items="preloadedTags"
+      />
     </LxRow>
     <LxRow :label="$t('song.body')" :required="true" inputId="bodyInput">
       <template #info>{{ $t('song.bodyTooltip') }}</template>
-      <LxTextArea :rows="15" id="bodyInput" v-model="item.body" :invalid="v.body.$error"
-        :invalidation-message="v.body.$error ? v.body.$errors[0].$message : ''" />
+      <LxTextArea
+        :rows="15"
+        id="bodyInput"
+        v-model="item.body"
+        :invalid="v.body.$error"
+        :invalidation-message="v.body.$error ? v.body.$errors[0].$message : ''"
+      />
     </LxRow>
   </LxForm>
 </template>

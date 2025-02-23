@@ -1,8 +1,8 @@
 <script setup>
-import { onMounted } from "vue";
-import SongEdit from "@/views/SongEdit.vue";
+import { onMounted } from 'vue';
+import SongEdit from '@/views/SongEdit.vue';
 
-onMounted(async () => { });
+onMounted(async () => {});
 </script>
 
 <template>

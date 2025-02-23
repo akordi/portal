@@ -1,13 +1,13 @@
 <script setup>
-import akordiService from "@/services/akordiService";
-import { LxList } from "@wntr/lx-ui";
-import { onMounted, ref } from "vue";
-import { useI18n } from "vue-i18n";
+import akordiService from '@/services/akordiService';
+import { LxList } from '@wntr/lx-ui';
+import { onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import { useRouter } from "vue-router";
+import { useRouter } from 'vue-router';
 
-import useNotifyStore from "@/stores/useNotifyStore";
-import useViewStore from "@/stores/useViewStore";
+import useNotifyStore from '@/stores/useNotifyStore';
+import useViewStore from '@/stores/useViewStore';
 
 const router = useRouter();
 const translate = useI18n();
@@ -23,7 +23,7 @@ async function loadTags() {
     loading.value = true;
     const resp = await akordiService.getTags({
       size: 100000,
-      sort: "title,asc",
+      sort: 'title,asc',
     });
 
     tags.value = resp.data.content.map((item) => ({
@@ -33,17 +33,17 @@ async function loadTags() {
     }));
   } catch (err) {
     console.log(err);
-    notificationStore.pushError($t("pages.tagList.list.error"));
+    notificationStore.pushError($t('pages.tagList.list.error'));
     throw err;
   } finally {
     loading.value = false;
   }
 }
 function actionClicked(action, id) {
-  if (action === "click") {
+  if (action === 'click') {
     const item = tags.value.find((i) => i.id === +id);
-    item.url = item.url.replace(/^\/tag\//, "");
-    router.push({ name: "tagView", params: { url: item.url } });
+    item.url = item.url.replace(/^\/tag\//, '');
+    router.push({ name: 'tagView', params: { url: item.url } });
   }
 }
 
@@ -51,9 +51,14 @@ onMounted(async () => {
   loadTags();
   viewStore.goBack = true;
 });
-
 </script>
 <template>
-  <LxList :items="tags" v-model="tag" v-if="tags" @action-click="actionClicked" :loading="loading" />
+  <LxList
+    :items="tags"
+    v-model="tag"
+    v-if="tags"
+    @action-click="actionClicked"
+    :loading="loading"
+  />
   <br />
 </template>

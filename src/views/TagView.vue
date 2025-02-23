@@ -1,13 +1,13 @@
 <script setup>
-import { LxList, LxLoader } from "@wntr/lx-ui";
-import { computed, onMounted, ref } from "vue";
-import { useI18n } from "vue-i18n";
+import { LxList, LxLoader } from '@wntr/lx-ui';
+import { computed, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import { useRoute, useRouter } from "vue-router";
+import { useRoute, useRouter } from 'vue-router';
 
-import akordiService from "@/services/akordiService";
-import useNotifyStore from "@/stores/useNotifyStore";
-import useViewStore from "@/stores/useViewStore";
+import akordiService from '@/services/akordiService';
+import useNotifyStore from '@/stores/useNotifyStore';
+import useViewStore from '@/stores/useViewStore';
 
 const router = useRouter();
 const route = useRoute();
@@ -31,17 +31,16 @@ const loadSongs = async () => {
     tag.value = tagResp.data;
     viewStore.title = $t('pages.tagView.title', { title: tag.value.title });
     if (tag.value.url !== tagUrl) {
-      const correctUrl = tag.value.url.replace(/^\/tag\//, "");
-      router.push({ name: "tagView", params: { url: correctUrl } });
+      const correctUrl = tag.value.url.replace(/^\/tag\//, '');
+      router.push({ name: 'tagView', params: { url: correctUrl } });
     }
 
     const resp = await akordiService.getSongs({
-      "tag.id": tagId,
+      'tag.id': tagId,
       size: 100,
-      sort: "title,asc",
+      sort: 'title,asc',
       page: page.value,
     });
-
 
     if (page.value === 0) {
       items.value = resp.data.content.map((song) => ({
@@ -59,22 +58,21 @@ const loadSongs = async () => {
       );
     }
     hasMore.value = resp.data.totalElements > items.value.length;
-
   } catch (err) {
     console.log(err);
-    notificationStore.pushError("Failed to load songs");
+    notificationStore.pushError('Failed to load songs');
     throw err;
   } finally {
     loading.value = false;
   }
 };
 function actionClicked(action, id) {
-  if (action === "click") {
-    router.push({ name: "akordiSongView", params: { url: id } });
+  if (action === 'click') {
+    router.push({ name: 'akordiSongView', params: { url: id } });
   }
 }
 function loadMore() {
-  page.value += 1
+  page.value += 1;
   loadSongs(page.value);
 }
 
@@ -82,11 +80,19 @@ onMounted(async () => {
   viewStore.goBack = true;
   await loadSongs();
 });
-
 </script>
 <template>
   <LxLoader :loading="loading" />
-  <LxList id="id" list-type="2" v-model:items="items" primary-attribute="title" secondary-attribute="description"
-    @action-click="actionClicked" :show-load-more="hasMore" @load-more="loadMore" :loading="loading">
+  <LxList
+    id="id"
+    list-type="2"
+    v-model:items="items"
+    primary-attribute="title"
+    secondary-attribute="description"
+    @action-click="actionClicked"
+    :show-load-more="hasMore"
+    @load-more="loadMore"
+    :loading="loading"
+  >
   </LxList>
 </template>
