@@ -25,6 +25,8 @@ const preloadedTags = ref([]);
 const withI18nMessage = validations.createI18nMessage({ t: translate.t });
 const item = ref({
   title: '',
+  performersIds: [],
+  tagsIds: [],
   composersIds: [],
   poetsIds: [],
 });
@@ -49,6 +51,7 @@ const loadCopyFrom = async () => {
     item.value.mainArtistId = String(resp.data.mainArtist.id);
     item.value.composersIds = resp.data.composers.map((i) => String(i.id));
     item.value.poetsIds = resp.data.poets.map((i) => String(i.id));
+    item.value.performersIds = resp.data.performers.map((i) => String(i.id));
     item.value.tagsIds = resp.data.tags.map((i) => String(i.id));
 
     const allArtists = [
@@ -61,6 +64,10 @@ const loadCopyFrom = async () => {
         title: i.title,
       })),
       ...resp.data.poets.map((i) => ({
+        id: String(i.id),
+        title: i.title,
+      })),
+      ...resp.data.performers.map((i) => ({
         id: String(i.id),
         title: i.title,
       })),
@@ -99,11 +106,18 @@ const formActions = computed(() => [
 /* This method is need because new artists are
 returned in search and we need to store title in the id
 */
-function mapFromId(id) {
+function mapArtistFromId(id) {
   const parts = id.split('title:');
   if (parts.length > 1) {
     return {
       title: parts[1],
+    };
+  }
+  const found = preloadedArtists.value.find((artist) => artist.id === id);
+  if (found) {
+    return {
+      id: Number(found.id),
+      title: found.title,
     };
   }
   return {
@@ -125,11 +139,13 @@ async function actionClicked(actionName) {
     try {
       submitting.value = true;
       const edit = {
+        id: item.value.id,
         title: item.value.title,
         body: item.value.body,
-        mainArtist: mapFromId(item.value.mainArtistId),
-        poets: item.value.poetsIds.map((i) => mapFromId(i)),
-        composers: item.value.composersIds.map((i) => mapFromId(i)),
+        mainArtist: mapArtistFromId(item.value.mainArtistId),
+        performers: item.value.performersIds.map((i) => mapArtistFromId(i)),
+        poets: item.value.poetsIds.map((i) => mapArtistFromId(i)),
+        composers: item.value.composersIds.map((i) => mapArtistFromId(i)),
         tags: item.value.tagsIds.map((i) => mapTag(i)),
       };
 
@@ -161,6 +177,16 @@ async function searchArtist(query) {
       },
     ];
   }
+
+  const newArtists = resp.data.content.filter(
+    (artist) => !preloadedArtists.value.some((p) => p.id === String(artist.id))
+  );
+  preloadedArtists.value.push(
+    ...newArtists.map((artist) => ({
+      id: String(artist.id),
+      title: artist.title,
+    }))
+  );
   return resp.data.content.map((artist) => ({
     id: String(artist.id),
     title: artist.title,
