@@ -45,8 +45,9 @@ const loadArtist = async () => {
 };
 function actionClicked(action, id) {
   if (action === 'click') {
-    const url = id;
-    router.push({ name: 'akordiSongView', params: { url } });
+    const item = items.value.find((i) => String(i.id) === id);
+    item.url = item.url.replace(/^\/song\//, '');
+    router.push({ name: 'akordiSongView', params: { url: item.url } });
   }
 }
 onMounted(async () => {

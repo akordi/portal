@@ -1,9 +1,9 @@
 {
   "title": {
-    "default": "Akordi",
-    "prefix": "",
-    "fullName": "Akordi",
-    "fullNameFormatted": "Akordi",
+    "default": "Akordi.lv",
+    "prefix": "Latviešu dziesmu akordi, tabi un vārdi - ",
+    "fullName": "Akordi.lv",
+    "fullNameFormatted": "Akordi.lv",
     "subheader": "Dziesmu vārdu, akordu un tabu krātuve",
     "shortName": "Akordi"
   },

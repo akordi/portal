@@ -94,6 +94,7 @@ const routes = [
         name: 'songSearch',
         meta: {
           title: 'pages.songSearch.title',
+          description: 'pages.songSearch.description',
           anonymous: true,
         },
         component: () => import('@/views/SongSearch.vue'),
@@ -118,6 +119,7 @@ const routes = [
         name: 'songListNew',
         meta: {
           title: 'pages.songListNew.title',
+          description: 'pages.songListNew.description',
           anonymous: true,
           breadcrumbs: [{ text: 'pages.songSearch.title', to: { name: 'songSearch' } }],
         },
@@ -142,6 +144,7 @@ const routes = [
         name: 'songListTop',
         meta: {
           title: 'pages.songListTop.title',
+          description: 'pages.songListTop.description',
           anonymous: true,
           breadcrumbs: [{ text: 'pages.songSearch.title', to: { name: 'songSearch' } }],
         },
@@ -174,6 +177,7 @@ const routes = [
         name: 'tagList',
         meta: {
           title: 'pages.tagList.title',
+          description: 'pages.tagList.description',
           anonymous: true,
         },
         component: () => import('@/views/TagList.vue'),

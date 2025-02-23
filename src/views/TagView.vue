@@ -1,6 +1,6 @@
 <script setup>
 import { LxList, LxLoader } from '@wntr/lx-ui';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { useRoute, useRouter } from 'vue-router';
@@ -68,7 +68,9 @@ const loadSongs = async () => {
 };
 function actionClicked(action, id) {
   if (action === 'click') {
-    router.push({ name: 'akordiSongView', params: { url: id } });
+    const item = items.value.find((i) => String(i.id) === id);
+    item.url = item.url.replace(/^\/song\//, '');
+    router.push({ name: 'akordiSongView', params: { url: item.url } });
   }
 }
 function loadMore() {
@@ -79,6 +81,9 @@ function loadMore() {
 onMounted(async () => {
   viewStore.goBack = true;
   await loadSongs();
+});
+onUnmounted(() => {
+  viewStore.$reset();
 });
 </script>
 <template>

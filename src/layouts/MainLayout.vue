@@ -101,7 +101,13 @@ onMounted(() => {
 
 const systemName = computed(() => $t('title.shortName'));
 const pageTitle = computed(() => viewStore.title || $t(router.currentRoute.value.meta.title));
-const pageDescription = computed(() => viewStore.description);
+const pageDescription = computed(
+  () =>
+    viewStore.description ||
+    (router.currentRoute.value.meta.description
+      ? $t(router.currentRoute.value.meta.description)
+      : '')
+);
 
 const breadcrumbs = computed(() => {
   const ret = [];
