@@ -25,7 +25,7 @@
     "pinia": "^2.3.1",
     "vexchords": "^1.2.0",
     "vue": "^3.5.13",
-    "vue-gtag": "^2.1.0",
+    "vue-gtag": "2.0.1",
     "vue-i18n": "11.1.1",
     "vue-router": "4.5.0",
     "vue3-click-away": "^1.2.4"

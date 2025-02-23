@@ -55,6 +55,8 @@ const getEnvVariables = (mode, serving) => {
     VUE_APP_DESCRIPTION: env.APP_DESCRIPTION,
     VUE_APP_AUTH_URL: env.AUTH_URL,
     VUE_APP_SERVICE_URL: env.SERVICE_URL,
+    VUE_APP_GTAG_ID: env.GTAG_ID,
+    VUE_APP_GTAG_ENABLED: env.GTAG_ENABLED,
     BASE_PATH: env.BASE_PATH,
     BASE_URL: env.PUBLIC_URL,
     // dev only
@@ -70,6 +72,7 @@ const getEnvVariables = (mode, serving) => {
     envVariables.VUE_APP_SERVICE_URL = '/api/';
     envVariables.VUE_APP_SERVICE_URL_PROXY = env.SERVICE_URL;
     envVariables.VUE_APP_AUTH_URL_PROXY = env.AUTH_URL;
+    envVariables.VUE_APP_GTAG_ENABLED = false;
   } else {
     envVariables.VUE_APP_ENVIRONMENT = '{{ENVIRONMENT}}';
     envVariables.VUE_APP_SERVICE_URL = '{{SERVICE_URL}}';

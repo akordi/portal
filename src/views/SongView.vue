@@ -59,7 +59,7 @@ const loadSong = async () => {
     const canonicalUrl = `${window.location.origin}/song/${songUrlParam.value}`;
     const pageTitle = `${item.value.mainArtist.title} - ${item.value.title}`;
     pageview({
-      page_path: canonicalUrl,
+      page_location: canonicalUrl,
       page_title: pageTitle,
     });
     setCanonicalUrl(canonicalUrl);
