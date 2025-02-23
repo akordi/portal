@@ -42,13 +42,6 @@ const loadSong = async () => {
   try {
     const songId = akordiService.parseUrl(songUrlParam.value);
     const resp = await akordiService.getSong(songId);
-    if (resp.data.url.indexOf(songUrlParam.value) === -1) {
-      // songUrl = resp.data.url.replace(/^\/song\//, '');
-      // router.replace({
-      //   name: 'akordiSongView',
-      //   params: { url: songUrl },
-      // });
-    }
     item.value = resp.data;
     item.value.createdAt = lxDateUtils.formatDate(item.value.createdDate);
     item.value.bodyWithMarkup = chordsService.transpose(item.value.body, 0);
@@ -56,9 +49,11 @@ const loadSong = async () => {
     if (hasChords.value) {
       chords.value = chordsService.extractChords(item.value.bodyWithMarkup);
     }
-    const canonicalUrl = `${window.location.origin}/song/${songUrlParam.value}`;
+    const pagePath = `/song/${songUrlParam.value}`;
+    const canonicalUrl = `${window.location.origin}${pagePath}`;
     const pageTitle = `${item.value.mainArtist.title} - ${item.value.title}`;
     pageview({
+      page_path: pagePath,
       page_location: canonicalUrl,
       page_title: pageTitle,
     });
