@@ -101,6 +101,14 @@
         "label": "Transponēt lejup",
         "description": "Pārnest dziesmu lejup par pustoni"
       },
+      "fontUp": {
+        "label": "Palielināt burtus",
+        "description": "Palielināt burtu izmēru dziesmas tekstā"
+      },
+      "fontDown": {
+        "label": "Samazināt burtus",
+        "description": "Samazināt burtu izmēru dziesmas tekstā"
+      },
       "transposeDisabled": "Transponēšana ir atspējota, jo dziesmas tekstā nav atrodami akordi",
       "audioNotSupported": "Jūsu pārlūks neatbalsta audio"
     },

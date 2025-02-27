@@ -1,5 +1,5 @@
 <script setup>
-import { lxDateUtils, LxForm, LxLoaderView, LxRow, LxSection } from '@wntr/lx-ui';
+import { lxDateUtils, LxForm, LxLoaderView, LxRow, LxSection, LxToolbar } from '@wntr/lx-ui';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -28,6 +28,7 @@ const showChords = ref(true);
 const instrument = ref('guitar');
 const hasAbc = computed(() => item.value.bodyAbc);
 const showAbc = ref(false);
+const fontSize = ref(1);
 
 const setCanonicalUrl = (canonicalUrl) => {
   const link = document.querySelector('link[rel="canonical"]');
@@ -139,7 +140,7 @@ const formActions = computed(() => {
         ? $t('pages.akordiSongView.transposeUp.description')
         : $t('pages.akordiSongView.transposeDisabled'),
       disabled: !hasChords.value,
-      kind: 'tertiary',
+      kind: 'additional',
     },
     {
       id: 'transposeDown',
@@ -149,7 +150,21 @@ const formActions = computed(() => {
         ? $t('pages.akordiSongView.transposeDown.description')
         : $t('pages.akordiSongView.transposeDisabled'),
       disabled: !hasChords.value,
-      kind: 'tertiary',
+      kind: 'additional',
+    },
+    {
+      id: 'fontUp',
+      icon: 'zoom-in',
+      name: $t('pages.akordiSongView.fontUp.label'),
+      title: $t('pages.akordiSongView.fontUp.description'),
+      kind: 'additional',
+    },
+    {
+      id: 'fontDown',
+      icon: 'zoom-out',
+      name: $t('pages.akordiSongView.fontDown.label'),
+      title: $t('pages.akordiSongView.fontDown.description'),
+      kind: 'additional',
     },
   ];
   if (hasAbc.value) {
@@ -203,6 +218,16 @@ async function actionClicked(actionName) {
       chords.value = [...chords.value];
     }
   }
+  if (actionName === 'fontUp') {
+    fontSize.value += 0.2;
+  }
+  if (actionName === 'fontDown') {
+    fontSize.value -= 0.2;
+  }
+  const menuButton = document.querySelector('.additional-button-icon-menu');
+  if (menuButton) {
+    menuButton.click();
+  }
 }
 
 onMounted(async () => {
@@ -213,6 +238,17 @@ onUnmounted(() => {
 });
 </script>
 <style>
+/* Saving precious space by */
+@media (max-width: 600px) {
+  .lx-layout.lx-layout-public > main {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .lx-form-grid > .lx-main > .lx-form-section {
+    padding: 0.5em;
+  }
+}
+
 /* Some basic CSS to make the Audio controls in abcjs presentable. */
 
 .lx .abcjs-inline-audio {
@@ -411,8 +447,8 @@ onUnmounted(() => {
 <template>
   <LxLoaderView :loading="loading">
     <LxForm
-      :sticky-footer="false"
       :sticky-header="false"
+      :show-footer="false"
       :action-definitions="formActions"
       @button-click="actionClicked"
       :show-post-header-info="true"
@@ -457,11 +493,11 @@ onUnmounted(() => {
             ></ChordSvg>
           </div>
         </LxRow>
-        <LxSection id="body">
-          <LxRow>
-            <p class="pre" v-html="item.bodyWithMarkup"></p>
-          </LxRow>
-        </LxSection>
+      </LxSection>
+      <LxSection id="body">
+        <LxRow>
+          <p class="pre" v-html="item.bodyWithMarkup" :style="{ fontSize: fontSize + 'em' }"></p>
+        </LxRow>
       </LxSection>
     </LxForm>
   </LxLoaderView>
