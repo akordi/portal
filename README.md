@@ -1,8 +1,8 @@
-# Akordi UI
+# Akordi Portal
 
 <!-- TOC -->
 
-- [Akordi UI](#akordi-ui)
+- [Akordi Portal](#akordi-portal)
   - [About](#about)
   - [App specifications](#app-specifications)
   - [Development](#development)
@@ -12,7 +12,7 @@
 
 ## About
 
-Repository with Vue.js application that serves song lyrics and tabs website akordi.lv
+Repository with Vue.js application that serves song lyrics and tabs website <https://www.akordi.lv>
 
 ## App specifications
 

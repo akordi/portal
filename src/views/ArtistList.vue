@@ -112,10 +112,10 @@ const letters = ref([
     id: 's',
     name: 'S',
   },
-  // {
-  //   id: "š",
-  //   name: "Š",
-  // },
+  {
+    id: "š",
+    name: "Š",
+  },
   {
     id: 't',
     name: 'T',
@@ -123,6 +123,10 @@ const letters = ref([
   {
     id: 'u',
     name: 'U',
+  },
+  {
+    id: 'y',
+    name: 'Y',
   },
   {
     id: 'v',

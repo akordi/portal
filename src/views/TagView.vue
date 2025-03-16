@@ -43,20 +43,15 @@ const loadSongs = async () => {
     });
 
     if (page.value === 0) {
-      items.value = resp.data.content.map((song) => ({
+      items.value = [];
+    }
+    items.value.push(
+      ...resp.data.content.map((song) => ({
         ...song,
         description: song.mainArtist.title,
         clickable: true,
-      }));
-    } else {
-      items.value.push(
-        ...resp.data.content.map((artist) => ({
-          ...artist,
-          clickable: true,
-          title: `${artist.title} (${artist.songCount})`,
-        }))
-      );
-    }
+      }))
+    );
     hasMore.value = resp.data.totalElements > items.value.length;
   } catch (err) {
     console.log(err);
@@ -88,16 +83,7 @@ onUnmounted(() => {
 </script>
 <template>
   <LxLoader :loading="loading" />
-  <LxList
-    id="id"
-    list-type="2"
-    v-model:items="items"
-    primary-attribute="title"
-    secondary-attribute="description"
-    @action-click="actionClicked"
-    :show-load-more="hasMore"
-    @load-more="loadMore"
-    :loading="loading"
-  >
+  <LxList id="id" list-type="2" v-model:items="items" primary-attribute="title" secondary-attribute="description"
+    @action-click="actionClicked" :show-load-more="hasMore" @load-more="loadMore" :loading="loading">
   </LxList>
 </template>
