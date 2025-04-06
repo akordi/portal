@@ -45,7 +45,7 @@ const routes = [
         path: '/add',
         name: 'songNew',
         meta: {
-          title: 'pages.dashboard.title',
+          title: 'pages.songNew.title',
           anonymous: true,
         },
         component: () => import('@/views/SongNew.vue'),
@@ -54,7 +54,7 @@ const routes = [
         path: '/edit',
         name: 'songEdit',
         meta: {
-          title: 'pages.dashboard.title',
+          title: 'pages.songEdit.title',
           anonymous: true,
         },
         component: () => import('@/views/SongEdit.vue'),
@@ -233,7 +233,7 @@ const routes = [
         path: '/:pathMatch(.*)*',
         name: 'notFound',
         alias: '/notFound',
-        meta: { title: 'pages.users.title', anonymous: true },
+        meta: { title: 'pages.notFound.title', anonymous: true },
         component: () => import('@/views/NotFound.vue'),
       },
 

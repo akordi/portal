@@ -55,16 +55,16 @@ const myApp = createApp(App);
 myApp.use(createPinia());
 events(router);
 myApp.use(router);
+const i18n =  createI18n({
+  legacy: false,
+  locale: 'lv',
+  messages: {
+    lv,
+  },
+});
+const $t = i18n.global.t;
 
-myApp.use(
-  createI18n({
-    legacy: false,
-    locale: 'lv',
-    messages: {
-      lv,
-    },
-  })
-);
+myApp.use(i18n);
 myApp.use(VueClickAway);
 myApp.use(createLx, {
   systemId: 'akordi',
@@ -81,7 +81,13 @@ if (window.config.gtagEnabled && window.config.gtagId) {
       exclude: (route) => {
         return route.meta.customPageTracker;
       },
-      send_page_view: true,
+      template: (route) => {
+        return {
+          page_path: route.path,
+          page_title: $t(route.meta.title),
+          page_location: window.location.href,
+        };
+      },
     }
   })
   myApp.use(gtag);
