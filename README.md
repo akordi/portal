@@ -1,55 +1,64 @@
 # Akordi Portal
 
-<!-- TOC -->
+Akordi Portal is a Vue.js application that serves as a platform for song lyrics and tabs. Visit the live site at <a href="https://www.akordi.lv" target="_blank">https://www.akordi.lv</a>.
 
-- [Akordi Portal](#akordi-portal)
-  - [About](#about)
-  - [App specifications](#app-specifications)
-  - [Development](#development)
-  - [Requirements](#requirements)
+## Features
 
-<!-- /TOC -->
+- Browse and search for song lyrics and tabs.
+- User-friendly interface with responsive design.
+- Guitar and ukulele chord tabs for songs.
+- Transposing chords up and down.
 
-## About
+## Technologies Used
 
-Repository with Vue.js application that serves song lyrics and tabs website <https://www.akordi.lv>
+- **Frontend**: [LX/UI](https://github.com/wntrtech/lx-ui) components on [Vue3](https://v3.vuejs.org/), [Pinia](https://pinia.vuejs.org/), [Vue Router 4](https://next.router.vuejs.org/guide/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Testing**: [Vitest](https://vitest.dev/)
+- **Internationalization**: [Vue I18n](https://kazupon.github.io/vue-i18n/)
+- **Package Manager**: [PNPM](https://pnpm.io/)
+- **Linting**: [ESLint](https://eslint.org/)
+- **Containerization**: [Docker](https://docker.com/)
 
-## App specifications
+## Screenshot
 
-[Vue3](https://v3.vuejs.org/) template with (_inspired from Vue.js creator recommendations at conference in Toronto (<https://www.youtube.com/watch?v=2KBHvaAWJOA>)_):
+### Light Mode
 
-- [Vite](https://vitejs.dev/)
-- [Pinia (de facto Vuex 5)](https://pinia.vuejs.org/)
-- [Vue Router 4](https://next.router.vuejs.org/guide/)
-- [Vitest](https://vitest.dev/)
-- [Vue I18n](https://kazupon.github.io/vue-i18n/)
+![Akordi Portal Light Mode Screenshot](screenshot_light.png)
 
-Extras:
+### Dark Mode
 
-- Relative paths
-- [ESLint](https://eslint.org/)
-- [PNPM](https://pnpm.io/)
-- [Docker dev configuration](https://docker.com/)
+![Akordi Portal Dark Mode Screenshot](screenshot_dark.png)
 
-Recommended IDE:
+## Getting Started
 
-- [VSCode](https://code.visualstudio.com/)
+Follow these steps to set up the project locally:
 
-## Development
-
-1. Build dev server:
+1. Clone the repository.
+2. Install dependencies:
 
     ```bash
-    pnpm i
+    pnpm install
     ```
 
-2. Run dev server (_also possible with vs code debug functionality (F5)_) :
+3. Start the development server:
 
     ```bash
     pnpm dev
     ```
 
-## Requirements
+4. Open your browser and navigate to `http://localhost:44341`.
 
-- [Node.js](https://nodejs.org/en/) (at least v18.0.0)
-- [PNPM](https://pnpm.io/) (at least v7.0.0 )
+## Contributing
+
+Contributions are welcome! To contribute:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bugfix.
+3. Commit your changes and push the branch.
+4. Open a pull request.
+
+Please ensure your code adheres to the project's coding standards and includes tests where applicable.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
