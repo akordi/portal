@@ -482,7 +482,7 @@ onUnmounted(() => {
         <div id="paper"></div>
         <div id="audio"></div>
       </LxSection>
-      <LxSection v-show="showChords" id="chords">
+      <LxSection v-show="hasChords && showChords" id="chords">
         <LxRow>
           <div style="display: flex; flex-wrap: wrap">
             <ChordSvg

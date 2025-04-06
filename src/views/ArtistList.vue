@@ -113,8 +113,8 @@ const letters = ref([
     name: 'S',
   },
   {
-    id: "š",
-    name: "Š",
+    id: 'š',
+    name: 'Š',
   },
   {
     id: 't',
