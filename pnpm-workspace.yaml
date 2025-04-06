@@ -1,3 +1,9 @@
 packages:
-  # if required, exclude some directories
   - '!**/test/**'
+onlyBuiltDependencies:
+  - '@wntr/lx-ui'
+  - canvas
+  - core-js-pure
+  - esbuild
+  - exifreader
+  - vue-demi

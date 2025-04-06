@@ -7,7 +7,7 @@ import router from '@/router';
 import lv from '@/locales/lv.json';
 import events from '@/router/events';
 import { createLx } from '@wntr/lx-ui';
-import VueGtag from 'vue-gtag';
+import { createGtag } from "vue-gtag";
 
 import '@wntr/lx-ui/dist/styles/lx-reset.css';
 import '@wntr/lx-ui/dist/styles/lx-fonts-carbon.css';
@@ -74,24 +74,17 @@ myApp.use(createLx, {
 });
 
 if (window.config.gtagEnabled && window.config.gtagId) {
-  myApp.use(VueGtag, {
-    // Each song view for below different routes are sent with custom page_view event
-    // to override url sent to Google Analytics, it must be the same so that song top
-    // calculation works correctly.
-    pageTrackerExcludedRoutes: [
-      'songSearchSongView',
-      'songListNewSongView',
-      'songListTopSongView',
-      'akordiSongView',
-    ],
-    config: {
-      id: window.config.gtagId,
-      params: {
-        send_page_view: true,
+  const gtag = createGtag({
+    tagId: window.config.gtagId,
+    pageTracker: {
+      router,
+      exclude: (route) => {
+        return route.meta.customPageTracker;
       },
-    },
-    router,
-  });
+      send_page_view: true,
+    }
+  })
+  myApp.use(gtag);
 }
 
 myApp.mount('#app');
