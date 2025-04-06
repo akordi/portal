@@ -7,7 +7,7 @@ import router from '@/router';
 import lv from '@/locales/lv.json';
 import events from '@/router/events';
 import { createLx } from '@wntr/lx-ui';
-import { createGtag } from "vue-gtag";
+import { createGtag } from 'vue-gtag';
 
 import '@wntr/lx-ui/dist/styles/lx-reset.css';
 import '@wntr/lx-ui/dist/styles/lx-fonts-carbon.css';
@@ -55,7 +55,7 @@ const myApp = createApp(App);
 myApp.use(createPinia());
 events(router);
 myApp.use(router);
-const i18n =  createI18n({
+const i18n = createI18n({
   legacy: false,
   locale: 'lv',
   messages: {
@@ -75,21 +75,18 @@ myApp.use(createLx, {
 
 if (window.config.gtagEnabled && window.config.gtagId) {
   const gtag = createGtag({
+    initMode: 'manual',
     tagId: window.config.gtagId,
     pageTracker: {
       router,
-      exclude: (route) => {
-        return route.meta.customPageTracker;
-      },
-      template: (route) => {
-        return {
-          page_path: route.path,
-          page_title: $t(route.meta.title),
-          page_location: window.location.href,
-        };
-      },
-    }
-  })
+      exclude: (route) => route.meta.customPageTracker,
+      template: (route) => ({
+        page_path: route.path,
+        page_title: $t(route.meta.title),
+        page_location: window.location.href,
+      }),
+    },
+  });
   myApp.use(gtag);
 }
 

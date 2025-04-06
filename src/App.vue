@@ -1,9 +1,9 @@
 <script setup>
-import { watch } from 'vue';
-import { useRoute } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import Error404 from '@/views/Error404.vue';
 import useAppStore from '@/stores/useAppStore';
+import Error404 from '@/views/Error404.vue';
+import { watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
 const i18n = useI18n();
 const route = useRoute();

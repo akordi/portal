@@ -192,6 +192,12 @@
       "description": "Pārbaudiet, vai lapas adrese ir pareiza un mēģiniet vēlreiz, vai atgriezieties uz sākumlapu"
     }
   },
+  "cookieConsent": {
+    "title": "Sīkdatņu politika",
+    "description": "Šī vietne izmanto sīkdatnes, lai nodrošinātu populārāko dziesmu statistiku un uzlabotu lietotāja pieredzi. \nLūdzu, piekrītiet sīkdatņu izmantošanai, lai turpinātu izmantot šo vietni.",
+    "accept": "Piekrītu",
+    "reject": "Aizvērt"
+  },
   "confirm": {
     "yes": "Jā",
     "no": "Nē"

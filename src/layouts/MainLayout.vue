@@ -6,7 +6,8 @@ import { useRoute, useRouter } from 'vue-router';
 // eslint-disable-next-line no-unused-vars
 import CoverBackground from '@/components/CoverBackground.vue';
 import { invoke, until, useIdle, useIntervalFn } from '@vueuse/core';
-import { LxShell } from '@wntr/lx-ui';
+import { LxModal, LxShell } from '@wntr/lx-ui';
+import { useConsent } from 'vue-gtag';
 
 import useErrors from '@/hooks/useErrors';
 import useAppStore from '@/stores/useAppStore';
@@ -28,6 +29,8 @@ const secondsToIdle = 10;
 const secondsCheckApiInterval = 30;
 
 const { idle } = useIdle(secondsToIdle * 1000);
+
+const { acceptAll, rejectAll, hasConsent } = useConsent();
 
 const idleModalOpened = ref(false);
 const translate = useI18n();
@@ -94,9 +97,13 @@ const bodyObserver = new MutationObserver((mutationsList) => {
     }
   }
 });
+const cookieConsentModal = ref(null);
 onMounted(() => {
   // Observe when the html body element class changes so we can reliably detect which theme is active
   bodyObserver?.observe(document.body, { attributes: true });
+  if (!hasConsent.value) {
+    cookieConsentModal.value.open();
+  }
 });
 
 const systemName = computed(() => $t('title.shortName'));
@@ -355,6 +362,19 @@ function idleModalSecondary() {
 
         <router-view />
       </LxShell>
+      <LxModal
+        ref="cookieConsentModal"
+        :label="$t('cookieConsent.title')"
+        size="s"
+        :button-primary-visible="true"
+        :button-primary-label="$t('cookieConsent.accept')"
+        @primary-action="acceptAll"
+        :button-secondary-visible="true"
+        :button-secondary-label="$t('cookieConsent.reject')"
+        @secondary-action="rejectAll"
+      >
+        <p style="white-space: pre-wrap">{{ $t('cookieConsent.description') }}</p>
+      </LxModal>
     </div>
   </div>
 </template>
