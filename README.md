@@ -1,35 +1,33 @@
-# Akordi Portal
+# Akordi Portal 🎵
 
 Akordi Portal is a Vue.js application that serves as a platform for song lyrics and tabs. Visit the live site at <a href="https://www.akordi.lv" target="_blank">https://www.akordi.lv</a>.
 
-## Features
+## Screenshot 📸
 
-- Browse and search for song lyrics and tabs.
-- User-friendly interface with responsive design.
-- Guitar and ukulele chord tabs for songs.
-- Transposing chords up and down.
+### Light Mode 🌞
 
-## Technologies Used
+![Akordi Portal Light Mode Screenshot](screenshot_light.png)
 
-- **Frontend**: [LX/UI](https://github.com/wntrtech/lx-ui) components on [Vue3](https://v3.vuejs.org/), [Pinia](https://pinia.vuejs.org/), [Vue Router 4](https://next.router.vuejs.org/guide/)
-- **Build Tool**: [Vite](https://vitejs.dev/)
+### Dark Mode 🌙
+
+![Akordi Portal Dark Mode Screenshot](screenshot_dark.png)
+
+## Features ✨
+
+- 🎶 Browse and search for song lyrics and tabs.
+- 🖥️ User-friendly interface with responsive design.
+- 🎸 Guitar and ukulele chord tabs for songs.
+- ⬆️ Transposing chords up and down.
+
+## Technologies Used 🛠️
+
+- **Frontend**: [LX/UI](https://github.com/wntrtech/lx-ui) components with [Vue3](https://v3.vuejs.org/), [Pinia](https://pinia.vuejs.org/), [Vite](https://vitejs.dev/)
 - **Testing**: [Vitest](https://vitest.dev/)
-- **Internationalization**: [Vue I18n](https://kazupon.github.io/vue-i18n/)
 - **Package Manager**: [PNPM](https://pnpm.io/)
 - **Linting**: [ESLint](https://eslint.org/)
 - **Containerization**: [Docker](https://docker.com/)
 
-## Screenshot
-
-### Light Mode
-
-![Akordi Portal Light Mode Screenshot](screenshot_light.png)
-
-### Dark Mode
-
-![Akordi Portal Dark Mode Screenshot](screenshot_dark.png)
-
-## Getting Started
+## Getting Started 🚀
 
 Follow these steps to set up the project locally:
 
@@ -48,7 +46,27 @@ Follow these steps to set up the project locally:
 
 4. Open your browser and navigate to `http://localhost:44341`.
 
-## Contributing
+## Development 🧑‍💻
+
+1. Build the development server:
+
+    ```bash
+    pnpm i
+    ```
+
+2. Run the development server (_also possible with VS Code debug functionality (F5)_):
+
+    ```bash
+    pnpm dev
+    ```
+
+3. Build for production:
+
+    ```bash
+    pnpm build
+    ```
+
+## Contributing 🤝
 
 Contributions are welcome! To contribute:
 
@@ -59,6 +77,6 @@ Contributions are welcome! To contribute:
 
 Please ensure your code adheres to the project's coding standards and includes tests where applicable.
 
-## License
+## License 📜
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
