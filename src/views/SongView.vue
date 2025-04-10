@@ -1,5 +1,5 @@
 <script setup>
-import { lxDateUtils, LxForm, LxLoaderView, LxRow, LxSection, LxToolbar } from '@wntr/lx-ui';
+import { lxDateUtils, LxForm, LxLoaderView, LxRow, LxSection } from '@wntr/lx-ui';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -447,7 +447,7 @@ onUnmounted(() => {
 <template>
   <LxLoaderView :loading="loading">
     <LxForm
-      :sticky-header="false"
+      :sticky-header="true"
       :show-footer="false"
       :action-definitions="formActions"
       @button-click="actionClicked"
