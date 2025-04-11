@@ -47,6 +47,7 @@ import '@wntr/lx-ui/dist/styles/lx-shell-grid.css';
 import '@wntr/lx-ui/dist/styles/lx-shell-grid-public.css';
 import '@wntr/lx-ui/dist/styles/lx-forms-grid.css';
 import '@wntr/lx-ui/dist/styles/lx-treelist.css';
+import '@wntr/lx-ui/dist/styles/lx-stack.css';
 
 import '@/assets/styles.css';
 import '@/assets/lx-pt-akordi.css';
