@@ -229,6 +229,7 @@
   "song": {
     "title": "Nosaukums",
     "artist": "Izpildītājs",
+    "performer": "Izpildītājs",
     "composer": "Mūzikas autors",
     "poet": "Vārdu autors",
     "tags": "Birkas",

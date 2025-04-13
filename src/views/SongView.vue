@@ -1,5 +1,13 @@
 <script setup>
-import { lxDateUtils, LxForm, LxLoaderView, LxRow, LxSection, LxStack, LxButton } from '@wntr/lx-ui';
+import {
+  lxDateUtils,
+  LxForm,
+  LxLoaderView,
+  LxRow,
+  LxSection,
+  LxStack,
+  LxButton,
+} from '@wntr/lx-ui';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -29,6 +37,15 @@ const instrument = ref('guitar');
 const hasAbc = computed(() => item.value.bodyAbc);
 const showAbc = ref(false);
 const fontSize = ref(1);
+const offsetFormatted = computed(() => {
+  if (bodyTransposedIndex.value > 0) {
+    return `+${bodyTransposedIndex.value}`;
+  }
+  if (bodyTransposedIndex.value < 0) {
+    return `${bodyTransposedIndex.value}`;
+  }
+  return '+0'; // + is added just to avoid shift of the text
+});
 
 const setCanonicalUrl = (canonicalUrl) => {
   const link = document.querySelector('link[rel="canonical"]');
@@ -64,7 +81,9 @@ const loadSong = async () => {
     setCanonicalUrl(canonicalUrl);
 
     viewStore.title = item.value.title;
-    viewStore.description = item.value.performers.map((artist) => artist.title).join(', ');
+    viewStore.description =
+      item.value.mainArtist?.title ||
+      item.value.performers.map((artist) => artist.title).join(', ');
     viewStore.goBack = true;
 
     if (item.value.bodyAbc) {
@@ -244,6 +263,7 @@ onUnmounted(() => {
     margin-left: 0;
     margin-right: 0;
   }
+
   .lx-form-grid > .lx-main > .lx-form-section {
     padding: 0.5em;
   }
@@ -342,7 +362,8 @@ onUnmounted(() => {
 
 .lx .abcjs-inline-audio .abcjs-midi-progress-indicator {
   width: 20px;
-  margin-left: -10px; /* half of the width */
+  margin-left: -10px;
+  /* half of the width */
   height: 14px;
   background-color: #f4f4f4;
   position: absolute;
@@ -392,6 +413,7 @@ onUnmounted(() => {
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
+
 .lx .abcjs-inline-audio .abcjs-loading-svg circle {
   stroke: #f4f4f4;
 }
@@ -400,6 +422,7 @@ onUnmounted(() => {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -409,6 +432,7 @@ onUnmounted(() => {
 .lx .abcjs-large .abcjs-inline-audio {
   height: 52px;
 }
+
 .lx .abcjs-large .abcjs-btn {
   width: 56px;
   min-width: 56px;
@@ -417,25 +441,30 @@ onUnmounted(() => {
   font-size: 28px;
   padding: 6px 8px;
 }
+
 .lx .abcjs-large .abcjs-midi-progress-background {
   height: 20px;
   border: 4px solid #cccccc;
 }
+
 .lx .abcjs-large .abcjs-midi-progress-indicator {
   height: 28px;
   top: -8px;
   width: 40px;
 }
+
 .lx .abcjs-large .abcjs-midi-clock {
   font-size: 32px;
   margin-right: 10px;
   margin-left: 10px;
   margin-top: -1px;
 }
+
 .lx .abcjs-large .abcjs-midi-tempo {
   font-size: 20px;
   width: 50px;
 }
+
 .lx .abcjs-large .abcjs-tempo-wrapper {
   font-size: 20px;
 }
@@ -443,33 +472,55 @@ onUnmounted(() => {
 .lx .abcjs-css-warning {
   display: none;
 }
+
+.lx-form-grid > footer {
+  padding: 0 var(--gap-form);
+}
 </style>
 <template>
   <LxLoaderView :loading="loading">
     <LxForm
       :sticky-header="true"
       :show-footer="hasChords"
+      :sticky-footer="true"
       :action-definitions="formActions"
       @button-click="actionClicked"
       :show-post-header-info="true"
       kind="compact"
     >
       <template #footer>
-        <LxStack orientation="horizontal"  horizontal-alignment="leading" vertical-alignment="center">
-          <label class="lx-data">{{ $t('pages.akordiSongView.transposeHeader', { offset: bodyTransposedIndex > 0 ? `+${bodyTransposedIndex}` : bodyTransposedIndex }) }}</label>
-          <LxStack orientation="horizontal" horizontal-alignment="leading" vertical-alignment="center">
-            <LxButton kind="ghost" variant="icon-only" icon="move-up" :label="$t('pages.akordiSongView.transposeUp.label')" @click="actionClicked('transposeUp')" />
-            <LxButton kind="ghost" variant="icon-only" icon="move-down" :label="$t('pages.akordiSongView.transposeDown.label')" @click="actionClicked('transposeDown')" />
-          </LxStack>
+        <LxStack
+          orientation="horizontal"
+          horizontal-alignment="leading"
+          vertical-alignment="center"
+        >
+          <label class="lx-data">{{
+            $t('pages.akordiSongView.transposeHeader', {
+              offset: offsetFormatted,
+            })
+          }}</label>
+          <LxButton
+            kind="ghost"
+            variant="icon-only"
+            icon="move-up"
+            :label="$t('pages.akordiSongView.transposeUp.label')"
+            @click="actionClicked('transposeUp')"
+          />
+          <LxButton
+            kind="ghost"
+            variant="icon-only"
+            icon="move-down"
+            :label="$t('pages.akordiSongView.transposeDown.label')"
+            @click="actionClicked('transposeDown')"
+          />
         </LxStack>
       </template>
       <template #post-header>{{ item.createdAt }} </template>
       <template #post-header-info>
-        <LxRow :label="$t('song.createdAt')">
-          <p class="lx-data">{{ lxDateUtils.formatDateTime(item.createdDate) }}</p>
-        </LxRow>
-        <LxRow :label="$t('song.updatedAt')">
-          <p class="lx-data">{{ lxDateUtils.formatDateTime(item.updatedDate) }}</p>
+        <LxRow :label="$t('song.performer')" v-if="item.performers?.length > 0">
+          <p class="lx-data">
+            {{ item.performers.map((author) => author.title).join(', ') }}
+          </p>
         </LxRow>
         <LxRow :label="$t('song.composer')" v-if="item.composers?.length > 0">
           <p class="lx-data">
@@ -485,6 +536,12 @@ onUnmounted(() => {
           <p class="lx-data">
             {{ item.tags.map((tag) => tag.title).join(', ') }}
           </p>
+        </LxRow>
+        <LxRow :label="$t('song.createdAt')">
+          <p class="lx-data">{{ lxDateUtils.formatDateTime(item.createdDate) }}</p>
+        </LxRow>
+        <LxRow :label="$t('song.updatedAt')">
+          <p class="lx-data">{{ lxDateUtils.formatDateTime(item.updatedDate) }}</p>
         </LxRow>
       </template>
       <LxSection v-show="hasAbc && showAbc" id="bodyAbc">
