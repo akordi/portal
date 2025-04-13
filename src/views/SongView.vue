@@ -243,10 +243,6 @@ async function actionClicked(actionName) {
   if (actionName === 'fontDown') {
     fontSize.value -= 0.2;
   }
-  const menuButton = document.querySelector('.additional-button-icon-menu');
-  if (menuButton) {
-    menuButton.click();
-  }
 }
 
 onMounted(async () => {

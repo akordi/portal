@@ -260,7 +260,6 @@ onUnmounted(() => {
     </LxRow>
     <LxRow :label="$t('song.title')" :required="true">
       <LxTextInput
-        class="pre"
         id="titleInput"
         v-model="item.title"
         :invalid="v.title.$error"
