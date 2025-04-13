@@ -110,7 +110,8 @@
         "description": "Samazināt burtu izmēru dziesmas tekstā"
       },
       "transposeDisabled": "Transponēšana ir atspējota, jo dziesmas tekstā nav atrodami akordi",
-      "audioNotSupported": "Jūsu pārlūks neatbalsta audio"
+      "audioNotSupported": "Jūsu pārlūks neatbalsta audio",
+      "transposeHeader": "Transponēt ({offset})" 
     },
     "akordiArtistLetter": {
       "title": "Mākslinieku katalogs A-Z",

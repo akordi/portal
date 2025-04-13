@@ -1,5 +1,5 @@
 <script setup>
-import { lxDateUtils, LxForm, LxLoaderView, LxRow, LxSection } from '@wntr/lx-ui';
+import { lxDateUtils, LxForm, LxLoaderView, LxRow, LxSection, LxStack, LxButton } from '@wntr/lx-ui';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -448,12 +448,21 @@ onUnmounted(() => {
   <LxLoaderView :loading="loading">
     <LxForm
       :sticky-header="true"
-      :show-footer="false"
+      :show-footer="hasChords"
       :action-definitions="formActions"
       @button-click="actionClicked"
       :show-post-header-info="true"
       kind="compact"
     >
+      <template #footer>
+        <LxStack orientation="horizontal"  horizontal-alignment="leading" vertical-alignment="center">
+          <label class="lx-data">{{ $t('pages.akordiSongView.transposeHeader', { offset: bodyTransposedIndex > 0 ? `+${bodyTransposedIndex}` : bodyTransposedIndex }) }}</label>
+          <LxStack orientation="horizontal" horizontal-alignment="leading" vertical-alignment="center">
+            <LxButton kind="ghost" variant="icon-only" icon="move-up" :label="$t('pages.akordiSongView.transposeUp.label')" @click="actionClicked('transposeUp')" />
+            <LxButton kind="ghost" variant="icon-only" icon="move-down" :label="$t('pages.akordiSongView.transposeDown.label')" @click="actionClicked('transposeDown')" />
+          </LxStack>
+        </LxStack>
+      </template>
       <template #post-header>{{ item.createdAt }} </template>
       <template #post-header-info>
         <LxRow :label="$t('song.createdAt')">
