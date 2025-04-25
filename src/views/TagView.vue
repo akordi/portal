@@ -70,7 +70,7 @@ function actionClicked(action, id) {
 }
 function loadMore() {
   page.value += 1;
-  loadSongs(page.value);
+  loadSongs();
 }
 
 onMounted(async () => {
@@ -83,7 +83,16 @@ onUnmounted(() => {
 </script>
 <template>
   <LxLoader :loading="loading" />
-  <LxList id="id" list-type="2" v-model:items="items" primary-attribute="title" secondary-attribute="description"
-    @action-click="actionClicked" :show-load-more="hasMore" @load-more="loadMore" :loading="loading">
+  <LxList
+    id="id"
+    list-type="2"
+    v-model:items="items"
+    primary-attribute="title"
+    secondary-attribute="description"
+    @action-click="actionClicked"
+    :show-load-more="hasMore"
+    @load-more="loadMore"
+    :loading="loading"
+  >
   </LxList>
 </template>

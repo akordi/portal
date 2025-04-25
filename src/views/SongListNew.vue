@@ -16,20 +16,28 @@ const viewStore = useViewStore();
 const notificationStore = useNotifyStore();
 const items = ref([]);
 const loading = ref(true);
+const hasMore = ref(false);
+const page = ref(0);
 
-async function load() {
+async function loadSongs() {
   try {
     loading.value = true;
     const resp = await akordiService.getSongs({
-      size: 20,
-      page: 0,
+      size: 40,
+      page: page.value,
       sort: 'createdDate,desc',
     });
-    items.value = resp.data.content.map((song) => ({
-      ...song,
-      description: song.mainArtist.title,
-      clickable: true,
-    }));
+    if (page.value === 0) {
+      items.value = [];
+    }
+    items.value.push(
+      ...resp.data.content.map((song) => ({
+        ...song,
+        description: song.mainArtist.title,
+        clickable: true,
+      }))
+    );
+    hasMore.value = items.value.length <= 200;
   } catch (err) {
     console.log(err);
     notificationStore.pushError($t('pages.songListNew.list.error'));
@@ -39,9 +47,14 @@ async function load() {
   }
 }
 
+function loadMore() {
+  page.value += 1;
+  loadSongs();
+}
+
 onMounted(async () => {
   viewStore.goBack = true;
-  load();
+  loadSongs();
 });
 
 function actionClicked(action, id) {
@@ -84,6 +97,8 @@ watch(currentSection, (newVal) => {
     primary-attribute="title"
     secondary-attribute="description"
     @action-click="actionClicked"
+    :show-load-more="hasMore"
+    @load-more="loadMore"
   >
   </LxList>
 </template>
