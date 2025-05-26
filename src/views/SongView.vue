@@ -538,16 +538,6 @@ onUnmounted(() => {
 </style>
 <template>
   <LxLoaderView :loading="loading">
-    <div v-show="hasChords && showChords" id="chords">
-      <div style="display: flex; flex-wrap: wrap; align-items: flex-start">
-        <ChordSvg
-          :chord="chord"
-          :instrument="instrument"
-          v-for="chord in chords"
-          :key="chord"
-        ></ChordSvg>
-      </div>
-    </div>
     <LxForm
       :action-definitions="formActions"
       @button-click="actionClicked"
@@ -659,6 +649,16 @@ onUnmounted(() => {
       <LxSection v-show="hasAbc && showAbc" id="bodyAbc">
         <div id="paper"></div>
         <div id="audio"></div>
+      </LxSection>
+      <LxSection v-show="hasChords && showChords" id="chords">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-start">
+          <ChordSvg
+            :chord="chord"
+            :instrument="instrument"
+            v-for="chord in chords"
+            :key="chord"
+          ></ChordSvg>
+        </div>
       </LxSection>
       <LxSection id="body">
         <LxRow>

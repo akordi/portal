@@ -18,6 +18,7 @@ Akordi Portal is a Vue.js application that serves as a platform for song lyrics 
 - 🖥️ User-friendly interface with responsive design.
 - 🎸 Guitar and ukulele chord tabs for songs.
 - ⬆️ Transposing chords up and down.
+- 📜 Auto-scrolling for hands-free reading during practice.
 
 ## Technologies Used 🛠️
 
