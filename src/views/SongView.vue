@@ -6,9 +6,10 @@ import {
   LxRow,
   LxSection,
   LxStack,
+  LxContentSwitcher,
   LxButton,
 } from '@wntr/lx-ui';
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -45,6 +46,46 @@ const offsetFormatted = computed(() => {
     return `${bodyTransposedIndex.value}`;
   }
   return '+0'; // + is added just to avoid shift of the text
+});
+
+const autoScrollerSpeedItems = ref([
+  { id: 0, name: 0 },
+  { id: 1, name: 1 },
+  { id: 2, name: 2 },
+  { id: 3, name: 3 },
+  { id: 4, name: 4 },
+  { id: 5, name: 5 },
+]);
+
+const autoScrollerSpeed = ref(0);
+
+const SPEED_TABLE_PX_PER_SEC = [0, 5, 8, 12, 15, 20];
+
+let speedPxPerSec = 0;
+let frameId = null;
+let previousTime = 0;
+let fractionalPixels = 0; // bucket for sub-pixel leftovers
+
+function autoScroll(now) {
+  if (!previousTime) previousTime = now;
+  const dtSeconds = (now - previousTime) / 1000;
+  previousTime = now;
+
+  if (speedPxPerSec > 0) {
+    fractionalPixels += dtSeconds * speedPxPerSec;
+
+    const wholePixels = Math.floor(fractionalPixels); // can equal 0, since fractionalPixels can be less than 0.5
+    if (wholePixels !== 0) {
+      window.scrollBy(0, wholePixels);
+      fractionalPixels -= wholePixels;
+    }
+  }
+
+  frameId = requestAnimationFrame(autoScroll);
+}
+
+watch(autoScrollerSpeed, (level) => {
+  speedPxPerSec = SPEED_TABLE_PX_PER_SEC[level] ?? 0;
 });
 
 const setCanonicalUrl = (canonicalUrl) => {
@@ -114,7 +155,6 @@ const loadSong = async () => {
       }
     }
   } catch (err) {
-    console.log(err);
     notificationStore.pushError('Failed to load song');
     throw err;
   } finally {
@@ -246,9 +286,13 @@ async function actionClicked(actionName) {
 }
 
 onMounted(async () => {
+  frameId = requestAnimationFrame(autoScroll);
   await loadSong();
 });
 onUnmounted(() => {
+  if (frameId) {
+    cancelAnimationFrame(frameId);
+  }
   viewStore.$reset();
 });
 </script>
@@ -511,7 +555,9 @@ onUnmounted(() => {
           />
         </LxStack>
       </template>
-      <template #post-header>{{ item.createdAt }} </template>
+      <template #post-header>
+        {{ item.createdAt }}
+      </template>
       <template #post-header-info>
         <LxRow :label="$t('song.performer')" v-if="item.performers?.length > 0">
           <p class="lx-data">
@@ -543,6 +589,14 @@ onUnmounted(() => {
       <LxSection v-show="hasAbc && showAbc" id="bodyAbc">
         <div id="paper"></div>
         <div id="audio"></div>
+      </LxSection>
+      <LxSection id="autoScroll">
+        <LxRow :label="$t('pages.akordiSongView.autoScroll.label')">
+          <LxContentSwitcher
+            v-model="autoScrollerSpeed"
+            :items="autoScrollerSpeedItems"
+          ></LxContentSwitcher>
+        </LxRow>
       </LxSection>
       <LxSection v-show="hasChords && showChords" id="chords">
         <LxRow>

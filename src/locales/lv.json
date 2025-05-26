@@ -85,6 +85,10 @@
         "label": "Rādīt notis",
         "description": "Rādīt dziesmas notis"
       },
+      "autoScroll": {
+        "label": "Automātiska ritināšana",
+        "description": "Ritināt dziesmas tekstu automātiski, lai sekotu līdzi dziesmas izpildījumam"
+      },
       "showGuitarChords": {
         "label": "Rādīt ģitāras akordus",
         "description": "Rādīt vai slēpt dziesmas akordu tabulutūru ģitārai"
