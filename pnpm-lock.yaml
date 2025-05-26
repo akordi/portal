@@ -24,8 +24,8 @@ importers:
         specifier: ^13.1.0
         version: 13.1.0(vue@3.5.13)
       '@wntr/lx-ui':
-        specifier: 1.9.0-beta.5
-        version: 1.9.0-beta.5(leaflet@1.9.4)(sortablejs@1.14.0)(vue@3.5.13)
+        specifier: 1.9.0-beta.9
+        version: 1.9.0-beta.9(leaflet@1.9.4)(sortablejs@1.14.0)(vue@3.5.13)
       '@zzdats/prettier-config':
         specifier: ^1.0.0
         version: 1.0.0
@@ -966,6 +966,11 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
 
+  '@tiptap/extension-text-align@2.12.0':
+    resolution: {integrity: sha512-ntGjHFPrb9iQ+QGVUr6U53/wcWI/qaAwDyApW7F7GcTpQbmimwUqvUHti1RsSh9nTrQmZD6g8SdRbIR/Y31gOw==}
+    peerDependencies:
+      '@tiptap/core': ^2.7.0
+
   '@tiptap/extension-text-style@2.1.16':
     resolution: {integrity: sha512-s7sd5kqDIhfh0LzyxC7T0tXReXuZwhMIqoMAM2G56UvA1ANLnlvXKRWg3fSqxeFenGRdN1sS23gujybBG/j9pA==}
     peerDependencies:
@@ -1248,8 +1253,8 @@ packages:
     peerDependencies:
       vue: ^3.5.0
 
-  '@wntr/lx-ui@1.9.0-beta.5':
-    resolution: {integrity: sha512-7VpYkfHSoziu0NJYV8558TCsGoJnntm+mlQyMxEbcuVQg2WqpV+EohRaBmeaLM/QsJeuHEJTbK16jFbzfs9J6w==}
+  '@wntr/lx-ui@1.9.0-beta.9':
+    resolution: {integrity: sha512-YdUp+ch49yKS4P7G6/5epZSTfcvdW27bpMrhQ41jabrSFsk2DAMtsdYqDhr/73SI1NtO4DdIYUYPTZXCjgkCVg==}
     peerDependencies:
       vue: ^3.4.15
 
@@ -4883,6 +4888,10 @@ snapshots:
     dependencies:
       '@tiptap/core': 2.11.3(@tiptap/pm@2.1.12)
 
+  '@tiptap/extension-text-align@2.12.0(@tiptap/core@2.11.3(@tiptap/pm@2.1.12))':
+    dependencies:
+      '@tiptap/core': 2.11.3(@tiptap/pm@2.1.12)
+
   '@tiptap/extension-text-style@2.1.16(@tiptap/core@2.11.3(@tiptap/pm@2.1.12))':
     dependencies:
       '@tiptap/core': 2.11.3(@tiptap/pm@2.1.12)
@@ -5241,7 +5250,7 @@ snapshots:
     dependencies:
       vue: 3.5.13
 
-  '@wntr/lx-ui@1.9.0-beta.5(leaflet@1.9.4)(sortablejs@1.14.0)(vue@3.5.13)':
+  '@wntr/lx-ui@1.9.0-beta.9(leaflet@1.9.4)(sortablejs@1.14.0)(vue@3.5.13)':
     dependencies:
       '@braintree/sanitize-url': 7.0.2
       '@floating-ui/vue': 1.1.6(vue@3.5.13)
@@ -5252,6 +5261,7 @@ snapshots:
       '@tiptap/extension-image': 2.2.2(@tiptap/core@2.11.3(@tiptap/pm@2.1.12))
       '@tiptap/extension-link': 2.1.16(@tiptap/core@2.11.3(@tiptap/pm@2.1.12))(@tiptap/pm@2.1.12)
       '@tiptap/extension-placeholder': 2.1.16(@tiptap/core@2.11.3(@tiptap/pm@2.1.12))(@tiptap/pm@2.1.12)
+      '@tiptap/extension-text-align': 2.12.0(@tiptap/core@2.11.3(@tiptap/pm@2.1.12))
       '@tiptap/extension-text-style': 2.1.16(@tiptap/core@2.11.3(@tiptap/pm@2.1.12))
       '@tiptap/extension-underline': 2.4.0(@tiptap/core@2.11.3(@tiptap/pm@2.1.12))
       '@tiptap/pm': 2.1.12

@@ -166,8 +166,6 @@ const userInfo = computed(() => {
   return null;
 });
 
-const theme = ref('auto');
-
 const closeModal = () => {
   idleModalOpened.value = false;
 };
@@ -337,7 +335,6 @@ function idleModalSecondary() {
         :confirmPrimaryButtonBusy="false"
         :confirmPrimaryButtonDestructive="true"
         v-model:notifications="notify.notifications"
-        v-model:theme="theme"
         @confirmModalClosed="confirmModalClosed"
         @go-home="goHome"
         @go-back="goBack"
