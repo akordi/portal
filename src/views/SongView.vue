@@ -1,14 +1,15 @@
 <script setup>
 import {
+  LxButton,
   lxDateUtils,
   LxForm,
   LxLoaderView,
   LxRow,
   LxSection,
-  LxStack,
-  LxButton,
+  LxToolbar,
+  LxToolbarGroup,
 } from '@wntr/lx-ui';
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -47,6 +48,71 @@ const offsetFormatted = computed(() => {
   return '+0'; // + is added just to avoid shift of the text
 });
 
+const autoScrollerSpeed = ref(0);
+
+const autoScrollerSpeedFormatted = computed(() => {
+  if (autoScrollerSpeed.value > 0) {
+    return `+${autoScrollerSpeed.value}`;
+  }
+  return '+0'; // + is added just to avoid shift of the text
+});
+
+const autoScrollerIcon = computed(() => {
+  if (autoScrollerSpeed.value === 1) {
+    return 'status-one-outline';
+  }
+  if (autoScrollerSpeed.value === 2) {
+    return 'status-two-outline';
+  }
+  if (autoScrollerSpeed.value === 3) {
+    return 'status-three-outline';
+  }
+  if (autoScrollerSpeed.value === 4) {
+    return 'status-four-outline';
+  }
+  if (autoScrollerSpeed.value === 5) {
+    return 'status-five-outline';
+  }
+  return 'play';
+});
+
+const autoScrollerUp = () => {
+  if (autoScrollerSpeed.value >= 5) {
+    autoScrollerSpeed.value = 0;
+    return;
+  }
+  autoScrollerSpeed.value += 1;
+};
+
+const SPEED_TABLE_PX_PER_SEC = [0, 5, 8, 12, 15, 20];
+
+let speedPxPerSec = 0;
+let frameId = null;
+let previousTime = 0;
+let fractionalPixels = 0; // bucket for sub-pixel leftovers
+
+function autoScroll(now) {
+  if (!previousTime) previousTime = now;
+  const dtSeconds = (now - previousTime) / 1000;
+  previousTime = now;
+
+  if (speedPxPerSec > 0) {
+    fractionalPixels += dtSeconds * speedPxPerSec;
+
+    const wholePixels = Math.floor(fractionalPixels); // can equal 0, since fractionalPixels can be less than 0.5
+    if (wholePixels !== 0) {
+      window.scrollBy(0, wholePixels);
+      fractionalPixels -= wholePixels;
+    }
+  }
+
+  frameId = requestAnimationFrame(autoScroll);
+}
+
+watch(autoScrollerSpeed, (level) => {
+  speedPxPerSec = SPEED_TABLE_PX_PER_SEC[level] ?? 0;
+});
+
 const setCanonicalUrl = (canonicalUrl) => {
   const link = document.querySelector('link[rel="canonical"]');
   if (link) {
@@ -69,6 +135,7 @@ const loadSong = async () => {
     hasChords.value = item.value.bodyWithMarkup?.indexOf('<b>') !== -1;
     if (hasChords.value) {
       chords.value = chordsService.extractChords(item.value.bodyWithMarkup);
+      chords.value = [...chords.value];
     }
     const pagePath = `/song/${songUrlParam.value}`;
     const canonicalUrl = `${window.location.origin}${pagePath}`;
@@ -114,7 +181,6 @@ const loadSong = async () => {
       }
     }
   } catch (err) {
-    console.log(err);
     notificationStore.pushError('Failed to load song');
     throw err;
   } finally {
@@ -149,40 +215,6 @@ const formActions = computed(() => {
       icon: 'config', // TODO: find better icon
       name: $t('pages.akordiSongView.showUkuleleChords.label'),
       title: $t('pages.akordiSongView.showUkuleleChords.description'),
-      kind: 'additional',
-    },
-    {
-      id: 'transposeUp',
-      icon: 'move-up',
-      name: $t('pages.akordiSongView.transposeUp.label'),
-      title: hasChords.value
-        ? $t('pages.akordiSongView.transposeUp.description')
-        : $t('pages.akordiSongView.transposeDisabled'),
-      disabled: !hasChords.value,
-      kind: 'additional',
-    },
-    {
-      id: 'transposeDown',
-      icon: 'move-down',
-      name: $t('pages.akordiSongView.transposeDown.label'),
-      title: hasChords.value
-        ? $t('pages.akordiSongView.transposeDown.description')
-        : $t('pages.akordiSongView.transposeDisabled'),
-      disabled: !hasChords.value,
-      kind: 'additional',
-    },
-    {
-      id: 'fontUp',
-      icon: 'zoom-in',
-      name: $t('pages.akordiSongView.fontUp.label'),
-      title: $t('pages.akordiSongView.fontUp.description'),
-      kind: 'additional',
-    },
-    {
-      id: 'fontDown',
-      icon: 'zoom-out',
-      name: $t('pages.akordiSongView.fontDown.label'),
-      title: $t('pages.akordiSongView.fontDown.description'),
       kind: 'additional',
     },
   ];
@@ -221,6 +253,9 @@ async function actionClicked(actionName) {
 
   if (actionName === 'transposeUp') {
     bodyTransposedIndex.value += 1;
+    if (bodyTransposedIndex.value > 11) {
+      bodyTransposedIndex.value = 0; // 12 is back to original key
+    }
     item.value.bodyWithMarkup = chordsService.transpose(item.value.body, bodyTransposedIndex.value);
     hasChords.value = item.value.bodyWithMarkup?.indexOf('<b>') !== -1;
     if (hasChords.value) {
@@ -230,6 +265,9 @@ async function actionClicked(actionName) {
   }
   if (actionName === 'transposeDown') {
     bodyTransposedIndex.value -= 1;
+    if (bodyTransposedIndex.value < -11) {
+      bodyTransposedIndex.value = 0; // 12 is back to original key
+    }
     item.value.bodyWithMarkup = chordsService.transpose(item.value.body, bodyTransposedIndex.value);
     hasChords.value = item.value.bodyWithMarkup?.indexOf('<b>') !== -1;
     if (hasChords.value) {
@@ -246,9 +284,13 @@ async function actionClicked(actionName) {
 }
 
 onMounted(async () => {
+  frameId = requestAnimationFrame(autoScroll);
   await loadSong();
 });
 onUnmounted(() => {
+  if (frameId) {
+    cancelAnimationFrame(frameId);
+  }
   viewStore.$reset();
 });
 </script>
@@ -256,6 +298,7 @@ onUnmounted(() => {
 /* Saving precious space by */
 @media (max-width: 600px) {
   .lx-layout.lx-layout-public > main {
+    --gap-form: 0;
     margin-left: 0;
     margin-right: 0;
   }
@@ -263,6 +306,30 @@ onUnmounted(() => {
   .lx-form-grid > .lx-main > .lx-form-section {
     padding: 0.5em;
   }
+
+  /* Hiding toolbar labels on small screens */
+  #songToolbarGroup .toolbar-label {
+    display: none;
+  }
+
+  .lx-form-grid > footer.lx-sticky {
+    padding: 0;
+    gap: 0;
+  }
+}
+
+.lx-divider {
+  border-right: 1px solid var(--color-chrome);
+  height: 100%;
+}
+
+.toolbar-label {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+#chords {
+  margin-bottom: 1em;
 }
 
 /* Some basic CSS to make the Audio controls in abcjs presentable. */
@@ -468,50 +535,99 @@ onUnmounted(() => {
 .lx .abcjs-css-warning {
   display: none;
 }
-
-.lx-form-grid > footer {
-  padding: 0 var(--gap-form);
-}
 </style>
 <template>
   <LxLoaderView :loading="loading">
+    <div v-show="hasChords && showChords" id="chords">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-start">
+        <ChordSvg
+          :chord="chord"
+          :instrument="instrument"
+          v-for="chord in chords"
+          :key="chord"
+        ></ChordSvg>
+      </div>
+    </div>
     <LxForm
-      :sticky-header="true"
-      :show-footer="hasChords"
-      :sticky-footer="true"
       :action-definitions="formActions"
       @button-click="actionClicked"
       :show-post-header-info="true"
+      :show-pre-header-info="true"
       kind="compact"
+      :show-footer="true"
+      :sticky-header="false"
+      :sticky-footer="true"
     >
       <template #footer>
-        <LxStack
-          orientation="horizontal"
-          horizontal-alignment="leading"
-          vertical-alignment="center"
-        >
-          <label class="lx-data">{{
-            $t('pages.akordiSongView.transposeHeader', {
-              offset: offsetFormatted,
-            })
-          }}</label>
-          <LxButton
-            kind="ghost"
-            variant="icon-only"
-            icon="move-up"
-            :label="$t('pages.akordiSongView.transposeUp.label')"
-            @click="actionClicked('transposeUp')"
-          />
-          <LxButton
-            kind="ghost"
-            variant="icon-only"
-            icon="move-down"
-            :label="$t('pages.akordiSongView.transposeDown.label')"
-            @click="actionClicked('transposeDown')"
-          />
-        </LxStack>
+        <LxToolbarGroup id="songToolbarGroup">
+          <LxToolbar :noBorders="true">
+            <template #leftArea>
+              <label class="lx-data toolbar-label">{{
+                $t('pages.akordiSongView.transposeHeader', {
+                  offset: offsetFormatted,
+                })
+              }}</label>
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                icon="move-up"
+                :label="$t('pages.akordiSongView.transposeUp.label')"
+                @click="actionClicked('transposeUp')"
+              />
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                icon="move-down"
+                :label="$t('pages.akordiSongView.transposeDown.label')"
+                @click="actionClicked('transposeDown')"
+              />
+              <div class="lx-divider"></div>
+              <label class="lx-data toolbar-label">{{
+                $t('pages.akordiSongView.fontUp.label')
+              }}</label>
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                icon="zoom-in"
+                :label="$t('pages.akordiSongView.fontUp.label')"
+                @click="actionClicked('fontUp')"
+              />
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                icon="zoom-out"
+                :label="$t('pages.akordiSongView.fontDown.label')"
+                @click="actionClicked('fontDown')"
+              />
+              <div class="lx-divider"></div>
+
+              <label class="lx-data toolbar-label">{{
+                $t('pages.akordiSongView.autoScroll.label', {
+                  speed: autoScrollerSpeedFormatted,
+                })
+              }}</label>
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                :icon="autoScrollerIcon"
+                :active="autoScrollerSpeed > 0"
+                :label="$t('pages.akordiSongView.autoScroll.playDescription')"
+                @click="autoScrollerUp"
+              />
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                icon="stop"
+                :label="$t('pages.akordiSongView.autoScroll.stopDescription')"
+                @click="autoScrollerSpeed = 0"
+              />
+            </template>
+          </LxToolbar>
+        </LxToolbarGroup>
       </template>
-      <template #post-header>{{ item.createdAt }} </template>
+      <template #post-header>
+        {{ item.createdAt }}
+      </template>
       <template #post-header-info>
         <LxRow :label="$t('song.performer')" v-if="item.performers?.length > 0">
           <p class="lx-data">
@@ -543,18 +659,6 @@ onUnmounted(() => {
       <LxSection v-show="hasAbc && showAbc" id="bodyAbc">
         <div id="paper"></div>
         <div id="audio"></div>
-      </LxSection>
-      <LxSection v-show="hasChords && showChords" id="chords">
-        <LxRow>
-          <div style="display: flex; flex-wrap: wrap">
-            <ChordSvg
-              :chord="chord"
-              :instrument="instrument"
-              v-for="chord in chords"
-              :key="chord"
-            ></ChordSvg>
-          </div>
-        </LxRow>
       </LxSection>
       <LxSection id="body">
         <LxRow>
