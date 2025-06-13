@@ -318,7 +318,7 @@ onUnmounted(() => {
   }
 }
 
-.lx-divider {
+.lx-footer-slot .lx-divider {
   border-right: 1px solid var(--color-chrome);
   height: 100%;
 }
