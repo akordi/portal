@@ -7,7 +7,7 @@ import { useRoute, useRouter } from 'vue-router';
 import CoverBackground from '@/components/CoverBackground.vue';
 import { invoke, until, useIdle, useIntervalFn } from '@vueuse/core';
 import { LxModal, LxShell } from '@wntr/lx-ui';
-import { useConsent } from 'vue-gtag';
+import { addGtag, consentGrantedAll, useConsent } from 'vue-gtag';
 
 import useErrors from '@/hooks/useErrors';
 import useAppStore from '@/stores/useAppStore';
@@ -105,6 +105,12 @@ onMounted(() => {
     cookieConsentModal.value.open();
   }
 });
+
+async function accept() {
+  await addGtag();
+  await consentGrantedAll('update');
+  cookieConsentModal.value.close();
+}
 
 const systemName = computed(() => $t('title.shortName'));
 const pageTitle = computed(() => viewStore.title || $t(router.currentRoute.value.meta.title));
@@ -365,7 +371,7 @@ function idleModalSecondary() {
         size="s"
         :button-primary-visible="true"
         :button-primary-label="$t('cookieConsent.accept')"
-        @primary-action="acceptAll"
+        @primary-action="accept"
         :button-secondary-visible="true"
         :button-secondary-label="$t('cookieConsent.reject')"
         @secondary-action="rejectAll"
