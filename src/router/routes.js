@@ -63,7 +63,7 @@ const routes = [
         path: '/akordi/artists',
         name: 'akordiArtistList',
         meta: {
-          title: 'pages.akordiArtistList.title',
+          title: 'pages.akordiArtistLetter.title',
           anonymous: true,
         },
         component: () => import('@/views/ArtistList.vue'),

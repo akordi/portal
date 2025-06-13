@@ -6,4 +6,5 @@ onlyBuiltDependencies:
   - core-js-pure
   - esbuild
   - exifreader
+  - unrs-resolver
   - vue-demi
