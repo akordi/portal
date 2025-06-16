@@ -84,33 +84,76 @@ const autoScrollerUp = () => {
   autoScrollerSpeed.value += 1;
 };
 
-const SPEED_TABLE_PX_PER_SEC = [0, 5, 8, 12, 15, 20];
-
-let speedPxPerSec = 0;
-let frameId = null;
-let previousTime = 0;
-let fractionalPixels = 0; // bucket for sub-pixel leftovers
-
-function autoScroll(now) {
-  if (!previousTime) previousTime = now;
-  const dtSeconds = (now - previousTime) / 1000;
-  previousTime = now;
-
-  if (speedPxPerSec > 0) {
-    fractionalPixels += dtSeconds * speedPxPerSec;
-
-    const wholePixels = Math.floor(fractionalPixels); // can equal 0, since fractionalPixels can be less than 0.5
-    if (wholePixels !== 0) {
-      window.scrollBy(0, wholePixels);
-      fractionalPixels -= wholePixels;
-    }
-  }
-
-  frameId = requestAnimationFrame(autoScroll);
+function levelToPxSpeed(level) {
+  const basePxByLevel = {
+    1: 10,
+    2: 20,
+    3: 40,
+    4: 60,
+    5: 80,
+  };
+  const pixelsPerStep = basePxByLevel[level] || 0;
+  return pixelsPerStep;
 }
 
+const TARGET_FPS = 60;
+const FRAME_INTERVAL = 1000 / TARGET_FPS;
+
+let speedPxPerSec = 0;
+let rafId = null;
+let lastFrame = null;
+let restartingTimeout = null;
+const timeoutLength = 600; // ms
+let leftover = 0;
+
+function frame(now) {
+  if (!lastFrame) lastFrame = now;
+
+  const elapsed = now - lastFrame;
+
+  const dist = speedPxPerSec * (elapsed / 1000) + leftover;
+  const whole = Math.trunc(dist);
+  leftover = dist - whole;
+
+  if (whole) window.scrollBy({ top: whole, behavior: 'instant' });
+
+  lastFrame = now - (elapsed % FRAME_INTERVAL);
+
+  rafId = requestAnimationFrame(frame);
+}
+
+function stopAutoScroll() {
+  cancelAnimationFrame(rafId);
+  rafId = null;
+  lastFrame = null;
+}
+
+function startAutoScroll() {
+  stopAutoScroll();
+  lastFrame = null;
+  rafId = requestAnimationFrame(frame);
+}
+
+// Stop on any manual scroll gesture
+['wheel', 'touchstart', 'keydown'].forEach((evt) =>
+  window.addEventListener(evt, stopAutoScroll, { passive: true })
+);
+
+// Resume scrolling after 600 ms of inactivity:
+window.addEventListener(
+  'scroll',
+  () => {
+    clearTimeout(restartingTimeout);
+    if (!rafId) {
+      restartingTimeout = setTimeout(() => startAutoScroll(), timeoutLength);
+    }
+  },
+  { passive: true }
+);
+
 watch(autoScrollerSpeed, (level) => {
-  speedPxPerSec = SPEED_TABLE_PX_PER_SEC[level] ?? 0;
+  speedPxPerSec = levelToPxSpeed(level);
+  startAutoScroll();
 });
 
 const setCanonicalUrl = (canonicalUrl) => {
@@ -284,13 +327,10 @@ async function actionClicked(actionName) {
 }
 
 onMounted(async () => {
-  frameId = requestAnimationFrame(autoScroll);
   await loadSong();
 });
 onUnmounted(() => {
-  if (frameId) {
-    cancelAnimationFrame(frameId);
-  }
+  stopAutoScroll();
   viewStore.$reset();
 });
 </script>
