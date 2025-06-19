@@ -49,6 +49,16 @@ const offsetFormatted = computed(() => {
 });
 
 const autoScrollerSpeed = ref(0);
+const TARGET_FPS = 60;
+const FRAME_INTERVAL = 1000 / TARGET_FPS;
+
+let speedPxPerSec = 0;
+let rafId = null;
+let lastFrame = null;
+let restartingTimeout = null;
+const timeoutLength = 400; // ms
+let leftover = 0;
+const pauseAutoScroll = ref(false);
 
 const autoScrollerSpeedFormatted = computed(() => {
   if (autoScrollerSpeed.value > 0) {
@@ -96,16 +106,6 @@ function levelToPxSpeed(level) {
   return pixelsPerStep;
 }
 
-const TARGET_FPS = 60;
-const FRAME_INTERVAL = 1000 / TARGET_FPS;
-
-let speedPxPerSec = 0;
-let rafId = null;
-let lastFrame = null;
-let restartingTimeout = null;
-const timeoutLength = 600; // ms
-let leftover = 0;
-
 function frame(now) {
   if (!lastFrame) lastFrame = now;
 
@@ -122,21 +122,27 @@ function frame(now) {
   rafId = requestAnimationFrame(frame);
 }
 
-function stopAutoScroll() {
+function resetAnimationFrames() {
   cancelAnimationFrame(rafId);
   rafId = null;
   lastFrame = null;
 }
 
+function stopAutoScroll() {
+  speedPxPerSec = 0;
+  autoScrollerSpeed.value = 0;
+  resetAnimationFrames();
+}
+
 function startAutoScroll() {
-  stopAutoScroll();
-  lastFrame = null;
+  pauseAutoScroll.value = false;
+  resetAnimationFrames();
   rafId = requestAnimationFrame(frame);
 }
 
 // Stop on any manual scroll gesture
 ['wheel', 'touchstart', 'keydown'].forEach((evt) =>
-  window.addEventListener(evt, stopAutoScroll, { passive: true })
+  window.addEventListener(evt, resetAnimationFrames, { passive: true })
 );
 
 // Resume scrolling after 600 ms of inactivity:
@@ -144,7 +150,8 @@ window.addEventListener(
   'scroll',
   () => {
     clearTimeout(restartingTimeout);
-    if (!rafId) {
+    if (!rafId && autoScrollerSpeed.value > 0) {
+      pauseAutoScroll.value = true;
       restartingTimeout = setTimeout(() => startAutoScroll(), timeoutLength);
     }
   },
@@ -639,7 +646,7 @@ onUnmounted(() => {
               <LxButton
                 kind="ghost"
                 variant="icon-only"
-                :icon="autoScrollerIcon"
+                :icon="pauseAutoScroll ? 'warning' : autoScrollerIcon"
                 :active="autoScrollerSpeed > 0"
                 :label="$t('pages.akordiSongView.autoScroll.playDescription')"
                 @click="autoScrollerUp"
