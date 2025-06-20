@@ -147,28 +147,39 @@ function shouldIgnoreEvent(event) {
   return false;
 }
 
-const handleManualScrollGesture = (event) => {
+const handleScrollInterruption = (event) => {
   if (shouldIgnoreEvent(event)) {
     return;
   }
   resetAnimationFrames();
 };
-
-const handleScroll = () => {
+const handleScrollRestart = () => {
   clearTimeout(restartingTimeout);
   if (!rafId && autoScrollerSpeed.value > 0) {
     pauseAutoScroll.value = true;
     restartingTimeout = setTimeout(() => startAutoScroll(), timeoutLength);
   }
 };
-
-// Stop on any manual scroll gesture
-['wheel', 'touchstart', 'keydown'].forEach((evt) =>
-  window.addEventListener(evt, handleManualScrollGesture, { passive: true })
-);
-
-// Resume scrolling after timeout of inactivity:
-window.addEventListener('scroll', handleScroll, { passive: true });
+// Store event listeners for cleanup
+const eventListeners = [];
+// Add event listeners with stored references
+const addEventListeners = () => {
+  // Stop on any manual scroll gesture
+  ['wheel', 'touchstart', 'keydown'].forEach((evt) => {
+    window.addEventListener(evt, handleScrollInterruption, { passive: true });
+    eventListeners.push({ event: evt, handler: handleScrollInterruption });
+  });
+  // Resume scrolling after inactivity
+  window.addEventListener('scroll', handleScrollRestart, { passive: true });
+  eventListeners.push({ event: 'scroll', handler: handleScrollRestart });
+};
+// Remove all event listeners
+const removeEventListeners = () => {
+  eventListeners.forEach(({ event, handler }) => {
+    window.removeEventListener(event, handler);
+  });
+  eventListeners.length = 0;
+};
 
 watch(autoScrollerSpeed, (level) => {
   speedPxPerSec = levelToPxSpeed(level);
@@ -346,15 +357,13 @@ async function actionClicked(actionName) {
 }
 
 onMounted(async () => {
+  addEventListeners();
   await loadSong();
 });
+
 onUnmounted(() => {
-  ['wheel', 'touchstart', 'keydown'].forEach((evt) =>
-    window.removeEventListener(evt, handleManualScrollGesture, { passive: true })
-  );
-
-  window.removeEventListener('scroll', handleScroll, { passive: true });
-
+  removeEventListeners();
+  clearTimeout(restartingTimeout);
   stopAutoScroll();
   viewStore.$reset();
 });
