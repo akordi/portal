@@ -140,23 +140,42 @@ function startAutoScroll() {
   rafId = requestAnimationFrame(frame);
 }
 
-// Stop on any manual scroll gesture
-['wheel', 'touchstart', 'keydown'].forEach((evt) =>
-  window.addEventListener(evt, resetAnimationFrames, { passive: true })
-);
+// Event handlers for auto-scroll interruption
+const handleScrollInterruption = () => {
+  resetAnimationFrames();
+};
 
-// Resume scrolling after 600 ms of inactivity:
-window.addEventListener(
-  'scroll',
-  () => {
-    clearTimeout(restartingTimeout);
-    if (!rafId && autoScrollerSpeed.value > 0) {
-      pauseAutoScroll.value = true;
-      restartingTimeout = setTimeout(() => startAutoScroll(), timeoutLength);
-    }
-  },
-  { passive: true }
-);
+const handleScrollRestart = () => {
+  clearTimeout(restartingTimeout);
+  if (!rafId && autoScrollerSpeed.value > 0) {
+    pauseAutoScroll.value = true;
+    restartingTimeout = setTimeout(() => startAutoScroll(), timeoutLength);
+  }
+};
+
+// Store event listeners for cleanup
+const eventListeners = [];
+
+// Add event listeners with stored references
+const addEventListeners = () => {
+  // Stop on any manual scroll gesture
+  ['wheel', 'touchstart', 'keydown'].forEach((evt) => {
+    window.addEventListener(evt, handleScrollInterruption, { passive: true });
+    eventListeners.push({ event: evt, handler: handleScrollInterruption });
+  });
+
+  // Resume scrolling after inactivity
+  window.addEventListener('scroll', handleScrollRestart, { passive: true });
+  eventListeners.push({ event: 'scroll', handler: handleScrollRestart });
+};
+
+// Remove all event listeners
+const removeEventListeners = () => {
+  eventListeners.forEach(({ event, handler }) => {
+    window.removeEventListener(event, handler);
+  });
+  eventListeners.length = 0;
+};
 
 watch(autoScrollerSpeed, (level) => {
   speedPxPerSec = levelToPxSpeed(level);
@@ -335,9 +354,13 @@ async function actionClicked(actionName) {
 
 onMounted(async () => {
   await loadSong();
+  addEventListeners();
 });
+
 onUnmounted(() => {
   stopAutoScroll();
+  removeEventListeners();
+  clearTimeout(restartingTimeout);
   viewStore.$reset();
 });
 </script>
@@ -646,7 +669,7 @@ onUnmounted(() => {
               <LxButton
                 kind="ghost"
                 variant="icon-only"
-                :icon="pauseAutoScroll ? 'warning' : autoScrollerIcon"
+                :icon="pauseAutoScroll ? 'pause' : autoScrollerIcon"
                 :active="autoScrollerSpeed > 0"
                 :label="$t('pages.akordiSongView.autoScroll.playDescription')"
                 @click="autoScrollerUp"
