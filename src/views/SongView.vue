@@ -49,6 +49,16 @@ const offsetFormatted = computed(() => {
 });
 
 const autoScrollerSpeed = ref(0);
+const TARGET_FPS = 60;
+const FRAME_INTERVAL = 1000 / TARGET_FPS;
+
+let speedPxPerSec = 0;
+let rafId = null;
+let lastFrame = null;
+let restartingTimeout = null;
+const timeoutLength = 400; // ms
+let leftover = 0;
+const pauseAutoScroll = ref(false);
 
 const autoScrollerSpeedFormatted = computed(() => {
   if (autoScrollerSpeed.value > 0) {
@@ -96,16 +106,6 @@ function levelToPxSpeed(level) {
   return pixelsPerStep;
 }
 
-const TARGET_FPS = 60;
-const FRAME_INTERVAL = 1000 / TARGET_FPS;
-
-let speedPxPerSec = 0;
-let rafId = null;
-let lastFrame = null;
-let restartingTimeout = null;
-const timeoutLength = 600; // ms
-let leftover = 0;
-
 function frame(now) {
   if (!lastFrame) lastFrame = now;
 
@@ -122,34 +122,64 @@ function frame(now) {
   rafId = requestAnimationFrame(frame);
 }
 
-function stopAutoScroll() {
+function resetAnimationFrames() {
   cancelAnimationFrame(rafId);
   rafId = null;
   lastFrame = null;
 }
 
+function stopAutoScroll() {
+  speedPxPerSec = 0;
+  autoScrollerSpeed.value = 0;
+  resetAnimationFrames();
+}
+
 function startAutoScroll() {
-  stopAutoScroll();
-  lastFrame = null;
+  pauseAutoScroll.value = false;
+  resetAnimationFrames();
   rafId = requestAnimationFrame(frame);
 }
 
-// Stop on any manual scroll gesture
-['wheel', 'touchstart', 'keydown'].forEach((evt) =>
-  window.addEventListener(evt, stopAutoScroll, { passive: true })
-);
+function shouldIgnoreEvent(event) {
+  if (event.target && (event.target.matches('.lx-button') || event.target.closest('.lx-button'))) {
+    return true;
+  }
+  return false;
+}
 
-// Resume scrolling after 600 ms of inactivity:
-window.addEventListener(
-  'scroll',
-  () => {
-    clearTimeout(restartingTimeout);
-    if (!rafId) {
-      restartingTimeout = setTimeout(() => startAutoScroll(), timeoutLength);
-    }
-  },
-  { passive: true }
-);
+const handleScrollInterruption = (event) => {
+  if (shouldIgnoreEvent(event)) {
+    return;
+  }
+  resetAnimationFrames();
+};
+const handleScrollRestart = () => {
+  clearTimeout(restartingTimeout);
+  if (!rafId && autoScrollerSpeed.value > 0) {
+    pauseAutoScroll.value = true;
+    restartingTimeout = setTimeout(() => startAutoScroll(), timeoutLength);
+  }
+};
+// Store event listeners for cleanup
+const eventListeners = [];
+// Add event listeners with stored references
+const addEventListeners = () => {
+  // Stop on any manual scroll gesture
+  ['wheel', 'touchstart', 'keydown'].forEach((evt) => {
+    window.addEventListener(evt, handleScrollInterruption, { passive: true });
+    eventListeners.push({ event: evt, handler: handleScrollInterruption });
+  });
+  // Resume scrolling after inactivity
+  window.addEventListener('scroll', handleScrollRestart, { passive: true });
+  eventListeners.push({ event: 'scroll', handler: handleScrollRestart });
+};
+// Remove all event listeners
+const removeEventListeners = () => {
+  eventListeners.forEach(({ event, handler }) => {
+    window.removeEventListener(event, handler);
+  });
+  eventListeners.length = 0;
+};
 
 watch(autoScrollerSpeed, (level) => {
   speedPxPerSec = levelToPxSpeed(level);
@@ -327,9 +357,13 @@ async function actionClicked(actionName) {
 }
 
 onMounted(async () => {
+  addEventListeners();
   await loadSong();
 });
+
 onUnmounted(() => {
+  removeEventListeners();
+  clearTimeout(restartingTimeout);
   stopAutoScroll();
   viewStore.$reset();
 });
@@ -639,7 +673,7 @@ onUnmounted(() => {
               <LxButton
                 kind="ghost"
                 variant="icon-only"
-                :icon="autoScrollerIcon"
+                :icon="pauseAutoScroll ? 'pause' : autoScrollerIcon"
                 :active="autoScrollerSpeed > 0"
                 :label="$t('pages.akordiSongView.autoScroll.playDescription')"
                 @click="autoScrollerUp"
