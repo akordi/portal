@@ -148,7 +148,6 @@ function shouldIgnoreEvent(event) {
 }
 
 const handleManualScrollGesture = (event) => {
-  // Skip if event is from specific buttons or elements
   if (shouldIgnoreEvent(event)) {
     return;
   }
