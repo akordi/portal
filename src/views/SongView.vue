@@ -735,7 +735,7 @@ onUnmounted(() => {
         </div>
       </LxSection>
       <LxSection id="body">
-        <LxRow>
+        <LxRow :style="{ overflow: 'visible !important' }">
           <p class="pre" v-html="item.bodyWithMarkup" :style="{ fontSize: fontSize + 'em' }"></p>
         </LxRow>
       </LxSection>
