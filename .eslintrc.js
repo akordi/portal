@@ -38,17 +38,7 @@ module.exports = {
         patterns: ['.*'],
       },
     ],
-    'vue/html-indent': [
-      'error',
-      2,
-      {
-        attribute: 1,
-        baseIndent: 1,
-        closeBracket: 0,
-        alignAttributesVertically: true,
-        ignores: [],
-      },
-    ],
+    'vue/html-indent': ['off'], // leave it to prettier
     'vue/multi-word-component-names': 'off',
     'vuejs-accessibility/label-has-for': 'off',
     'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: ['state'] }],
