@@ -13,13 +13,13 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
+import abcjs from 'abcjs';
+import { pageview } from 'vue-gtag';
 import ChordSvg from '@/components/ChordSvg.vue';
 import akordiService from '@/services/akordiService';
 import chordsService from '@/services/chordsService';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
-import abcjs from 'abcjs';
-import { pageview } from 'vue-gtag';
 
 const translate = useI18n();
 const $t = translate.t;
@@ -369,6 +369,15 @@ onUnmounted(() => {
 });
 </script>
 <style>
+#song-view-form .lx-main {
+  overflow-x: auto;
+}
+
+#song-view-form .pre {
+  white-space: pre;
+  font-family: monospace;
+}
+
 /* Saving precious space by */
 @media (max-width: 600px) {
   .lx-layout.lx-layout-public > main {
@@ -613,6 +622,7 @@ onUnmounted(() => {
 <template>
   <LxLoaderView :loading="loading">
     <LxForm
+      id="song-view-form"
       :action-definitions="formActions"
       @button-click="actionClicked"
       :show-post-header-info="true"
@@ -735,9 +745,7 @@ onUnmounted(() => {
         </div>
       </LxSection>
       <LxSection id="body">
-        <LxRow>
-          <p class="pre" v-html="item.bodyWithMarkup" :style="{ fontSize: fontSize + 'em' }"></p>
-        </LxRow>
+        <p class="pre" v-html="item.bodyWithMarkup" :style="{ fontSize: fontSize + 'em' }"></p>
       </LxSection>
     </LxForm>
   </LxLoaderView>

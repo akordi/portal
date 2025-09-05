@@ -19,12 +19,3 @@
 .lx-cover .lx-logo img {
   display: block;
 }
-
-.lx-form-grid>.lx-main {
-  overflow-x: auto;
-}
-
-.pre {
-  white-space: pre;
-  font-family: monospace;
-}
