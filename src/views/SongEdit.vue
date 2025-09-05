@@ -298,7 +298,7 @@ onUnmounted(() => {
         id-attribute="id"
         name-attribute="title"
         kind="multiple"
-        variant="tags"
+        variant="dropdown"
         :preloaded-items="preloadedTags"
       />
     </LxRow>
