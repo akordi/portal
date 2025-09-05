@@ -63,7 +63,7 @@ onMounted(async () => {
         :to="{ name: 'songListNew' }"
       />
       <LxTile
-        icon="star-filled"
+        icon="star"
         :label="$t('pages.songListTop.title')"
         :description="$t('pages.songListTop.description')"
         :to="{ name: 'songListTop' }"
