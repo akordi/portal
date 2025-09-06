@@ -8,6 +8,7 @@ import { useRoute, useRouter } from 'vue-router';
 import akordiService from '@/services/akordiService';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
+import { useHead } from '@vueuse/head';
 
 const router = useRouter();
 const route = useRoute();
@@ -45,6 +46,7 @@ const loadSongs = async () => {
     if (page.value === 0) {
       items.value = [];
     }
+
     items.value.push(
       ...resp.data.content.map((song) => ({
         ...song,
@@ -52,6 +54,20 @@ const loadSongs = async () => {
         clickable: true,
       }))
     );
+
+    const pageTitle = `Tematiskās dziesmas ${tag.value.title}`;
+    const songTitles = items.value.slice(0, 10).map((song) => song.title).join(', ');
+    const metaDescription = `Dziesmas ar akordiem un tabulatūrām ${songTitles}`;
+
+    useHead({
+      title: pageTitle,
+      meta: [
+        { name: 'description', content: metaDescription },
+        { property: 'og:title', content: pageTitle },
+        { property: 'og:description', content: metaDescription }
+      ],
+    });
+
     hasMore.value = resp.data.totalElements > items.value.length;
   } catch (err) {
     console.log(err);
@@ -83,16 +99,7 @@ onUnmounted(() => {
 </script>
 <template>
   <LxLoader :loading="loading" />
-  <LxList
-    id="id"
-    list-type="2"
-    v-model:items="items"
-    primary-attribute="title"
-    secondary-attribute="description"
-    @action-click="actionClicked"
-    :show-load-more="hasMore"
-    @load-more="loadMore"
-    :loading="loading"
-  >
+  <LxList id="id" list-type="2" v-model:items="items" primary-attribute="title" secondary-attribute="description"
+    @action-click="actionClicked" :show-load-more="hasMore" @load-more="loadMore" :loading="loading">
   </LxList>
 </template>

@@ -7,6 +7,7 @@ import { useRoute, useRouter } from 'vue-router';
 import akordiService from '@/services/akordiService';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
+import { useHead } from '@vueuse/head';
 
 const router = useRouter();
 const route = useRoute();
@@ -35,6 +36,20 @@ const loadArtist = async () => {
       description: song.mainArtist.title,
       clickable: true,
     }));
+
+    const pageTitle = `${artistResp.data.title} dziesmas`;
+    const songTitles = items.value.slice(0, 10).map((song) => song.title).join(', ');
+    const metaDescription = `Dziesmas ar akordiem un tabulatūrām ${songTitles}`;
+
+    useHead({
+      title: pageTitle,
+      meta: [
+        { name: 'description', content: metaDescription },
+        { property: 'og:title', content: pageTitle },
+        { property: 'og:description', content: metaDescription }
+      ],
+    });
+
   } catch (err) {
     console.log(err);
     notificationStore.pushError('Failed to load songs');
@@ -57,14 +72,7 @@ onMounted(async () => {
 </script>
 <template>
   <LxLoader :loading="loading" />
-  <LxList
-    v-if="!loading"
-    id="id"
-    list-type="2"
-    v-model:items="items"
-    primary-attribute="title"
-    secondary-attribute="description"
-    @action-click="actionClicked"
-  >
+  <LxList v-if="!loading" id="id" list-type="2" v-model:items="items" primary-attribute="title"
+    secondary-attribute="description" @action-click="actionClicked">
   </LxList>
 </template>

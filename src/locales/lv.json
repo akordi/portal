@@ -5,7 +5,8 @@
     "fullName": "Akordi.lv",
     "fullNameFormatted": "Akordi.lv",
     "subheader": "Dziesmu vārdu, akordu un tabu krātuve",
-    "shortName": "Akordi"
+    "shortName": "Akordi",
+    "description": "Meklējiet akordus un dziesmu vārdus latviešu dziesmām un atrodiet tūkstošiem populāru dziesmu datubāzē."
   },
   "shell": {
     "userProfile": "Skatīt profilu",
