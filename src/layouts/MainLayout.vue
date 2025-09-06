@@ -334,6 +334,7 @@ function idleModalSecondary() {
         :has-alerts="false"
         :has-help="false"
         :has-theme-picker="true"
+        :hideHeaderText="!viewStore?.isHeaderShown"
         :navigating="appStore.$state.isNavigating"
         :showIdleModal="idleModalOpened"
         :secondsToLive="authStore.session.secondsToLive"

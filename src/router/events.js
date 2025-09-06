@@ -1,5 +1,6 @@
 import useAppStore from '@/stores/useAppStore';
 import useAuthStore from '@/stores/useAuthStore';
+import useViewStore from '@/stores/useViewStore';
 
 import { lxFlowUtils } from '@wntr/lx-ui';
 
@@ -29,6 +30,10 @@ export default (router) => {
   });
   router.afterEach(async (to, from) => {
     const appStore = useAppStore();
+    const viewStore = useViewStore();
+
+    viewStore.$reset();
     await lxFlowUtils.afterEach(to, from, appStore);
+    lxFlowUtils.removeFocus();
   });
 };
