@@ -14,6 +14,13 @@ import packageJson from './package.json';
 // https://vitejs.dev/config/server-options.html#server-host
 dns.setDefaultResultOrder('ipv4first');
 
+const CONFIG = {
+  appName: 'Akordi.lv',
+  appTitle: 'Dziesmu vārdu, akordu un tabu krātuve',
+  appDescription:
+    'Meklējiet akordus un dziesmu vārdus latviešu dziesmām un atrodiet tūkstošiem populāru dziesmu datubāzē.',
+};
+
 /**
  * @param { ReturnType<getEnvVariables> } env
  * @returns { import('vite').ServerOptions }
@@ -51,8 +58,9 @@ const getEnvVariables = (mode, serving) => {
   const envVariables = {
     VUE_APP_VERSION: `${packageJson.version}`,
     VUE_APP_ENVIRONMENT: serving ? 'local' : env.NODE_ENV,
-    VUE_APP_NAME: env.APP_NAME,
-    VUE_APP_DESCRIPTION: env.APP_DESCRIPTION,
+    VUE_APP_NAME: CONFIG.appName,
+    VUE_APP_TITLE: CONFIG.appTitle,
+    VUE_APP_DESCRIPTION: CONFIG.appDescription,
     VUE_APP_AUTH_URL: env.AUTH_URL,
     VUE_APP_SERVICE_URL: env.SERVICE_URL,
     VUE_APP_GTAG_ENABLED: env.GTAG_ENABLED,

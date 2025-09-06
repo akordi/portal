@@ -27,28 +27,31 @@
       href="<%= BASE_URL %>favicon.ico"
       type="image/x-icon"
     />
-    <link rel="icon" href="<%= BASE_URL %>icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="<%= BASE_URL %>imgs/icon.svg" type="image/svg+xml" />
 
     <meta
       name="theme-color"
-      content="#222222"
+      content="#1483fb"
       media="(prefers-color-scheme: dark)"
     />
     <meta
       name="theme-color"
-      content="#222222"
+      content="#07004d"
       media="(prefers-color-scheme: light)"
     />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%= BASE_URL %>" />
-    <meta property="og:title" content="<%= VUE_APP_NAME %>" />
-    <meta property="og:image" content="<%= BASE_URL %>meta/og.png" />
+    <meta property="og:title" content="<%= VUE_APP_TITLE %>" />
+    <meta property="og:image" content="<%= BASE_URL %>imgs/og.png" />
     <meta property="og:description" content="<%= VUE_APP_DESCRIPTION %>" />
     <meta property="og:site_name" content="<%= VUE_APP_NAME %>" />
 
+    <meta name="title" content="<%= VUE_APP_TITLE %>" />
+    <meta name="description" content="<%= VUE_APP_DESCRIPTION %>" />    
+
     <title><%= VUE_APP_NAME %></title>
-    <!-- <script src="/V3_0_0_eparaksts-hwcrypto.js"></script> -->
+
     <script>
       window.config = {
         publicUrl: "<%= BASE_URL %>",
