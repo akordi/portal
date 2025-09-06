@@ -4,10 +4,10 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 // ToDo: develop login & get session
 // eslint-disable-next-line no-unused-vars
+import CookiesConsent from '@/components/CookiesConsent.vue';
 import CoverBackground from '@/components/CoverBackground.vue';
 import { invoke, until, useIdle, useIntervalFn } from '@vueuse/core';
-import { LxModal, LxShell } from '@wntr/lx-ui';
-import { addGtag, consentGrantedAll, useConsent } from 'vue-gtag';
+import { LxShell } from '@wntr/lx-ui';
 
 import useErrors from '@/hooks/useErrors';
 import useAppStore from '@/stores/useAppStore';
@@ -29,8 +29,6 @@ const secondsToIdle = 10;
 const secondsCheckApiInterval = 30;
 
 const { idle } = useIdle(secondsToIdle * 1000);
-
-const { acceptAll, rejectAll, hasConsent } = useConsent();
 
 const idleModalOpened = ref(false);
 const translate = useI18n();
@@ -97,20 +95,9 @@ const bodyObserver = new MutationObserver((mutationsList) => {
     }
   }
 });
-const cookieConsentModal = ref(null);
 onMounted(() => {
-  // Observe when the html body element class changes so we can reliably detect which theme is active
   bodyObserver?.observe(document.body, { attributes: true });
-  if (!hasConsent.value) {
-    cookieConsentModal.value.open();
-  }
 });
-
-async function accept() {
-  await addGtag();
-  await consentGrantedAll('update');
-  cookieConsentModal.value.close();
-}
 
 const systemName = computed(() => $t('title.shortName'));
 const pageTitle = computed(() => viewStore.title || $t(router.currentRoute.value.meta.title));
@@ -364,21 +351,11 @@ function idleModalSecondary() {
           <img id="logo-contrast" src="/imgs/logo-50-contrast.svg" alt="Logo" />
         </template>
 
+        <template #footer>
+          <CookiesConsent />
+        </template>
         <router-view />
       </LxShell>
-      <LxModal
-        ref="cookieConsentModal"
-        :label="$t('cookieConsent.title')"
-        size="s"
-        :button-primary-visible="true"
-        :button-primary-label="$t('cookieConsent.accept')"
-        @primary-action="accept"
-        :button-secondary-visible="true"
-        :button-secondary-label="$t('cookieConsent.reject')"
-        @secondary-action="rejectAll"
-      >
-        <p style="white-space: pre-wrap">{{ $t('cookieConsent.description') }}</p>
-      </LxModal>
     </div>
   </div>
 </template>
