@@ -8,6 +8,7 @@ import lv from '@/locales/lv.json';
 import events from '@/router/events';
 import { createLx } from '@wntr/lx-ui';
 import { createGtag } from 'vue-gtag';
+import { createHead } from '@vueuse/head';
 
 import '@wntr/lx-ui/dist/styles/lx-reset.css';
 import '@wntr/lx-ui/dist/styles/lx-fonts-carbon.css';
@@ -90,5 +91,7 @@ if (window.config.gtagEnabled && window.config.gtagId) {
   });
   myApp.use(gtag);
 }
+const head = createHead();
+myApp.use(head);
 
 myApp.mount('#app');
