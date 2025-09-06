@@ -38,7 +38,10 @@ const loadArtist = async () => {
     }));
 
     const pageTitle = `${artistResp.data.title} dziesmas`;
-    const songTitles = items.value.slice(0, 10).map((song) => song.title).join(', ');
+    const songTitles = items.value
+      .slice(0, 10)
+      .map((song) => song.title)
+      .join(', ');
     const metaDescription = `Dziesmas ar akordiem un tabulatūrām ${songTitles}`;
 
     useHead({
@@ -46,10 +49,9 @@ const loadArtist = async () => {
       meta: [
         { name: 'description', content: metaDescription },
         { property: 'og:title', content: pageTitle },
-        { property: 'og:description', content: metaDescription }
+        { property: 'og:description', content: metaDescription },
       ],
     });
-
   } catch (err) {
     console.log(err);
     notificationStore.pushError('Failed to load songs');
@@ -72,7 +74,14 @@ onMounted(async () => {
 </script>
 <template>
   <LxLoader :loading="loading" />
-  <LxList v-if="!loading" id="id" list-type="2" v-model:items="items" primary-attribute="title"
-    secondary-attribute="description" @action-click="actionClicked">
+  <LxList
+    v-if="!loading"
+    id="id"
+    list-type="2"
+    v-model:items="items"
+    primary-attribute="title"
+    secondary-attribute="description"
+    @action-click="actionClicked"
+  >
   </LxList>
 </template>

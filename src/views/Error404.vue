@@ -24,13 +24,19 @@ onMounted(() => {
 });
 </script>
 <template>
-  <LxErrorPage kind="404" @actionClick="action" :action-definitions="[
-    { id: 'back', name: $t('pages.error.goBack'), icon: 'undo' },
-    {
-      id: 'dashboard',
-      name: $t('pages.error.goHome'),
-      icon: 'dashboard',
-      kind: 'secondary',
-    },
-  ]" :title="$t('pages.error.title')" :description="appStore.error"></LxErrorPage>
+  <LxErrorPage
+    kind="404"
+    @actionClick="action"
+    :action-definitions="[
+      { id: 'back', name: $t('pages.error.goBack'), icon: 'undo' },
+      {
+        id: 'dashboard',
+        name: $t('pages.error.goHome'),
+        icon: 'dashboard',
+        kind: 'secondary',
+      },
+    ]"
+    :title="$t('pages.error.title')"
+    :description="appStore.error"
+  ></LxErrorPage>
 </template>

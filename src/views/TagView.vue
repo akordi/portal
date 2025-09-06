@@ -56,7 +56,10 @@ const loadSongs = async () => {
     );
 
     const pageTitle = `Tematiskās dziesmas ${tag.value.title}`;
-    const songTitles = items.value.slice(0, 10).map((song) => song.title).join(', ');
+    const songTitles = items.value
+      .slice(0, 10)
+      .map((song) => song.title)
+      .join(', ');
     const metaDescription = `Dziesmas ar akordiem un tabulatūrām ${songTitles}`;
 
     useHead({
@@ -64,7 +67,7 @@ const loadSongs = async () => {
       meta: [
         { name: 'description', content: metaDescription },
         { property: 'og:title', content: pageTitle },
-        { property: 'og:description', content: metaDescription }
+        { property: 'og:description', content: metaDescription },
       ],
     });
 
@@ -99,7 +102,16 @@ onUnmounted(() => {
 </script>
 <template>
   <LxLoader :loading="loading" />
-  <LxList id="id" list-type="2" v-model:items="items" primary-attribute="title" secondary-attribute="description"
-    @action-click="actionClicked" :show-load-more="hasMore" @load-more="loadMore" :loading="loading">
+  <LxList
+    id="id"
+    list-type="2"
+    v-model:items="items"
+    primary-attribute="title"
+    secondary-attribute="description"
+    @action-click="actionClicked"
+    :show-load-more="hasMore"
+    @load-more="loadMore"
+    :loading="loading"
+  >
   </LxList>
 </template>
