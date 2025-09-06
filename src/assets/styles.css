@@ -19,3 +19,20 @@
 .lx-cover .lx-logo img {
   display: block;
 }
+
+/* Saving precious space by removing margins on small screens */
+@media (max-width: 600px) {
+  .lx {
+    --gap-form: 0;
+    --gap-form-small-side: 0.5rem;
+  }
+
+  .lx-layout.lx-layout-public>main {
+    margin-inline: 0;
+  }
+
+  .lx-form-grid>footer.lx-sticky {
+    padding: 0;
+    gap: 0;
+  }
+}

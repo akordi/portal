@@ -13,7 +13,7 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
-import abcjs from 'abcjs';
+import AbcViewer from '@/components/AbcViewer.vue';
 import { pageview } from 'vue-gtag';
 import ChordSvg from '@/components/ChordSvg.vue';
 import akordiService from '@/services/akordiService';
@@ -226,33 +226,6 @@ const loadSong = async () => {
       item.value.performers.map((artist) => artist.title).join(', ');
     viewStore.goBack = true;
 
-    if (item.value.bodyAbc) {
-      const visualOptions = { responsive: 'resize' };
-      const abcjsObject = abcjs.renderAbc('paper', item.value.bodyAbc, visualOptions);
-      const controlOptions = {
-        displayPlay: true,
-        displayProgress: true,
-        displayClock: true,
-      };
-      const synthControl = new abcjs.synth.SynthController();
-      synthControl.load('#audio', null, controlOptions);
-      synthControl.disable(true);
-      if (abcjs.synth.supportsAudio()) {
-        const midiBuffer = new abcjs.synth.CreateSynth();
-        midiBuffer
-          .init({
-            visualObj: abcjsObject[0],
-            options: {},
-          })
-          .then(() => {
-            synthControl.setTune(abcjsObject[0], true).then(() => {
-              document.querySelector('.abcjs-inline-audio').classList.remove('disabled');
-            });
-          });
-      } else {
-        notificationStore.pushWarning($t('pages.akordiSongView.audioNotSupported'));
-      }
-    }
   } catch (err) {
     notificationStore.pushError('Failed to load song');
     throw err;
@@ -378,26 +351,10 @@ onUnmounted(() => {
   font-family: monospace;
 }
 
-/* Saving precious space by */
 @media (max-width: 600px) {
-  .lx-layout.lx-layout-public > main {
-    --gap-form: 0;
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .lx-form-grid > .lx-main > .lx-form-section {
-    padding: 0.5em;
-  }
-
   /* Hiding toolbar labels on small screens */
   #songToolbarGroup .toolbar-label {
     display: none;
-  }
-
-  .lx-form-grid > footer.lx-sticky {
-    padding: 0;
-    gap: 0;
   }
 }
 
@@ -406,217 +363,13 @@ onUnmounted(() => {
   height: 100%;
 }
 
-.toolbar-label {
+.lx-footer-slot .toolbar-label {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
 
 #chords {
   margin-bottom: 1em;
-}
-
-/* Some basic CSS to make the Audio controls in abcjs presentable. */
-
-.lx .abcjs-inline-audio {
-  height: 26px;
-  padding: 0 5px;
-  border-radius: 3px;
-  background-color: #424242;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-}
-
-.lx .abcjs-inline-audio.abcjs-disabled {
-  opacity: 0.5;
-}
-
-.lx .abcjs-inline-audio .abcjs-btn {
-  display: block;
-  width: 28px;
-  min-width: 28px;
-  height: 34px;
-  min-height: 34px;
-  margin-right: 2px;
-  padding: 7px 4px;
-
-  background: none !important;
-  border: 1px solid transparent;
-  box-sizing: border-box;
-  line-height: 1;
-}
-
-.lx .abcjs-btn g {
-  fill: #f4f4f4;
-  stroke: #f4f4f4;
-}
-
-.lx .abcjs-inline-audio .abcjs-btn:hover g {
-  fill: #cccccc;
-  stroke: #cccccc;
-}
-
-.lx .abcjs-inline-audio .abcjs-midi-selection.abcjs-pushed {
-  border: 1px solid #cccccc;
-  background-color: #666666;
-  box-sizing: border-box;
-}
-
-.lx .abcjs-inline-audio .abcjs-midi-loop.abcjs-pushed {
-  border: 1px solid #cccccc;
-  background-color: #666666;
-  box-sizing: border-box;
-}
-
-.lx .abcjs-inline-audio .abcjs-midi-reset.abcjs-pushed {
-  border: 1px solid #cccccc;
-  background-color: #666666;
-  box-sizing: border-box;
-}
-
-.lx .abcjs-inline-audio .abcjs-midi-start .abcjs-pause-svg {
-  display: none;
-}
-
-.lx .abcjs-inline-audio .abcjs-midi-start .abcjs-loading-svg {
-  display: none;
-}
-
-.lx .abcjs-inline-audio .abcjs-midi-start.abcjs-pushed .abcjs-play-svg {
-  display: none;
-}
-
-.lx .abcjs-inline-audio .abcjs-midi-start.abcjs-loading .abcjs-play-svg {
-  display: none;
-}
-
-.lx .abcjs-inline-audio .abcjs-midi-start.abcjs-pushed .abcjs-pause-svg {
-  display: block;
-}
-
-.lx .abcjs-inline-audio .abcjs-midi-progress-background {
-  background-color: #424242;
-  height: 10px;
-  border-radius: 5px;
-  border: 2px solid #cccccc;
-  margin: 0 8px 0 15px;
-  position: relative;
-  flex: 1;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.lx .abcjs-inline-audio .abcjs-midi-progress-indicator {
-  width: 20px;
-  margin-left: -10px;
-  /* half of the width */
-  height: 14px;
-  background-color: #f4f4f4;
-  position: absolute;
-  display: inline-block;
-  border-radius: 6px;
-  top: -4px;
-  left: 0;
-  box-sizing: border-box;
-}
-
-.lx .abcjs-inline-audio .abcjs-midi-clock {
-  margin-left: 4px;
-  margin-top: 1px;
-  margin-right: 2px;
-  display: inline-block;
-  font-family: sans-serif;
-  font-size: 16px;
-  box-sizing: border-box;
-  color: #f4f4f4;
-}
-
-.lx .abcjs-inline-audio .abcjs-tempo-wrapper {
-  font-size: 10px;
-  color: #f4f4f4;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-}
-
-.lx .abcjs-inline-audio .abcjs-midi-tempo {
-  border-radius: 2px;
-  border: none;
-  margin: 0 2px 0 4px;
-  width: 42px;
-  padding-left: 2px;
-  box-sizing: border-box;
-}
-
-.lx .abcjs-inline-audio .abcjs-loading .abcjs-loading-svg {
-  display: inherit;
-}
-
-.lx .abcjs-inline-audio .abcjs-loading {
-  outline: none;
-  animation-name: abcjs-spin;
-  animation-duration: 1s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-
-.lx .abcjs-inline-audio .abcjs-loading-svg circle {
-  stroke: #f4f4f4;
-}
-
-@keyframes abcjs-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Adding the class "abcjs-large" will make the control easier on a touch device. */
-.lx .abcjs-large .abcjs-inline-audio {
-  height: 52px;
-}
-
-.lx .abcjs-large .abcjs-btn {
-  width: 56px;
-  min-width: 56px;
-  height: 52px;
-  min-height: 52px;
-  font-size: 28px;
-  padding: 6px 8px;
-}
-
-.lx .abcjs-large .abcjs-midi-progress-background {
-  height: 20px;
-  border: 4px solid #cccccc;
-}
-
-.lx .abcjs-large .abcjs-midi-progress-indicator {
-  height: 28px;
-  top: -8px;
-  width: 40px;
-}
-
-.lx .abcjs-large .abcjs-midi-clock {
-  font-size: 32px;
-  margin-right: 10px;
-  margin-left: 10px;
-  margin-top: -1px;
-}
-
-.lx .abcjs-large .abcjs-midi-tempo {
-  font-size: 20px;
-  width: 50px;
-}
-
-.lx .abcjs-large .abcjs-tempo-wrapper {
-  font-size: 20px;
-}
-
-.lx .abcjs-css-warning {
-  display: none;
 }
 </style>
 <template>
@@ -731,8 +484,7 @@ onUnmounted(() => {
         </LxRow>
       </template>
       <LxSection v-show="hasAbc && showAbc" id="bodyAbc">
-        <div id="paper"></div>
-        <div id="audio"></div>
+        <AbcViewer :abc="item.bodyAbc" @audio-unsupported="notificationStore.pushWarning($t('pages.akordiSongView.audioNotSupported'))" />
       </LxSection>
       <LxSection v-show="hasChords && showChords" id="chords">
         <div style="display: flex; flex-wrap: wrap; align-items: flex-start">
