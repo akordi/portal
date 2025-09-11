@@ -23,8 +23,16 @@ const loadArtist = async () => {
     const artistUrl = `/band/${artistUrlParam.value}`;
     const artistId = akordiService.parseUrl(artistUrl);
     const artistResp = await akordiService.getArtist(artistId);
-    viewStore.title = artistResp.data.title;
-
+    
+    if (artistUrl !== artistResp.data.url) {
+      const correctUrl = artistResp.data.url.replace(/^\/band\//, '');
+      router.replace({
+        name: 'akordiArtistView',
+        params: { url: correctUrl },
+      });
+    }
+    
+    
     const resp = await akordiService.getSongs({
       'artist.id': artistId,
       size: 5000,
@@ -36,7 +44,8 @@ const loadArtist = async () => {
       description: song.mainArtist.title,
       clickable: true,
     }));
-
+    
+    viewStore.title = artistResp.data.title;
     const pageTitle = `${artistResp.data.title} dziesmas`;
     const songTitles = items.value
       .slice(0, 10)
@@ -74,14 +83,7 @@ onMounted(async () => {
 </script>
 <template>
   <LxLoader :loading="loading" />
-  <LxList
-    v-if="!loading"
-    id="id"
-    list-type="2"
-    v-model:items="items"
-    primary-attribute="title"
-    secondary-attribute="description"
-    @action-click="actionClicked"
-  >
+  <LxList v-if="!loading" id="id" list-type="2" v-model:items="items" primary-attribute="title"
+    secondary-attribute="description" @action-click="actionClicked">
   </LxList>
 </template>
