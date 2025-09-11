@@ -1,13 +1,13 @@
 /* eslint-disable no-console -- for debugging */
 /* eslint-disable no-restricted-imports -- vite doesn`t use aliases in imports */
 /* eslint-disable import/no-extraneous-dependencies -- vite mostly should use dev dependencies */
-import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import dns from 'dns';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { defineConfig, loadEnv } from 'vite';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import mkcert from 'vite-plugin-mkcert';
-import { fileURLToPath } from 'url';
-import dns from 'dns';
 import packageJson from './package.json';
 
 // set ip4 as default dns lookup in order to support localhost
@@ -125,6 +125,14 @@ export default defineConfig((command) => {
       target: ['es2020'],
       outDir: './dist',
       sourcemap: false,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            abcjs: ['abcjs'],
+            chords: ['chord-transposer', 'vexchords', '@akordi/jtab'],
+          },
+        },
+      },
     },
     server: serving ? devServerSettings(envVariables) : {},
     test: {
