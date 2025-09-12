@@ -16,7 +16,13 @@ server {
         add_header Cache-Control "no-store, no-transform, must-revalidate, no-cache, max-age=0, private";
     }
 
-    location ~* \.(?:css|js|png|svg|ico)$ {
+    location ~* \.(?:css|js|png|svg|jpg|jpeg|ico)$ {
+        gzip on;
+        gzip_static on;
+        gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+        expires max;
+        add_header Cache-Control "public, max-age=2592000, immutable";
         root   /usr/share/nginx/html;
         index  index.html;
         try_files $uri $uri/ /index.html;
