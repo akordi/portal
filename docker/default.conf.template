@@ -16,7 +16,7 @@ server {
         add_header Cache-Control "no-store, no-transform, must-revalidate, no-cache, max-age=0, private";
     }
 
-    location ~* \.(?:css|js|png|svg|jpg|jpeg|ico)$ {
+    location ~* \.(?:css|js|png|svg|jpg|jpeg|ico|ttf)$ {
         gzip on;
         gzip_static on;
         gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
