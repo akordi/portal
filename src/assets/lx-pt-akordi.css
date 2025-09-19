@@ -8,7 +8,7 @@
   --color-interactive-secondary-background: #111;
   --color-grid-hover-background: #ddd;
   --gap-form: 1rem;
-
+  --font-size: 14px;
   --color-button-nav-selected-background: var(--color-highlight);
 }
 

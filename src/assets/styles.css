@@ -36,3 +36,21 @@
     gap: 0;
   }
 }
+
+@media print {
+
+  .lx-layout.lx-layout-default>.lx-main .lx-header .lx-toolbar,
+  .lx-layout.lx-layout-public>.lx-main .lx-header .lx-toolbar,
+  .lx-form-grid footer,
+  .lx-form-grid header {
+    display: none;
+  }
+
+  .lx-form-grid>.lx-main>.lx-form-section {
+    padding: 0;
+  }
+
+  .lx-layout.lx-layout-public>main {
+    margin: 0;
+  }
+}
