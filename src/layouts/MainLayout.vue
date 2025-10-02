@@ -5,7 +5,6 @@ import { useRoute, useRouter } from 'vue-router';
 // ToDo: develop login & get session
 // eslint-disable-next-line no-unused-vars
 import CookiesConsent from '@/components/CookiesConsent.vue';
-import CoverBackground from '@/components/CoverBackground.vue';
 import { invoke, until, useIdle, useIntervalFn } from '@vueuse/core';
 import { LxShell } from '@wntr/lx-ui';
 
@@ -15,7 +14,6 @@ import useAuthStore from '@/stores/useAuthStore';
 import useConfirmStore from '@/stores/useConfirmStore';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
-import LoginView from '@/views/Login.vue';
 
 const authStore = useAuthStore();
 const notify = useNotifyStore();
@@ -311,10 +309,6 @@ function idleModalSecondary() {
         :page-breadcrumbs="breadcrumbs"
         :page-index-path="{ name: 'dashboard' }"
         :has-language-picker="false"
-        :has-cover-logo="true"
-        cover-image="/imgs/cover-light.jpg"
-        cover-image-dark="/imgs/cover-dark.jpg"
-        :cover-logo="coverLogo"
         :has-alerts="false"
         :has-help="false"
         :has-theme-picker="true"
@@ -333,15 +327,6 @@ function idleModalSecondary() {
         @idleModalPrimary="idleModalPrimary"
         @idleModalSecondary="idleModalSecondary"
       >
-        <template #backdrop>
-          <CoverBackground />
-        </template>
-        <template #coverArea>
-          <div class="lx-button-set">
-            <LoginView></LoginView>
-          </div>
-        </template>
-
         <template #logoSmall>
           <img id="logo-light" src="/imgs/logo-50-dark.svg" alt="Logo" />
           <img id="logo-dark" src="/imgs/logo-50.svg" alt="Logo" />

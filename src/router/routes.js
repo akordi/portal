@@ -9,6 +9,10 @@ const routes = [
     },
     children: [
       {
+        path: '',
+        redirect: { name: 'dashboard' },
+      },
+      {
         path: '/login',
         name: 'login',
         meta: { title: 'pages.login.title' },
