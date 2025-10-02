@@ -36,9 +36,6 @@ const $t = translate.t;
 const route = useRoute();
 const shellMode = computed(() => {
   let ret = 'public';
-  if (route.path === '/') {
-    ret = 'cover';
-  }
   return ret;
 });
 
