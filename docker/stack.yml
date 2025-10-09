@@ -5,10 +5,10 @@ services:
       - akordi
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.akordi-admin-portal.rule=Host(`${HOSTNAME}`)"
-      - "traefik.http.routers.akordi-admin-portal.entrypoints=websecure"
-      - "traefik.http.routers.akordi-admin-portal.tls.certresolver=letsencrypt"
-      - "traefik.http.services.akordi-admin-portal.loadbalancer.server.port=8080"       
+      - "traefik.http.routers.akordi-portal.rule=Host(`${HOSTNAME}`)"
+      - "traefik.http.routers.akordi-portal.entrypoints=websecure"
+      - "traefik.http.routers.akordi-portal.tls.certresolver=letsencrypt"
+      - "traefik.http.services.akordi-portal.loadbalancer.server.port=8080"
     image: ${DOCKER_IMAGE}
     environment:
       - API_V2_URL=http://portal-api:8080
