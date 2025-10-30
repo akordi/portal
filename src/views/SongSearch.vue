@@ -46,12 +46,12 @@ async function search(q, more = false) {
   try {
     loading.value = true;
     let resp = await akordiService.search(q, {
-      top: pageSize,
+      size: pageSize,
       skip: more ? items.value.length : 0,
     });
     if (resp.data.value.length === 0) {
       resp = await akordiService.search(`${q}*`, {
-        top: pageSize,
+        size: pageSize,
         skip: more ? items.value.length : 0,
       });
     }

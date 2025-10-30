@@ -75,21 +75,16 @@ export default {
     return http(serviceUrl).get('/api/v2/artists', { params: { titleStartsWith: query } });
   },
 
-  search(query, reqParams) {
+  search(q, params) {
     if (abortController) {
       abortController.abort();
     }
     abortController = new AbortController();
 
-    const params = {
-      $top: reqParams?.top || 10,
-      $skip: reqParams?.skip || 0,
-      $count: true,
-      highlight: 'title,bodyLyrics,mainArtistTitle',
-      search: query,
-    };
-    return http(serviceUrl).get('/api/search', {
-      params,
+    const searchParams = { ...params, q };
+
+    return http(serviceUrl).get('/api/v2/admin/search', {
+      params: searchParams,
       signal: abortController.signal,
     });
   },
