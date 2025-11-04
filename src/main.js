@@ -1,10 +1,11 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';
-import VueClickAway from 'vue3-click-away';
 import App from '@/App.vue';
 import router from '@/router';
 import lv from '@/locales/lv.json';
+import lt from '@/locales/lt.json';
+import ee from '@/locales/ee.json';
 import events from '@/router/events';
 import { createLx } from '@wntr/lx-ui';
 import { createGtag } from 'vue-gtag';
@@ -59,15 +60,16 @@ events(router);
 myApp.use(router);
 const i18n = createI18n({
   legacy: false,
-  locale: 'lv',
+  locale: window.config?.defaultLanguage || 'lv',
   messages: {
     lv,
+    lt,
+    ee,
   },
 });
 const $t = i18n.global.t;
 
 myApp.use(i18n);
-myApp.use(VueClickAway);
 myApp.use(createLx, {
   systemId: 'akordi',
   authUrl: window.config.authUrl,

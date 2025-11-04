@@ -131,7 +131,7 @@ jobs:
           file: 'docker/stack.yml'
           token: ${{ secrets.TEST_PORTAINER_API_KEY }}
           merge_env: true
-          env_json: |
+          env_data: |
             {
               "DOCKER_IMAGE": "${{ env.DOCKER_IMAGE }}"
             }
@@ -164,7 +164,7 @@ jobs:
           file: 'docker/stack.yml'
           token: ${{ secrets.PROD_PORTAINER_API_KEY }}
           merge_env: true
-          env_json: |
+          env_data: |
             {
               "DOCKER_IMAGE": "${{ env.DOCKER_IMAGE }}"
             }

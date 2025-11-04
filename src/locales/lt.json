@@ -1,0 +1,352 @@
+{
+  "title": {
+    "default": "Akordai.lt",
+    "prefix": "Lietuviškų dainų akordai, tabulaturės ir žodžiai - ",
+    "fullName": "Akordai.lt",
+    "fullNameFormatted": "Akordai.lt",
+    "subheader": "Dainų žodžių, akordų ir tabulaturų saugykla",
+    "shortName": "Akordai",
+    "description": "Ieškokite akordų ir dainų žodžių lietuviškoms dainoms ir raskite tūkstančius populiarių dainų duomenų bazėje."
+  },
+  "lx": {
+    "shell": {
+      "defaultBack": "Atgal",
+      "logOut": "Atsijungti",
+      "openAlerts": "Atidaryti sąrašą",
+      "noAlerts": "Nėra pranešimų",
+      "openNavbar": "Atidaryti meniu",
+      "helpTitle": "Pagalba",
+      "alertsTitle": "Pranešimai",
+      "languagesTitle": "Kalbos pasirinkimas",
+      "contextPersonTitle": "Susijusių asmenų duomenys",
+      "close": "Uždaryti",
+      "contextPersonsLabel": "Pasirinkti asmenį",
+      "contextPersonsInfoLabel": "Pacientas",
+      "contextPersonsInfoTitle": "Konteksto asmuo",
+      "contextPersonsOwnData": "Žiūrėti mano duomenis",
+      "alternativeProfilesLabel": "Pasirinkite alternatyvų profilį",
+      "contextPersonsButtonLabel": "Konteksto asmenys",
+      "alternativeProfilesButtonLabel": "Alternatyvūs profiliai",
+      "idleModalLabel": "Artėja sesijos pabaiga",
+      "idleModalPrimaryLabel": "Tęsti darbą",
+      "idleModalSecondaryLabel": "Baigti darbą",
+      "descriptionMinutes": "Iki sesijos pabaigos liko {count} minučių",
+      "descriptionMinutesSmall": "ir {count} sekundžių",
+      "idleDescription": "Iki sesijos pabaigos liko {count} sekundžių",
+      "themeTitle": "Išvaizdos pasirinkimas",
+      "themeAuto": "Automatinis režimas",
+      "themeLight": "Šviesus režimas",
+      "themeDark": "Tamsus režimas",
+      "themeContrast": "Kontrastinis režimas",
+      "animations": "Sumažinti judesius",
+      "transparency": "Sumažinti permatomumą",
+      "fonts": "Įrenginio šriftai",
+      "touchMode": "Jutiklinis režimas",
+      "reduceMotionOff": "Ne",
+      "reduceMotionOn": "Taip",
+      "reduceTransparencyOff": "Ne",
+      "reduceTransparencyOn": "Taip",
+      "systemFontsOff": "Ne",
+      "systemFontsOn": "Taip",
+      "touchModeOff": "Ne",
+      "touchModeOn": "Taip",
+      "confirmModalSecondaryDefaultLabel": "Ne",
+      "confirmModalPrimaryDefaultLabel": "Taip",
+      "previousAlertTitle": "Ankstesnis pranešimas",
+      "nextAlertTitle": "Kitas pranešimas",
+      "userTitle": "Vartotojas",
+      "menu": "Meniu",
+      "showAllLabel": "Daugiau",
+      "megaMenuTitle": "Programos",
+      "successSvgTitle": "Sėkmingas pranešimas",
+      "warningSvgTitle": "Įspėjimas",
+      "errorSvgTitle": "Klaida",
+      "infoSvgTitle": "Informacija",
+      "svgTitle": "Pranešimas",
+      "skipLinkLabel": "Pereiti prie puslapio turinio",
+      "skipLinkTitle": "Pereiti prie puslapio turinio",
+      "customButton": "Tinkintas mygtukas",
+      "overflowNavItems": "Atidaryti papildomą meniu",
+      "scrollUp": "Grįžti į viršų",
+      "contextPersonsBirthDate": "Gimimo data",
+      "settings": "Nustatymai",
+      "contextPersonsTooltipLabel": "Konteksto asmuo",
+      "contextPersonsTooltipDescription": "Konteksto asmens aprašymas",
+      "badgeTypes": {
+        "default": "informatinis pranešimas",
+        "info": "informatinis pranešimas",
+        "warning": "įspėjimas",
+        "good": "sėkmingas pranešimas",
+        "important": "svarbus pranešimas"
+      },
+      "spotlight": {
+        "label": "Programos gidas",
+        "close": "Uždaryti",
+        "next": "Kitas",
+        "back": "Atgal",
+        "showMore": "Sužinoti daugiau",
+        "of": "iš"
+      },
+      "userProfile": "Žiūrėti profilį",
+      "notifications": {
+        "logoutSuccess": "Jūsų sesija buvo sėkmingai užbaigta",
+        "agreement": "Turite sutikti su naudojimo sąlygomis",
+        "unknownState": "Įvyko klaida apdorojant vartotojo būseną",
+        "err401": "Prisijunkite prie sistemos, kad galėtumėte naudotis funkcionalumu",
+        "sessionContinued": "Sesija sėkmingai pratęsta",
+        "sessionContinuedFailed": "Sesijos pratęsti nepavyko",
+        "sessionEndingSoon": "Jūsų sesija greitai baigsis"
+      },
+      "sessionExpiring": {
+        "label": "Artėja sesijos pabaiga",
+        "description": "Iki sesijos pabaigos liko {count} sekundė | Iki sesijos pabaigos liko {count} sekundės",
+        "descriptionMinutes": "Iki sesijos pabaigos liko {count} minutė | Iki sesijos pabaigos liko {count} minutės",
+        "descriptionMinutesSmall": "ir {count} sekundė | ir {count} sekundės",
+        "primaryLabel": "Tęsti darbą",
+        "secondaryLabel": "Baigti darbą"
+      }
+    }
+  },
+  "greeting": {
+    "default": "Sveiki",
+    "morning": "Labas rytas",
+    "day": "Laba diena",
+    "evening": "Labas vakaras",
+    "night": "Labanaktis"
+  },
+  "pages": {
+    "dashboard": {
+      "title": "Pradinis puslapis"
+    },
+    "songs": {
+      "title": "Dainų katalogas"
+    },
+    "songSearch": {
+      "title": "Dainų paieška",
+      "description": "Naudokite paiešką ir raskite ką pagroti iš {songCount} akordai.lt dainų",
+      "search": {
+        "error": "Klaida ieškant dainų. Prašome bandyti vėliau."
+      }
+    },
+    "songListNew": {
+      "title": "Naujausios dainos",
+      "description": "Neseniai pridėtos dainos",
+      "list": {
+        "error": "Klaida įkeliant dainas. Prašome bandyti vėliau."
+      }
+    },
+    "songListTop": {
+      "title": "Populiariausios dainos",
+      "description": "Praėjusios savaitės populiariausios dainos, kurias žiūrėjo ir grojo kiti vartotojai",
+      "list": {
+        "error": "Klaida įkeliant dainas. Prašome bandyti vėliau."
+      }
+    },
+    "songEdit": {
+      "title": "Dainos taisymas",
+      "description": "Čia galite pateikti dainos pataisymus"
+    },
+    "songNew": {
+      "title": "Pateikti dainą",
+      "description": "Čia galite pateikti dainą, kad ji būtų pridėta prie portalo. Puslapis skirtas tik lietuviškoms dainoms (dainos kalbai nėra reikšmės). Ji bus patikrinta ir pridėta prie duomenų bazės."
+    },
+    "akordiSongView": {
+      "title": "Akordai.lt dainos",
+      "copy": {
+        "label": "Kopijuoti dainą",
+        "description": "Kopijuoti dainos tekstą, kad sukurtumėte savo versiją"
+      },
+      "hideChords": {
+        "label": "Nerodyti akordų",
+        "description": "Slėpti dainos akordų tabulatūrą"
+      },
+      "showSheet": {
+        "label": "Rodyti natas",
+        "description": "Rodyti dainos natas"
+      },
+      "autoScroll": {
+        "label": "Automatinis slinkimas ({speed})",
+        "playDescription": "Pagreitinti automatinį slinkimą",
+        "stopDescription": "Sustabdyti automatinį slinkimą"
+      },
+      "showGuitarChords": {
+        "label": "Rodyti gitaros akordus",
+        "description": "Rodyti arba slėpti dainos akordų tabulatūrą gitara"
+      },
+      "showUkuleleChords": {
+        "label": "Rodyti ukulėlės akordus",
+        "description": "Rodyti arba slėpti dainos akordų tabulatūrą ukulėlei"
+      },
+      "transposeUp": {
+        "label": "Transponuoti aukštyn",
+        "description": "Perkelti dainą aukštyn per pusę tono"
+      },
+      "transposeDown": {
+        "label": "Transponuoti žemyn",
+        "description": "Perkelti dainą žemyn per pusę tono"
+      },
+      "fontUp": {
+        "label": "Padidinti šriftą",
+        "description": "Padidinti šrifto dydį dainos tekste"
+      },
+      "fontDown": {
+        "label": "Sumažinti šriftą",
+        "description": "Sumažinti šrifto dydį dainos tekste"
+      },
+      "transposeDisabled": "Transponavimas išjungtas, nes dainos tekste nerasta akordų",
+      "audioNotSupported": "Jūsų naršyklė nepalaiko garso",
+      "transposeHeader": "Transponuoti ({offset})"
+    },
+    "akordiArtistLetter": {
+      "title": "Atlikėjų katalogas A-Z",
+      "description": "Naršyti atlikėjų sąrašą abėcėlės tvarka nuo A iki Z",
+      "search": {
+        "error": "Klaida ieškant atlikėjų. Prašome bandyti vėliau."
+      }
+    },
+    "tagList": {
+      "title": "Žymės",
+      "description": "Čia galite naršyti temines dainų kategorijas",
+      "list": {
+        "error": "Klaida įkeliant dainas. Prašome bandyti vėliau."
+      }
+    },
+    "tagView": {
+      "title": "Žymė #{title}",
+      "list": {
+        "error": "Klaida įkeliant dainas. Prašome bandyti vėliau."
+      }
+    },
+    "login": {
+      "title": "Pasirinkite autentifikavimo būdą",
+      "buttons": {
+        "signIn": "Prisijungti"
+      },
+      "options": {
+        "google": {
+          "name": "Google",
+          "description": "Prisijungti su Google paskyra"
+        },
+        "facebook": {
+          "name": "Facebook",
+          "description": "Prisijungti su Facebook paskyra"
+        }
+      }
+    },
+    "home": {
+      "title": "Akordai",
+      "buttons": {
+        "loginUnauthorized": "Prisijungti"
+      }
+    },
+    "sessionEnded": {
+      "title": "Jūsų sesija baigėsi",
+      "description": "Sesijai skirtas laikas baigėsi. Norėdami tęsti darbą, prisijunkite iš naujo"
+    },
+    "userProfile": {
+      "title": "Vartotojo profilis",
+      "givenNameLabel": "Vardas",
+      "familyNameLabel": "Pavardė",
+      "phoneLabel": "Kontaktinis telefonas",
+      "emailLabel": "El. pašto adresas"
+    },
+    "users": {
+      "title": "Vartotojai"
+    },
+    "error": {
+      "goBack": "Grįžti atgal",
+      "goHome": "Grįžti į pradžią",
+      "title": "Įvyko netikėta klaida"
+    },
+    "auth": {
+      "title": "Vyksta apdorojimas",
+      "description": "Vyksta apdorojimas. Prašome palaukti!",
+      "errors": {
+        "unknownTitle": "Nežinoma autorizacijos klaida",
+        "unknownDescription": "Bandykite autorizuotis iš naujo.",
+        "blockedTitle": "Vartotojas užblokuotas",
+        "blockedDescription": "Susisiekite su sistemos administratoriumi.",
+        "invalidRightsTitle": "Jums nesuteiktos teisės naudotis šia sistema",
+        "invalidRightsDescription": "Susisiekite su sistemos administratoriumi.",
+        "invalidRequestTitle": "Klaidingas autorizacijos prašymas",
+        "invalidRequestDescription": "Bandykite autorizuotis iš naujo."
+      }
+    },
+    "notFound": {
+      "title": "Puslapis nerastas",
+      "description": "Patikrinkite, ar puslapio adresas teisingas ir bandykite dar kartą, arba grįžkite į pradžios puslapį"
+    }
+  },
+  "cookieConsent": {
+    "title": "Slapukų politika",
+    "description": "Ši svetainė naudoja slapukus, kad užtikrintų populiariausių dainų statistiką ir pagerintų vartotojo patirtį. \nPrašome sutikti su slapukų naudojimu, kad galėtumėte toliau naudotis šia svetaine.",
+    "accept": "Sutinku",
+    "reject": "Uždaryti"
+  },
+  "confirm": {
+    "yes": "Taip",
+    "no": "Ne"
+  },
+  "menu": {
+    "home": "Pradžia",
+    "users": "Vartotojai",
+    "login": "Autorizacija",
+    "logout": "Atsijungti"
+  },
+  "errors": {
+    "logoutFailed": "Įvyko klaida atsijungiant nuo sistemos, perkraukite puslapį ir bandykite dar kartą.",
+    "classifierLoadFailed": "Įvyko klaida įkeliant filtro klasifikatorius, perkraukite puslapį ir bandykite dar kartą.",
+    "roleLoadFailed": "Įvyko klaida įkeliant vartotojo roles, perkraukite puslapį ir bandykite dar kartą.",
+    "institutionLoadFailed": "Įvyko klaida įkeliant vartotojui prieinamas įstaigas, perkraukite puslapį ir bandykite dar kartą.",
+    "hospitalLoadFailed": "Įvyko klaida įkeliant vartotojui prieinamas ligonines, perkraukite puslapį ir bandykite dar kartą.",
+    "forbidden": "Jūs neturite teisės atlikti šio veiksmo!",
+    "loadFailed": "Nepavyko įkelti duomenų",
+    "helpLoadFailed": "Nepavyko įkelti pagalbos informacijos"
+  },
+  "save": "Išsaugoti",
+  "edit": "Redaguoti",
+  "suggestEdit": "Pasiūlyti pataisymą",
+  "delete": "Ištrinti",
+  "copy": "Kopijuoti",
+  "cancel": "Atšaukti",
+  "search": "Ieškoti",
+  "song": {
+    "title": "Pavadinimas",
+    "artist": "Atlikėjas",
+    "performer": "Atlikėjas",
+    "composer": "Muzikos autorius",
+    "poet": "Žodžių autorius",
+    "tags": "Žymės",
+    "youtubeLink": "Youtube video",
+    "createdAt": "Sukurta",
+    "updatedAt": "Paskutinį kartą redaguota",
+    "lyrics": "Dainos žodžiai",
+    "body": "Dainos tekstas su akordais",
+    "bodyTooltip": "Pageidautina pridėti dainas su pilnais dainų tekstais. Teksto išdėstymui naudoti tarpus, o ne tabuliavimą."
+  },
+  "songs": {
+    "save": {
+      "success": "Daina sėkmingai pateikta patvirtinimui",
+      "error": "Klaida išsaugant dainą"
+    }
+  },
+  "artist": {
+    "title": "Pavadinimas"
+  },
+  "artists": {
+    "save": {
+      "success": "Atlikėjas sėkmingai išsaugotas",
+      "error": "Klaida išsaugant atlikėją"
+    },
+    "delete": {
+      "success": "Atlikėjas sėkmingai ištrintas",
+      "error": "Klaida trinant atlikėją"
+    }
+  },
+  "error": {
+    "validation": "Prašome užpildyti laukus"
+  },
+  "validations": {
+    "required": "Šis laukas yra privalomas"
+  }
+}

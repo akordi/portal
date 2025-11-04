@@ -7,7 +7,7 @@ import { useRoute, useRouter } from 'vue-router';
 import CookiesConsent from '@/components/CookiesConsent.vue';
 import { invoke, until, useIdle, useIntervalFn } from '@vueuse/core';
 import { LxShell } from '@wntr/lx-ui';
-
+import { shellTexts } from '@/utils/texts';
 import useErrors from '@/hooks/useErrors';
 import useAppStore from '@/stores/useAppStore';
 import useAuthStore from '@/stores/useAuthStore';
@@ -326,6 +326,7 @@ function idleModalSecondary() {
         @log-out="openConfirmModal"
         @idleModalPrimary="idleModalPrimary"
         @idleModalSecondary="idleModalSecondary"
+        :texts="shellTexts()"
       >
         <template #logoSmall>
           <img id="logo-light" src="/imgs/logo-50-dark.svg" alt="Logo" />
