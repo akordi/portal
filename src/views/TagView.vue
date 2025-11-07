@@ -34,18 +34,18 @@ const loadSongs = async () => {
       const correctUrl = tag.value.url.replace(/^\/tag\//, '');
       router.push({ name: 'tagView', params: { url: correctUrl } });
     }
-    
+
     const resp = await akordiService.getSongs({
       'tag.id': tagId,
       size: 100,
       sort: 'title,asc',
       page: page.value,
     });
-    
+
     if (page.value === 0) {
       items.value = [];
     }
-    
+
     items.value.push(
       ...resp.data.content.map((song) => ({
         ...song,
@@ -53,7 +53,7 @@ const loadSongs = async () => {
         clickable: true,
       }))
     );
-    
+
     const pageTitle = `Tematiskās dziesmas ${tag.value.title}`;
     viewStore.title = $t('pages.tagView.title', { title: tag.value.title });
     const songTitles = items.value

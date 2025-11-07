@@ -8,6 +8,7 @@ import akordiService from '@/services/akordiService';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
 import { useHead } from '@vueuse/head';
+import { useI18n } from 'vue-i18n';
 
 const router = useRouter();
 const route = useRoute();
@@ -16,6 +17,8 @@ const viewStore = useViewStore();
 const notificationStore = useNotifyStore();
 const items = ref([]);
 const loading = ref(true);
+const translate = useI18n();
+const $t = translate.t;
 
 const loadArtist = async () => {
   loading.value = true;
@@ -23,7 +26,7 @@ const loadArtist = async () => {
     const artistUrl = `/band/${artistUrlParam.value}`;
     const artistId = akordiService.parseUrl(artistUrl);
     const artistResp = await akordiService.getArtist(artistId);
-    
+
     if (artistUrl !== artistResp.data.url) {
       const correctUrl = artistResp.data.url.replace(/^\/band\//, '');
       router.replace({
@@ -31,8 +34,7 @@ const loadArtist = async () => {
         params: { url: correctUrl },
       });
     }
-    
-    
+
     const resp = await akordiService.getSongs({
       'artist.id': artistId,
       size: 5000,
@@ -44,7 +46,7 @@ const loadArtist = async () => {
       description: song.mainArtist.title,
       clickable: true,
     }));
-    
+
     viewStore.title = artistResp.data.title;
     const pageTitle = $t('pages.artistView.pageTitle', { artist: artistResp.data.title });
     const songTitles = items.value
@@ -83,7 +85,14 @@ onMounted(async () => {
 </script>
 <template>
   <LxLoader :loading="loading" />
-  <LxList v-if="!loading" id="id" list-type="2" v-model:items="items" primary-attribute="title"
-    secondary-attribute="description" @action-click="actionClicked">
+  <LxList
+    v-if="!loading"
+    id="id"
+    list-type="2"
+    v-model:items="items"
+    primary-attribute="title"
+    secondary-attribute="description"
+    @action-click="actionClicked"
+  >
   </LxList>
 </template>

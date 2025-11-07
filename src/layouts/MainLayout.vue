@@ -33,7 +33,7 @@ const translate = useI18n();
 const $t = translate.t;
 const route = useRoute();
 const shellMode = computed(() => {
-  let ret = 'public';
+  const ret = 'public';
   return ret;
 });
 
@@ -193,7 +193,14 @@ async function secondary() {
 }
 
 function openConfirmModal() {
-  confirmStore.push($t('confirm.logout.title'), $t('confirm.logout.message'), $t('confirm.logout.yes'), $t('confirm.logout.no'), primary, secondary);
+  confirmStore.push(
+    $t('confirm.logout.title'),
+    $t('confirm.logout.message'),
+    $t('confirm.logout.yes'),
+    $t('confirm.logout.no'),
+    primary,
+    secondary
+  );
 }
 
 function confirmModalClosed() {

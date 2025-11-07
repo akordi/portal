@@ -27,6 +27,10 @@ export default {
     return http(serviceUrl).get('/api/v2/artists', { params });
   },
 
+  getArtistLetters() {
+    return http(serviceUrl).get('/api/v2/artists/letters');
+  },
+
   getTags(reqParams) {
     let params = reqParams;
     if (!params) {

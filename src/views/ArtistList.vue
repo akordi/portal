@@ -1,6 +1,6 @@
 <script setup>
 import akordiService from '@/services/akordiService';
-import { LxList, LxValuePicker } from '@wntr/lx-ui';
+import { LxList, LxLoaderView, LxValuePicker } from '@wntr/lx-ui';
 import { onMounted, ref, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -21,130 +21,30 @@ const items = ref([]);
 const loading = ref(true);
 const page = ref(0);
 const hasMore = ref(false);
-const letters = ref([
-  {
-    id: '0',
-    name: '0',
-    clickable: true,
-  },
-  {
-    id: 'a',
-    name: 'A',
-    clickable: true,
-  },
-  {
-    id: 'ā',
-    name: 'Ā',
-  },
-  {
-    id: 'b',
-    name: 'B',
-  },
-  {
-    id: 'c',
-    name: 'C',
-  },
-  {
-    id: 'č',
-    name: 'Č',
-  },
-  {
-    id: 'd',
-    name: 'D',
-  },
-  {
-    id: 'e',
-    name: 'E',
-  },
-  {
-    id: 'ē',
-    name: 'Ē',
-  },
-  {
-    id: 'f',
-    name: 'F',
-  },
-  {
-    id: 'g',
-    name: 'G',
-  },
-  {
-    id: 'h',
-    name: 'H',
-  },
-  {
-    id: 'i',
-    name: 'I',
-  },
-  {
-    id: 'j',
-    name: 'J',
-  },
-  {
-    id: 'k',
-    name: 'K',
-  },
-  {
-    id: 'l',
-    name: 'L',
-  },
-  {
-    id: 'm',
-    name: 'M',
-  },
-  {
-    id: 'n',
-    name: 'N',
-  },
-  {
-    id: 'o',
-    name: 'O',
-  },
-  {
-    id: 'p',
-    name: 'P',
-  },
-  {
-    id: 'r',
-    name: 'R',
-  },
-  {
-    id: 's',
-    name: 'S',
-  },
-  {
-    id: 'š',
-    name: 'Š',
-  },
-  {
-    id: 't',
-    name: 'T',
-  },
-  {
-    id: 'u',
-    name: 'U',
-  },
-  {
-    id: 'y',
-    name: 'Y',
-  },
-  {
-    id: 'v',
-    name: 'V',
-  },
-  {
-    id: 'z',
-    name: 'Z',
-  },
-  {
-    id: 'ž',
-    name: 'Ž',
-  },
-  {
-    id: '#',
-    name: '#',
-  },
-]);
+const letters = ref([]);
+const loadingLetters = ref(true);
+
+async function loadLetters() {
+  try {
+    const resp = await akordiService.getArtistLetters();
+    letters.value = [
+      {
+        id: '0',
+        name: '0',
+        clickable: true,
+      },
+      ...resp.data.map((l) => ({
+        id: l.toLowerCase(),
+        name: l.toUpperCase(),
+        clickable: true,
+      })),
+    ];
+  } catch (err) {
+    console.log(err);
+  } finally {
+    loadingLetters.value = false;
+  }
+}
 
 async function loadArtists() {
   if (!letter.value) {
@@ -209,6 +109,7 @@ watch(route, () => {
 
 onMounted(async () => {
   letter.value = letterParam.value;
+  await loadLetters();
   loadArtists();
   viewStore.goBack = true;
 });
@@ -220,12 +121,14 @@ onMounted(async () => {
 }
 </style>
 <template>
-  <LxValuePicker
-    variant="tags"
-    @update:modelValue="changeLetter"
-    :items="letters"
-    v-model="letter"
-  />
+  <LxLoaderView :loading="loadingLetters">
+    <LxValuePicker
+      variant="tags"
+      @update:modelValue="changeLetter"
+      :items="letters"
+      v-model="letter"
+    />
+  </LxLoaderView>
   <br />
   <LxList
     id="id"

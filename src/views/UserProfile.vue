@@ -54,7 +54,9 @@ onMounted(() => {
     :column-count="2"
     @buttonClick="buttonClicked"
   >
-    <template #pre-header>{{ t.t('pages.userProfile.sessionTime') }} {{ authStore.session.secondsToLive }}</template>
+    <template #pre-header
+      >{{ t.t('pages.userProfile.sessionTime') }} {{ authStore.session.secondsToLive }}</template
+    >
     <template #header>{{ authStore.fullName }}</template>
     <LxRow :label="$t('pages.userProfile.givenNameLabel')">
       <LxTextInput v-model="authStore.session.given_name" :read-only="true" />
