@@ -43,10 +43,7 @@ onMounted(async () => {
 <template>
   <div>
     <p>
-      Viss šeit atrodamais saturs izvietots tikai izglītošanās nolūkā. Liela daļa lapā atrodamo
-      dziesmu ir lietotāju interpretācijas un var precīzi nesakrist ar oriģinālu. Ja te ir kāda Tava
-      dziesma, un negribi, lai to mācās citi, vai arī ir radušies kādi jautājumi vai komentāri, tad
-      raksti uz info@akordi.lv.
+      {{ $t('pages.dashboard.disclaimer') }}
     </p>
     <div class="lx-divider"></div>
     <div class="lx-dashboard">

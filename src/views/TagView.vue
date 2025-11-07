@@ -60,7 +60,7 @@ const loadSongs = async () => {
       .slice(0, 10)
       .map((song) => song.title)
       .join(', ');
-    const metaDescription = `Dziesmas ar akordiem un tabulatūrām ${songTitles}`;
+    const metaDescription = $t('pages.tagView.metaDescription', { songTitles });
 
     useHead({
       title: pageTitle,

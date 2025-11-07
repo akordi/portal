@@ -64,7 +64,7 @@ const nav = [
     to: { name: 'songNew' },
   },
   {
-    label: 'Skatīt profilu',
+    label: $t('pages.userProfile.viewProfile'),
     icon: 'user-profile',
     to: { name: 'userProfile' },
     type: 'user-menu',
@@ -193,7 +193,7 @@ async function secondary() {
 }
 
 function openConfirmModal() {
-  confirmStore.push('Iziet', 'Vai tiešām vēlaties iziet?', 'Jā', 'Nē', primary, secondary);
+  confirmStore.push($t('confirm.logout.title'), $t('confirm.logout.message'), $t('confirm.logout.yes'), $t('confirm.logout.no'), primary, secondary);
 }
 
 function confirmModalClosed() {

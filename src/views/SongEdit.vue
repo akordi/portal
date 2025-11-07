@@ -81,7 +81,7 @@ const loadCopyFrom = async () => {
     }));
   } catch (err) {
     console.log(err);
-    notificationStore.pushError('Failed to load song');
+    notificationStore.pushError($t('errors.loadSongFailed'));
     throw err;
   } finally {
     loading.value = false;

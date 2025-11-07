@@ -116,7 +116,8 @@
   },
   "pages": {
     "dashboard": {
-      "title": "Avaleht"
+      "title": "Avaleht",
+      "disclaimer": "Kogu siin leiduva sisu on mõeldud ainult õppeotstarbeks. Paljud siin leiduvaid laule on kasutajate interpretatsioonid ja võivad täpselt ei vasta originaalile. Kui siin on sinu laul ja sa ei taha, et teised seda õpiksid, või on tekkinud küsimusi või kommentaare, kirjuta info@akordid.ee."
     },
     "songs": {
       "title": "Laulude kataloog"
@@ -213,8 +214,9 @@
     },
     "tagView": {
       "title": "Silt #{title}",
+      "metaDescription": "Laulud akordide ja tabulatuuridega {songTitles}",
       "list": {
-        "error": "Viga laulude laadimisel. Palun proovige hiljem uuesti."
+        "error": "Laulude laadimisel tekkis viga. Palun proovige hiljem uuesti."
       }
     },
     "login": {
@@ -248,7 +250,9 @@
       "givenNameLabel": "Eesnimi",
       "familyNameLabel": "Perekonnanimi",
       "phoneLabel": "Kontakttelefon",
-      "emailLabel": "E-posti aadress"
+      "emailLabel": "E-posti aadress",
+      "viewProfile": "Vaata profiili",
+      "sessionTime": "Sessiooni tööaeg:"
     },
     "users": {
       "title": "Kasutajad"
@@ -272,9 +276,13 @@
         "invalidRequestDescription": "Proovige autoriseerimist uuesti."
       }
     },
+    "artistView": {
+      "pageTitle": "{artist} laulud",
+      "metaDescription": "Laulud akordide ja tabulatuuridega {songTitles}"
+    },
     "notFound": {
       "title": "Lehte ei leitud",
-      "description": "Kontrollige, kas lehe aadress on õige ja proovige uuesti, või minge avalehele tagasi"
+      "description": "Kontrollige, kas lehe aadress on õige ja proovige uuesti, või naaske avalehele"
     }
   },
   "cookieConsent": {
@@ -285,7 +293,13 @@
   },
   "confirm": {
     "yes": "Jah",
-    "no": "Ei"
+    "no": "Ei",
+    "logout": {
+      "title": "Logi välja",
+      "message": "Kas olete kindel, et soovite välja logida?",
+      "yes": "Jah",
+      "no": "Ei"
+    }
   },
   "menu": {
     "home": "Avaleht",
@@ -301,7 +315,9 @@
     "hospitalLoadFailed": "Kasutajale kättesaadavate haiglate laadimisel tekkis viga, laadige leht uuesti ja proovige uuesti.",
     "forbidden": "Teil pole õigust seda toimingut teha!",
     "loadFailed": "Andmete laadimine ebaõnnestus",
-    "helpLoadFailed": "Abiteabe laadimine ebaõnnestus"
+    "helpLoadFailed": "Abiteabe laadimine ebaõnnestus",
+    "loadSongFailed": "Laulu laadimine ebaõnnestus",
+    "unexpectedError": "Ootamatu viga:"
   },
   "save": "Salvesta",
   "edit": "Muuda",

@@ -46,12 +46,12 @@ const loadArtist = async () => {
     }));
     
     viewStore.title = artistResp.data.title;
-    const pageTitle = `${artistResp.data.title} dziesmas`;
+    const pageTitle = $t('pages.artistView.pageTitle', { artist: artistResp.data.title });
     const songTitles = items.value
       .slice(0, 10)
       .map((song) => song.title)
       .join(', ');
-    const metaDescription = `Dziesmas ar akordiem un tabulatūrām ${songTitles}`;
+    const metaDescription = $t('pages.artistView.metaDescription', { songTitles });
 
     useHead({
       title: pageTitle,

@@ -116,7 +116,8 @@
   },
   "pages": {
     "dashboard": {
-      "title": "Pradinis puslapis"
+      "title": "Pradinis puslapis",
+      "disclaimer": "Visas čia esančios medžiagos yra skirtos tik mokymosi tikslams. Daugelis čia esančių dainų yra vartotojų interpretacijos ir gali tiksliai neatitikti originalo. Jei čia yra tavo daina ir nenori, kad ją mokytųsi kiti, arba turi klausimų ar komentarų, rašyk į info@akordi.lt."
     },
     "songs": {
       "title": "Dainų katalogas"
@@ -212,7 +213,8 @@
       }
     },
     "tagView": {
-      "title": "Žymė #{title}",
+      "title": "Žyma #{title}",
+      "metaDescription": "Dainos su akordais ir tabulaturėmis {songTitles}",
       "list": {
         "error": "Klaida įkeliant dainas. Prašome bandyti vėliau."
       }
@@ -248,7 +250,9 @@
       "givenNameLabel": "Vardas",
       "familyNameLabel": "Pavardė",
       "phoneLabel": "Kontaktinis telefonas",
-      "emailLabel": "El. pašto adresas"
+      "emailLabel": "El. pašto adresas",
+      "viewProfile": "Žiūrėti profilį",
+      "sessionTime": "Sesijos darbo laikas:"
     },
     "users": {
       "title": "Vartotojai"
@@ -272,9 +276,13 @@
         "invalidRequestDescription": "Bandykite autorizuotis iš naujo."
       }
     },
+    "artistView": {
+      "pageTitle": "{artist} dainos",
+      "metaDescription": "Dainos su akordais ir tabulaturėmis {songTitles}"
+    },
     "notFound": {
       "title": "Puslapis nerastas",
-      "description": "Patikrinkite, ar puslapio adresas teisingas ir bandykite dar kartą, arba grįžkite į pradžios puslapį"
+      "description": "Patikrinkite, ar puslapio adresas yra teisinga ir bandykite dar kartą, arba grįžkite į pradžią"
     }
   },
   "cookieConsent": {
@@ -285,7 +293,13 @@
   },
   "confirm": {
     "yes": "Taip",
-    "no": "Ne"
+    "no": "Ne",
+    "logout": {
+      "title": "Atsijungti",
+      "message": "Ar tikrai norite atsijungti?",
+      "yes": "Taip",
+      "no": "Ne"
+    }
   },
   "menu": {
     "home": "Pradžia",
@@ -301,7 +315,9 @@
     "hospitalLoadFailed": "Įvyko klaida įkeliant vartotojui prieinamas ligonines, perkraukite puslapį ir bandykite dar kartą.",
     "forbidden": "Jūs neturite teisės atlikti šio veiksmo!",
     "loadFailed": "Nepavyko įkelti duomenų",
-    "helpLoadFailed": "Nepavyko įkelti pagalbos informacijos"
+    "helpLoadFailed": "Nepavyko įkelti pagalbos informacijos",
+    "loadSongFailed": "Nepavyko įkelti dainos",
+    "unexpectedError": "Netikėta klaida:"
   },
   "save": "Išsaugoti",
   "edit": "Redaguoti",

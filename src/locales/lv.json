@@ -116,7 +116,8 @@
   },
   "pages": {
     "dashboard": {
-      "title": "Sākumlapa"
+      "title": "Sākumlapa",
+      "disclaimer": "Viss šeit atrodamais saturs izvietots tikai izglītošanās nolūkā. Liela daļa lapā atrodamo dziesmu ir lietotāju interpretācijas un var precīzi nesakrist ar oriģinālu. Ja te ir kāda Tava dziesma, un negribi, lai to mācās citi, vai arī ir radušies kādi jautājumi vai komentāri, tad raksti uz info@akordi.lv."
     },
     "songs": {
       "title": "Dziesmu katalogs"
@@ -213,6 +214,7 @@
     },
     "tagView": {
       "title": "Birka #{title}",
+      "metaDescription": "Dziesmas ar akordiem un tabulatūrām {songTitles}",
       "list": {
         "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
       }
@@ -248,7 +250,9 @@
       "givenNameLabel": "Vārds",
       "familyNameLabel": "Uzvārds",
       "phoneLabel": "Kontakttālrunis",
-      "emailLabel": "E-pasta adrese"
+      "emailLabel": "E-pasta adrese",
+      "viewProfile": "Skatīt profilu",
+      "sessionTime": "Sesijas darbības laiks:"
     },
     "users": {
       "title": "Lietotāji"
@@ -272,6 +276,10 @@
         "invalidRequestDescription": "Mēģiniet veikt atkārtotu autorizāciju."
       }
     },
+    "artistView": {
+      "pageTitle": "{artist} dziesmas",
+      "metaDescription": "Dziesmas ar akordiem un tabulatūrām {songTitles}"
+    },
     "notFound": {
       "title": "Lapa nav atrasta",
       "description": "Pārbaudiet, vai lapas adrese ir pareiza un mēģiniet vēlreiz, vai atgriezieties uz sākumlapu"
@@ -285,7 +293,13 @@
   },
   "confirm": {
     "yes": "Jā",
-    "no": "Nē"
+    "no": "Nē",
+    "logout": {
+      "title": "Iziet",
+      "message": "Vai tiešām vēlaties iziet?",
+      "yes": "Jā",
+      "no": "Nē"
+    }
   },
   "menu": {
     "home": "Sākums",
@@ -301,7 +315,9 @@
     "hospitalLoadFailed": "Radās kļūda, ielādējot lietotājam pieejamās slimnīcas, pārlādējiet lapu un mēģiniet atkārtoti.",
     "forbidden": "Jums nav tiesību veikt šo darbību!",
     "loadFailed": "Neizdevās ielādēt datus",
-    "helpLoadFailed": "Neizdevās ielādēt palīdzības informāciju"
+    "helpLoadFailed": "Neizdevās ielādēt palīdzības informāciju",
+    "loadSongFailed": "Neizdevās ielādēt dziesmu",
+    "unexpectedError": "Neparedzēta kļūda:"
   },
   "save": "Saglabāt",
   "edit": "Rediģēt",
