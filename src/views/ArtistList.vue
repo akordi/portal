@@ -1,8 +1,9 @@
 <script setup>
 import akordiService from '@/services/akordiService';
 import { LxList, LxLoaderView, LxValuePicker } from '@wntr/lx-ui';
-import { onMounted, ref, computed, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { listTexts } from '@/utils/texts';
 
 import { useRoute, useRouter } from 'vue-router';
 
@@ -139,6 +140,7 @@ onMounted(async () => {
     v-model:items="items"
     primary-attribute="title"
     @action-click="actionClicked"
+     :texts="listTexts()"
   >
   </LxList>
 </template>

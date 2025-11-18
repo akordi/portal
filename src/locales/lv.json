@@ -105,6 +105,47 @@
         "primaryLabel": "Turpināt darbu",
         "secondaryLabel": "Beigt darbu"
       }
+    },
+    "list": {
+      "clear": "Notīrīt",
+      "placeholder": "Ievadiet nosaukuma vai apraksta daļu, lai sameklētu ierakstus",
+      "notFoundSearch": "Nav atrasts:",
+      "noItems": "Nav ierakstu",
+      "noItemsDescription": "",
+      "loadMore": "Ielādēt vēl",
+      "search": "Meklēt",
+      "items": {
+        "singular": "ieraksts",
+        "plural": "ieraksti",
+        "endingWith234": "ieraksti",
+        "endingWith1": "ieraksts"
+      },
+      "ofItems": {
+        "label": "Ieraksti",
+        "singular": "ieraksta",
+        "plural": "ierakstiem",
+        "endingWith234": "ierakstiem",
+        "endingWith1": "ieraksta"
+      },
+      "selected": {
+        "singular": "Izvēlēts",
+        "plural": "Izvēlēti",
+        "endingWith234": "Izvēlēti",
+        "endingWith1": "Izvēlēts"
+      },
+      "of": "no",
+      "clearSelected": "Attīrīt izvēles",
+      "selectAllRows": "Izvēlēties visu",
+      "selectWholeGroup": "Izvēlēties visu grupu",
+      "loadingError": "Notika ielādes kļūda",
+      "reload": "Ielādēt atkārtoti",
+      "collapse": "Sakļaut elementu",
+      "expand": "Izvērst elementu",
+      "openSearch": "Atvērt meklētāju",
+      "closeSearch": "Aizvērt meklētāju",
+      "skipLinkLabel": "Izlaist sarakstu",
+      "skipLinkTitle": "Izlaist sarakstu",
+      "overflowMenu": "Atvērt papildu iespējas"
     }
   },
   "greeting": {

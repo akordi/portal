@@ -8,6 +8,7 @@ import { useRouter } from 'vue-router';
 
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
+import { listTexts } from '@/utils/texts';
 
 const router = useRouter();
 const translate = useI18n();
@@ -38,7 +39,7 @@ async function loadSongs() {
         clickable: true,
       }))
     );
-    hasMore.value = items.value.length <= 200;
+    hasMore.value = items.value.length < resp.data.totalElements;
   } catch (err) {
     console.log(err);
     notificationStore.pushError($t('pages.songListNew.list.error'));
@@ -100,6 +101,7 @@ watch(currentSection, (newVal) => {
     @action-click="actionClicked"
     :show-load-more="hasMore"
     @load-more="loadMore"
+    :texts="listTexts()"
   >
   </LxList>
 </template>

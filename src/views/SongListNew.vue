@@ -37,7 +37,7 @@ async function loadSongs() {
         clickable: true,
       }))
     );
-    hasMore.value = items.value.length <= 200;
+    hasMore.value = items.value.length < resp.data.totalElements;
   } catch (err) {
     console.log(err);
     notificationStore.pushError($t('pages.songListNew.list.error'));

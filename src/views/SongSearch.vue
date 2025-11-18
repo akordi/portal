@@ -3,6 +3,7 @@ import akordiService from '@/services/akordiService';
 import { LxContentSwitcher, LxList, LxLoader } from '@wntr/lx-ui';
 import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { listTexts } from '@/utils/texts';
 
 import { useRoute, useRouter } from 'vue-router';
 
@@ -170,6 +171,7 @@ em {
     icon="next"
     :show-load-more="hasMore()"
     @load-more="loadMore"
+    :texts="listTexts()"
   >
     <template #customItem="{ title, description }">
       <p class="lx-primary" v-html="title"></p>

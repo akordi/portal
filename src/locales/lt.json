@@ -105,6 +105,47 @@
         "primaryLabel": "Tęsti darbą",
         "secondaryLabel": "Baigti darbą"
       }
+    },
+    "list": {
+      "clear": "Išvalyti",
+      "placeholder": "Įveskite pavadinimo arba aprašymo dalį, kad rastumėte įrašus",
+      "notFoundSearch": "Nerasta:",
+      "noItems": "Nėra įrašų",
+      "noItemsDescription": "",
+      "loadMore": "Įkelti daugiau",
+      "search": "Ieškoti",
+      "items": {
+        "singular": "įrašas",
+        "plural": "įrašai",
+        "endingWith234": "įrašai",
+        "endingWith1": "įrašas"
+      },
+      "ofItems": {
+        "label": "Įrašai",
+        "singular": "įrašo",
+        "plural": "įrašams",
+        "endingWith234": "įrašams",
+        "endingWith1": "įrašo"
+      },
+      "selected": {
+        "singular": "Pasirinktas",
+        "plural": "Pasirinkti",
+        "endingWith234": "Pasirinkti",
+        "endingWith1": "Pasirinktas"
+      },
+      "of": "iš",
+      "clearSelected": "Išvalyti pasirinkimą",
+      "selectAllRows": "Pasirinkti viską",
+      "selectWholeGroup": "Pasirinkti visą grupę",
+      "loadingError": "Įvyko įkėlimo klaida",
+      "reload": "Įkelti iš naujo",
+      "collapse": "Suskleisti elementą",
+      "expand": "Išskleisti elementą",
+      "openSearch": "Atidaryti paiešką",
+      "closeSearch": "Uždaryti paiešką",
+      "skipLinkLabel": "Praleisti sąrašą",
+      "skipLinkTitle": "Praleisti sąrašą",
+      "overflowMenu": "Atidaryti papildomas parinktis"
     }
   },
   "greeting": {

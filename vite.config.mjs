@@ -92,6 +92,9 @@ const getEnvVariables = (mode, serving) => {
     envVariables.BASE_PATH = envVariables.BASE_PATH || '//BASE_PATH//';
     envVariables.BASE_URL = '{{PUBLIC_URL}}';
     envVariables.VUE_APP_DEFAULT_LANGUAGE = '{{DEFAULT_LANGUAGE}}';
+    envVariables.VUE_APP_NAME = '{{APP_NAME}}';
+    envVariables.VUE_APP_TITLE = '{{APP_TITLE}}';
+    envVariables.VUE_APP_DESCRIPTION = '{{APP_DESCRIPTION}}';
   }
   return envVariables;
 };

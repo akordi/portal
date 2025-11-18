@@ -105,6 +105,47 @@
         "primaryLabel": "Jätka tööd",
         "secondaryLabel": "Lõpeta töö"
       }
+    },
+    "list": {
+      "clear": "Tühjenda",
+      "placeholder": "Sisestage nime või kirjelduse osa, et leida kirjeid",
+      "notFoundSearch": "Ei leitud:",
+      "noItems": "Kirjeid pole",
+      "noItemsDescription": "",
+      "loadMore": "Laadi veel",
+      "search": "Otsi",
+      "items": {
+        "singular": "kirje",
+        "plural": "kirjed",
+        "endingWith234": "kirjed",
+        "endingWith1": "kirje"
+      },
+      "ofItems": {
+        "label": "Kirjed",
+        "singular": "kirje",
+        "plural": "kirjetele",
+        "endingWith234": "kirjetele",
+        "endingWith1": "kirje"
+      },
+      "selected": {
+        "singular": "Valitud",
+        "plural": "Valitud",
+        "endingWith234": "Valitud",
+        "endingWith1": "Valitud"
+      },
+      "of": "kokku",
+      "clearSelected": "Tühjenda valik",
+      "selectAllRows": "Vali kõik",
+      "selectWholeGroup": "Vali kogu grupp",
+      "loadingError": "Laadimisel tekkis viga",
+      "reload": "Laadi uuesti",
+      "collapse": "Ahenda element",
+      "expand": "Laienda element",
+      "openSearch": "Ava otsing",
+      "closeSearch": "Sulge otsing",
+      "skipLinkLabel": "Jäta loend vahele",
+      "skipLinkTitle": "Jäta loend vahele",
+      "overflowMenu": "Ava lisavalikud"
     }
   },
   "greeting": {
