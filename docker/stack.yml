@@ -25,6 +25,10 @@ services:
       - PUBLIC_URL=https://${HOSTNAME_WWW}/
       - GTAG_ENABLED=true
       - GTAG_ID=${GTAG_ID}
+      - DEFAULT_LANGUAGE=${DEFAULT_LANGUAGE}
+      - APP_NAME=${APP_NAME}
+      - APP_TITLE=${APP_TITLE}
+      - APP_DESCRIPTION=${APP_DESCRIPTION}
 networks:
   traefik_proxy:
     external: true
