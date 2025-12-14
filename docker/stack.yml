@@ -3,19 +3,20 @@ services:
     networks:
       - traefik_proxy
       - akordi
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.akordi-portal.rule=Host(`${HOSTNAME_WWW}`)"
-      - "traefik.http.routers.akordi-portal.entrypoints=websecure"
-      - "traefik.http.routers.akordi-portal.tls.certresolver=letsencrypt"
-      - "traefik.http.services.akordi-portal.loadbalancer.server.port=8080"
-      - "traefik.http.routers.akordi-portal-redirect.rule=Host(`${HOSTNAME}`)"
-      - "traefik.http.routers.akordi-portal-redirect.entrypoints=websecure"
-      - "traefik.http.routers.akordi-portal-redirect.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.akordi-portal-redirect.middlewares=akordi-portal-www-redirect"
-      - "traefik.http.middlewares.akordi-portal-www-redirect.redirectregex.regex=^https?://${HOSTNAME}(.*)$$"
-      - "traefik.http.middlewares.akordi-portal-www-redirect.redirectregex.replacement=https://${HOSTNAME_WWW}$$1"
-      - "traefik.http.middlewares.akordi-portal-www-redirect.redirectregex.permanent=true"
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.akordi-portal.rule=Host(`${HOSTNAME_WWW}`)"
+        - "traefik.http.routers.akordi-portal.entrypoints=websecure"
+        - "traefik.http.routers.akordi-portal.tls.certresolver=letsencrypt"
+        - "traefik.http.services.akordi-portal.loadbalancer.server.port=8080"
+        - "traefik.http.routers.akordi-portal-redirect.rule=Host(`${HOSTNAME}`)"
+        - "traefik.http.routers.akordi-portal-redirect.entrypoints=websecure"
+        - "traefik.http.routers.akordi-portal-redirect.tls.certresolver=letsencrypt"
+        - "traefik.http.routers.akordi-portal-redirect.middlewares=akordi-portal-www-redirect"
+        - "traefik.http.middlewares.akordi-portal-www-redirect.redirectregex.regex=^https?://${HOSTNAME}(.*)$$"
+        - "traefik.http.middlewares.akordi-portal-www-redirect.redirectregex.replacement=https://${HOSTNAME_WWW}$$1"
+        - "traefik.http.middlewares.akordi-portal-www-redirect.redirectregex.permanent=true"
     image: ${DOCKER_IMAGE}
     environment:
       - API_V2_URL=http://portal-api:8080
