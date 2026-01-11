@@ -73,7 +73,6 @@ const loadSongs = async () => {
 
     hasMore.value = resp.data.totalElements > items.value.length;
   } catch (err) {
-    console.log(err);
     notificationStore.pushError('Failed to load songs');
     throw err;
   } finally {

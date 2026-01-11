@@ -6,6 +6,7 @@ import router from '@/router';
 import lv from '@/locales/lv.json';
 import lt from '@/locales/lt.json';
 import ee from '@/locales/ee.json';
+import es from '@/locales/es.json';
 import events from '@/router/events';
 import { createLx } from '@wntr/lx-ui';
 import { createGtag } from 'vue-gtag';
@@ -65,6 +66,7 @@ const i18n = createI18n({
     lv,
     lt,
     ee,
+    es,
   },
 });
 const $t = i18n.global.t;

@@ -32,7 +32,6 @@ async function loadTags() {
       name: `${item.title} (${item.songCount})`,
     }));
   } catch (err) {
-    console.log(err);
     notificationStore.pushError($t('pages.tagList.list.error'));
     throw err;
   } finally {

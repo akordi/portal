@@ -11,16 +11,9 @@
   ],
   "eslint.format.enable": true,
   "eslint.validate": [
-    "javascript"
-  ],
-  "cSpell.dictionaryDefinitions": [
-    {
-      "name": "zzdats",
-      "path": "${workspaceFolder}/.vscode/worldlist/zzdats.txt"
-    }
-  ],
-  "cSpell.dictionaries": [
-    "zzdats"
+    "javascript",
+    "vue",
+    "html"
   ],
   "cSpell.words": [
     "akordi"

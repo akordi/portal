@@ -41,7 +41,6 @@ async function loadSongs() {
     );
     hasMore.value = items.value.length < resp.data.totalElements;
   } catch (err) {
-    console.log(err);
     notificationStore.pushError($t('pages.songListNew.list.error'));
     throw err;
   } finally {

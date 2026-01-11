@@ -80,7 +80,6 @@ const loadCopyFrom = async () => {
       title: i.title,
     }));
   } catch (err) {
-    console.log(err);
     notificationStore.pushError($t('errors.loadSongFailed'));
     throw err;
   } finally {
@@ -156,7 +155,6 @@ async function actionClicked(actionName) {
       submitting.value = false;
     } catch (err) {
       submitting.value = false;
-      console.error({ err });
       notify.pushError($t('songs.save.error'));
     }
   }
@@ -207,7 +205,6 @@ async function loadTags() {
       name: `${i.title} (${i.songCount})`,
     }));
   } catch (err) {
-    console.log(err);
     notificationStore.pushError($t('pages.tagList.list.error'));
     throw err;
   } finally {
