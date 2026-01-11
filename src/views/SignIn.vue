@@ -103,8 +103,7 @@ onMounted(() => {
       });
       loading.value = false;
     })
-    .catch((err) => {
-      if (window.config.environment === 'development') console.log(err);
+    .catch(() => {
       router.push('/error');
     });
 });

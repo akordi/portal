@@ -41,7 +41,7 @@ async function loadLetters() {
       })),
     ];
   } catch (err) {
-    console.log(err);
+    // skip
   } finally {
     loadingLetters.value = false;
   }
@@ -78,7 +78,6 @@ async function loadArtists() {
     }
     hasMore.value = resp.data.totalElements > items.value.length;
   } catch (err) {
-    console.log(err);
     notificationStore.pushError($t('pages.songSearch.search.error'));
     throw err;
   } finally {
@@ -140,7 +139,7 @@ onMounted(async () => {
     v-model:items="items"
     primary-attribute="title"
     @action-click="actionClicked"
-     :texts="listTexts()"
+    :texts="listTexts()"
   >
   </LxList>
 </template>

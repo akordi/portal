@@ -64,7 +64,6 @@ const loadArtist = async () => {
       ],
     });
   } catch (err) {
-    console.log(err);
     notificationStore.pushError('Failed to load songs');
     throw err;
   } finally {

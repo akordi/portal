@@ -1,0 +1,403 @@
+{
+  "title": {
+    "default": "Akordi.es",
+    "prefix": "Acordes, tablaturas y letras de canciones españolas - ",
+    "fullName": "Akordi.es",
+    "fullNameFormatted": "Akordi.es",
+    "subheader": "Almacén de letras de canciones, acordes y tablaturas",
+    "shortName": "Akordi",
+    "description": "Busca acordes y letras de canciones españolas y encuentra miles de canciones populares en la base de datos."
+  },
+  "lx": {
+    "shell": {
+      "defaultBack": "Atrás",
+      "logOut": "Cerrar sesión",
+      "openAlerts": "Abrir lista",
+      "noAlerts": "No hay notificaciones",
+      "openNavbar": "Abrir menú",
+      "helpTitle": "Ayuda",
+      "alertsTitle": "Notificaciones",
+      "languagesTitle": "Selección de idioma",
+      "contextPersonTitle": "Datos de personas relacionadas",
+      "close": "Cerrar",
+      "contextPersonsLabel": "Seleccionar persona",
+      "contextPersonsInfoLabel": "Paciente",
+      "contextPersonsInfoTitle": "Persona de contexto",
+      "contextPersonsOwnData": "Ver mis datos",
+      "alternativeProfilesLabel": "Elija un perfil alternativo",
+      "contextPersonsButtonLabel": "Personas de contexto",
+      "alternativeProfilesButtonLabel": "Perfiles alternativos",
+      "idleModalLabel": "La sesión está por terminar",
+      "idleModalPrimaryLabel": "Continuar trabajando",
+      "idleModalSecondaryLabel": "Terminar trabajo",
+      "descriptionMinutes": "Quedan {count} minutos para que termine la sesión",
+      "descriptionMinutesSmall": "y {count} segundos",
+      "idleDescription": "Quedan {count} segundos para que termine la sesión",
+      "themeTitle": "Selección de diseño",
+      "themeAuto": "Modo automático",
+      "themeLight": "Modo claro",
+      "themeDark": "Modo oscuro",
+      "themeContrast": "Modo de contraste",
+      "animations": "Reducir movimiento",
+      "transparency": "Reducir transparencia",
+      "fonts": "Fuentes del dispositivo",
+      "touchMode": "Modo táctil",
+      "touchModeOff": "No",
+      "touchModeOn": "Sí",
+      "confirmModalSecondaryDefaultLabel": "No",
+      "confirmModalPrimaryDefaultLabel": "Sí",
+      "previousAlertTitle": "Notificación anterior",
+      "nextAlertTitle": "Siguiente notificación",
+      "userTitle": "Usuario",
+      "menu": "Menú",
+      "showAllLabel": "Más",
+      "megaMenuTitle": "Aplicaciones",
+      "successSvgTitle": "Notificación exitosa",
+      "warningSvgTitle": "Advertencia",
+      "errorSvgTitle": "Error",
+      "infoSvgTitle": "Información",
+      "svgTitle": "Notificación",
+      "skipLinkLabel": "Ir al contenido de la página",
+      "skipLinkTitle": "Ir al contenido de la página",
+      "customButton": "Botón personalizable",
+      "overflowNavItems": "Abrir menú adicional",
+      "scrollUp": "Volver arriba",
+      "contextPersonsBirthDate": "Fecha de nacimiento",
+      "settings": "Ajustes",
+      "contextPersonsTooltipLabel": "Persona de contexto",
+      "contextPersonsTooltipDescription": "Descripción de la persona de contexto",
+      "badgeTypes": {
+        "default": "notificación informativa",
+        "info": "notificación informativa",
+        "warning": "advertencia",
+        "good": "notificación exitosa",
+        "important": "notificación importante"
+      },
+      "spotlight": {
+        "label": "Guía de la aplicación",
+        "close": "Cerrar",
+        "next": "Siguiente",
+        "back": "Atrás",
+        "showMore": "Saber más",
+        "of": "de"
+      },
+      "userProfile": "Ver perfil",
+      "notifications": {
+        "logoutSuccess": "Su sesión ha finalizado con éxito",
+        "agreement": "Debe aceptar los términos de uso",
+        "unknownState": "Ocurrió un error al procesar el estado del usuario",
+        "err401": "Inicie sesión para acceder a la funcionalidad",
+        "sessionContinued": "Sesión extendida con éxito",
+        "sessionContinuedFailed": "No se pudo extender la sesión",
+        "sessionEndingSoon": "Su sesión terminará pronto"
+      },
+      "sessionExpiring": {
+        "label": "La sesión está por terminar",
+        "description": "Queda {count} segundo para que termine la sesión | Quedan {count} segundos para que termine la sesión",
+        "descriptionMinutes": "Queda {count} minuto para que termine la sesión | Quedan {count} minutos para que termine la sesión",
+        "descriptionMinutesSmall": "y {count} segundo | y {count} segundos",
+        "primaryLabel": "Continuar trabajando",
+        "secondaryLabel": "Terminar trabajo"
+      }
+    },
+    "list": {
+      "clear": "Limpiar",
+      "placeholder": "Ingrese parte del nombre o descripción para buscar registros",
+      "notFoundSearch": "No encontrado:",
+      "noItems": "No hay registros",
+      "noItemsDescription": "",
+      "loadMore": "Cargar más",
+      "search": "Buscar",
+      "items": {
+        "singular": "registro",
+        "plural": "registros",
+        "endingWith234": "registros",
+        "endingWith1": "registro"
+      },
+      "ofItems": {
+        "label": "Registros",
+        "singular": "del registro",
+        "plural": "de los registros",
+        "endingWith234": "de los registros",
+        "endingWith1": "del registro"
+      },
+      "selected": {
+        "singular": "Seleccionado",
+        "plural": "Seleccionados",
+        "endingWith234": "Seleccionados",
+        "endingWith1": "Seleccionado"
+      },
+      "of": "de",
+      "clearSelected": "Limpiar selecciones",
+      "selectAllRows": "Seleccionar todo",
+      "selectWholeGroup": "Seleccionar todo el grupo",
+      "loadingError": "Ocurrió un error de carga",
+      "reload": "Recargar",
+      "collapse": "Contraer elemento",
+      "expand": "Expandir elemento",
+      "openSearch": "Abrir buscador",
+      "closeSearch": "Cerrar buscador",
+      "skipLinkLabel": "Omitir lista",
+      "skipLinkTitle": "Omitir lista",
+      "overflowMenu": "Abrir opciones adicionales"
+    }
+  },
+  "greeting": {
+    "default": "Bienvenidos",
+    "morning": "Buenos días",
+    "day": "Buenas tardes",
+    "evening": "Buenas noches",
+    "night": "Buenas noches"
+  },
+  "pages": {
+    "dashboard": {
+      "title": "Página de inicio",
+      "disclaimer": "Todo el contenido que se encuentra aquí se publica únicamente con fines educativos. Gran parte de las canciones del sitio son interpretaciones de los usuarios y pueden no coincidir exactamente con el original. Si hay alguna canción tuya aquí y no quieres que otros la aprendan, o si tienes alguna pregunta o comentario, escribe a info[at]akordi.es."
+    },
+    "songs": {
+      "title": "Catálogo de canciones"
+    },
+    "songSearch": {
+      "title": "Buscador de canciones",
+      "description": "Usa el buscador y encuentra algo para tocar entre las {songCount} canciones de akordi.es",
+      "search": {
+        "error": "Error al buscar canciones. Por favor, inténtelo de nuevo más tarde."
+      }
+    },
+    "songListNew": {
+      "title": "Canciones más recientes",
+      "description": "Canciones añadidas recientemente",
+      "list": {
+        "error": "Error al cargar las canciones. Por favor, inténtelo de nuevo más tarde."
+      }
+    },
+    "songListTop": {
+      "title": "Canciones más populares",
+      "description": "Las canciones más populares de la semana pasada, que han sido vistas y tocadas por otros usuarios",
+      "list": {
+        "error": "Error al cargar las canciones. Por favor, inténtelo de nuevo más tarde."
+      }
+    },
+    "songEdit": {
+      "title": "Edición de canción",
+      "description": "Aquí puedes enviar correcciones para la canción"
+    },
+    "songNew": {
+      "title": "Enviar canción",
+      "description": "Aquí puedes enviar una canción para que se añada al portal. La página está destinada únicamente a canciones españolas (el idioma de la canción no importa). Será revisada y añadida a la base de datos."
+    },
+    "akordiSongView": {
+      "title": "Canciones de Akordi.es",
+      "copy": {
+        "label": "Copiar canción",
+        "description": "Copiar el texto de la canción para crear tu propia versión"
+      },
+      "hideChords": {
+        "label": "No mostrar acordes",
+        "description": "Ocultar la tablatura de acordes de la canción"
+      },
+      "showSheet": {
+        "label": "Mostrar partitura",
+        "description": "Mostrar la partitura de la canción"
+      },
+      "autoScroll": {
+        "label": "Desplazamiento automático ({speed})",
+        "playDescription": "Acelerar el desplazamiento automático",
+        "stopDescription": "Detener el desplazamiento automático"
+      },
+      "showGuitarChords": {
+        "label": "Mostrar acordes de guitarra",
+        "description": "Mostrar u ocultar la tablatura de acordes para guitarra"
+      },
+      "showUkuleleChords": {
+        "label": "Mostrar acordes de ukelele",
+        "description": "Mostrar u ocultar la tablatura de acordes para ukelele"
+      },
+      "transposeUp": {
+        "label": "Transportar hacia arriba",
+        "description": "Transportar la canción medio tono hacia arriba"
+      },
+      "transposeDown": {
+        "label": "Transportar hacia abajo",
+        "description": "Transportar la canción medio tono hacia abajo"
+      },
+      "fontUp": {
+        "label": "Aumentar letra",
+        "description": "Aumentar el tamaño de la letra en el texto de la canción"
+      },
+      "fontDown": {
+        "label": "Disminuir letra",
+        "description": "Disminuir el tamaño de la letra en el texto de la canción"
+      },
+      "transposeDisabled": "El transporte está desactivado porque no se encuentran acordes en el texto de la canción",
+      "audioNotSupported": "Su navegador no soporta audio",
+      "transposeHeader": "Transportar ({offset})"
+    },
+    "akordiArtistLetter": {
+      "title": "Catálogo de artistas A-Z",
+      "description": "Navega por la lista de artistas en orden alfabético de la A a la Z",
+      "search": {
+        "error": "Error al buscar artistas. Por favor, inténtelo de nuevo más tarde."
+      }
+    },
+    "tagList": {
+      "title": "Etiquetas",
+      "description": "Aquí puedes navegar por categorías temáticas de canciones",
+      "list": {
+        "error": "Error al cargar las canciones. Por favor, inténtelo de nuevo más tarde."
+      }
+    },
+    "tagView": {
+      "title": "Etiqueta #{title}",
+      "metaDescription": "Canciones con acordes y tablaturas {songTitles}",
+      "list": {
+        "error": "Error al cargar las canciones. Por favor, inténtelo de nuevo más tarde."
+      }
+    },
+    "login": {
+      "title": "Elija un método de autenticación",
+      "buttons": {
+        "signIn": "Iniciar sesión"
+      },
+      "options": {
+        "google": {
+          "name": "Google",
+          "description": "Iniciar sesión con cuenta de Google"
+        },
+        "facebook": {
+          "name": "Facebook",
+          "description": "Iniciar sesión con cuenta de Facebook"
+        }
+      }
+    },
+    "home": {
+      "title": "Akordi",
+      "buttons": {
+        "loginUnauthorized": "Entrar"
+      }
+    },
+    "sessionEnded": {
+      "title": "Su sesión ha terminado",
+      "description": "El tiempo asignado a la sesión ha expirado. Para continuar trabajando, vuelva a iniciar sesión"
+    },
+    "userProfile": {
+      "title": "Perfil de usuario",
+      "givenNameLabel": "Nombre",
+      "familyNameLabel": "Apellido",
+      "phoneLabel": "Teléfono de contacto",
+      "emailLabel": "Correo electrónico",
+      "viewProfile": "Ver perfil",
+      "sessionTime": "Tiempo de actividad de la sesión:"
+    },
+    "users": {
+      "title": "Usuarios"
+    },
+    "error": {
+      "goBack": "Volver atrás",
+      "goHome": "Volver al inicio",
+      "title": "Ocurrió un error inesperado"
+    },
+    "auth": {
+      "title": "Procesando",
+      "description": "Procesando. ¡Por favor, espere!",
+      "errors": {
+        "unknownTitle": "Error de autorización desconocido",
+        "unknownDescription": "Intente autorizarse de nuevo.",
+        "blockedTitle": "El usuario está bloqueado",
+        "blockedDescription": "Póngase en contacto con el administrador del sistema.",
+        "invalidRightsTitle": "No tiene permisos para usar este sistema",
+        "invalidRightsDescription": "Póngase en contacto con el administrador del sistema.",
+        "invalidRequestTitle": "Solicitud de autorización errónea",
+        "invalidRequestDescription": "Intente autorizarse de nuevo."
+      }
+    },
+    "artistView": {
+      "pageTitle": "Canciones de {artist}",
+      "metaDescription": "Canciones con acordes y tablaturas {songTitles}"
+    },
+    "notFound": {
+      "title": "Página no encontrada",
+      "description": "Compruebe si la dirección de la página es correcta e inténtelo de nuevo, o vuelva a la página de inicio"
+    }
+  },
+  "cookieConsent": {
+    "title": "Política de cookies",
+    "description": "Este sitio utiliza cookies para proporcionar estadísticas de las canciones más populares y mejorar la experiencia del usuario. \nPor favor, acepte el uso de cookies para continuar utilizando este sitio.",
+    "accept": "Acepto",
+    "reject": "Cerrar"
+  },
+  "confirm": {
+    "yes": "Sí",
+    "no": "No",
+    "logout": {
+      "title": "Cerrar sesión",
+      "message": "¿Realmente desea salir?",
+      "yes": "Sí",
+      "no": "No"
+    }
+  },
+  "menu": {
+    "home": "Inicio",
+    "users": "Usuarios",
+    "login": "Autorización",
+    "logout": "Cerrar sesión"
+  },
+  "errors": {
+    "logoutFailed": "Ocurrió un error al cerrar sesión en el sistema, recargue la página e inténtelo de nuevo.",
+    "classifierLoadFailed": "Ocurrió un error al cargar los clasificadores del filtro, recargue la página e inténtelo de nuevo.",
+    "roleLoadFailed": "Ocurrió un error al cargar los roles de usuario, recargue la página e inténtelo de nuevo.",
+    "institutionLoadFailed": "Ocurrió un error al cargar las instituciones disponibles para el usuario, recargue la página e inténtelo de nuevo.",
+    "hospitalLoadFailed": "Ocurrió un error al cargar los hospitales disponibles para el usuario, recargue la página e inténtelo de nuevo.",
+    "forbidden": "No tiene permiso para realizar esta acción.",
+    "loadFailed": "No se pudieron cargar los datos",
+    "helpLoadFailed": "No se pudo cargar la información de ayuda",
+    "loadSongFailed": "No se pudo cargar la canción",
+    "unexpectedError": "Error inesperado:"
+  },
+  "save": "Guardar",
+  "edit": "Editar",
+  "suggestEdit": "Sugerir corrección",
+  "delete": "Eliminar",
+  "copy": "Copiar",
+  "cancel": "Cancelar",
+  "search": "Buscar",
+  "song": {
+    "title": "Título",
+    "artist": "Artista",
+    "performer": "Intérprete",
+    "composer": "Autor de la música",
+    "poet": "Autor de la letra",
+    "tags": "Etiquetas",
+    "youtubeLink": "Video de Youtube",
+    "createdAt": "Creado",
+    "updatedAt": "Editado por última vez",
+    "lyrics": "Letra de la canción",
+    "body": "Texto de la canción con acordes",
+    "bodyTooltip": "Es preferible añadir canciones con letras completas. Use espacios en lugar de pestañas para el diseño del texto."
+  },
+  "songs": {
+    "save": {
+      "success": "Canción enviada con éxito para aprobación",
+      "error": "Error al guardar la canción"
+    }
+  },
+  "artist": {
+    "title": "Nombre"
+  },
+  "artists": {
+    "save": {
+      "success": "Artista guardado con éxito",
+      "error": "Error al guardar el artista"
+    },
+    "delete": {
+      "success": "Artista eliminado con éxito",
+      "error": "Error al eliminar el artista"
+    }
+  },
+  "error": {
+    "validation": "Por favor, complete los campos"
+  },
+  "validations": {
+    "required": "Este campo es obligatorio"
+  }
+}

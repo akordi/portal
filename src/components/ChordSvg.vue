@@ -87,7 +87,6 @@ function renderChordSvg() {
 
     if (props.instrument === 'ukulele') {
       if (!ukuleleChords[props.chord]) {
-        console.log(`Chord ${props.chord} not found in ukulele chords`);
         return;
       }
       const chordTab = ukuleleChords[props.chord];

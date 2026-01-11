@@ -33,17 +33,22 @@ const devServerSettings = (env) => {
     allowedHosts: ['localhost.akordi.lv', 'localhost'],
     proxy: {
       '/api/v1/': {
-        target: 'http://127.0.0.1:8080',
+        target: 'https://www.akordi.lv',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/api/v2/admin': {
+        target: 'https://www.akordi.lv',
         changeOrigin: true,
         secure: false,
       },
       '/api/v2/': {
-        target: 'http://127.0.0.1:8080',
+        target: 'https://www.akordi.lv',
         changeOrigin: true,
         secure: false,
       },
       '/api': {
-        target: 'http://127.0.0.1:8080',
+        target: 'https://www.akordi.lv',
         changeOrigin: true,
         secure: false,
       },

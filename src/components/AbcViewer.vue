@@ -31,8 +31,7 @@ async function renderAbc() {
   await nextTick();
   clearRendered();
   const visualOptions = { responsive: 'resize' };
-  const out = abcjs.renderAbc(paperRef.value, props.abc, visualOptions);
-  visualObj = out[0];
+  [visualObj] = abcjs.renderAbc(paperRef.value, props.abc, visualOptions);
   // Audio controls
   synthControl = new abcjs.synth.SynthController();
   synthControl.load(audioRef.value, null, {
@@ -49,7 +48,7 @@ async function renderAbc() {
       const el = audioRef.value?.querySelector('.abcjs-inline-audio');
       el?.classList.remove('disabled');
     } catch (e) {
-      console.warn('ABC audio init failed', e);
+      // skip
     }
   } else {
     emit('audio-unsupported');
