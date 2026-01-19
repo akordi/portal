@@ -8,12 +8,12 @@ importers:
 
   .:
     dependencies:
-      '@akordi/jtab':
-        specifier: 0.0.8
-        version: 0.0.8
       '@ory/client':
         specifier: ^1.22.15
         version: 1.22.15
+      '@tombatossals/chords-db':
+        specifier: ^0.5.1
+        version: 0.5.1
       '@vuelidate/core':
         specifier: ^2.0.3
         version: 2.0.3(vue@3.5.26)
@@ -44,9 +44,6 @@ importers:
       pinia:
         specifier: ^3.0.4
         version: 3.0.4(vue@3.5.26)
-      vexchords:
-        specifier: ^1.2.0
-        version: 1.2.0
       vue:
         specifier: ^3.5.26
         version: 3.5.26
@@ -129,9 +126,6 @@ packages:
 
   '@acemir/cssom@0.9.29':
     resolution: {integrity: sha512-G90x0VW+9nW4dFajtjCoT+NM0scAfH9Mb08IcjgFHYbfiL/lU04dTF9JuVOi3/OH+DJCQdcIseSXkdCB9Ky6JA==}
-
-  '@akordi/jtab@0.0.8':
-    resolution: {integrity: sha512-8mYm7N6hJ300QVH15/5R7DKgyb99gXCRQBqtQuS5wQFWF5Vd5ZxMaE92Mzb2IaHA+iEAe6OcekkU5RPR4XDRDg==}
 
   '@ampproject/remapping@2.2.0':
     resolution: {integrity: sha512-qRmjj8nj9qmLTQXXmaR1cck3UXSRMPrbsLJAasZpF+t3riI71BXed5ebIOYwQntykeZuhjsdweEc9BxH5Jc26w==}
@@ -886,9 +880,6 @@ packages:
   '@standard-schema/spec@1.0.0':
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
 
-  '@svgdotjs/svg.js@3.2.4':
-    resolution: {integrity: sha512-BjJ/7vWNowlX3Z8O4ywT58DqbNRyYlkk6Yz/D13aB7hGmfQTvGX4Tkgtm/ApYlu9M7lCQi15xUEidqMUmdMYwg==}
-
   '@tiptap/core@2.11.3':
     resolution: {integrity: sha512-ibfi6U1gMRLo319Re6olv8uAuxtUpK343ygcVoZrJ8O4sqRnU9CEqPAM+n7YAKlOks1+Di0sTheIxZRak7Pj4g==}
     peerDependencies:
@@ -1057,6 +1048,9 @@ packages:
       '@tiptap/core': ^2.0.0
       '@tiptap/pm': ^2.0.0
       vue: ^3.0.0
+
+  '@tombatossals/chords-db@0.5.1':
+    resolution: {integrity: sha512-5kLLtwOxmnFfpVTYfYiw1Q22NJ8msb5JeyDLre09XnUFx2l6KSeqPtJQPsVPOak4BUenlsv/j2H65KBVhB6qgQ==}
 
   '@tybys/wasm-util@0.9.0':
     resolution: {integrity: sha512-6+7nlbMVX/PVDCwaIQ8nTOPveOcFLSt8GcXdx8hD0bt39uWxYT88uXzqTd4fTvqta7oeUJqudepapKNt2DYJFw==}
@@ -2276,9 +2270,6 @@ packages:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
 
-  eve-raphael@0.5.0:
-    resolution: {integrity: sha512-jrxnPsCGqng1UZuEp9DecX/AuSyAszATSjf4oEcRxvfxa1Oux4KkIPKBAAWWnpdwfARtr+Q0o9aPYWjsROD7ug==}
-
   execa@5.1.1:
     resolution: {integrity: sha512-8uSpZZocAZRBAPIEINJj3Lo9HyGitllczc27Eh5YYojjMFMn8yHMDMaUHE2Jqfq05D/wucwI4JGURyXt1vchyg==}
     engines: {node: '>=10'}
@@ -2907,9 +2898,6 @@ packages:
       node-notifier:
         optional: true
 
-  jquery@3.7.1:
-    resolution: {integrity: sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==}
-
   js-beautify@1.14.9:
     resolution: {integrity: sha512-coM7xq1syLcMyuVGyToxcj2AlzhkDjmfklL8r0JgJ7A76wyGMpJ1oA35mr4APdYNO/o/4YY8H54NQIJzhMbhBg==}
     engines: {node: '>=12'}
@@ -3512,9 +3500,6 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  raphael@2.3.0:
-    resolution: {integrity: sha512-w2yIenZAQnp257XUWGni4bLMVxpUpcIl7qgxEgDIXtmSypYtlNxfXWpOBxs7LBTps5sDwhRnrToJrMUrivqNTQ==}
-
   rc@1.2.8:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
     hasBin: true
@@ -3989,9 +3974,6 @@ packages:
     resolution: {integrity: sha512-74Y4LqY74kLE6IFyIjPtkSTWzUZmj8tdHT9Ii/26dvQ6K9Dl2NbEfj0XgU2sHCtKgt5VupqhlO/5aWuqS+IY1w==}
     engines: {node: '>=10.12.0'}
 
-  vexchords@1.2.0:
-    resolution: {integrity: sha512-ObhyFjGiN4pj+oFBGmCa9/geY6H6xqbEipTp1k8de7UXjvv30CriHjD8FR3Lf3jo1vSVUCePSJd7024qmJyNlA==}
-
   vite-plugin-html@3.2.2:
     resolution: {integrity: sha512-vb9C9kcdzcIo/Oc3CLZVS03dL5pDlOFuhGlZYDCJ840BhWl/0nGeZWf3Qy7NlOayscY4Cm/QRgULCQkEZige5Q==}
     peerDependencies:
@@ -4294,11 +4276,6 @@ snapshots:
   '@aashutoshrathi/word-wrap@1.2.6': {}
 
   '@acemir/cssom@0.9.29': {}
-
-  '@akordi/jtab@0.0.8':
-    dependencies:
-      jquery: 3.7.1
-      raphael: 2.3.0
 
   '@ampproject/remapping@2.2.0':
     dependencies:
@@ -5079,8 +5056,6 @@ snapshots:
 
   '@standard-schema/spec@1.0.0': {}
 
-  '@svgdotjs/svg.js@3.2.4': {}
-
   '@tiptap/core@2.11.3(@tiptap/pm@2.1.12)':
     dependencies:
       '@tiptap/pm': 2.1.12
@@ -5263,6 +5238,8 @@ snapshots:
       '@tiptap/extension-floating-menu': 2.4.0(@tiptap/core@2.11.3(@tiptap/pm@2.1.12))(@tiptap/pm@2.1.12)
       '@tiptap/pm': 2.1.12
       vue: 3.5.26
+
+  '@tombatossals/chords-db@0.5.1': {}
 
   '@tybys/wasm-util@0.9.0':
     dependencies:
@@ -6751,8 +6728,6 @@ snapshots:
 
   esutils@2.0.3: {}
 
-  eve-raphael@0.5.0: {}
-
   execa@5.1.1:
     dependencies:
       cross-spawn: 7.0.6
@@ -7603,8 +7578,6 @@ snapshots:
       - supports-color
       - ts-node
 
-  jquery@3.7.1: {}
-
   js-beautify@1.14.9:
     dependencies:
       config-chain: 1.1.13
@@ -8248,10 +8221,6 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
-  raphael@2.3.0:
-    dependencies:
-      eve-raphael: 0.5.0
-
   rc@1.2.8:
     dependencies:
       deep-extend: 0.6.0
@@ -8848,10 +8817,6 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.25
       '@types/istanbul-lib-coverage': 2.0.6
       convert-source-map: 1.9.0
-
-  vexchords@1.2.0:
-    dependencies:
-      '@svgdotjs/svg.js': 3.2.4
 
   vite-plugin-html@3.2.2(vite@7.3.1(@types/node@18.13.0)(terser@5.16.4)):
     dependencies:

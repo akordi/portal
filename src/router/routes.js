@@ -181,6 +181,16 @@ const routes = [
         component: () => import('@/views/SongView.vue'),
       },
       {
+        path: '/chords',
+        name: 'chordsLibrary',
+        meta: {
+          title: 'pages.chordsLibrary.title',
+          description: 'pages.chordsLibrary.description',
+          anonymous: true,
+        },
+        component: () => import('@/views/ChordsLibraryView.vue'),
+      },
+      {
         path: '/tags',
         name: 'tagList',
         meta: {

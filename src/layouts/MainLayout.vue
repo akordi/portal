@@ -59,6 +59,11 @@ const nav = [
     to: { name: 'tagList' },
   },
   {
+    label: $t('pages.chordsLibrary.title', 'Chords'),
+    icon: 'category',
+    to: { name: 'chordsLibrary' },
+  },
+  {
     label: $t('pages.songNew.title'),
     icon: 'add-item',
     to: { name: 'songNew' },
