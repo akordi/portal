@@ -156,6 +156,18 @@
     "night": "Arlabunakti"
   },
   "pages": {
+    "chordsLibrary": {
+      "title": "Akordu bibliotēka",
+      "description": "Šeit jūs varat atrast visus atbalstītos akordus.",
+      "showGuitarChords": {
+        "label": "Ģitāra"
+      },
+      "showUkuleleChords": {
+        "label": "Ukulele"
+      },
+      "instrument": "Instruments",
+      "key": "Tonis"
+    },
     "dashboard": {
       "title": "Sākumlapa",
       "disclaimer": "Viss šeit atrodamais saturs izvietots tikai izglītošanās nolūkā. Liela daļa lapā atrodamo dziesmu ir lietotāju interpretācijas un var precīzi nesakrist ar oriģinālu. Ja te ir kāda Tava dziesma, un negribi, lai to mācās citi, vai arī ir radušies kādi jautājumi vai komentāri, tad raksti uz info[at]akordi.lv."

@@ -150,6 +150,18 @@
     "night": "Buenas noches"
   },
   "pages": {
+    "chordsLibrary": {
+      "title": "Biblioteca de acordes",
+      "description": "Aquí puedes encontrar todos los acordes compatibles.",
+      "showGuitarChords": {
+        "label": "Guitarra"
+      },
+      "showUkuleleChords": {
+        "label": "Ukelele"
+      },
+      "instrument": "Instrumento",
+      "key": "Tono"
+    },
     "dashboard": {
       "title": "Página de inicio",
       "disclaimer": "Todo el contenido que se encuentra aquí se publica únicamente con fines educativos. Gran parte de las canciones del sitio son interpretaciones de los usuarios y pueden no coincidir exactamente con el original. Si hay alguna canción tuya aquí y no quieres que otros la aprendan, o si tienes alguna pregunta o comentario, escribe a info[at]akordi.es."

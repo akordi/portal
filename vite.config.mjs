@@ -140,7 +140,11 @@ export default defineConfig((command) => {
         output: {
           manualChunks: {
             abcjs: ['abcjs'],
-            chords: ['chord-transposer', 'vexchords', '@akordi/jtab'],
+            'chords-db': [
+              '@tombatossals/chords-db/lib/guitar.json',
+              '@tombatossals/chords-db/lib/ukulele.json',
+            ],
+            chords: ['chord-transposer'],
           },
         },
       },
