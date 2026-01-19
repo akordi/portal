@@ -89,21 +89,8 @@ const romanMap = {
   21: 'XXI',
 };
 
-const chordData = computed(() => {
-  let root;
-  let suffix;
-
-  if (props.root && props.suffix !== undefined) {
-    root = props.root;
-    suffix = props.suffix;
-  } else if (props.chord) {
-    const match = props.chord.match(/^([A-G][#b]?)(.*)$/);
-    if (!match) return null;
-    [, root, suffix] = match;
-  } else {
-    return null;
-  }
-
+function normalizeRoot(rawRoot, instrument) {
+  let root = rawRoot;
   // Common mappings (Sharps to Flats where common)
   const commonMapping = {
     'A#': 'Bb',
@@ -115,7 +102,7 @@ const chordData = computed(() => {
     root = commonMapping[root];
   }
 
-  if (props.instrument === 'ukulele') {
+  if (instrument === 'ukulele') {
     // Ukulele uses Flats for C# and F#
     const ukeMapping = {
       'C#': 'Db',
@@ -137,6 +124,25 @@ const chordData = computed(() => {
       root = guitarMapping[root];
     }
   }
+  return root;
+}
+
+const chordData = computed(() => {
+  let root;
+  let suffix;
+
+  if (props.root && props.suffix !== undefined) {
+    root = props.root;
+    suffix = props.suffix;
+  } else if (props.chord) {
+    const match = props.chord.match(/^([A-G][#b]?)(.*)$/);
+    if (!match) return null;
+    [, root, suffix] = match;
+  } else {
+    return null;
+  }
+
+  root = normalizeRoot(root, props.instrument);
 
   if (suffixMapping[suffix]) {
     suffix = suffixMapping[suffix];
@@ -392,9 +398,6 @@ const renderData = computed(() => {
         {{ displayChordName }}
       </text>
     </svg>
-    <div v-else class="chord-not-found" style="display: none">
-      {{ displayChordName }}
-    </div>
   </div>
 </template>
 
@@ -452,5 +455,10 @@ const renderData = computed(() => {
 .chord-title {
   fill: var(--color-data);
   font-size: 20px;
+}
+
+.finger-label {
+  font-size: 12px;
+  fill: var(--color-interactive-foreground);
 }
 </style>
