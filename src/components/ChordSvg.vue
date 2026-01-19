@@ -392,7 +392,9 @@ const renderData = computed(() => {
         {{ displayChordName }}
       </text>
     </svg>
-    <div v-else class="chord-not-found" style="display: none" v-html="displayChordName"></div>
+    <div v-else class="chord-not-found" style="display: none">
+      {{ displayChordName }}
+    </div>
   </div>
 </template>
 
