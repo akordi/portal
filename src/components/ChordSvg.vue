@@ -384,7 +384,6 @@ const renderData = computed(() => {
         <text
           v-if="om.type === 'mute'"
           :x="om.x"
-          :cy="dimensions.padding.top - 8"
           :y="dimensions.padding.top - 4"
           text-anchor="middle"
           class="mute-string"
