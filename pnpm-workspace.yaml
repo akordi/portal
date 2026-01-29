@@ -3,7 +3,6 @@ packages:
 
 onlyBuiltDependencies:
   - '@dativa-lv/lx-ui'
-  - '@dativa-lv/lx-ui'
   - canvas
   - core-js-pure
   - esbuild

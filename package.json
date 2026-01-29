@@ -1,7 +1,7 @@
 {
   "name": "akordi-portal",
   "version": "0.0.1",
-  "packageManager": "pnpm@10.25.0",
+  "packageManager": "pnpm@10.28.2",
   "prettier": "@zzdats/prettier-config",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@dativa-lv/lx-ui": "^2.0.0",
-    "@ory/client": "^1.22.15",
+    "@ory/client": "^1.22.22",
     "@tombatossals/chords-db": "^0.5.1",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
@@ -22,10 +22,10 @@
     "@vueuse/head": "^2.0.0",
     "@zzdats/prettier-config": "^1.0.0",
     "abcjs": "^6.6.0",
-    "axios": "1.13.2",
+    "axios": "1.13.4",
     "chord-transposer": "^3.0.9",
     "pinia": "^3.0.4",
-    "vue": "^3.5.26",
+    "vue": "^3.5.27",
     "vue-gtag": "3.6.3",
     "vue-i18n": "11.2.8",
     "vue-router": "4.6.4"
@@ -45,12 +45,12 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.32.0",
     "jest": "^30.2.0",
-    "jsdom": "^27.3.0",
+    "jsdom": "^27.4.0",
     "prettier": "^2.8.8",
     "vite": "7.3.1",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-mkcert": "^1.17.9",
     "vite-plugin-mock-server": "^1.3.1",
-    "vitest": "^4.0.16"
+    "vitest": "^4.0.18"
   }
 }
