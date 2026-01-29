@@ -150,6 +150,21 @@
     "night": "Buenas noches"
   },
   "pages": {
+    "chordsLibrary": {
+      "title": "Biblioteca de acordes",
+      "description": "Aquí puedes encontrar todos los acordes compatibles.",
+      "showGuitarChords": {
+        "label": "Guitarra"
+      },
+      "showUkuleleChords": {
+        "label": "Ukelele"
+      },
+      "showBaritoneUkuleleChords": {
+        "label": "Ukelele barítono"
+      },
+      "instrument": "Instrumento",
+      "key": "Tono"
+    },
     "dashboard": {
       "title": "Página de inicio",
       "disclaimer": "Todo el contenido que se encuentra aquí se publica únicamente con fines educativos. Gran parte de las canciones del sitio son interpretaciones de los usuarios y pueden no coincidir exactamente con el original. Si hay alguna canción tuya aquí y no quieres que otros la aprendan, o si tienes alguna pregunta o comentario, escribe a info[at]akordi.es."
@@ -212,6 +227,10 @@
       "showUkuleleChords": {
         "label": "Mostrar acordes de ukelele",
         "description": "Mostrar u ocultar la tablatura de acordes para ukelele"
+      },
+      "showBaritoneUkuleleChords": {
+        "label": "Mostrar acordes de ukelele barítono",
+        "description": "Mostrar u ocultar tablatura de acordes de ukelele barítono"
       },
       "transposeUp": {
         "label": "Transportar hacia arriba",

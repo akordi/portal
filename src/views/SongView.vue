@@ -20,12 +20,14 @@ import ChordSvg from '@/components/ChordSvg.vue';
 import akordiService from '@/services/akordiService';
 import chordsService from '@/services/chordsService';
 import useNotifyStore from '@/stores/useNotifyStore';
+import useSettingsStore from '@/stores/useSettingsStore';
 import useViewStore from '@/stores/useViewStore';
 
 const translate = useI18n();
 const $t = translate.t;
 const viewStore = useViewStore();
 const notificationStore = useNotifyStore();
+const settingsStore = useSettingsStore();
 const router = useRouter();
 const route = useRoute();
 const songUrlParam = computed(() => route.params.url);
@@ -34,10 +36,7 @@ const item = ref({});
 const loading = ref(true);
 const hasChords = ref(false);
 const chords = ref([]);
-const showChords = ref(true);
-const instrument = ref('guitar');
 const hasAbc = computed(() => item.value.bodyAbc);
-const showAbc = ref(false);
 const fontSize = ref(1);
 const offsetFormatted = computed(() => {
   if (bodyTransposedIndex.value > 0) {
@@ -268,6 +267,13 @@ const formActions = computed(() => {
       title: $t('pages.akordiSongView.showUkuleleChords.description'),
       kind: 'additional',
     },
+    {
+      id: 'showBaritoneUkuleleChords',
+      icon: 'config', // TODO: find better icon
+      name: $t('pages.akordiSongView.showBaritoneUkuleleChords.label'),
+      title: $t('pages.akordiSongView.showBaritoneUkuleleChords.description'),
+      kind: 'additional',
+    },
   ];
   if (hasAbc.value) {
     nav.push({
@@ -288,18 +294,22 @@ async function actionClicked(actionName) {
     router.push({ name: 'songEdit', query: { id: item.value.id } });
   }
   if (actionName === 'hideChords') {
-    showChords.value = !showChords.value;
+    settingsStore.showChords = !settingsStore.showChords;
   }
   if (actionName === 'showGuitarChords') {
-    showChords.value = true;
-    instrument.value = 'guitar';
+    settingsStore.showChords = true;
+    settingsStore.instrument = 'guitar';
   }
   if (actionName === 'showAbc') {
-    showAbc.value = !showAbc.value;
+    settingsStore.showAbc = !settingsStore.showAbc;
   }
   if (actionName === 'showUkuleleChords') {
-    showChords.value = true;
-    instrument.value = 'ukulele';
+    settingsStore.showChords = true;
+    settingsStore.instrument = 'ukulele';
+  }
+  if (actionName === 'showBaritoneUkuleleChords') {
+    settingsStore.showChords = true;
+    settingsStore.instrument = 'baritone-ukulele';
   }
 
   if (actionName === 'transposeUp') {
@@ -488,7 +498,7 @@ onUnmounted(() => {
           <p class="lx-data">{{ lxDateUtils.formatDateTime(item.updatedDate) }}</p>
         </LxRow>
       </template>
-      <LxSection v-show="hasAbc && showAbc" id="bodyAbc">
+      <LxSection v-show="hasAbc && settingsStore.showAbc" id="bodyAbc">
         <AbcViewer
           :abc="item.bodyAbc"
           @audio-unsupported="
@@ -496,11 +506,11 @@ onUnmounted(() => {
           "
         />
       </LxSection>
-      <LxSection v-show="hasChords && showChords" id="chords">
+      <LxSection v-show="hasChords && settingsStore.showChords" id="chords">
         <div style="display: flex; flex-wrap: wrap; align-items: flex-start">
           <ChordSvg
             :chord="chord"
-            :instrument="instrument"
+            :instrument="settingsStore.instrument"
             v-for="chord in chords"
             :key="chord"
           ></ChordSvg>
