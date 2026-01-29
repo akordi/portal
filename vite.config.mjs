@@ -114,12 +114,15 @@ export default defineConfig((command) => {
   return {
     base: envVariables.BASE_PATH,
     resolve: {
-      alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url)),
-        '/lx-fonts': fileURLToPath(
-          new URL('./node_modules/@wntr/lx-ui/dist/lx-fonts', import.meta.url)
-        ),
-      },
+      alias: [
+        { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
+        {
+          find: '/lx-fonts',
+          replacement: fileURLToPath(
+            new URL('./node_modules/@dativa-lv/lx-ui/dist/lx-fonts', import.meta.url)
+          ),
+        },
+      ],
     },
     plugins: [
       vue(),

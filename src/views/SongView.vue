@@ -8,7 +8,7 @@ import {
   LxSection,
   LxToolbar,
   LxToolbarGroup,
-} from '@wntr/lx-ui';
+} from '@dativa-lv/lx-ui';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useHead } from '@vueuse/head';
 import { useI18n } from 'vue-i18n';
@@ -392,7 +392,7 @@ onUnmounted(() => {
     <LxForm
       id="song-view-form"
       :action-definitions="formActions"
-      @button-click="actionClicked"
+      @action-click="actionClicked"
       :show-post-header-info="true"
       :show-pre-header-info="true"
       kind="compact"

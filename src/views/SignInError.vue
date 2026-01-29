@@ -1,6 +1,6 @@
 <script setup>
 import useViewStore from '@/stores/useViewStore';
-import { LxErrorPage } from '@wntr/lx-ui';
+import { LxErrorPage } from '@dativa-lv/lx-ui';
 import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';

@@ -1,5 +1,12 @@
 <script setup>
-import { LxAutoComplete, LxForm, LxRow, LxTextArea, LxTextInput, LxValuePicker } from '@wntr/lx-ui';
+import {
+  LxAutoComplete,
+  LxForm,
+  LxRow,
+  LxTextArea,
+  LxTextInput,
+  LxValuePicker,
+} from '@dativa-lv/lx-ui';
 import { computed, onMounted, onUnmounted, ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -238,7 +245,7 @@ onUnmounted(() => {
 <template>
   <LxForm
     :action-definitions="formActions"
-    @button-click="actionClicked"
+    @action-click="actionClicked"
     :show-header="false"
     :sticky-footer="false"
     required-mode="required-asterisk"

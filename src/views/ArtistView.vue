@@ -1,5 +1,5 @@
 <script setup>
-import { LxList, LxLoader } from '@wntr/lx-ui';
+import { LxList, LxLoader } from '@dativa-lv/lx-ui';
 import { computed, onMounted, ref } from 'vue';
 
 import { useRoute, useRouter } from 'vue-router';
@@ -89,8 +89,8 @@ onMounted(async () => {
     id="id"
     list-type="2"
     v-model:items="items"
-    primary-attribute="title"
-    secondary-attribute="description"
+    name-attribute="title"
+    description-attribute="description"
     @action-click="actionClicked"
   >
   </LxList>

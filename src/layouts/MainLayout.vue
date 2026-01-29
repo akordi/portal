@@ -6,7 +6,7 @@ import { useRoute, useRouter } from 'vue-router';
 // eslint-disable-next-line no-unused-vars
 import CookiesConsent from '@/components/CookiesConsent.vue';
 import { invoke, until, useIdle, useIntervalFn } from '@vueuse/core';
-import { LxShell } from '@wntr/lx-ui';
+import { LxShell } from '@dativa-lv/lx-ui';
 import { shellTexts } from '@/utils/texts';
 import useErrors from '@/hooks/useErrors';
 import useAppStore from '@/stores/useAppStore';
@@ -332,7 +332,7 @@ function idleModalSecondary() {
         :confirmPrimaryButtonBusy="false"
         :confirmPrimaryButtonDestructive="true"
         v-model:notifications="notify.notifications"
-        @confirmModalClosed="confirmModalClosed"
+        @confirmModalClose="confirmModalClosed"
         @go-home="goHome"
         @go-back="goBack"
         @log-out="openConfirmModal"

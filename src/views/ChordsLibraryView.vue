@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref, shallowRef, watchEffect } from 'vue';
-import { LxContentSwitcher, LxRow, LxLoaderView } from '@wntr/lx-ui';
+import { LxContentSwitcher, LxRow, LxLoaderView } from '@dativa-lv/lx-ui';
 import ChordSvg from '@/components/ChordSvg.vue';
 import useSettingsStore from '@/stores/useSettingsStore';
 import { useI18n } from 'vue-i18n';

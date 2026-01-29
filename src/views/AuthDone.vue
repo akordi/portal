@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { LxLoader } from '@wntr/lx-ui';
+import { LxLoader } from '@dativa-lv/lx-ui';
 import useAuthStore from '@/stores/useAuthStore';
 import useNotifyStore from '@/stores/useNotifyStore';
 import { useI18n } from 'vue-i18n';

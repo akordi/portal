@@ -1,7 +1,7 @@
 <script setup>
 import useAuthStore from '@/stores/useAuthStore';
 import useViewStore from '@/stores/useViewStore';
-import { LxButton } from '@wntr/lx-ui';
+import { LxButton } from '@dativa-lv/lx-ui';
 import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
