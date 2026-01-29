@@ -165,6 +165,9 @@
       "showUkuleleChords": {
         "label": "Ukulele"
       },
+      "showBaritoneUkuleleChords": {
+        "label": "Baritona ukulele"
+      },
       "instrument": "Instruments",
       "key": "Tonis"
     },
@@ -230,6 +233,10 @@
       "showUkuleleChords": {
         "label": "Rādīt ukuleles akordus",
         "description": "Rādīt vai slēpt dziesmas akordu tabulutūru ukulelei"
+      },
+      "showBaritoneUkuleleChords": {
+        "label": "Rādīt baritona ukuleles akordus",
+        "description": "Rādīt vai slēpt dziesmas akordu tabulutūru baritona ukulelei"
       },
       "transposeUp": {
         "label": "Transponēt augšup",

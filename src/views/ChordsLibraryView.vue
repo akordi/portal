@@ -16,6 +16,7 @@ const selectedKey = ref('C');
 const instrumentOptions = [
   { id: 'guitar', name: $t('pages.chordsLibrary.showGuitarChords.label') },
   { id: 'ukulele', name: $t('pages.chordsLibrary.showUkuleleChords.label') },
+  { id: 'baritone-ukulele', name: $t('pages.chordsLibrary.showBaritoneUkuleleChords.label') },
 ];
 
 watchEffect(async () => {
@@ -24,6 +25,8 @@ watchEffect(async () => {
     let db;
     if (settingsStore.instrument === 'ukulele') {
       db = await import('@tombatossals/chords-db/lib/ukulele.json');
+    } else if (settingsStore.instrument === 'baritone-ukulele') {
+      db = await import('@/db/baritone-ukulele.json');
     } else {
       db = await import('@tombatossals/chords-db/lib/guitar.json');
     }
@@ -35,45 +38,64 @@ watchEffect(async () => {
 
 const availableKeys = computed(() => {
   if (!currentDb.value?.chords) return [];
-  const musicalOrder = [
-    'C',
-    'C#',
-    'Db',
-    'D',
-    'D#',
-    'Eb',
-    'E',
-    'F',
-    'F#',
-    'Gb',
-    'G',
-    'G#',
-    'Ab',
-    'A',
-    'A#',
-    'Bb',
-    'B',
-  ];
-  const keys = Object.keys(currentDb.value.chords);
 
-  return keys.sort((a, b) => {
+  const rawKeys = Object.keys(currentDb.value.chords);
+  const normalizedSet = new Set();
+
+  rawKeys.forEach((k) => {
+    // Normalize to Flat convention for UI
+    let normalized = k;
+    if (k === 'C#' || k === 'Csharp') normalized = 'Db';
+    if (k === 'D#' || k === 'Dsharp') normalized = 'Eb';
+    if (k === 'F#' || k === 'Fsharp') normalized = 'Gb';
+    if (k === 'G#' || k === 'Gsharp') normalized = 'Ab';
+    if (k === 'A#' || k === 'Asharp') normalized = 'Bb';
+    normalizedSet.add(normalized);
+  });
+
+  const uniqueKeys = Array.from(normalizedSet);
+
+  const musicalOrder = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+
+  return uniqueKeys.sort((a, b) => {
     let indexA = musicalOrder.indexOf(a);
     let indexB = musicalOrder.indexOf(b);
 
-    // Fallback for unknown keys (shouldn't happen with standard DB) to end of list
     if (indexA === -1) indexA = 999;
     if (indexB === -1) indexB = 999;
 
-    // Secondary sort alphabetical for unknown keys or same index (unlikely)
     if (indexA === indexB) return a.localeCompare(b);
-
     return indexA - indexB;
   });
 });
 
 const filteredChords = computed(() => {
   if (!currentDb.value?.chords || !selectedKey.value) return [];
-  const rootChords = currentDb.value.chords[selectedKey.value];
+
+  // Find the key in the DB that matches the selected normalized key
+  // E.g. if selected is 'Db', look for 'Db', 'C#', or 'Csharp'
+  let dbKey = selectedKey.value;
+
+  // Helper to check if a key exists in DB
+  const exists = (k) => !!currentDb.value.chords[k];
+
+  if (!exists(dbKey)) {
+    // Try alternatives
+    const map = {
+      Db: ['C#', 'Csharp'],
+      Eb: ['D#', 'Dsharp'],
+      Gb: ['F#', 'Fsharp'],
+      Ab: ['G#', 'Gsharp'],
+      Bb: ['A#', 'Asharp'],
+    };
+
+    if (map[dbKey]) {
+      const alt = map[dbKey].find((k) => exists(k));
+      if (alt) dbKey = alt;
+    }
+  }
+
+  const rootChords = currentDb.value.chords[dbKey];
   if (!rootChords) return [];
   return rootChords;
 });
@@ -81,7 +103,7 @@ const filteredChords = computed(() => {
 const keysSwitcherItems = computed(() =>
   availableKeys.value.map((k) => ({
     id: k,
-    name: k.replace('sharp', '#'),
+    name: k,
   }))
 );
 

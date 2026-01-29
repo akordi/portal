@@ -165,6 +165,9 @@
       "showUkuleleChords": {
         "label": "Ukulėlė"
       },
+      "showBaritoneUkuleleChords": {
+        "label": "Baritono ukulėlė"
+      },
       "instrument": "Instrumentas",
       "key": "Tonacija"
     },
@@ -228,8 +231,12 @@
         "description": "Rodyti arba slėpti dainos akordų tabulatūrą gitara"
       },
       "showUkuleleChords": {
-        "label": "Rodyti ukulėlės akordus",
-        "description": "Rodyti arba slėpti dainos akordų tabulatūrą ukulėlei"
+        "label": "Rodyti ukulelės akordus",
+        "description": "Rodyti arba slėpti dainos ukulelės akordus"
+      },
+      "showBaritoneUkuleleChords": {
+        "label": "Rodyti baritono ukulelės akordus",
+        "description": "Rodyti arba slėpti dainos baritono ukulelės akordus"
       },
       "transposeUp": {
         "label": "Transponuoti aukštyn",

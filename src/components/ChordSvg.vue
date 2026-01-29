@@ -30,7 +30,7 @@ const props = defineProps({
 
 const actualWidth = computed(() => {
   if (props.width) return props.width;
-  return props.instrument === 'ukulele' ? 100 : 120;
+  return props.instrument === 'ukulele' || props.instrument === 'baritone-ukulele' ? 100 : 120;
 });
 
 const suffixMapping = {
@@ -54,6 +54,9 @@ watchEffect(async () => {
   if (props.instrument === 'ukulele') {
     const db = await import('@tombatossals/chords-db/lib/ukulele.json');
     currentDb.value = db.default;
+  } else if (props.instrument === 'baritone-ukulele') {
+    const db = await import('@/db/baritone-ukulele.json');
+    currentDb.value = db.default;
   } else {
     const db = await import('@tombatossals/chords-db/lib/guitar.json');
     currentDb.value = db.default;
@@ -67,6 +70,14 @@ const instrumentSettings = computed(() => {
       fretsOnChord: 4,
       db: currentDb.value,
       tuning: ['G', 'C', 'E', 'A'],
+    };
+  }
+  if (props.instrument === 'baritone-ukulele') {
+    return {
+      strings: 4,
+      fretsOnChord: 4,
+      db: currentDb.value,
+      tuning: ['D', 'G', 'B', 'E'],
     };
   }
   return {

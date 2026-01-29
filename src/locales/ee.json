@@ -165,6 +165,9 @@
       "showUkuleleChords": {
         "label": "Ukulele"
       },
+      "showBaritoneUkuleleChords": {
+        "label": "Bariton ukulele"
+      },
       "instrument": "Instrument",
       "key": "Helistik"
     },
@@ -230,6 +233,10 @@
       "showUkuleleChords": {
         "label": "Näita ukulele akorde",
         "description": "Näita või peida laulu akordide tablatuur ukulelele"
+      },
+      "showBaritoneUkuleleChords": {
+        "label": "Näita bariton ukulele akorde",
+        "description": "Näita või peida laulu bariton ukulele akorde"
       },
       "transposeUp": {
         "label": "Transponeeri üles",

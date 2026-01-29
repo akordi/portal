@@ -267,6 +267,13 @@ const formActions = computed(() => {
       title: $t('pages.akordiSongView.showUkuleleChords.description'),
       kind: 'additional',
     },
+    {
+      id: 'showBaritoneUkuleleChords',
+      icon: 'config', // TODO: find better icon
+      name: $t('pages.akordiSongView.showBaritoneUkuleleChords.label'),
+      title: $t('pages.akordiSongView.showBaritoneUkuleleChords.description'),
+      kind: 'additional',
+    },
   ];
   if (hasAbc.value) {
     nav.push({
@@ -299,6 +306,10 @@ async function actionClicked(actionName) {
   if (actionName === 'showUkuleleChords') {
     settingsStore.showChords = true;
     settingsStore.instrument = 'ukulele';
+  }
+  if (actionName === 'showBaritoneUkuleleChords') {
+    settingsStore.showChords = true;
+    settingsStore.instrument = 'baritone-ukulele';
   }
 
   if (actionName === 'transposeUp') {
