@@ -1,6 +1,6 @@
 <script setup>
 import akordiService from '@/services/akordiService';
-import { LxList, LxLoaderView, LxValuePicker } from '@wntr/lx-ui';
+import { LxList, LxLoaderView, LxValuePicker } from '@dativa-lv/lx-ui';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { listTexts } from '@/utils/texts';
@@ -137,7 +137,7 @@ onMounted(async () => {
     :show-load-more="hasMore"
     @load-more="loadMore"
     v-model:items="items"
-    primary-attribute="title"
+    name-attribute="title"
     @action-click="actionClicked"
     :texts="listTexts()"
   >

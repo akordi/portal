@@ -1,7 +1,7 @@
 <script setup>
 import useViewStore from '@/stores/useViewStore';
 import { onMounted } from 'vue';
-import { LxButton } from '@wntr/lx-ui';
+import { LxButton } from '@dativa-lv/lx-ui';
 
 const viewStore = useViewStore();
 

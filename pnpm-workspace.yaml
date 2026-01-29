@@ -1,7 +1,8 @@
 packages:
   - '!**/test/**'
+
 onlyBuiltDependencies:
-  - '@wntr/lx-ui'
+  - '@dativa-lv/lx-ui'
   - canvas
   - core-js-pure
   - esbuild

@@ -1,5 +1,5 @@
 <script setup>
-import { LxErrorPage } from '@wntr/lx-ui';
+import { LxErrorPage } from '@dativa-lv/lx-ui';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();

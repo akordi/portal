@@ -3,7 +3,7 @@ import useErrors from '@/hooks/useErrors';
 import useAuthStore from '@/stores/useAuthStore';
 import useNotifyStore from '@/stores/useNotifyStore';
 import { invoke, until, useIdle, useIntervalFn } from '@vueuse/core';
-import { LxModal } from '@wntr/lx-ui';
+import { LxModal } from '@dativa-lv/lx-ui';
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';

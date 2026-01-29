@@ -1,4 +1,4 @@
 import { defineStore } from 'pinia';
-import { LxConfirmStore } from '@wntr/lx-ui';
+import { LxConfirmStore } from '@dativa-lv/lx-ui';
 
 export default defineStore('confirmStore', LxConfirmStore);

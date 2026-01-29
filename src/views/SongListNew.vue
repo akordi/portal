@@ -1,6 +1,6 @@
 <script setup>
 import akordiService from '@/services/akordiService';
-import { LxContentSwitcher, LxList } from '@wntr/lx-ui';
+import { LxContentSwitcher, LxList } from '@dativa-lv/lx-ui';
 import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -93,8 +93,8 @@ watch(currentSection, (newVal) => {
     list-type="2"
     v-model:items="items"
     :loading="loading"
-    primary-attribute="title"
-    secondary-attribute="description"
+    name-attribute="title"
+    description-attribute="description"
     @action-click="actionClicked"
     :show-load-more="hasMore"
     @load-more="loadMore"

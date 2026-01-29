@@ -2,7 +2,7 @@ import useAppStore from '@/stores/useAppStore';
 import useAuthStore from '@/stores/useAuthStore';
 import useViewStore from '@/stores/useViewStore';
 
-import { lxFlowUtils } from '@wntr/lx-ui';
+import { lxFlowUtils } from '@dativa-lv/lx-ui';
 
 export default (router) => {
   router.beforeEach(async (to, from, next) => {

@@ -2,7 +2,7 @@
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
 import { Configuration, FrontendApi } from '@ory/client';
-import { LxForm, LxList, LxLoader, LxRow, LxTextInput } from '@wntr/lx-ui';
+import { LxForm, LxList, LxLoader, LxRow, LxTextInput } from '@dativa-lv/lx-ui';
 import { computed, nextTick, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';

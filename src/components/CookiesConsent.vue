@@ -1,6 +1,6 @@
 <script setup>
 import { useWindowSize } from '@vueuse/core';
-import { LxButton, LxStack } from '@wntr/lx-ui';
+import { LxButton, LxStack } from '@dativa-lv/lx-ui';
 import { computed, onMounted, ref } from 'vue';
 import { addGtag, consentGrantedAll, useConsent } from 'vue-gtag';
 import { useI18n } from 'vue-i18n';
