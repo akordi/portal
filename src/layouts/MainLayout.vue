@@ -60,7 +60,7 @@ const nav = [
   },
   {
     label: $t('pages.chordsLibrary.title', 'Chords'),
-    icon: 'category',
+    icon: 'list-bulleted',
     to: { name: 'chordsLibrary' },
   },
   {
