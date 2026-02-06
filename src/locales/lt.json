@@ -424,5 +424,33 @@
   },
   "validations": {
     "required": "Šis laukas yra privalomas"
+  },
+  "accessibilitySettings": {
+    "title": "Prieinamumo nustatymai",
+    "description": "Įrankiai ir nustatymai, padedantys pritaikyti programą skirtingiems vartotojams ir jų poreikiams.",
+    "appearance": "Vizualinė išvaizda",
+    "animations": "Judesys ir animacijos",
+    "fonts": "Tekstas ir šriftai",
+    "interactions": "Sąveika",
+    "reset": "Atkurti nustatymus",
+    "themeTitle": "Temos pasirinkimas",
+    "transparencyTitle": "Permatomumas",
+    "animationsTitle": "Animacijos",
+    "fontsTitle": "Sistemos šriftai",
+    "touchModeTitle": "Jutiklinis režimas",
+    "transparencyDescription": "Permatomumas yra vizualinis efektas, leidžiantis matyti fono dalį po aktyviais langais ar skydeliais. Šis nustatymas leidžia sumažinti arba išjungti permatomumą, kad fonas būtų vientisas, pagerinant kontrastingumą tarp turinio ir fono bei palengvinant turinio suvokimą. Tinka vartotojams, turintiems regėjimo sutrikimų, koncentracijos sunkumų ar spalvų suvokimo problemų.",
+    "animationsDescription": "Animacijos yra vizualiniai judesio efektai, atsirandantys pereinant, spustelint ir atliekant kitus veiksmus, pvz., atidarant langus ar perjungiant meniu elementus. Šis nustatymas leidžia sumažinti arba išjungti animacijas, kad sąsaja būtų ramesnė ir mažiau blaškanti. Svarbu vartotojams, turintiems vestibuliarinio aparato sutrikimų ar padidėjusį jautrumą judesiui.",
+    "fontsDescription": "Sistemos šriftai yra numatytieji įrenginio ar operacinės sistemos šriftai. Jų naudojimas pagerina teksto skaitomumą ir atpažįstamumą, užtikrinant nuoseklią ir įprastą teksto išvaizdą.",
+    "touchModeDescription": "Įjungus jutiklinį režimą, programa optimizuojama naudojimui pirštu jutikliniuose ekranuose. Paspaudžiami elementai (mygtukai, meniu ir kt.) yra padidinami, kad būtų patogiau naudotis.",
+    "themeAuto": "Automatinis",
+    "themeLight": "Šviesus",
+    "themeDark": "Tamsus",
+    "themeContrast": "Kontrastinis",
+    "themeAutoDescription": "Automatinė tema atitinka įrenginio ar sistemos išvaizdos nustatymus.",
+    "themeLightDescription": "Šviesi tema su tamsiu tekstu šviesiame fone.",
+    "themeDarkDescription": "Tamsi tema su šviesiu tekstu tamsiame fone.",
+    "themeContrastDescription": "Tema su padidintu spalvų kontrastu, pagerinanti turinio skaitomumą.",
+    "transparencyLinkLabel": "Prieinamumo standartai (WCAG Contrast (Minimum))",
+    "animationsLinkLabel": "Prieinamumo standartai (WCAG Animation from Interactions)"
   }
 }

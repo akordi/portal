@@ -238,6 +238,16 @@ const routes = [
         meta: { title: ' ', anonymous: true },
       },
       {
+        path: '/accessibility-settings',
+        name: 'accessibilitySettings',
+        meta: {
+          title: 'accessibilitySettings.title',
+          description: 'accessibilitySettings.description',
+          anonymous: true,
+        },
+        component: () => import('@/views/AccessibilitySettings.vue'),
+      },
+      {
         path: '/sessionEnded',
         name: 'sessionEnded',
         component: () => import('@/views/SessionEnded.vue'),

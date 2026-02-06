@@ -424,5 +424,33 @@
   },
   "validations": {
     "required": "See väli on kohustuslik"
+  },
+  "accessibilitySettings": {
+    "title": "Juurdepääsetavuse seaded",
+    "description": "Tööriistad ja seaded rakenduse kohandamiseks erinevatele kasutajatele ja nende vajadustele.",
+    "appearance": "Visuaalne välimus",
+    "animations": "Liikumine ja animatsioonid",
+    "fonts": "Tekst ja fondid",
+    "interactions": "Interaktsioonid",
+    "reset": "Taasta seaded",
+    "themeTitle": "Teema valik",
+    "transparencyTitle": "Läbipaistvus",
+    "animationsTitle": "Animatsioonid",
+    "fontsTitle": "Süsteemi fondid",
+    "touchModeTitle": "Puuterežiim",
+    "transparencyDescription": "Läbipaistvus on visuaalne efekt, mis võimaldab näha osa taustast aktiivsete akende või paneelide all. See seade võimaldab läbipaistvust vähendada või keelata, et taust oleks ühtlane, parandades sisu ja tausta kontrasti ning muutes sisu kergemini tajutavaks. Sobib nägemispuudega, keskendumisraskustega või värvitaju probleemidega kasutajatele.",
+    "animationsDescription": "Animatsioonid on visuaalsed liikumisefektid, mis ilmuvad üleminekutel, klõpsamisel ja muudes interaktsioonides, näiteks akende avamisel või menüüelementide vahetamisel. See seade võimaldab animatsioone vähendada või keelata, et liides oleks rahulikum ja vähem häiriv. Oluline vestibulaarhäirete või liikumistundlikkusega kasutajatele.",
+    "fontsDescription": "Süsteemi fondid on seadme või operatsioonisüsteemi vaikimisi fondid. Nende kasutamine parandab teksti loetavust ja äratuntavust, tagades ühtlase ja tuttava teksti välimuse.",
+    "touchModeDescription": "Kui puuterežiim on lubatud, optimeeritakse rakendus puuteekraanidel sõrmega kasutamiseks. Vajutatavad elemendid (nupud, menüüd jne) suurendatakse kasutatavuse parandamiseks.",
+    "themeAuto": "Automaatne",
+    "themeLight": "Hele",
+    "themeDark": "Tume",
+    "themeContrast": "Kontrastne",
+    "themeAutoDescription": "Automaatne teema järgib seadme või süsteemi välimuse seadeid.",
+    "themeLightDescription": "Hele teema tumeda tekstiga heledal taustal.",
+    "themeDarkDescription": "Tume teema heleda tekstiga tumedal taustal.",
+    "themeContrastDescription": "Suurendatud värvikontrastiga teema sisu loetavuse parandamiseks.",
+    "transparencyLinkLabel": "Juurdepääsetavuse standardid (WCAG Contrast (Minimum))",
+    "animationsLinkLabel": "Juurdepääsetavuse standardid (WCAG Animation from Interactions)"
   }
 }

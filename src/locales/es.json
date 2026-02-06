@@ -418,5 +418,33 @@
   },
   "validations": {
     "required": "Este campo es obligatorio"
+  },
+  "accessibilitySettings": {
+    "title": "Configuración de accesibilidad",
+    "description": "Herramientas y ajustes que ayudan a adaptar la aplicación a diferentes usuarios y sus necesidades.",
+    "appearance": "Apariencia visual",
+    "animations": "Movimiento y animaciones",
+    "fonts": "Texto y fuentes",
+    "interactions": "Interacciones",
+    "reset": "Restablecer ajustes",
+    "themeTitle": "Selección de tema",
+    "transparencyTitle": "Transparencia",
+    "animationsTitle": "Animaciones",
+    "fontsTitle": "Fuentes del sistema",
+    "touchModeTitle": "Modo táctil",
+    "transparencyDescription": "La transparencia es un efecto visual que permite ver parte del fondo debajo de las ventanas o paneles activos. Este ajuste permite reducir o desactivar la transparencia para que el fondo sea sólido, mejorando el contraste entre el contenido y el fondo y facilitando la percepción del contenido. Adecuado para usuarios con discapacidad visual, dificultades de concentración o problemas de percepción del color.",
+    "animationsDescription": "Las animaciones son efectos de movimiento visual que aparecen durante las transiciones, clics y otras interacciones, como al abrir ventanas o cambiar elementos del menú. Este ajuste permite reducir o desactivar las animaciones para que la interfaz sea más tranquila y menos distractora. Importante para usuarios con trastornos vestibulares o sensibilidad al movimiento.",
+    "fontsDescription": "Las fuentes del sistema son las fuentes predeterminadas del dispositivo o sistema operativo. Su uso mejora la legibilidad y el reconocimiento del texto al proporcionar una apariencia de texto consistente y familiar.",
+    "touchModeDescription": "Cuando el modo táctil está activado, la aplicación se optimiza para su uso con el dedo en pantallas táctiles. Los elementos pulsables (botones, menús, etc.) se agrandan para mejorar la usabilidad.",
+    "themeAuto": "Automático",
+    "themeLight": "Claro",
+    "themeDark": "Oscuro",
+    "themeContrast": "Contraste",
+    "themeAutoDescription": "El tema automático sigue la configuración de apariencia del dispositivo o sistema.",
+    "themeLightDescription": "Tema claro con texto oscuro sobre fondo claro.",
+    "themeDarkDescription": "Tema oscuro con texto claro sobre fondo oscuro.",
+    "themeContrastDescription": "Tema con mayor contraste de color para mejorar la legibilidad del contenido.",
+    "transparencyLinkLabel": "Estándares de accesibilidad (WCAG Contrast (Minimum))",
+    "animationsLinkLabel": "Estándares de accesibilidad (WCAG Animation from Interactions)"
   }
 }
