@@ -424,5 +424,33 @@
   },
   "validations": {
     "required": "Šis lauks ir obligāts"
+  },
+  "accessibilitySettings": {
+      "title": "Piekļūstamības iestatījumi",
+      "description": "Rīki un iestatījumi, kas palīdz pielāgot lietotni dažādiem lietotājiem un to vajadzībām.",
+      "appearance": "Vizuālais izskats",
+      "animations": "Kustība un animācijas",
+      "fonts": "Teksts un fonti",
+      "interactions": "Mijiedarbība",
+      "reset": "Atiestatīt iestatījumus",
+      "themeTitle": "Noformējuma izvēle",
+      "transparencyTitle": "Caurspīdīgums",
+      "animationsTitle": "Animācijas",
+      "fontsTitle": "Iekārtas fonti",
+      "touchModeTitle": "Skārienvadība",
+      "transparencyDescription": "Caurspīdīgums ir vizuāls efekts, kas ļauj redzēt daļu no fona zem aktīviem logiem vai paneļiem. Šis iestatījums ļauj samazināt vai izslēgt caurspīdīgumu, lai fons būtu vienkrāsains, tā uzlabojot satura un fona atšķirību, padarot saturu vieglāk uztveramu. Piemērots lietotājiem ar redzes traucējumiem, koncentrēšanās grūtībām vai krāsu uztveres problēmām.",
+      "animationsDescription": "Animācijas ir vizuāli kustīgi efekti, kas parādās pārejās, klikšķos un citu elementu mijiedarbībā, piemēram, kad tiek atvērti logi vai pārslēgti izvēlnes elementi. Šis iestatījums ļauj samazināt vai izslēgt animācijas, lai saskarne būtu mierīgāka un mazāk traucējoša. Svarīgi lietotājiem ar vestibulāriem traucējumiem vai paaugstinātu jutību pret kustību.",
+      "fontsDescription": "Iekārtas fonti ir ierīces vai operētājsistēmas noklusējuma fonti. To izmantošana uzlabo teksta salasāmību un atpazīstamību, nodrošinot konsekventu un lietotājam pazīstamu teksta attēlojumu.",
+      "touchModeDescription": "Ieslēdzot skārienjutīgu režīmu, lietotne tiek pielāgota lietošanai ar pirkstu uz skārienekrāna. Tiek palielināti nospiežamie elementi (pogas, izvēlnes u.c. ), lai uzlabotu lietošanas ērtumu.",
+      "themeAuto": "Automātisks",
+      "themeLight": "Gaišs",
+      "themeDark": "Tumšs",
+      "themeContrast": "Kontrastains",
+      "themeAutoDescription": "Automātiskais noformējums ņem vērā ierīces vai sistēmas iestatījumus.",
+      "themeLightDescription": "Gaišs noformējums ar tumšu tekstu uz gaiša fona.",
+      "themeDarkDescription": "Tumšs noformējums ar gaišu tekstu uz tumša fona.",
+      "themeContrastDescription": "Noformējums ar paaugstinātu krāsu kontrastu, kas uzlabo satura salasāmību.",
+      "transparencyLinkLabel": "Piekļūstamības standarti (WCAG Contrast (Minimum))",
+      "animationsLinkLabel": "Piekļūstamības standarti (WCAG Animation from Interactions)"
   }
 }

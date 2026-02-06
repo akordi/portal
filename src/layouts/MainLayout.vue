@@ -338,6 +338,7 @@ function idleModalSecondary() {
         @log-out="openConfirmModal"
         @idleModalPrimary="idleModalPrimary"
         @idleModalSecondary="idleModalSecondary"
+        @settingsClick="router.push({ name: 'accessibilitySettings' })"
         :texts="shellTexts()"
       >
         <template #logoSmall>
