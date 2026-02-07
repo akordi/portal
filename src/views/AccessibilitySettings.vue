@@ -34,11 +34,6 @@ const settingsTexts = computed(() => ({
   transparencyLinkLabel: i18n.t('accessibilitySettings.transparencyLinkLabel'),
   animationsLinkLabel: i18n.t('accessibilitySettings.animationsLinkLabel'),
 }));
-
-onMounted(() => {
-  viewStore.title = i18n.t('pages.accessibilitySettings.title');
-  viewStore.description = i18n.t('pages.accessibilitySettings.description');
-});
 </script>
 <template>
   <div>
