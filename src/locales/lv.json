@@ -282,7 +282,9 @@
     "login": {
       "title": "Izvēlieties autentifikācijas veidu",
       "buttons": {
-        "signIn": "Pieslēgties"
+        "signIn": "Pieslēgties",
+        "register": "Reģistrēties",
+        "forgotPassword": "Aizmirsu paroli?"
       },
       "options": {
         "google": {
@@ -293,6 +295,104 @@
           "name": "Facebook",
           "description": "Pieslēgties ar Facebook kontu"
         }
+      },
+      "email": "E-pasts",
+      "password": "Parole",
+      "errors": {
+        "4000002": "Šis lauks ir obligāts",
+        "4000006": "Nepareizs e-pasts un/vai parole",
+        "1060003": "E-pasts ar atjaunošanas kodu nosūtīts uz jūsu e-pastu. Ja tas nav saņemts e-pasts, pārbaudiet vai e-pasts norādīts pareizi.",
+        "1080002": "E-pasts veiksmīgi verificēts.",
+        "1080003": "E-pasts ar verifikācijas kodu ir nosūtīts. Ja tas nav saņemts e-pasts, pārbaudiet vai e-pasts norādīts pareizi."
+      }
+    },
+    "verification": {
+      "title": "Verifikācija",
+      "code": "Verifikācijas kods",
+      "success": "Verificēts!",
+      "successDescription": "E-pasta adrese veiksmīgi verificēta.",
+      "buttons": {
+        "continue": "Turpināt",
+        "resendCode": "Nosūtīt kodu atkārtoti",
+        "submit": "Verificēt"
+      }
+    },
+    "recovery": {
+      "title": "Paroles atjaunošana",
+      "email": "E-pasts",
+      "code": "Verifikācijas kods",
+      "buttons": {
+        "submit": "Sūtīt kodu",
+        "verify": "Verificēt kodu",
+        "resend": "Sūtīt kodu atkārtoti"
+      }
+    },
+    "register": {
+      "title": "Reģistrēšanās",
+      "incorrectCredentials": "Nepareizs lietotājvārds vai parole",
+      "buttons": {
+        "continue": "Turpināt",
+        "previous": "Atpakaļ"
+      },
+      "options": {
+        "google": {
+          "name": "Google",
+          "description": "Reģistrēties ar Google kontu"
+        },
+        "facebook": {
+          "name": "Facebook",
+          "description": "Reģistrēties ar Facebook kontu"
+        }
+      },
+      "errors": {
+        "4000002": "Šis lauks ir obligāts",
+        "4000007": "Lietotājs ar šādu e-pastu jau reģistrēts.",
+        "4000006": "Šī parole ir atrodama noplūdušu paroļu reģistrā. Lūdzu izvēlieties citu paroli.",
+        "1040009": "Lūdzu izvēlieties paroli turpmākai autentifikācijai.",
+        "1080003": "E-pasts ar verifikācijas kodu ir nosūtīts. Ja tas nav saņemts e-pasts, pārbaudiet vai e-pasts norādīts pareizi.",
+        "4070006": "Verifikācijas kods ir nepareizs vai jau ir izmantots. Lūdzu mēģiniet vēlreiz."
+      },
+      "email": {
+        "label": "E-pasts"
+      },
+      "givenName": {
+        "label": "Vārds"
+      },
+      "familyName": {
+        "label": "Uzvārds"
+      },
+      "password": {
+        "label": "Parole"
+      }
+    },
+    "profile": {
+      "title": "Lietotāja profils",
+      "buttons": {
+        "continue": "Saglabāt",
+        "changePassword": "Mainīt paroli"
+      },
+      "errors": {
+        "4000002": "Šis lauks ir obligāts",
+        "4000007": "Lietotājs ar šādu e-pastu jau reģistrēts.",
+        "4000006": "Šī parole ir atrodama noplūdušu paroļu reģistrā. Lūdzu izvēlieties citu paroli.",
+        "4000034": "Šī parole ir atrodama noplūdušu paroļu reģistrā. Lūdzu izvēlieties citu paroli.",
+        "1040009": "Lūdzu izvēlieties paroli turpmākai autentifikācijai.",
+        "1050001": "Izmaiņas veiksmīgi saglabātas!",
+        "1060001": "Jūs veiksmīgi atjauninājat savu kontu. Lūdzu, mainiet paroli vai uzstādiet alternatīvo pieteikšanās veidu (piemēram, sociālā pieteikšanās) 60 minūtēs.",
+        "1080003": "E-pasts ar verifikācijas kodu ir nosūtīts. Ja tas nav saņemts e-pasts, pārbaudiet vai e-pasts norādīts pareizi.",
+        "4070006": "Verifikācijas kods ir nepareizs vai jau ir izmantots. Lūdzu mēģiniet vēlreiz."
+      },
+      "email": {
+        "label": "E-pasts"
+      },
+      "givenName": {
+        "label": "Vārds"
+      },
+      "familyName": {
+        "label": "Uzvārds"
+      },
+      "password": {
+        "label": "Parole"
       }
     },
     "home": {

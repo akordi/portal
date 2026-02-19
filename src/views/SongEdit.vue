@@ -301,7 +301,7 @@ onUnmounted(() => {
         :items="tags"
         id-attribute="id"
         name-attribute="title"
-        kind="multiple"
+        selection-kind="multiple"
         variant="dropdown"
         :preloaded-items="preloadedTags"
       />

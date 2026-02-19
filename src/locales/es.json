@@ -276,7 +276,9 @@
     "login": {
       "title": "Elija un método de autenticación",
       "buttons": {
-        "signIn": "Iniciar sesión"
+        "signIn": "Iniciar sesión",
+        "register": "Registrarse",
+        "forgotPassword": "¿Olvidaste tu contraseña?"
       },
       "options": {
         "google": {
@@ -287,6 +289,104 @@
           "name": "Facebook",
           "description": "Iniciar sesión con cuenta de Facebook"
         }
+      },
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "errors": {
+        "4000002": "Este campo es obligatorio",
+        "4000006": "Correo electrónico y/o contraseña incorrectos",
+        "1060003": "Se ha enviado un correo electrónico con un código de recuperación a su dirección. Si no lo ha recibido, verifique que la dirección sea correcta.",
+        "1080002": "Correo electrónico verificado con éxito.",
+        "1080003": "Se ha enviado un correo electrónico con un código de verificación. Si no lo ha recibido, verifique que la dirección sea correcta."
+      }
+    },
+    "verification": {
+      "title": "Verificación",
+      "code": "Código de verificación",
+      "success": "¡Verificado!",
+      "successDescription": "Dirección de correo electrónico verificada con éxito.",
+      "buttons": {
+        "continue": "Continuar",
+        "resendCode": "Reenviar código",
+        "submit": "Verificar"
+      }
+    },
+    "recovery": {
+      "title": "Recuperación de contraseña",
+      "email": "Correo electrónico",
+      "code": "Código de verificación",
+      "buttons": {
+        "submit": "Enviar código",
+        "verify": "Verificar código",
+        "resend": "Reenviar código"
+      }
+    },
+    "register": {
+      "title": "Registro",
+      "incorrectCredentials": "Nombre de usuario o contraseña incorrectos",
+      "buttons": {
+        "continue": "Continuar",
+        "previous": "Atrás"
+      },
+      "options": {
+        "google": {
+          "name": "Google",
+          "description": "Registrarse con cuenta de Google"
+        },
+        "facebook": {
+          "name": "Facebook",
+          "description": "Registrarse con cuenta de Facebook"
+        }
+      },
+      "errors": {
+        "4000002": "Este campo es obligatorio",
+        "4000007": "Ya existe un usuario registrado con este correo electrónico.",
+        "4000006": "Esta contraseña se encuentra en un registro de contraseñas filtradas. Por favor, elija otra contraseña.",
+        "1040009": "Por favor, elija una contraseña para futuras autenticaciones.",
+        "1080003": "Se ha enviado un correo electrónico con un código de verificación. Si no lo ha recibido, verifique que la dirección sea correcta.",
+        "4070006": "El código de verificación es incorrecto o ya ha sido utilizado. Por favor, inténtelo de nuevo."
+      },
+      "email": {
+        "label": "Correo electrónico"
+      },
+      "givenName": {
+        "label": "Nombre"
+      },
+      "familyName": {
+        "label": "Apellido"
+      },
+      "password": {
+        "label": "Contraseña"
+      }
+    },
+    "profile": {
+      "title": "Perfil de usuario",
+      "buttons": {
+        "continue": "Guardar",
+        "changePassword": "Cambiar contraseña"
+      },
+      "errors": {
+        "4000002": "Este campo es obligatorio",
+        "4000007": "Ya existe un usuario registrado con este correo electrónico.",
+        "4000006": "Esta contraseña se encuentra en un registro de contraseñas filtradas. Por favor, elija otra contraseña.",
+        "4000034": "Esta contraseña se encuentra en un registro de contraseñas filtradas. Por favor, elija otra contraseña.",
+        "1040009": "Por favor, elija una contraseña para futuras autenticaciones.",
+        "1050001": "¡Cambios guardados con éxito!",
+        "1060001": "Ha actualizado su cuenta con éxito. Por favor, cambie su contraseña o configure un método de inicio de sesión alternativo (por ejemplo, inicio de sesión social) en 60 minutos.",
+        "1080003": "Se ha enviado un correo electrónico con un código de verificación. Si no lo ha recibido, verifique que la dirección sea correcta.",
+        "4070006": "El código de verificación es incorrecto o ya ha sido utilizado. Por favor, inténtelo de nuevo."
+      },
+      "email": {
+        "label": "Correo electrónico"
+      },
+      "givenName": {
+        "label": "Nombre"
+      },
+      "familyName": {
+        "label": "Apellido"
+      },
+      "password": {
+        "label": "Contraseña"
       }
     },
     "home": {

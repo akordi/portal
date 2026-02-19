@@ -37,6 +37,8 @@ const shellMode = computed(() => {
   return ret;
 });
 
+const hasLoginButton = computed(() => !!window.config.authUrl);
+
 const nav = [
   {
     label: $t('pages.dashboard.title'),
@@ -152,7 +154,6 @@ const userInfo = computed(() => {
     return {
       firstName: authStore.session?.given_name,
       lastName: authStore.session?.family_name,
-      description: authStore.session?.role ? $t(`roles.${authStore.session?.role}`) : null,
       institution: null,
     };
   }
@@ -324,6 +325,7 @@ function idleModalSecondary() {
         :has-alerts="false"
         :has-help="false"
         :has-theme-picker="true"
+        :has-login-button="hasLoginButton"
         :hideHeaderText="!viewStore?.isHeaderShown"
         :navigating="appStore.$state.isNavigating"
         :showIdleModal="idleModalOpened"
@@ -340,6 +342,7 @@ function idleModalSecondary() {
         @idleModalSecondary="idleModalSecondary"
         @settingsClick="router.push({ name: 'accessibilitySettings' })"
         :texts="shellTexts()"
+        @logInClick="router.push({ name: 'signin' })"
       >
         <template #logoSmall>
           <img id="logo-light" src="/imgs/logo-50-dark.svg" alt="Logo" />

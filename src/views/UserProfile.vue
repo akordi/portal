@@ -35,7 +35,7 @@ function buttonClicked(actionName) {
 const formButtons = ref([
   {
     id: 'logout',
-    name: t.t('shell.logOut'),
+    name: t.t('lx.shell.logOut'),
     icon: 'logout',
     kind: 'tertiary',
     destructive: true,

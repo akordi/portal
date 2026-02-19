@@ -282,7 +282,9 @@
     "login": {
       "title": "Pasirinkite autentifikavimo būdą",
       "buttons": {
-        "signIn": "Prisijungti"
+        "signIn": "Prisijungti",
+        "register": "Registruotis",
+        "forgotPassword": "Pamiršote slaptažodį?"
       },
       "options": {
         "google": {
@@ -293,6 +295,104 @@
           "name": "Facebook",
           "description": "Prisijungti su Facebook paskyra"
         }
+      },
+      "email": "El. paštas",
+      "password": "Slaptažodis",
+      "errors": {
+        "4000002": "Šis laukas yra privalomas",
+        "4000006": "Neteisingas el. paštas ir/arba slaptažodis",
+        "1060003": "El. laiškas su atkūrimo kodu išsiųstas jūsų el. pašto adresu. Jei jo negavote, patikrinkite, ar el. paštas nurodytas teisingai.",
+        "1080002": "El. paštas sėkmingai patvirtintas.",
+        "1080003": "El. laiškas su patvirtinimo kodu išsiųstas. Jei jo negavote, patikrinkite, ar el. paštas nurodytas teisingai."
+      }
+    },
+    "verification": {
+      "title": "Patvirtinimas",
+      "code": "Patvirtinimo kodas",
+      "success": "Patvirtinta!",
+      "successDescription": "El. pašto adresas sėkmingai patvirtintas.",
+      "buttons": {
+        "continue": "Tęsti",
+        "resendCode": "Siųsti kodą dar kartą",
+        "submit": "Patvirtinti"
+      }
+    },
+    "recovery": {
+      "title": "Slaptažodžio atkūrimas",
+      "email": "El. paštas",
+      "code": "Patvirtinimo kodas",
+      "buttons": {
+        "submit": "Siųsti kodą",
+        "verify": "Patvirtinti kodą",
+        "resend": "Siųsti kodą dar kartą"
+      }
+    },
+    "register": {
+      "title": "Registracija",
+      "incorrectCredentials": "Neteisingas vartotojo vardas arba slaptažodis",
+      "buttons": {
+        "continue": "Tęsti",
+        "previous": "Atgal"
+      },
+      "options": {
+        "google": {
+          "name": "Google",
+          "description": "Registruotis su Google paskyra"
+        },
+        "facebook": {
+          "name": "Facebook",
+          "description": "Registruotis su Facebook paskyra"
+        }
+      },
+      "errors": {
+        "4000002": "Šis laukas yra privalomas",
+        "4000007": "Vartotojas su šiuo el. paštu jau registruotas.",
+        "4000006": "Šis slaptažodis rastas nutekėjusių slaptažodžių registre. Prašome pasirinkti kitą slaptažodį.",
+        "1040009": "Prašome pasirinkti slaptažodį tolesniam autentifikavimui.",
+        "1080003": "El. laiškas su patvirtinimo kodu išsiųstas. Jei jo negavote, patikrinkite, ar el. paštas nurodytas teisingai.",
+        "4070006": "Patvirtinimo kodas neteisingas arba jau panaudotas. Prašome bandyti dar kartą."
+      },
+      "email": {
+        "label": "El. paštas"
+      },
+      "givenName": {
+        "label": "Vardas"
+      },
+      "familyName": {
+        "label": "Pavardė"
+      },
+      "password": {
+        "label": "Slaptažodis"
+      }
+    },
+    "profile": {
+      "title": "Vartotojo profilis",
+      "buttons": {
+        "continue": "Išsaugoti",
+        "changePassword": "Keisti slaptažodį"
+      },
+      "errors": {
+        "4000002": "Šis laukas yra privalomas",
+        "4000007": "Vartotojas su šiuo el. paštu jau registruotas.",
+        "4000006": "Šis slaptažodis rastas nutekėjusių slaptažodžių registre. Prašome pasirinkti kitą slaptažodį.",
+        "4000034": "Šis slaptažodis rastas nutekėjusių slaptažodžių registre. Prašome pasirinkti kitą slaptažodį.",
+        "1040009": "Prašome pasirinkti slaptažodį tolesniam autentifikavimui.",
+        "1050001": "Pakeitimai sėkmingai išsaugoti!",
+        "1060001": "Sėkmingai atnaujinote savo paskyrą. Prašome pakeisti slaptažodį arba nustatyti alternatyvų prisijungimo būdą (pvz., socialinį prisijungimą) per 60 minučių.",
+        "1080003": "El. laiškas su patvirtinimo kodu išsiųstas. Jei jo negavote, patikrinkite, ar el. paštas nurodytas teisingai.",
+        "4070006": "Patvirtinimo kodas neteisingas arba jau panaudotas. Prašome bandyti dar kartą."
+      },
+      "email": {
+        "label": "El. paštas"
+      },
+      "givenName": {
+        "label": "Vardas"
+      },
+      "familyName": {
+        "label": "Pavardė"
+      },
+      "password": {
+        "label": "Slaptažodis"
       }
     },
     "home": {

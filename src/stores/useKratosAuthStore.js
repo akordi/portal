@@ -1,11 +1,5 @@
-import {
-  hasScope,
-  hasScopeDelete,
-  hasScopeExport,
-  hasScopeRead,
-  hasScopeWrite,
-} from '@/utils/permissionUtils';
 import { useStorage } from '@vueuse/core';
+import { lxPermissionUtils } from '@dativa-lv/lx-ui';
 import { computed, ref } from 'vue';
 
 export default (authService, authUrl, publicUrl, clientId, scope, authSessionKey) => () => {
@@ -25,6 +19,8 @@ export default (authService, authUrl, publicUrl, clientId, scope, authSessionKey
     secondsToLive: null,
     secondsToCountdown: null,
     isSessionExtendable: false,
+    role: null,
+    permissions: [],
   };
   const returnPath = useStorage('returnPath', null, sessionStorage);
   const session = ref({ ...initState });
@@ -36,10 +32,13 @@ export default (authService, authUrl, publicUrl, clientId, scope, authSessionKey
    * @param {typeof initState} resp
    */
   function fillSession(resp) {
+    session.value.user_id = resp.identity.id;
     session.value.active = resp.active;
     session.value.family_name = resp.identity.traits.family_name;
     session.value.given_name = resp.identity.traits.given_name;
     session.value.email = resp.identity.traits.email;
+    session.value.role = resp.identity.metadata_public?.role;
+    session.value.personal_id = resp.identity.metadata_public?.personal_id;
     session.value.sid = resp.id;
     session.value.st = 'authorized';
     session.value.scope = resp.scope;
@@ -92,25 +91,32 @@ export default (authService, authUrl, publicUrl, clientId, scope, authSessionKey
   }
   async function logout(redirectPath) {
     const resp = await service.logout(redirectPath);
+    if (resp.status !== 200) {
+      return;
+    }
+    const logoutUrl = resp.data.logout_url;
+    if (!logoutUrl) {
+      return;
+    }
     $reset();
     await clearReturnPath();
-    return resp;
+    window.location.href = logoutUrl;
   }
 
   function hasPermission(name) {
-    return hasScope(session.value?.scope, name);
+    return lxPermissionUtils.hasScope(session.value?.scope, name);
   }
   function hasPermissionRead(name) {
-    return hasScopeRead(session.value?.scope, name);
+    return lxPermissionUtils.hasScopeRead(session.value?.scope, name);
   }
   function hasPermissionWrite(name) {
-    return hasScopeWrite(session.value?.scope, name);
+    return lxPermissionUtils.hasScopeWrite(session.value?.scope, name);
   }
   function hasPermissionExport(name) {
-    return hasScopeExport(session.value?.scope, name);
+    return lxPermissionUtils.hasScopeExport(session.value?.scope, name);
   }
   function hasPermissionDelete(name) {
-    return hasScopeDelete(session.value?.scope, name);
+    return lxPermissionUtils.hasScopeDelete(session.value?.scope, name);
   }
 
   // Returning reactive properties with unwrapped types in order to to support correct types definition in rollup declaration file
@@ -136,6 +142,7 @@ export default (authService, authUrl, publicUrl, clientId, scope, authSessionKey
     fetchSession,
     login,
     extendSession,
+    isAuthenticated: () => isAuthorized.value,
     logout,
     $reset,
     hasPermission,

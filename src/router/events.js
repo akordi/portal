@@ -1,39 +1,61 @@
+import useRights from '@/hooks/useRights';
 import useAppStore from '@/stores/useAppStore';
 import useAuthStore from '@/stores/useAuthStore';
-import useViewStore from '@/stores/useViewStore';
-
 import { lxFlowUtils } from '@dativa-lv/lx-ui';
 
 export default (router) => {
   router.beforeEach(async (to, from, next) => {
-    const authStore = useAuthStore();
     const appStore = useAppStore();
+    const rights = useRights();
+
+    const authStore = useAuthStore();
+
+    appStore.showError = false;
+    appStore.error = '';
 
     try {
       if (authStore.session.st === null) {
-        // await authStore.fetchSession();
+        await authStore.fetchSession();
       }
     } catch (err) {
       // proceed as unauthorized
     }
 
-    if (!to.meta.anonymous && !authStore.isAuthorized) {
-      const returnPath = to.fullPath;
-      next({ name: 'notAuthorized', query: { returnPath } });
+    const allowAnonymous = to.matched.some((record) => record.meta.anonymous);
+    if (allowAnonymous || to.name === 'dashboard') {
+      next();
       return;
     }
 
-    appStore.$reset();
-    appStore.startNavigating();
+    const isAuthenticated = await authStore.isAuthenticated();
+    if (!isAuthenticated) {
+      const query = to.path === '/' ? {} : { returnPath: to.path };
+      next({
+        query,
+        replace: true,
+        name: 'dashboard',
+      });
+      return;
+    }
 
-    await lxFlowUtils.beforeEach(to, from, next, appStore, authStore);
+    const withPermission = to.matched.filter((r) => !r.meta.access || r.meta.access(rights));
+    const hasPermissionInternal =
+      withPermission.length === 0 ||
+      withPermission.some((record) => !record.meta.access || record.meta.access(rights));
+    if (isAuthenticated && hasPermissionInternal) {
+      next();
+      return;
+    }
+    next({
+      query: { returnPath: to.path },
+      replace: true,
+      name: 'error',
+    });
+    // await lxFlowUtils.beforeEach(to, from, next, appStore, authStore);
   });
+
   router.afterEach(async (to, from) => {
     const appStore = useAppStore();
-    const viewStore = useViewStore();
-
-    viewStore.$reset();
     await lxFlowUtils.afterEach(to, from, appStore);
-    lxFlowUtils.removeFocus();
   });
 };

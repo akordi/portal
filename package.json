@@ -1,7 +1,7 @@
 {
   "name": "akordi-portal",
   "version": "0.0.1",
-  "packageManager": "pnpm@10.28.2",
+  "packageManager": "pnpm@10.29.3",
   "prettier": "@zzdats/prettier-config",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
@@ -13,25 +13,25 @@
     "test-watch": "vitest"
   },
   "dependencies": {
-    "@dativa-lv/lx-ui": "2.0.1",
-    "@ory/client": "^1.22.22",
+    "@dativa-lv/lx-ui": "2.0.3",
+    "@ory/client": "^1.22.23",
     "@tombatossals/chords-db": "^0.5.1",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "@vueuse/core": "^13.3.0",
     "@vueuse/head": "^2.0.0",
     "@zzdats/prettier-config": "^1.0.0",
-    "abcjs": "^6.6.0",
-    "axios": "1.13.4",
+    "abcjs": "^6.6.1",
+    "axios": "1.13.5",
     "chord-transposer": "^3.0.9",
     "pinia": "^3.0.4",
-    "vue": "^3.5.27",
-    "vue-gtag": "3.6.3",
+    "vue": "^3.5.28",
+    "vue-gtag": "3.7.0",
     "vue-i18n": "11.2.8",
-    "vue-router": "4.6.4"
+    "vue-router": "5.0.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^6.0.3",
+    "@vitejs/plugin-vue": "^6.0.4",
     "@vue/eslint-config-airbnb": "^8.0.0",
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/test-utils": "^2.4.6",

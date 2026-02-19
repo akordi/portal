@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import kratosAuthStore from '@/stores/useKratosAuthStore';
-import authService from '@/services/authService';
+import authService from '@/services/kratosAuthService';
 
 export default defineStore(
   'authStore',
@@ -9,7 +9,7 @@ export default defineStore(
     window.config.authUrl,
     window.config.publicUrl,
     window.config.clientId,
-    'vpm',
-    'demo-sessionkey'
+    '',
+    ''
   )
 );

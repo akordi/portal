@@ -1,17 +1,19 @@
 <script setup>
-import useNotifyStore from '@/stores/useNotifyStore';
-import useViewStore from '@/stores/useViewStore';
-import { Configuration, FrontendApi } from '@ory/client';
-import { LxForm, LxList, LxLoader, LxRow, LxTextInput } from '@dativa-lv/lx-ui';
 import { computed, nextTick, onMounted, ref } from 'vue';
+import { LxList, LxLoader, LxForm, LxTextInput, LxRow } from '@dativa-lv/lx-ui';
+import { useRouter, useRoute } from 'vue-router';
+import { Configuration, FrontendApi } from '@ory/client';
 import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router';
+import useViewStore from '@/stores/useViewStore';
+import useAuthStore from '@/stores/useAuthStore';
+import useNotifyStore from '@/stores/useNotifyStore';
 
-const t = useI18n();
+const $t = useI18n().t;
 const route = useRoute();
 const notify = useNotifyStore();
 const router = useRouter();
 const viewStore = useViewStore();
+const authStore = useAuthStore();
 
 const loading = ref(true);
 const flowId = computed(() => route.query.flow);
@@ -33,6 +35,7 @@ const ory = new FrontendApi(
     },
   })
 );
+const busy = ref(false);
 const resolveProviderAttributes = (code) => {
   switch (code) {
     case 'google':
@@ -45,62 +48,108 @@ const resolveProviderAttributes = (code) => {
   }
 };
 
+function getMappedMessage(messageKey, defaultText) {
+  const translatedMessage = $t(`pages.login.errors.${messageKey}`);
+  if (translatedMessage === `pages.login.errors.${messageKey}`) {
+    return defaultText;
+  }
+  return translatedMessage;
+}
+function getErrorMessage(node) {
+  if (!node.messages.length) {
+    return '';
+  }
+  const messageKey = node.messages[0].id;
+  return getMappedMessage(messageKey, node.messages[0].text);
+}
+
 function notifyMappedError(message) {
+  const messageKey = message.id;
+  const mappedMessage = getMappedMessage(messageKey, message.text);
   switch (message.type) {
     case 'error':
-      notify.pushError(message.text);
+      notify.pushError(mappedMessage);
       break;
     case 'success':
-      notify.pushSuccess(message.text);
+      notify.pushSuccess(mappedMessage);
       break;
     case 'info':
-      notify.pushInfo(message.text);
+      notify.pushInfo(mappedMessage);
       break;
     case 'warning':
-      notify.pushWarning(message.text);
+      notify.pushWarning(mappedMessage);
       break;
     default:
-      notify.pushError(message.text);
+      notify.pushError(mappedMessage);
       break;
+  }
+}
+
+function parseFlow() {
+  if (flow.value.ui.messages && flow.value.ui.messages.length > 0) {
+    flow.value.ui.messages.forEach((message) => {
+      notifyMappedError(message);
+    });
+  }
+  flow.value.ui.nodes.forEach((node) => {
+    if (node.group === 'oidc') {
+      const providerAttributes = resolveProviderAttributes(node.attributes.value);
+      oidcNodes.value.push({
+        id: node.attributes.value,
+
+        name: $t(`pages.login.options.${node.attributes.value}.name`),
+        description: $t(`pages.login.options.${node.attributes.value}.description`),
+        clickable: true,
+        iconSet: providerAttributes?.iconSet || undefined,
+        icon: providerAttributes?.icon || 'next',
+      });
+    }
+    if (node.group === 'default' && node.attributes.name === 'csrf_token') {
+      csrfToken.value = node.attributes.value;
+    }
+    if (node.group === 'password' && node.attributes.type === 'password') {
+      passwordNode.value = node;
+    }
+    if (node.group === 'default' && node.attributes.name === 'identifier') {
+      identifierNode.value = node;
+    }
+  });
+}
+
+async function initFlow() {
+  try {
+    const { data } = await ory.createBrowserLoginFlow();
+    router.replace({ query: { flow: data.id } });
+    flow.value = data;
+    parseFlow();
+    loading.value = false;
+  } catch (err) {
+    if (err?.response?.data?.error?.id === 'session_already_available') {
+      router.push({ name: 'dashboard' });
+      return;
+    }
+    router.push('/error');
   }
 }
 
 onMounted(() => {
   viewStore.showBack();
+  if (authStore.isAuthorized) {
+    viewStore.showNavBar();
+  } else {
+    viewStore.hideNavBar();
+  }
+
+  if (!flowId.value) {
+    initFlow();
+    return;
+  }
 
   ory
     .getLoginFlow({ id: flowId.value })
     .then(({ data }) => {
       flow.value = data;
-
-      if (data.ui.messages && data.ui.messages.length > 0) {
-        data.ui.messages.forEach((message) => {
-          notifyMappedError(message);
-        });
-      }
-      data.ui.nodes.forEach((node) => {
-        if (node.group === 'oidc') {
-          const providerAttributes = resolveProviderAttributes(node.attributes.value);
-          oidcNodes.value.push({
-            id: node.attributes.value,
-
-            name: t.t(`pages.login.options.${node.attributes.value}.name`),
-            description: t.t(`pages.login.options.${node.attributes.value}.description`),
-            clickable: true,
-            iconSet: providerAttributes?.iconSet || undefined,
-            icon: providerAttributes?.icon || 'next',
-          });
-        }
-        if (node.group === 'default' && node.attributes.name === 'csrf_token') {
-          csrfToken.value = node.attributes.value;
-        }
-        if (node.group === 'password' && node.attributes.type === 'password') {
-          passwordNode.value = node;
-        }
-        if (node.group === 'default' && node.attributes.name === 'identifier') {
-          identifierNode.value = node;
-        }
-      });
+      parseFlow();
       loading.value = false;
     })
     .catch(() => {
@@ -116,21 +165,43 @@ function selectProvider(id, itemId) {
   });
 }
 
-function passwordFormSubmit() {
+function passwordFormSubmit(actionId) {
+  if (actionId === 'register') {
+    window.location.href = `${authUrl}self-service/registration/browser`;
+    return;
+  }
+  if (actionId === 'recovery') {
+    window.location.href = `${authUrl}self-service/recovery/browser`;
+    return;
+  }
   nextTick(() => {
+    busy.value = true;
     if (passwordForm.value) {
       passwordForm.value.submit();
     }
   });
 }
-const passwordFormActions = [
+const passwordFormActions = computed(() => [
   {
     id: 'submit',
     icon: 'next',
-    name: t.t('pages.login.buttons.signIn'),
+    name: $t('pages.login.buttons.signIn'),
     kind: 'primary',
+    busy: busy.value,
   },
-];
+  // {
+  //   id: 'register',
+  //   icon: 'add-user',
+  //   name: $t('pages.login.buttons.register'),
+  //   kind: 'secondary',
+  // },
+  // {
+  //   id: 'recovery',
+  //   icon: 'help',
+  //   name: $t('pages.login.buttons.forgotPassword'),
+  //   kind: 'tertiary',
+  // },
+]);
 </script>
 <template>
   <LxLoader :loading="loading" />
@@ -143,29 +214,30 @@ const passwordFormActions = [
     >
     </LxList>
     <LxForm
+      id="signin-form"
       :showHeader="false"
       :stickyFooter="false"
       :action-definitions="passwordFormActions"
-      @buttonClick="passwordFormSubmit"
+      @actionClick="passwordFormSubmit"
       v-if="identifierNode && passwordNode"
     >
-      <LxRow :label="identifierNode.meta?.label?.text">
+      <LxRow :label="$t('pages.login.email')">
         <LxTextInput
+          id="username"
           v-model="identifierNode.attributes.value"
           :required="identifierNode.attributes.required"
           :invalid="identifierNode.messages.length > 0"
-          :invalidationMessage="
-            identifierNode.messages.length > 0 && identifierNode.messages[0]?.text
-          "
+          :invalidationMessage="getErrorMessage(identifierNode)"
         />
       </LxRow>
-      <LxRow :label="passwordNode.meta?.label?.text">
+      <LxRow :label="$t('pages.login.password')">
         <LxTextInput
+          id="password"
           kind="password"
           @keyup.enter="passwordFormSubmit()"
           v-model="passwordNode.attributes.value"
           :invalid="passwordNode.messages.length > 0"
-          :invalidationMessage="passwordNode.messages.length > 0 && passwordNode.messages[0]?.text"
+          :invalidationMessage="getErrorMessage(passwordNode)"
         />
       </LxRow>
     </LxForm>

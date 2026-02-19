@@ -282,7 +282,9 @@
     "login": {
       "title": "Valige autentimise meetod",
       "buttons": {
-        "signIn": "Logi sisse"
+        "signIn": "Logi sisse",
+        "register": "Registreeri",
+        "forgotPassword": "Unustasid parooli?"
       },
       "options": {
         "google": {
@@ -293,6 +295,104 @@
           "name": "Facebook",
           "description": "Logige sisse Facebook kontoga"
         }
+      },
+      "email": "E-post",
+      "password": "Parool",
+      "errors": {
+        "4000002": "See väli on kohustuslik",
+        "4000006": "Vale e-post ja/või parool",
+        "1060003": "Taastamiskoodiga e-kiri on saadetud teie e-posti aadressile. Kui te seda ei saanud, kontrollige, kas e-post on õigesti sisestatud.",
+        "1080002": "E-post on edukalt kinnitatud.",
+        "1080003": "Kinnituskoodiga e-kiri on saadetud. Kui te seda ei saanud, kontrollige, kas e-post on õigesti sisestatud."
+      }
+    },
+    "verification": {
+      "title": "Kinnitamine",
+      "code": "Kinnituskood",
+      "success": "Kinnitatud!",
+      "successDescription": "E-posti aadress on edukalt kinnitatud.",
+      "buttons": {
+        "continue": "Jätka",
+        "resendCode": "Saada kood uuesti",
+        "submit": "Kinnita"
+      }
+    },
+    "recovery": {
+      "title": "Parooli taastamine",
+      "email": "E-post",
+      "code": "Kinnituskood",
+      "buttons": {
+        "submit": "Saada kood",
+        "verify": "Kinnita kood",
+        "resend": "Saada kood uuesti"
+      }
+    },
+    "register": {
+      "title": "Registreerimine",
+      "incorrectCredentials": "Vale kasutajanimi või parool",
+      "buttons": {
+        "continue": "Jätka",
+        "previous": "Tagasi"
+      },
+      "options": {
+        "google": {
+          "name": "Google",
+          "description": "Registreeri Google kontoga"
+        },
+        "facebook": {
+          "name": "Facebook",
+          "description": "Registreeri Facebook kontoga"
+        }
+      },
+      "errors": {
+        "4000002": "See väli on kohustuslik",
+        "4000007": "Selle e-postiga kasutaja on juba registreeritud.",
+        "4000006": "See parool on leitud lekkinud paroolide registrist. Palun valige muu parool.",
+        "1040009": "Palun valige parool edasiseks autentimiseks.",
+        "1080003": "Kinnituskoodiga e-kiri on saadetud. Kui te seda ei saanud, kontrollige, kas e-post on õigesti sisestatud.",
+        "4070006": "Kinnituskood on vale või juba kasutatud. Palun proovige uuesti."
+      },
+      "email": {
+        "label": "E-post"
+      },
+      "givenName": {
+        "label": "Eesnimi"
+      },
+      "familyName": {
+        "label": "Perekonnanimi"
+      },
+      "password": {
+        "label": "Parool"
+      }
+    },
+    "profile": {
+      "title": "Kasutaja profiil",
+      "buttons": {
+        "continue": "Salvesta",
+        "changePassword": "Muuda parooli"
+      },
+      "errors": {
+        "4000002": "See väli on kohustuslik",
+        "4000007": "Selle e-postiga kasutaja on juba registreeritud.",
+        "4000006": "See parool on leitud lekkinud paroolide registrist. Palun valige muu parool.",
+        "4000034": "See parool on leitud lekkinud paroolide registrist. Palun valige muu parool.",
+        "1040009": "Palun valige parool edasiseks autentimiseks.",
+        "1050001": "Muudatused edukalt salvestatud!",
+        "1060001": "Olete oma kontot edukalt uuendanud. Palun muutke parool või seadistage alternatiivne sisselogimisviis (nt sotsiaalne sisselogimine) 60 minuti jooksul.",
+        "1080003": "Kinnituskoodiga e-kiri on saadetud. Kui te seda ei saanud, kontrollige, kas e-post on õigesti sisestatud.",
+        "4070006": "Kinnituskood on vale või juba kasutatud. Palun proovige uuesti."
+      },
+      "email": {
+        "label": "E-post"
+      },
+      "givenName": {
+        "label": "Eesnimi"
+      },
+      "familyName": {
+        "label": "Perekonnanimi"
+      },
+      "password": {
+        "label": "Parool"
       }
     },
     "home": {
