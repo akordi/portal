@@ -4,6 +4,8 @@ import {
   lxDateUtils,
   LxForm,
   LxLoaderView,
+  LxModal,
+  LxValuePicker,
   LxRow,
   LxSection,
   LxToolbar,
@@ -17,6 +19,8 @@ import { useRoute, useRouter } from 'vue-router';
 import AbcViewer from '@/components/AbcViewer.vue';
 import { pageview } from 'vue-gtag';
 import ChordSvg from '@/components/ChordSvg.vue';
+import useAuthStore from '@/stores/useAuthStore';
+import akordiAdminListService from '@/services/songbookService';
 import akordiService from '@/services/akordiService';
 import chordsService from '@/services/chordsService';
 import useNotifyStore from '@/stores/useNotifyStore';
@@ -30,6 +34,13 @@ const notificationStore = useNotifyStore();
 const settingsStore = useSettingsStore();
 const router = useRouter();
 const route = useRoute();
+const authStore = useAuthStore();
+const isAuthorized = authStore.isAuthenticated();
+const addToListModal = ref();
+const userLists = ref([]);
+const loadingLists = ref(false);
+const userListSelected = ref([]);
+const selectedLists = ref([]);
 const songUrlParam = computed(() => route.params.url);
 const bodyTransposedIndex = ref(0);
 const item = ref({});
@@ -275,6 +286,17 @@ const formActions = computed(() => {
       kind: 'additional',
     },
   ];
+
+  if (isAuthorized) {
+    nav.push({
+      id: 'addToList',
+      icon: 'add',
+      name: $t('pages.akordiSongView.addToList.label'),
+      title: $t('pages.akordiSongView.addToList.description'),
+      kind: 'additional',
+    });
+  }
+
   if (hasAbc.value) {
     nav.push({
       id: 'showAbc',
@@ -287,6 +309,27 @@ const formActions = computed(() => {
   return nav;
 });
 async function actionClicked(actionName) {
+  if (actionName === 'addToList') {
+    try {
+      loadingLists.value = true;
+      const resp = await akordiAdminListService.findAll();
+      userLists.value = resp.data.map((list) => ({
+        ...list,
+        id: String(list.id),
+        title: list.name,
+      }));
+
+      const songbooksResp = await akordiAdminListService.getSongSongbooks(item.value.id);
+      userListSelected.value = songbooksResp.data || [];
+      selectedLists.value = userListSelected.value?.map((id) => String(id));
+
+      addToListModal.value.open();
+    } catch (err) {
+      notificationStore.pushError($t('errors.loadFailed'));
+    } finally {
+      loadingLists.value = false;
+    }
+  }
   if (actionName === 'cancel') {
     router.back();
   }
@@ -341,6 +384,45 @@ async function actionClicked(actionName) {
   }
   if (actionName === 'fontDown') {
     fontSize.value -= 0.2;
+  }
+}
+
+function findFirstSongAdded(originalList, newList) {
+  return newList.value.find((listId) => !originalList.value.includes(listId));
+}
+
+function findFirstSongRemoved(originalList, newList) {
+  return originalList.value.find((listId) => !newList.value.includes(listId));
+}
+
+async function saveListSelection(value) {
+  selectedLists.value = value;
+
+  const songRemoved = findFirstSongRemoved(userListSelected, selectedLists);
+
+  if (songRemoved) {
+    try {
+      await akordiAdminListService.removeSong(songRemoved, item.value.id);
+      userListSelected.value = userListSelected.value.filter((id) => id !== songRemoved);
+      notificationStore.pushSuccess($t('pages.akordiSongView.removeFromList.success'));
+    } catch (err) {
+      notificationStore.pushError($t('pages.akordiSongView.removeFromList.error'));
+    }
+    addToListModal.value.close();
+    return;
+  }
+
+  const songAdded = findFirstSongAdded(userListSelected, selectedLists);
+
+  if (songAdded) {
+    try {
+      await akordiAdminListService.addSong(songAdded, item.value.id);
+      userListSelected.value.push(songAdded);
+      notificationStore.pushSuccess($t('pages.akordiSongView.addToList.success'));
+    } catch (err) {
+      notificationStore.pushError($t('pages.akordiSongView.addToList.error'));
+    }
+    addToListModal.value.close();
   }
 }
 
@@ -521,4 +603,22 @@ onUnmounted(() => {
       </LxSection>
     </LxForm>
   </LxLoaderView>
+
+  <LxModal
+    ref="addToListModal"
+    :label="$t('pages.akordiSongView.addToList.label')"
+    size="m"
+    :actionDefinitions="[{ id: 'close', name: $t('cancel'), kind: 'secondary' }]"
+    @action-click="actionClicked"
+  >
+    <LxValuePicker
+      id="user-lists-picker"
+      selection-kind="multiple"
+      :items="userLists"
+      id-attribute="id"
+      name-attribute="title"
+      @update:model-value="saveListSelection"
+      v-model="selectedLists"
+    />
+  </LxModal>
 </template>

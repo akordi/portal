@@ -250,7 +250,19 @@
       },
       "transposeDisabled": "El transporte está desactivado porque no se encuentran acordes en el texto de la canción",
       "audioNotSupported": "Su navegador no soporta audio",
-      "transposeHeader": "Transportar ({offset})"
+      "transposeHeader": "Transportar ({offset})",
+      "addToList": {
+        "label": "Añadir al cancionero",
+        "description": "Añade esta canción a uno de tus cancioneros",
+        "success": "Canción añadida con éxito",
+        "error": "Error al añadir la canción"
+      },
+      "removeFromList": {
+        "label": "Eliminar del cancionero",
+        "description": "Elimina esta canción de uno de tus cancioneros",
+        "success": "Canción eliminada con éxito",
+        "error": "Error al eliminar la canción"
+      }
     },
     "akordiArtistLetter": {
       "title": "Catálogo de artistas A-Z",
@@ -437,6 +449,31 @@
     "notFound": {
       "title": "Página no encontrada",
       "description": "Compruebe si la dirección de la página es correcta e inténtelo de nuevo, o vuelva a la página de inicio"
+    },
+    "songbook": {
+      "title": "Mis cancioneros",
+      "description": "Aquí puedes gestionar tus cancioneros personales",
+      "empty": "Aún no tienes ningún cancionero",
+      "add": "Crear cancionero",
+      "delete": {
+        "title": "Eliminar cancionero",
+        "message": "¿Realmente desea eliminar el cancionero \"{name}\"?",
+        "success": "Cancionero eliminado con éxito",
+        "error": "Error al eliminar el cancionero"
+      },
+      "save": {
+        "success": "Cancionero guardado con éxito",
+        "error": "Error al guardar el cancionero"
+      },
+      "addSong": {
+        "success": "Canción añadida al cancionero",
+        "error": "Error al añadir la canción"
+      },
+      "removeSong": {
+        "success": "Canción eliminada del cancionero",
+        "error": "Error al eliminar la canción del cancionero"
+      },
+      "songs": "Canciones en el cancionero"
     }
   },
   "cookieConsent": {

@@ -2,11 +2,9 @@
 import { useI18n } from 'vue-i18n';
 import { LxAccessibilitySettings } from '@dativa-lv/lx-ui';
 
-import useViewStore from '@/stores/useViewStore';
-import { onMounted, computed } from 'vue';
+import { computed } from 'vue';
 
 const i18n = useI18n();
-const viewStore = useViewStore();
 
 const settingsTexts = computed(() => ({
   appearance: i18n.t('accessibilitySettings.appearance'),

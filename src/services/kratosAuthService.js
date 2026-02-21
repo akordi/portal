@@ -1,7 +1,7 @@
 import http from '@/services/http';
 
 const { publicUrl, authUrl } = window.config;
-const serviceUrl = '/api/v1/';
+const serviceUrl = '/api/v2/';
 
 export default () => ({
   authorize() {

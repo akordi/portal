@@ -39,44 +39,57 @@ const shellMode = computed(() => {
 
 const hasLoginButton = computed(() => !!window.config.authUrl);
 
-const nav = [
-  {
-    label: $t('pages.dashboard.title'),
-    icon: 'dashboard',
-    to: { name: 'dashboard' },
-  },
-  {
-    label: $t('pages.songs.title'),
-    icon: 'search-details',
-    to: { name: 'songSearch' },
-  },
-  {
-    label: $t('pages.akordiArtistLetter.title'),
-    icon: 'users',
-    to: { name: 'akordiArtistLetter', params: { letter: '0' } },
-  },
-  {
-    label: $t('pages.tagList.title'),
-    icon: 'tag',
-    to: { name: 'tagList' },
-  },
-  {
-    label: $t('pages.chordsLibrary.title', 'Chords'),
-    icon: 'list-bulleted',
-    to: { name: 'chordsLibrary' },
-  },
-  {
-    label: $t('pages.songNew.title'),
-    icon: 'add-item',
-    to: { name: 'songNew' },
-  },
-  {
+const nav = computed(() => {
+  const ret = [
+    {
+      label: $t('pages.dashboard.title'),
+      icon: 'dashboard',
+      to: { name: 'dashboard' },
+    },
+    {
+      label: $t('pages.songs.title'),
+      icon: 'search-details',
+      to: { name: 'songSearch' },
+    },
+    {
+      label: $t('pages.akordiArtistLetter.title'),
+      icon: 'users',
+      to: { name: 'akordiArtistLetter', params: { letter: '0' } },
+    },
+    {
+      label: $t('pages.tagList.title'),
+      icon: 'tag',
+      to: { name: 'tagList' },
+    },
+    {
+      label: $t('pages.chordsLibrary.title', 'Chords'),
+      icon: 'list-bulleted',
+      to: { name: 'chordsLibrary' },
+    },
+    {
+      label: $t('pages.songNew.title'),
+      icon: 'add-item',
+      to: { name: 'songNew' },
+    },
+  ];
+
+  if (authStore.isAuthorized) {
+    ret.push({
+      label: $t('pages.songbook.title'),
+      icon: 'list-bulleted',
+      to: { name: 'songbook' },
+      type: 'user-menu',
+    });
+  }
+
+  ret.push({
     label: $t('pages.userProfile.viewProfile'),
     icon: 'user-profile',
     to: { name: 'userProfile' },
     type: 'user-menu',
-  },
-];
+  });
+  return ret;
+});
 
 const coverLogo = ref('/imgs/logo-50.svg');
 

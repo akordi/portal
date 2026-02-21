@@ -72,6 +72,12 @@ onMounted(async () => {
         :to="{ name: 'akordiArtistLetter', params: { letter: '0' } }"
       />
       <LxTile
+        icon="list-bulleted"
+        :label="$t('pages.songbook.title')"
+        :description="$t('pages.songbook.description')"
+        :to="{ name: 'songbook' }"
+      />
+      <LxTile
         icon="tag"
         :label="$t('pages.tagList.title')"
         :description="$t('pages.tagList.description')"

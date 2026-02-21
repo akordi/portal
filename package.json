@@ -14,11 +14,11 @@
   },
   "dependencies": {
     "@dativa-lv/lx-ui": "2.0.3",
-    "@ory/client": "^1.22.23",
+    "@ory/client": "^1.22.25",
     "@tombatossals/chords-db": "^0.5.1",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
-    "@vueuse/core": "^13.3.0",
+    "@vueuse/core": "^14.2.1",
     "@vueuse/head": "^2.0.0",
     "@zzdats/prettier-config": "^1.0.0",
     "abcjs": "^6.6.1",
@@ -28,7 +28,7 @@
     "vue": "^3.5.28",
     "vue-gtag": "3.7.0",
     "vue-i18n": "11.2.8",
-    "vue-router": "5.0.2"
+    "vue-router": "5.0.3"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.4",

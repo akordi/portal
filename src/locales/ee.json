@@ -256,7 +256,19 @@
       },
       "transposeDisabled": "Transponeerimine on keelatud, kuna laulu tekstist ei leitud akorde",
       "audioNotSupported": "Teie brauser ei toeta heli",
-      "transposeHeader": "Transponeeri ({offset})"
+      "transposeHeader": "Transponeeri ({offset})",
+      "addToList": {
+        "label": "Lisa lauluraamatusse",
+        "description": "Lisa see laul ühte oma lauluraamatusse",
+        "success": "Laul edukalt lisatud",
+        "error": "Viga laulu lisamisel"
+      },
+      "removeFromList": {
+        "label": "Eemalda lauluraamatust",
+        "description": "Eemalda see laul ühest oma lauluraamatust",
+        "success": "Laul edukalt eemaldatud",
+        "error": "Viga laulu eemaldamisel"
+      }
     },
     "akordiArtistLetter": {
       "title": "Esitajate kataloog A-Z",
@@ -443,6 +455,31 @@
     "notFound": {
       "title": "Lehte ei leitud",
       "description": "Kontrollige, kas lehe aadress on õige ja proovige uuesti, või naaske avalehele"
+    },
+    "songbook": {
+      "title": "Minu lauluraamatud",
+      "description": "Siin saate hallata oma isiklikke lauluraamatuid",
+      "empty": "Teil pole veel ühtegi lauluraamatut",
+      "add": "Loo lauluraamat",
+      "delete": {
+        "title": "Kustuta lauluraamat",
+        "message": "Kas olete kindel, et soovite lauluraamatu \"{name}\" kustutada?",
+        "success": "Lauluraamat edukalt kustutatud",
+        "error": "Viga lauluraamatu kustutamisel"
+      },
+      "save": {
+        "success": "Lauluraamat edukalt salvestatud",
+        "error": "Viga lauluraamatu salvestamisel"
+      },
+      "addSong": {
+        "success": "Laul lisatud lauluraamatusse",
+        "error": "Viga laulu lisamisel"
+      },
+      "removeSong": {
+        "success": "Laul eemaldatud lauluraamatust",
+        "error": "Viga laulu eemaldamisel lauluraamatust"
+      },
+      "songs": "Laulud lauluraamatus"
     }
   },
   "cookieConsent": {

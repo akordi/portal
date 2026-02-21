@@ -87,7 +87,7 @@ export default {
 
     const searchParams = { ...params, q };
 
-    return http(serviceUrl).get('/api/v2/admin/search', {
+    return http(serviceUrl).get('/api/v2/search', {
       params: searchParams,
       signal: abortController.signal,
     });

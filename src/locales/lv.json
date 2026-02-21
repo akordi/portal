@@ -256,7 +256,44 @@
       },
       "transposeDisabled": "Transponēšana ir atspējota, jo dziesmas tekstā nav atrodami akordi",
       "audioNotSupported": "Jūsu pārlūks neatbalsta audio",
-      "transposeHeader": "Transponēt ({offset})"
+      "transposeHeader": "Transponēt ({offset})",
+      "addToList": {
+        "label": "Pievienot dziesmu grāmatai",
+        "description": "Pievienot šo dziesmu vienai no savām dziesmu grāmatām",
+        "success": "Dziesma veiksmīgi pievienota",
+        "error": "Kļūda pievienojot dziesmu"
+      },
+      "removeFromList": {
+        "label": "Izņemt no dziesmu grāmatas",
+        "description": "Izņemt šo dziesmu no vienas no savām dziesmu grāmatām",
+        "success": "Dziesma veiksmīgi izņemta",
+        "error": "Kļūda izņemot dziesmu"
+      }
+    },
+    "songbook": {
+      "title": "Manas dziesmu grāmatas",
+      "description": "Šeit vari pārvaldīt savas personīgās dziesmu grāmatas",
+      "empty": "Tev vēl nav nevienas dziesmu grāmatas",
+      "add": "Izveidot dziesmu grāmatu",
+      "delete": {
+        "title": "Dzēst dziesmu grāmatu",
+        "message": "Vai tiešām vēlaties dzēst dziesmu grāmatu \"{name}\"?",
+        "success": "Dziesmu grāmata veiksmīgi dzēsta",
+        "error": "Kļūda dzēšot dziesmu grāmatu"
+      },
+      "save": {
+        "success": "Dziesmu grāmata veiksmīgi saglabāta",
+        "error": "Kļūda saglabājot dziesmu grāmatu"
+      },
+      "addSong": {
+        "success": "Dziesma pievienota dziesmu grāmatai",
+        "error": "Kļūda pievienojot dziesmu"
+      },
+      "removeSong": {
+        "success": "Dziesma izņemta no dziesmu grāmatas",
+        "error": "Kļūda izņemot dziesmu no dziesmu grāmatas"
+      },
+      "songs": "Dziesmas dziesmu grāmatā"
     },
     "akordiArtistLetter": {
       "title": "Mākslinieku katalogs A-Z",
@@ -480,6 +517,7 @@
     "unexpectedError": "Neparedzēta kļūda:"
   },
   "save": "Saglabāt",
+  "add": "Pievienot",
   "edit": "Rediģēt",
   "suggestEdit": "Ieteikt labojumu",
   "delete": "Dzēst",

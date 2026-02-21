@@ -256,7 +256,19 @@
       },
       "transposeDisabled": "Transponavimas išjungtas, nes dainos tekste nerasta akordų",
       "audioNotSupported": "Jūsų naršyklė nepalaiko garso",
-      "transposeHeader": "Transponuoti ({offset})"
+      "transposeHeader": "Transponuoti ({offset})",
+      "addToList": {
+        "label": "Pridėti į dainų knygą",
+        "description": "Pridėkite šią dainą į vieną iš savo dainų knygų",
+        "success": "Daina sėkmingai pridėta",
+        "error": "Klaida pridedant dainą"
+      },
+      "removeFromList": {
+        "label": "Išimti iš dainų knygos",
+        "description": "Išimkite šią dainą iš vienos iš savo dainų knygų",
+        "success": "Daina sėkmingai išimta",
+        "error": "Klaida išimant dainą"
+      }
     },
     "akordiArtistLetter": {
       "title": "Atlikėjų katalogas A-Z",
@@ -443,6 +455,31 @@
     "notFound": {
       "title": "Puslapis nerastas",
       "description": "Patikrinkite, ar puslapio adresas yra teisinga ir bandykite dar kartą, arba grįžkite į pradžią"
+    },
+    "songbook": {
+      "title": "Mano dainų knygos",
+      "description": "Čia galite tvarkyti savo asmenines dainų knygas",
+      "empty": "Dar neturite jokių dainų knygų",
+      "add": "Sukurti dainų knygą",
+      "delete": {
+        "title": "Ištrinti dainų knygą",
+        "message": "Ar tikrai norite ištrinti dainų knygą „{name}“?",
+        "success": "Dainų knyga sėkmingai ištrinta",
+        "error": "Klaida trinant dainų knygą"
+      },
+      "save": {
+        "success": "Dainų knyga sėkmingai išsaugota",
+        "error": "Klaida saugant dainų knygą"
+      },
+      "addSong": {
+        "success": "Daina pridėta į dainų knygą",
+        "error": "Klaida pridedant dainą"
+      },
+      "removeSong": {
+        "success": "Daina išimta iš dainų knygos",
+        "error": "Klaida išimant dainą iš dainų knygos"
+      },
+      "songs": "Dainos dainų knygoje"
     }
   },
   "cookieConsent": {

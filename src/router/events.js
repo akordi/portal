@@ -33,7 +33,7 @@ export default (router) => {
       next({
         query,
         replace: true,
-        name: 'dashboard',
+        name: 'notAuthorized',
       });
       return;
     }
