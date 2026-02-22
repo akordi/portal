@@ -160,6 +160,7 @@ em {
     <LxLoader :loading="loading" variant="bar" />
   </div>
   <LxList
+    id="song-search-list"
     id-attribute="id"
     list-type="1"
     v-model:items="items"
