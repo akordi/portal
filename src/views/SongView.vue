@@ -5,7 +5,7 @@ import {
   LxForm,
   LxLoaderView,
   LxModal,
-  LxValuePicker,
+  LxCheckbox,
   LxRow,
   LxSection,
   LxToolbar,
@@ -41,6 +41,7 @@ const userLists = ref([]);
 const loadingLists = ref(false);
 const userListSelected = ref([]);
 const selectedLists = ref([]);
+const loadingStates = ref({}); // To track per-list loading
 const songUrlParam = computed(() => route.params.url);
 const bodyTransposedIndex = ref(0);
 const item = ref({});
@@ -387,42 +388,33 @@ async function actionClicked(actionName) {
   }
 }
 
-function findFirstSongAdded(originalList, newList) {
-  return newList.value.find((listId) => !originalList.value.includes(listId));
-}
-
-function findFirstSongRemoved(originalList, newList) {
-  return originalList.value.find((listId) => !newList.value.includes(listId));
-}
-
-async function saveListSelection(value) {
-  selectedLists.value = value;
-
-  const songRemoved = findFirstSongRemoved(userListSelected, selectedLists);
-
-  if (songRemoved) {
-    try {
-      await akordiAdminListService.removeSong(songRemoved, item.value.id);
-      userListSelected.value = userListSelected.value.filter((id) => id !== songRemoved);
-      notificationStore.pushSuccess($t('pages.akordiSongView.removeFromList.success'));
-    } catch (err) {
-      notificationStore.pushError($t('pages.akordiSongView.removeFromList.error'));
-    }
-    addToListModal.value.close();
-    return;
-  }
-
-  const songAdded = findFirstSongAdded(userListSelected, selectedLists);
-
-  if (songAdded) {
-    try {
-      await akordiAdminListService.addSong(songAdded, item.value.id);
-      userListSelected.value.push(songAdded);
+async function toggleListSelection(listId, value) {
+  loadingStates.value[listId] = true;
+  try {
+    if (value) {
+      await akordiAdminListService.addSong(listId, item.value.id);
+      userListSelected.value.push(listId);
       notificationStore.pushSuccess($t('pages.akordiSongView.addToList.success'));
-    } catch (err) {
-      notificationStore.pushError($t('pages.akordiSongView.addToList.error'));
+    } else {
+      await akordiAdminListService.removeSong(listId, item.value.id);
+      userListSelected.value = userListSelected.value.filter((id) => id !== listId);
+      notificationStore.pushSuccess($t('pages.akordiSongView.removeFromList.success'));
     }
-    addToListModal.value.close();
+    selectedLists.value = userListSelected.value.map((id) => String(id));
+  } catch (err) {
+    if (value) {
+      notificationStore.pushError($t('pages.akordiSongView.addToList.error'));
+      // Revert checkbox state
+      selectedLists.value = selectedLists.value.filter((id) => id !== String(listId));
+    } else {
+      notificationStore.pushError($t('pages.akordiSongView.removeFromList.error'));
+      // Revert checkbox state
+      if (!selectedLists.value.includes(String(listId))) {
+        selectedLists.value.push(String(listId));
+      }
+    }
+  } finally {
+    loadingStates.value[listId] = false;
   }
 }
 
@@ -611,14 +603,14 @@ onUnmounted(() => {
     :actionDefinitions="[{ id: 'close', name: $t('cancel'), kind: 'secondary' }]"
     @action-click="actionClicked"
   >
-    <LxValuePicker
-      id="user-lists-picker"
-      selection-kind="multiple"
-      :items="userLists"
-      id-attribute="id"
-      name-attribute="title"
-      @update:model-value="saveListSelection"
-      v-model="selectedLists"
-    />
+    <div v-for="list in userLists" :key="list.id">
+      <LxCheckbox
+        :id="'list-' + list.id"
+        :label="list.title"
+        :model-value="selectedLists.includes(String(list.id))"
+        :disabled="loadingStates[list.id]"
+        @update:model-value="(val) => toggleListSelection(list.id, val)"
+      />
+    </div>
   </LxModal>
 </template>
