@@ -317,8 +317,9 @@ const renderData = computed(() => {
   <div
     class="chord-svg-container"
     :style="{ width: actualWidth + 'px', height: props.height + 'px' }"
+    v-if="renderData"
   >
-    <svg :width="actualWidth" :height="props.height" v-if="renderData">
+    <svg :width="actualWidth" :height="props.height">
       <!-- Grid -->
       <line
         v-for="(line, i) in grid.stringLines"
