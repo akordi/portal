@@ -56,29 +56,41 @@ const loadCopyFrom = async () => {
     item.value.title = resp.data.title;
     item.value.id = resp.data.id;
     item.value.mainArtistId = String(resp.data.mainArtist.id);
-    item.value.composersIds = resp.data.composers.map((i) => String(i.id));
-    item.value.poetsIds = resp.data.poets.map((i) => String(i.id));
-    item.value.performersIds = resp.data.performers.map((i) => String(i.id));
-    item.value.tagsIds = resp.data.tags.map((i) => String(i.id));
+    item.value.composersIds = resp.data.composers?.map((i) => String(i.id)) || [];
+    item.value.poetsIds = resp.data.poets?.map((i) => String(i.id)) || [];
+    item.value.performersIds = resp.data.performers?.map((i) => String(i.id)) || [];
+    item.value.tagsIds = resp.data.tags?.map((i) => String(i.id)) || [];
 
     const allArtists = [
       {
         id: String(resp.data.mainArtist.id),
         title: resp.data.mainArtist.title,
       },
-      ...resp.data.composers.map((i) => ({
-        id: String(i.id),
-        title: i.title,
-      })),
-      ...resp.data.poets.map((i) => ({
-        id: String(i.id),
-        title: i.title,
-      })),
-      ...resp.data.performers.map((i) => ({
-        id: String(i.id),
-        title: i.title,
-      })),
     ];
+    if (resp.data.composers) {
+      resp.data.composers.forEach((composer) => {
+        allArtists.push({
+          id: String(composer.id),
+          title: composer.title,
+        });
+      });
+    }
+    if (resp.data.poets) {
+      resp.data.poets.forEach((poet) => {
+        allArtists.push({
+          id: String(poet.id),
+          title: poet.title,
+        });
+      });
+    }
+    if (resp.data.performers) {
+      resp.data.performers.forEach((performer) => {
+        allArtists.push({
+          id: String(performer.id),
+          title: performer.title,
+        });
+      });
+    }
 
     preloadedArtists.value = [...new Map(allArtists.map((i) => [i.id, i])).values()];
 
@@ -276,7 +288,7 @@ onUnmounted(() => {
         v-model="item.composersIds"
         id-attribute="id"
         name-attribute="title"
-        selecting-kind="multiple"
+        selection-kind="multiple"
         :items="searchArtist"
         kind="preloaded-func"
         :preloaded-items="preloadedArtists"
@@ -288,7 +300,7 @@ onUnmounted(() => {
         v-model="item.poetsIds"
         id-attribute="id"
         name-attribute="title"
-        selecting-kind="multiple"
+        selection-kind="multiple"
         :items="searchArtist"
         kind="preloaded-func"
         :preloaded-items="preloadedArtists"

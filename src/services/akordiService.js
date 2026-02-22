@@ -72,7 +72,7 @@ export default {
   },
 
   saveEdit(item) {
-    return http(serviceUrl).post('/api/v2/admin/edits', item);
+    return http(serviceUrl).post('/api/v2/edits', item);
   },
 
   searchArtist(query) {
