@@ -355,7 +355,7 @@ function idleModalSecondary() {
         @idleModalSecondary="idleModalSecondary"
         @settingsClick="router.push({ name: 'accessibilitySettings' })"
         :texts="shellTexts()"
-        @logInClick="router.push({ name: 'signin' })"
+        @logInClick="router.push({ name: 'login' })"
       >
         <template #logoSmall>
           <img id="logo-light" src="/imgs/logo-50-dark.svg" alt="Logo" />

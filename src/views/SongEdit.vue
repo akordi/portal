@@ -174,6 +174,8 @@ async function actionClicked(actionName) {
       submitting.value = false;
     } catch (err) {
       submitting.value = false;
+      // eslint-disable-next-line no-console
+      console.error(err);
       notify.pushError($t('songs.save.error'));
     }
   }
@@ -242,7 +244,7 @@ onMounted(async () => {
     viewStore.title = translate.t('pages.songEdit.title');
     viewStore.description = translate.t('pages.songEdit.description');
   }
-  loadTags();
+  await loadTags();
 });
 onUnmounted(() => {
   viewStore.$reset();

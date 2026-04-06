@@ -13,6 +13,15 @@ const routes = [
         redirect: { name: 'dashboard' },
       },
       {
+        path: '/login',
+        name: 'login',
+        meta: {
+          title: 'pages.login.title',
+          anonymous: true,
+        },
+        component: () => import('@/views/Login.vue'),
+      },
+      {
         path: '/signin',
         name: 'signin',
         meta: {
