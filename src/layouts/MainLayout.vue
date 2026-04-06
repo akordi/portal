@@ -37,7 +37,7 @@ const shellMode = computed(() => {
   return ret;
 });
 
-const hasLoginButton = computed(() => !!window.config.authUrl);
+const hasLoginButton = computed(() => !!window.config.authEnabled);
 
 const nav = computed(() => {
   const ret = [

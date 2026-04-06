@@ -52,6 +52,7 @@ const getEnvVariables = (mode, serving) => {
     VUE_APP_TITLE: CONFIG.appTitle,
     VUE_APP_DESCRIPTION: CONFIG.appDescription,
     VUE_APP_AUTH_URL: env.AUTH_URL,
+    VUE_APP_AUTH_ENABLED: env.AUTH_ENABLED,
     VUE_APP_SERVICE_URL: env.SERVICE_URL,
     VUE_APP_GTAG_ENABLED: env.GTAG_ENABLED,
     VUE_APP_GTAG_ID: env.GTAG_ID,
@@ -85,6 +86,7 @@ const getEnvVariables = (mode, serving) => {
     envVariables.VUE_APP_NAME = '{{APP_NAME}}';
     envVariables.VUE_APP_TITLE = '{{APP_TITLE}}';
     envVariables.VUE_APP_DESCRIPTION = '{{APP_DESCRIPTION}}';
+    envVariables.VUE_APP_AUTH_ENABLED = '{{AUTH_ENABLED}}';
   }
   return envVariables;
 };

@@ -17,4 +17,5 @@ for line in $(ls -1p /usr/share/nginx/html/ | grep -v /); do
   sed -i "s|{{PUBLIC_URL}}|${PUBLIC_URL:-""}|g" /usr/share/nginx/html/${line}
   sed -i "s|{{SERVICE_URL}}|${SERVICE_URL:-"/api"}|g" /usr/share/nginx/html/${line}
   sed -i "s|//BASE_PATH//|${BASE_PATH:-"/"}|g" /usr/share/nginx/html/${line}
+  sed -i "s|{{AUTH_ENABLED}}|${AUTH_ENABLED:-"false"}|g" /usr/share/nginx/html/${line}
 done
