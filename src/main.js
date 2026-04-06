@@ -54,6 +54,7 @@ import '@dativa-lv/lx-ui/dist/styles/lx-stack.css';
 
 import '@/assets/styles.css';
 import '@/assets/lx-pt-akordi.css';
+import configBool from '@/utils/configBool';
 
 const myApp = createApp(App);
 myApp.use(createPinia());
@@ -79,7 +80,7 @@ myApp.use(createLx, {
   environment: window.config.environment,
 });
 
-if (window.config.gtagEnabled && window.config.gtagId) {
+if (configBool(window.config.gtagEnabled) && window.config.gtagId) {
   const gtag = createGtag({
     initMode: 'manual',
     tagId: window.config.gtagId,

@@ -14,6 +14,7 @@ import useAuthStore from '@/stores/useAuthStore';
 import useConfirmStore from '@/stores/useConfirmStore';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
+import configBool from '@/utils/configBool';
 
 const authStore = useAuthStore();
 const notify = useNotifyStore();
@@ -37,7 +38,7 @@ const shellMode = computed(() => {
   return ret;
 });
 
-const hasLoginButton = computed(() => !!window.config.authEnabled);
+const hasLoginButton = computed(() => configBool(window.config.authEnabled));
 
 const nav = computed(() => {
   const ret = [
