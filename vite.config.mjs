@@ -28,29 +28,14 @@ const CONFIG = {
 const devServerSettings = (env) => {
   const url = new URL(env.BASE_URL);
   return {
-    port: url.port,
+    host: 'localhost', // Bind to localhost (127.0.0.1) for better compatibility
+    port: url.port || 5173,
     https: url.protocol === 'https:',
-    allowedHosts: ['localhost.akordi.lv', 'localhost'],
+    allowedHosts: ['localhost', 'www.akordi.localhost'],
     proxy: {
-      '/api/v1/': {
-        target: 'https://www.akordi.lv',
-        changeOrigin: true,
-        secure: false,
-      },
-      '/api/v2/admin': {
-        target: 'https://www.akordi.lv',
-        changeOrigin: true,
-        secure: false,
-      },
-      '/api/v2/': {
-        target: 'https://www.akordi.lv',
-        changeOrigin: true,
-        secure: false,
-      },
       '/api': {
-        target: 'https://www.akordi.lv',
+        target: 'http://localhost:8080',
         changeOrigin: true,
-        secure: false,
       },
     },
   };
@@ -132,7 +117,16 @@ export default defineConfig((command) => {
           data: envVariables,
         },
       }),
-      serving && mkcert(),
+      serving &&
+        mkcert({
+          hosts: [
+            'localhost',
+            'www.akordi.localhost',
+            'akordi.localhost',
+            'id.akordi.localhost',
+            'admin.akordi.localhost',
+          ],
+        }),
     ],
     build: {
       // https://vitejs.dev/config/#build-target
@@ -141,13 +135,17 @@ export default defineConfig((command) => {
       sourcemap: false,
       rollupOptions: {
         output: {
-          manualChunks: {
-            abcjs: ['abcjs'],
-            'chords-db': [
-              '@tombatossals/chords-db/lib/guitar.json',
-              '@tombatossals/chords-db/lib/ukulele.json',
-            ],
-            chords: ['chord-transposer'],
+          // Rolldown (Vite 8+) accepts only a function for manualChunks, not an object map.
+          manualChunks(id) {
+            const n = id.replace(/\\/g, '/');
+            if (n.includes('/node_modules/abcjs/')) return 'abcjs';
+            if (
+              n.includes('@tombatossals/chords-db/lib/guitar.json') ||
+              n.includes('@tombatossals/chords-db/lib/ukulele.json')
+            ) {
+              return 'chords-db';
+            }
+            if (n.includes('/node_modules/chord-transposer/')) return 'chords';
           },
         },
       },
