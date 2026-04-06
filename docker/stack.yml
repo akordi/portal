@@ -31,6 +31,7 @@ services:
       - APP_TITLE=${APP_TITLE}
       - APP_DESCRIPTION=${APP_DESCRIPTION}
       - AUTH_URL=${AUTH_URL}
+      - AUTH_ENABLED=${AUTH_ENABLED}
 networks:
   traefik_proxy:
     external: true
