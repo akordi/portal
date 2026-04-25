@@ -567,6 +567,7 @@
     "youtubeLink": "Youtube video",
     "createdAt": "Izveidots",
     "updatedAt": "Pēdējo reizi labots",
+    "reference": "Atsauce",
     "lyrics": "Dziesmas vārdi",
     "body": "Dziesmas teksts ar akordiem",
     "bodyTooltip": "Vēlams pievienot dziesmas ar pilniem dziesmu tekstiem. Teksta izkārtojumam lietot atstarpes nevis tab."

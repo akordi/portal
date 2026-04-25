@@ -557,6 +557,10 @@ onUnmounted(() => {
 .create-songbook-actions {
   margin-top: 1.25rem;
 }
+
+.song-reference {
+  margin-top: 1rem;
+}
 </style>
 <template>
   <LxLoaderView :loading="loading">
@@ -691,6 +695,12 @@ onUnmounted(() => {
         <p class="pre" v-html="item.bodyWithMarkup" :style="{ fontSize: fontSize + 'em' }"></p>
       </LxSection>
     </LxForm>
+    <section class="song-reference" v-if="item.reference">
+      <p class="lx-description">
+        {{ $t('song.reference') }}:
+        <a :href="item.reference" target="_blank" rel="noopener noreferrer">{{ item.reference }}</a>
+      </p>
+    </section>
   </LxLoaderView>
 
   <LxModal

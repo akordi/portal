@@ -566,6 +566,7 @@
     "youtubeLink": "Youtube video",
     "createdAt": "Loodud",
     "updatedAt": "Viimati muudetud",
+    "reference": "Viide",
     "lyrics": "Laulusõnad",
     "body": "Laulu tekst akordidega",
     "bodyTooltip": "Eelistatav on lisada laule täielike laulusõnadega. Teksti paigutamiseks kasutage tühikuid, mitte tabeldusklahvi."

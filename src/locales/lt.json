@@ -566,6 +566,7 @@
     "youtubeLink": "Youtube video",
     "createdAt": "Sukurta",
     "updatedAt": "Paskutinį kartą redaguota",
+    "reference": "Nuoroda",
     "lyrics": "Dainos žodžiai",
     "body": "Dainos tekstas su akordais",
     "bodyTooltip": "Pageidautina pridėti dainas su pilnais dainų tekstais. Teksto išdėstymui naudoti tarpus, o ne tabuliavimą."

@@ -560,6 +560,7 @@
     "youtubeLink": "Video de Youtube",
     "createdAt": "Creado",
     "updatedAt": "Editado por última vez",
+    "reference": "Referencia",
     "lyrics": "Letra de la canción",
     "body": "Texto de la canción con acordes",
     "bodyTooltip": "Es preferible añadir canciones con letras completas. Use espacios en lugar de pestañas para el diseño del texto."
