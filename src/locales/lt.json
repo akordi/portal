@@ -68,6 +68,8 @@
             "customButton": "Tinkintas mygtukas",
             "overflowNavItems": "Atidaryti papildomą meniu",
             "scrollUp": "Grįžti į viršų",
+            "loginButtonLabel": "Prisijungti",
+            "loginButtonTitle": "Prisijungti prie sistemos",
             "contextPersonsBirthDate": "Gimimo data",
             "settings": "Nustatymai",
             "contextPersonsTooltipLabel": "Konteksto asmuo",
@@ -547,7 +549,11 @@
         "loadFailed": "Nepavyko įkelti duomenų",
         "helpLoadFailed": "Nepavyko įkelti pagalbos informacijos",
         "loadSongFailed": "Nepavyko įkelti dainos",
-        "unexpectedError": "Netikėta klaida:"
+        "unexpectedError": "Netikėta klaida:",
+        "error401": {
+            "authorize": "Prisijungti",
+            "goBack": "Grįžti atgal"
+        }
     },
     "save": "Išsaugoti",
     "add": "Pridėti",

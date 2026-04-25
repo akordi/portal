@@ -68,6 +68,8 @@
             "customButton": "Botón personalizable",
             "overflowNavItems": "Abrir menú adicional",
             "scrollUp": "Volver arriba",
+            "loginButtonLabel": "Entrar",
+            "loginButtonTitle": "Iniciar sesión en el sistema",
             "contextPersonsBirthDate": "Fecha de nacimiento",
             "settings": "Ajustes",
             "contextPersonsTooltipLabel": "Persona de contexto",
@@ -547,7 +549,11 @@
         "loadFailed": "No se pudieron cargar los datos",
         "helpLoadFailed": "No se pudo cargar la información de ayuda",
         "loadSongFailed": "No se pudo cargar la canción",
-        "unexpectedError": "Error inesperado:"
+        "unexpectedError": "Error inesperado:",
+        "error401": {
+            "authorize": "Entrar",
+            "goBack": "Volver"
+        }
     },
     "save": "Guardar",
     "add": "Añadir",

@@ -68,6 +68,8 @@
             "customButton": "Kohandatud nupp",
             "overflowNavItems": "Ava täiendav menüü",
             "scrollUp": "Mine üles",
+            "loginButtonLabel": "Logi sisse",
+            "loginButtonTitle": "Logi sisse süsteemi",
             "contextPersonsBirthDate": "Sünniaeg",
             "settings": "Seaded",
             "contextPersonsTooltipLabel": "Konteksti isik",
@@ -547,7 +549,11 @@
         "loadFailed": "Andmete laadimine ebaõnnestus",
         "helpLoadFailed": "Abiteabe laadimine ebaõnnestus",
         "loadSongFailed": "Laulu laadimine ebaõnnestus",
-        "unexpectedError": "Ootamatu viga:"
+        "unexpectedError": "Ootamatu viga:",
+        "error401": {
+            "authorize": "Logi sisse",
+            "goBack": "Tagasi"
+        }
     },
     "save": "Salvesta",
     "add": "Lisa",

@@ -68,6 +68,8 @@
             "customButton": "Pielāgojamā poga",
             "overflowNavItems": "Atvērt papildu izvēlni",
             "scrollUp": "Atgriezties uz augšu",
+            "loginButtonLabel": "Ienākt",
+            "loginButtonTitle": "Pieslēgties sistēmā",
             "contextPersonsBirthDate": "Dzimšanas datums",
             "settings": "Iestatījumi",
             "contextPersonsTooltipLabel": "Konteksta persona",
@@ -547,7 +549,11 @@
         "loadFailed": "Neizdevās ielādēt datus",
         "helpLoadFailed": "Neizdevās ielādēt palīdzības informāciju",
         "loadSongFailed": "Neizdevās ielādēt dziesmu",
-        "unexpectedError": "Neparedzēta kļūda:"
+        "unexpectedError": "Neparedzēta kļūda:",
+        "error401": {
+            "authorize": "Ienākt",
+            "goBack": "Atgriezties atpakaļ"
+        }
     },
     "save": "Saglabāt",
     "add": "Pievienot",
