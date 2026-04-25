@@ -3,8 +3,10 @@ import { LxTile } from '@dativa-lv/lx-ui';
 import { onMounted, ref } from 'vue';
 
 import akordiService from '@/services/akordiService';
+import useAuthStore from '@/stores/useAuthStore';
 import { useI18n } from 'vue-i18n';
 
+const authStore = useAuthStore();
 const songCount = ref(1);
 const songCountTotal = ref(1000);
 const loadingSongsTotal = ref(true);
@@ -72,6 +74,7 @@ onMounted(async () => {
         :to="{ name: 'akordiArtistLetter', params: { letter: '0' } }"
       />
       <LxTile
+        v-if="authStore.isAuthorized"
         icon="list-bulleted"
         :label="$t('pages.songbook.title')"
         :description="$t('pages.songbook.description')"

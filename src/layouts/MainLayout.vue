@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 // ToDo: develop login & get session
@@ -9,6 +9,7 @@ import { invoke, until, useIdle, useIntervalFn } from '@vueuse/core';
 import { LxShell } from '@dativa-lv/lx-ui';
 import { shellTexts } from '@/utils/texts';
 import useErrors from '@/hooks/useErrors';
+import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
 import useAppStore from '@/stores/useAppStore';
 import useAuthStore from '@/stores/useAuthStore';
 import useConfirmStore from '@/stores/useConfirmStore';
@@ -17,6 +18,7 @@ import useViewStore from '@/stores/useViewStore';
 import configBool from '@/utils/configBool';
 
 const authStore = useAuthStore();
+const accountPreferencesStore = useAccountPreferencesStore();
 const notify = useNotifyStore();
 const viewStore = useViewStore();
 const errors = useErrors();
@@ -114,6 +116,22 @@ const bodyObserver = new MutationObserver((mutationsList) => {
 onMounted(() => {
   bodyObserver?.observe(document.body, { attributes: true });
 });
+
+watch(
+  () => authStore.isAuthorized,
+  async (isAuthorized) => {
+    if (!isAuthorized) {
+      accountPreferencesStore.$reset();
+      return;
+    }
+    try {
+      await accountPreferencesStore.loadPreferences();
+    } catch (err) {
+      notify.pushError($t('pages.userProfile.preferences.loadError'));
+    }
+  },
+  { immediate: true }
+);
 
 const systemName = computed(() => $t('title.shortName'));
 const pageTitle = computed(() => viewStore.title || $t(router.currentRoute.value.meta.title));

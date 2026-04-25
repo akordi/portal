@@ -249,6 +249,8 @@
         "description": "Disminuir el tamaño de la letra en el texto de la canción"
       },
       "transposeDisabled": "El transporte está desactivado porque no se encuentran acordes en el texto de la canción",
+      "transposeLoadError": "No se pudo cargar la transposición guardada",
+      "transposeSaveError": "No se pudo guardar la transposición",
       "audioNotSupported": "Su navegador no soporta audio",
       "transposeHeader": "Transportar ({offset})",
       "addToList": {
@@ -256,6 +258,22 @@
         "description": "Añade esta canción a uno de tus cancioneros",
         "success": "Canción añadida con éxito",
         "error": "Error al añadir la canción"
+      },
+      "authRequired": {
+        "title": "Inicio de sesión requerido",
+        "description": "Para añadir esta canción a tus cancioneros, primero inicia sesión. Después volverás a esta canción.",
+        "login": "Iniciar sesión"
+      },
+      "createSongbook": {
+        "action": "Crear cancionero",
+        "title": "Nuevo cancionero",
+        "createAndAdd": "Crear y añadir canción",
+        "description": "Si el cancionero que necesitas aún no existe, crea uno nuevo.",
+        "name": "Nuevo cancionero",
+        "placeholder": "Nombre del cancionero",
+        "nameRequired": "Introduce el nombre del cancionero",
+        "success": "Cancionero creado y canción añadida",
+        "error": "No se pudo crear el cancionero"
       },
       "removeFromList": {
         "label": "Eliminar del cancionero",
@@ -418,7 +436,22 @@
       "phoneLabel": "Teléfono de contacto",
       "emailLabel": "Correo electrónico",
       "viewProfile": "Ver perfil",
-      "sessionTime": "Tiempo de actividad de la sesión:"
+      "sessionTime": "Tiempo de actividad de la sesión:",
+      "sections": {
+        "profile": "Perfil",
+        "preferences": "Configuración",
+        "songbooks": "Cancioneros"
+      },
+      "preferences": {
+        "description": "Estos ajustes se guardan en su cuenta y se usan al abrir canciones.",
+        "instrument": "Instrumento predeterminado para acordes",
+        "loadError": "No se pudo cargar la configuración del perfil",
+        "saveSuccess": "Configuración guardada",
+        "saveError": "No se pudo guardar la configuración"
+      },
+      "songbooks": {
+        "description": "Tiene {count} cancioneros"
+      }
     },
     "users": {
       "title": "Usuarios"

@@ -5,7 +5,7 @@ const serviceUrl = '/api/v2/';
 
 export default () => ({
   authorize() {
-    window.location.href = `${authUrl}self-service/login/browser?return_to=${publicUrl}auth-done`;
+    window.location.href = `${authUrl}/self-service/login/browser?return_to=${publicUrl}auth-done`;
   },
 
   session() {

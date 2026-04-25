@@ -255,6 +255,8 @@
         "description": "Sumažinti šrifto dydį dainos tekste"
       },
       "transposeDisabled": "Transponavimas išjungtas, nes dainos tekste nerasta akordų",
+      "transposeLoadError": "Nepavyko įkelti išsaugoto transponavimo",
+      "transposeSaveError": "Nepavyko išsaugoti transponavimo",
       "audioNotSupported": "Jūsų naršyklė nepalaiko garso",
       "transposeHeader": "Transponuoti ({offset})",
       "addToList": {
@@ -262,6 +264,22 @@
         "description": "Pridėkite šią dainą į vieną iš savo dainų knygų",
         "success": "Daina sėkmingai pridėta",
         "error": "Klaida pridedant dainą"
+      },
+      "authRequired": {
+        "title": "Reikia prisijungti",
+        "description": "Norėdami pridėti dainą į savo dainų knygas, pirmiausia prisijunkite. Po prisijungimo grįšite į šią dainą.",
+        "login": "Prisijungti"
+      },
+      "createSongbook": {
+        "action": "Sukurti dainų knygą",
+        "title": "Nauja dainų knyga",
+        "createAndAdd": "Sukurti ir pridėti dainą",
+        "description": "Jei reikiamos dainų knygos dar nėra, sukurkite naują.",
+        "name": "Nauja dainų knyga",
+        "placeholder": "Dainų knygos pavadinimas",
+        "nameRequired": "Įveskite dainų knygos pavadinimą",
+        "success": "Dainų knyga sukurta ir daina pridėta",
+        "error": "Nepavyko sukurti dainų knygos"
       },
       "removeFromList": {
         "label": "Išimti iš dainų knygos",
@@ -424,7 +442,22 @@
       "phoneLabel": "Kontaktinis telefonas",
       "emailLabel": "El. pašto adresas",
       "viewProfile": "Žiūrėti profilį",
-      "sessionTime": "Sesijos darbo laikas:"
+      "sessionTime": "Sesijos darbo laikas:",
+      "sections": {
+        "profile": "Profilis",
+        "preferences": "Nustatymai",
+        "songbooks": "Dainų knygos"
+      },
+      "preferences": {
+        "description": "Šie nustatymai saugomi jūsų paskyroje ir naudojami atidarius dainas.",
+        "instrument": "Numatytasis akordų instrumentas",
+        "loadError": "Nepavyko įkelti profilio nustatymų",
+        "saveSuccess": "Nustatymai išsaugoti",
+        "saveError": "Nepavyko išsaugoti nustatymų"
+      },
+      "songbooks": {
+        "description": "Turite {count} dainų knygas"
+      }
     },
     "users": {
       "title": "Vartotojai"

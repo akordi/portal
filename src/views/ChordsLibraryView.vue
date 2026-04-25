@@ -2,10 +2,16 @@
 import { computed, ref, shallowRef, watchEffect } from 'vue';
 import { LxContentSwitcher, LxRow, LxLoaderView } from '@dativa-lv/lx-ui';
 import ChordSvg from '@/components/ChordSvg.vue';
+import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
+import useAuthStore from '@/stores/useAuthStore';
+import useNotifyStore from '@/stores/useNotifyStore';
 import useSettingsStore from '@/stores/useSettingsStore';
 import { useI18n } from 'vue-i18n';
 
 const settingsStore = useSettingsStore();
+const authStore = useAuthStore();
+const accountPreferencesStore = useAccountPreferencesStore();
+const notificationStore = useNotifyStore();
 const translate = useI18n();
 const $t = translate.t;
 
@@ -110,6 +116,17 @@ const keysSwitcherItems = computed(() =>
 function selectKey(id) {
   selectedKey.value = id;
 }
+
+async function selectInstrument(instrument) {
+  settingsStore.instrument = instrument;
+  if (authStore.isAuthorized) {
+    try {
+      await accountPreferencesStore.saveInstrument(instrument);
+    } catch (err) {
+      notificationStore.pushError($t('pages.userProfile.preferences.saveError'));
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -135,8 +152,9 @@ function selectKey(id) {
       <LxRow :label="$t('pages.chordsLibrary.instrument')">
         <LxContentSwitcher
           :items="instrumentOptions"
-          v-model="settingsStore.instrument"
+          :model-value="settingsStore.instrument"
           id="instrument-switcher"
+          @update:model-value="selectInstrument"
         />
       </LxRow>
 

@@ -255,6 +255,8 @@
         "description": "Samazināt burtu izmēru dziesmas tekstā"
       },
       "transposeDisabled": "Transponēšana ir atspējota, jo dziesmas tekstā nav atrodami akordi",
+      "transposeLoadError": "Neizdevās ielādēt saglabāto transpozīciju",
+      "transposeSaveError": "Neizdevās saglabāt transpozīciju",
       "audioNotSupported": "Jūsu pārlūks neatbalsta audio",
       "transposeHeader": "Transponēt ({offset})",
       "addToList": {
@@ -262,6 +264,22 @@
         "description": "Pievienot šo dziesmu vienai no savām dziesmu grāmatām",
         "success": "Dziesma veiksmīgi pievienota",
         "error": "Kļūda pievienojot dziesmu"
+      },
+      "authRequired": {
+        "title": "Nepieciešama pieslēgšanās",
+        "description": "Lai pievienotu dziesmu savām dziesmu grāmatām, vispirms pieslēdzies savam kontam. Pēc pieslēgšanās atgriezīsies šajā dziesmā.",
+        "login": "Pieslēgties"
+      },
+      "createSongbook": {
+        "action": "Izveidot dziesmu grāmatu",
+        "title": "Jauna dziesmu grāmata",
+        "createAndAdd": "Izveidot un pievienot dziesmu",
+        "description": "Ja vajadzīgās dziesmu grāmatas vēl nav, izveido jaunu.",
+        "name": "Jauna dziesmu grāmata",
+        "placeholder": "Dziesmu grāmatas nosaukums",
+        "nameRequired": "Ievadi dziesmu grāmatas nosaukumu",
+        "success": "Dziesmu grāmata izveidota un dziesma pievienota",
+        "error": "Neizdevās izveidot dziesmu grāmatu"
       },
       "removeFromList": {
         "label": "Izņemt no dziesmu grāmatas",
@@ -449,7 +467,22 @@
       "phoneLabel": "Kontakttālrunis",
       "emailLabel": "E-pasta adrese",
       "viewProfile": "Skatīt profilu",
-      "sessionTime": "Sesijas darbības laiks:"
+      "sessionTime": "Sesijas darbības laiks:",
+      "sections": {
+        "profile": "Profils",
+        "preferences": "Iestatījumi",
+        "songbooks": "Dziesmu grāmatas"
+      },
+      "preferences": {
+        "description": "Šie iestatījumi tiek saglabāti tavā kontā un izmantoti, kad atver dziesmas.",
+        "instrument": "Noklusētais instruments akordiem",
+        "loadError": "Neizdevās ielādēt profila iestatījumus",
+        "saveSuccess": "Iestatījumi saglabāti",
+        "saveError": "Neizdevās saglabāt iestatījumus"
+      },
+      "songbooks": {
+        "description": "Tev ir {count} dziesmu grāmatas"
+      }
     },
     "users": {
       "title": "Lietotāji"

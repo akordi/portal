@@ -8,6 +8,7 @@ import {
   LxCheckbox,
   LxRow,
   LxSection,
+  LxTextInput,
   LxToolbar,
   LxToolbarGroup,
 } from '@dativa-lv/lx-ui';
@@ -19,6 +20,7 @@ import { useRoute, useRouter } from 'vue-router';
 import AbcViewer from '@/components/AbcViewer.vue';
 import { pageview } from 'vue-gtag';
 import ChordSvg from '@/components/ChordSvg.vue';
+import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
 import useAuthStore from '@/stores/useAuthStore';
 import akordiAdminListService from '@/services/songbookService';
 import akordiService from '@/services/akordiService';
@@ -32,16 +34,21 @@ const $t = translate.t;
 const viewStore = useViewStore();
 const notificationStore = useNotifyStore();
 const settingsStore = useSettingsStore();
+const accountPreferencesStore = useAccountPreferencesStore();
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
 const isAuthorized = authStore.isAuthenticated();
 const addToListModal = ref();
+const createSongbookModal = ref();
+const authRequiredModal = ref();
 const userLists = ref([]);
 const loadingLists = ref(false);
 const userListSelected = ref([]);
 const selectedLists = ref([]);
 const loadingStates = ref({}); // To track per-list loading
+const newSongbookName = ref('');
+const creatingSongbook = ref(false);
 const songUrlParam = computed(() => route.params.url);
 const bodyTransposedIndex = ref(0);
 const item = ref({});
@@ -105,6 +112,42 @@ const autoScrollerUp = () => {
   }
   autoScrollerSpeed.value += 1;
 };
+
+function applyTranspose(offset) {
+  bodyTransposedIndex.value = offset;
+  item.value.bodyWithMarkup = chordsService.transpose(item.value.body, bodyTransposedIndex.value);
+  hasChords.value = item.value.bodyWithMarkup?.indexOf('<b>') !== -1;
+  if (hasChords.value) {
+    chords.value = chordsService.extractChords(item.value.bodyWithMarkup);
+    chords.value = [...chords.value];
+  } else {
+    chords.value = [];
+  }
+}
+
+async function persistTranspose() {
+  if (!isAuthorized || !item.value.id) {
+    return;
+  }
+  try {
+    await accountPreferencesStore.saveSongTransposeOffset(item.value.id, bodyTransposedIndex.value);
+  } catch (err) {
+    notificationStore.pushError($t('pages.akordiSongView.transposeSaveError'));
+  }
+}
+
+async function saveInstrument(instrument) {
+  settingsStore.showChords = true;
+  settingsStore.instrument = instrument;
+  if (!isAuthorized) {
+    return;
+  }
+  try {
+    await accountPreferencesStore.saveInstrument(instrument);
+  } catch (err) {
+    notificationStore.pushError($t('pages.userProfile.preferences.saveError'));
+  }
+}
 
 function levelToPxSpeed(level) {
   const basePxByLevel = {
@@ -204,12 +247,16 @@ const loadSong = async () => {
     const resp = await akordiService.getSong(songId);
     item.value = resp.data;
     item.value.createdAt = lxDateUtils.formatDate(item.value.createdDate);
-    item.value.bodyWithMarkup = chordsService.transpose(item.value.body, 0);
-    hasChords.value = item.value.bodyWithMarkup?.indexOf('<b>') !== -1;
-    if (hasChords.value) {
-      chords.value = chordsService.extractChords(item.value.bodyWithMarkup);
-      chords.value = [...chords.value];
+    let transposeOffset = 0;
+    if (isAuthorized) {
+      try {
+        const preferences = await accountPreferencesStore.getSongPreferences(item.value.id);
+        transposeOffset = preferences.transposeOffset || 0;
+      } catch (err) {
+        notificationStore.pushError($t('pages.akordiSongView.transposeLoadError'));
+      }
     }
+    applyTranspose(transposeOffset);
 
     const pagePath = `/song/${songUrlParam.value}`;
     const canonicalUrl = `${window.location.origin}${pagePath}`;
@@ -288,15 +335,13 @@ const formActions = computed(() => {
     },
   ];
 
-  if (isAuthorized) {
-    nav.push({
-      id: 'addToList',
-      icon: 'add',
-      name: $t('pages.akordiSongView.addToList.label'),
-      title: $t('pages.akordiSongView.addToList.description'),
-      kind: 'additional',
-    });
-  }
+  nav.push({
+    id: 'addToList',
+    icon: 'add',
+    name: $t('pages.akordiSongView.addToList.label'),
+    title: $t('pages.akordiSongView.addToList.description'),
+    kind: 'additional',
+  });
 
   if (hasAbc.value) {
     nav.push({
@@ -309,8 +354,56 @@ const formActions = computed(() => {
 
   return nav;
 });
-async function actionClicked(actionName) {
+
+async function createSongbookAndAddSong() {
+  const name = newSongbookName.value.trim();
+  if (!name) {
+    notificationStore.pushError($t('pages.akordiSongView.createSongbook.nameRequired'));
+    return;
+  }
+
+  creatingSongbook.value = true;
+  try {
+    const resp = await akordiAdminListService.save({ name });
+    const list = {
+      ...resp.data,
+      id: String(resp.data.id),
+      title: resp.data.name,
+    };
+    await akordiAdminListService.addSong(list.id, item.value.id);
+
+    userLists.value.unshift(list);
+    userListSelected.value.push(list.id);
+    selectedLists.value = userListSelected.value.map((id) => String(id));
+    newSongbookName.value = '';
+    notificationStore.pushSuccess($t('pages.akordiSongView.createSongbook.success'));
+    createSongbookModal.value?.close();
+  } catch (err) {
+    notificationStore.pushError($t('pages.akordiSongView.createSongbook.error'));
+  } finally {
+    creatingSongbook.value = false;
+  }
+}
+
+function openCreateSongbookModal() {
+  addToListModal.value?.close();
+  createSongbookModal.value?.open();
+}
+
+function returnToAddToListModal() {
+  if (isAuthorized) {
+    addToListModal.value?.open();
+  }
+}
+
+async function actionClicked(action) {
+  const actionName = typeof action === 'string' ? action : action?.id;
+
   if (actionName === 'addToList') {
+    if (!isAuthorized) {
+      authRequiredModal.value.open();
+      return;
+    }
     try {
       loadingLists.value = true;
       const resp = await akordiAdminListService.findAll();
@@ -334,6 +427,17 @@ async function actionClicked(actionName) {
   if (actionName === 'cancel') {
     router.back();
   }
+  if (actionName === 'close') {
+    addToListModal.value?.close();
+    createSongbookModal.value?.close();
+    authRequiredModal.value?.close();
+  }
+  if (actionName === 'createSongbook') {
+    await createSongbookAndAddSong();
+  }
+  if (actionName === 'authenticate') {
+    await authStore.login(route.fullPath);
+  }
   if (actionName === 'suggestEdit') {
     router.push({ name: 'songEdit', query: { id: item.value.id } });
   }
@@ -341,19 +445,16 @@ async function actionClicked(actionName) {
     settingsStore.showChords = !settingsStore.showChords;
   }
   if (actionName === 'showGuitarChords') {
-    settingsStore.showChords = true;
-    settingsStore.instrument = 'guitar';
+    await saveInstrument('guitar');
   }
   if (actionName === 'showAbc') {
     settingsStore.showAbc = !settingsStore.showAbc;
   }
   if (actionName === 'showUkuleleChords') {
-    settingsStore.showChords = true;
-    settingsStore.instrument = 'ukulele';
+    await saveInstrument('ukulele');
   }
   if (actionName === 'showBaritoneUkuleleChords') {
-    settingsStore.showChords = true;
-    settingsStore.instrument = 'baritone-ukulele';
+    await saveInstrument('baritone-ukulele');
   }
 
   if (actionName === 'transposeUp') {
@@ -361,24 +462,16 @@ async function actionClicked(actionName) {
     if (bodyTransposedIndex.value > 11) {
       bodyTransposedIndex.value = 0; // 12 is back to original key
     }
-    item.value.bodyWithMarkup = chordsService.transpose(item.value.body, bodyTransposedIndex.value);
-    hasChords.value = item.value.bodyWithMarkup?.indexOf('<b>') !== -1;
-    if (hasChords.value) {
-      chords.value = chordsService.extractChords(item.value.bodyWithMarkup);
-      chords.value = [...chords.value];
-    }
+    applyTranspose(bodyTransposedIndex.value);
+    await persistTranspose();
   }
   if (actionName === 'transposeDown') {
     bodyTransposedIndex.value -= 1;
     if (bodyTransposedIndex.value < -11) {
       bodyTransposedIndex.value = 0; // 12 is back to original key
     }
-    item.value.bodyWithMarkup = chordsService.transpose(item.value.body, bodyTransposedIndex.value);
-    hasChords.value = item.value.bodyWithMarkup?.indexOf('<b>') !== -1;
-    if (hasChords.value) {
-      chords.value = chordsService.extractChords(item.value.bodyWithMarkup);
-      chords.value = [...chords.value];
-    }
+    applyTranspose(bodyTransposedIndex.value);
+    await persistTranspose();
   }
   if (actionName === 'fontUp') {
     fontSize.value += 0.2;
@@ -459,6 +552,10 @@ onUnmounted(() => {
 
 #chords {
   margin-bottom: 1em;
+}
+
+.create-songbook-actions {
+  margin-top: 1.25rem;
 }
 </style>
 <template>
@@ -600,7 +697,7 @@ onUnmounted(() => {
     ref="addToListModal"
     :label="$t('pages.akordiSongView.addToList.label')"
     size="m"
-    :actionDefinitions="[{ id: 'close', name: $t('cancel'), kind: 'secondary' }]"
+    :action-definitions="[{ id: 'close', name: $t('lx.shell.close'), kind: 'secondary' }]"
     @action-click="actionClicked"
   >
     <div v-for="list in userLists" :key="list.id">
@@ -612,5 +709,54 @@ onUnmounted(() => {
         @update:model-value="(val) => toggleListSelection(list.id, val)"
       />
     </div>
+
+    <div class="create-songbook-actions">
+      <LxButton
+        icon="add"
+        kind="secondary"
+        :label="$t('pages.akordiSongView.createSongbook.action')"
+        @click="openCreateSongbookModal"
+      />
+    </div>
+  </LxModal>
+
+  <LxModal
+    ref="createSongbookModal"
+    :label="$t('pages.akordiSongView.createSongbook.title')"
+    size="m"
+    :action-definitions="[
+      {
+        id: 'createSongbook',
+        name: $t('pages.akordiSongView.createSongbook.createAndAdd'),
+        icon: 'add',
+        busy: creatingSongbook,
+      },
+      { id: 'close', name: $t('lx.shell.close'), kind: 'secondary' },
+    ]"
+    @action-click="actionClicked"
+    @close="returnToAddToListModal"
+  >
+    <LxRow :label="$t('pages.akordiSongView.createSongbook.name')">
+      <LxTextInput
+        v-model="newSongbookName"
+        :placeholder="$t('pages.akordiSongView.createSongbook.placeholder')"
+        @keyup.enter="createSongbookAndAddSong"
+      />
+    </LxRow>
+  </LxModal>
+
+  <LxModal
+    ref="authRequiredModal"
+    :label="$t('pages.akordiSongView.authRequired.title')"
+    size="m"
+    :actionDefinitions="[
+      { id: 'authenticate', name: $t('pages.akordiSongView.authRequired.login'), icon: 'next' },
+      { id: 'close', name: $t('cancel'), kind: 'secondary' },
+    ]"
+    @action-click="actionClicked"
+  >
+    <p class="lx-description">
+      {{ $t('pages.akordiSongView.authRequired.description') }}
+    </p>
   </LxModal>
 </template>
