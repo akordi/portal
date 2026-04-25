@@ -1,627 +1,628 @@
 {
-  "title": {
-    "default": "Akordai.lt",
-    "prefix": "Lietuviškų dainų akordai, tabulaturės ir žodžiai - ",
-    "fullName": "Akordai.lt",
-    "fullNameFormatted": "Akordai.lt",
-    "subheader": "Dainų žodžių, akordų ir tabulaturų saugykla",
-    "shortName": "Akordai",
-    "description": "Ieškokite akordų ir dainų žodžių lietuviškoms dainoms ir raskite tūkstančius populiarių dainų duomenų bazėje."
-  },
-  "lx": {
-    "shell": {
-      "defaultBack": "Atgal",
-      "logOut": "Atsijungti",
-      "openAlerts": "Atidaryti sąrašą",
-      "noAlerts": "Nėra pranešimų",
-      "openNavbar": "Atidaryti meniu",
-      "helpTitle": "Pagalba",
-      "alertsTitle": "Pranešimai",
-      "languagesTitle": "Kalbos pasirinkimas",
-      "contextPersonTitle": "Susijusių asmenų duomenys",
-      "close": "Uždaryti",
-      "contextPersonsLabel": "Pasirinkti asmenį",
-      "contextPersonsInfoLabel": "Pacientas",
-      "contextPersonsInfoTitle": "Konteksto asmuo",
-      "contextPersonsOwnData": "Žiūrėti mano duomenis",
-      "alternativeProfilesLabel": "Pasirinkite alternatyvų profilį",
-      "contextPersonsButtonLabel": "Konteksto asmenys",
-      "alternativeProfilesButtonLabel": "Alternatyvūs profiliai",
-      "idleModalLabel": "Artėja sesijos pabaiga",
-      "idleModalPrimaryLabel": "Tęsti darbą",
-      "idleModalSecondaryLabel": "Baigti darbą",
-      "descriptionMinutes": "Iki sesijos pabaigos liko {count} minučių",
-      "descriptionMinutesSmall": "ir {count} sekundžių",
-      "idleDescription": "Iki sesijos pabaigos liko {count} sekundžių",
-      "themeTitle": "Išvaizdos pasirinkimas",
-      "themeAuto": "Automatinis režimas",
-      "themeLight": "Šviesus režimas",
-      "themeDark": "Tamsus režimas",
-      "themeContrast": "Kontrastinis režimas",
-      "animations": "Sumažinti judesius",
-      "transparency": "Sumažinti permatomumą",
-      "fonts": "Įrenginio šriftai",
-      "touchMode": "Jutiklinis režimas",
-      "reduceMotionOff": "Ne",
-      "reduceMotionOn": "Taip",
-      "reduceTransparencyOff": "Ne",
-      "reduceTransparencyOn": "Taip",
-      "systemFontsOff": "Ne",
-      "systemFontsOn": "Taip",
-      "touchModeOff": "Ne",
-      "touchModeOn": "Taip",
-      "confirmModalSecondaryDefaultLabel": "Ne",
-      "confirmModalPrimaryDefaultLabel": "Taip",
-      "previousAlertTitle": "Ankstesnis pranešimas",
-      "nextAlertTitle": "Kitas pranešimas",
-      "userTitle": "Vartotojas",
-      "menu": "Meniu",
-      "showAllLabel": "Daugiau",
-      "megaMenuTitle": "Programos",
-      "successSvgTitle": "Sėkmingas pranešimas",
-      "warningSvgTitle": "Įspėjimas",
-      "errorSvgTitle": "Klaida",
-      "infoSvgTitle": "Informacija",
-      "svgTitle": "Pranešimas",
-      "skipLinkLabel": "Pereiti prie puslapio turinio",
-      "skipLinkTitle": "Pereiti prie puslapio turinio",
-      "customButton": "Tinkintas mygtukas",
-      "overflowNavItems": "Atidaryti papildomą meniu",
-      "scrollUp": "Grįžti į viršų",
-      "contextPersonsBirthDate": "Gimimo data",
-      "settings": "Nustatymai",
-      "contextPersonsTooltipLabel": "Konteksto asmuo",
-      "contextPersonsTooltipDescription": "Konteksto asmens aprašymas",
-      "badgeTypes": {
-        "default": "informatinis pranešimas",
-        "info": "informatinis pranešimas",
-        "warning": "įspėjimas",
-        "good": "sėkmingas pranešimas",
-        "important": "svarbus pranešimas"
-      },
-      "spotlight": {
-        "label": "Programos gidas",
-        "close": "Uždaryti",
-        "next": "Kitas",
-        "back": "Atgal",
-        "showMore": "Sužinoti daugiau",
-        "of": "iš"
-      },
-      "userProfile": "Žiūrėti profilį",
-      "notifications": {
-        "logoutSuccess": "Jūsų sesija buvo sėkmingai užbaigta",
-        "agreement": "Turite sutikti su naudojimo sąlygomis",
-        "unknownState": "Įvyko klaida apdorojant vartotojo būseną",
-        "err401": "Prisijunkite prie sistemos, kad galėtumėte naudotis funkcionalumu",
-        "sessionContinued": "Sesija sėkmingai pratęsta",
-        "sessionContinuedFailed": "Sesijos pratęsti nepavyko",
-        "sessionEndingSoon": "Jūsų sesija greitai baigsis"
-      },
-      "sessionExpiring": {
-        "label": "Artėja sesijos pabaiga",
-        "description": "Iki sesijos pabaigos liko {count} sekundė | Iki sesijos pabaigos liko {count} sekundės",
-        "descriptionMinutes": "Iki sesijos pabaigos liko {count} minutė | Iki sesijos pabaigos liko {count} minutės",
-        "descriptionMinutesSmall": "ir {count} sekundė | ir {count} sekundės",
-        "primaryLabel": "Tęsti darbą",
-        "secondaryLabel": "Baigti darbą"
-      }
+    "title": {
+        "default": "Akordai.lt",
+        "prefix": "Lietuviškų dainų akordai, tabulaturės ir žodžiai - ",
+        "fullName": "Akordai.lt",
+        "fullNameFormatted": "Akordai.lt",
+        "subheader": "Dainų žodžių, akordų ir tabulaturų saugykla",
+        "shortName": "Akordai",
+        "description": "Ieškokite akordų ir dainų žodžių lietuviškoms dainoms ir raskite tūkstančius populiarių dainų duomenų bazėje."
     },
-    "list": {
-      "clear": "Išvalyti",
-      "placeholder": "Įveskite pavadinimo arba aprašymo dalį, kad rastumėte įrašus",
-      "notFoundSearch": "Nerasta:",
-      "noItems": "Nėra įrašų",
-      "noItemsDescription": "",
-      "loadMore": "Įkelti daugiau",
-      "search": "Ieškoti",
-      "items": {
-        "singular": "įrašas",
-        "plural": "įrašai",
-        "endingWith234": "įrašai",
-        "endingWith1": "įrašas"
-      },
-      "ofItems": {
-        "label": "Įrašai",
-        "singular": "įrašo",
-        "plural": "įrašams",
-        "endingWith234": "įrašams",
-        "endingWith1": "įrašo"
-      },
-      "selected": {
-        "singular": "Pasirinktas",
-        "plural": "Pasirinkti",
-        "endingWith234": "Pasirinkti",
-        "endingWith1": "Pasirinktas"
-      },
-      "of": "iš",
-      "clearSelected": "Išvalyti pasirinkimą",
-      "selectAllRows": "Pasirinkti viską",
-      "selectWholeGroup": "Pasirinkti visą grupę",
-      "loadingError": "Įvyko įkėlimo klaida",
-      "reload": "Įkelti iš naujo",
-      "collapse": "Suskleisti elementą",
-      "expand": "Išskleisti elementą",
-      "openSearch": "Atidaryti paiešką",
-      "closeSearch": "Uždaryti paiešką",
-      "skipLinkLabel": "Praleisti sąrašą",
-      "skipLinkTitle": "Praleisti sąrašą",
-      "overflowMenu": "Atidaryti papildomas parinktis"
-    }
-  },
-  "greeting": {
-    "default": "Sveiki",
-    "morning": "Labas rytas",
-    "day": "Laba diena",
-    "evening": "Labas vakaras",
-    "night": "Labanaktis"
-  },
-  "pages": {
-    "chordsLibrary": {
-      "title": "Akordų biblioteka",
-      "description": "Čia galite rasti visus palaikomus akordus.",
-      "showGuitarChords": {
-        "label": "Gitara"
-      },
-      "showUkuleleChords": {
-        "label": "Ukulėlė"
-      },
-      "showBaritoneUkuleleChords": {
-        "label": "Baritono ukulėlė"
-      },
-      "instrument": "Instrumentas",
-      "key": "Tonacija"
+    "lx": {
+        "shell": {
+            "defaultBack": "Atgal",
+            "logOut": "Atsijungti",
+            "openAlerts": "Atidaryti sąrašą",
+            "noAlerts": "Nėra pranešimų",
+            "openNavbar": "Atidaryti meniu",
+            "helpTitle": "Pagalba",
+            "alertsTitle": "Pranešimai",
+            "languagesTitle": "Kalbos pasirinkimas",
+            "contextPersonTitle": "Susijusių asmenų duomenys",
+            "close": "Uždaryti",
+            "contextPersonsLabel": "Pasirinkti asmenį",
+            "contextPersonsInfoLabel": "Pacientas",
+            "contextPersonsInfoTitle": "Konteksto asmuo",
+            "contextPersonsOwnData": "Žiūrėti mano duomenis",
+            "alternativeProfilesLabel": "Pasirinkite alternatyvų profilį",
+            "contextPersonsButtonLabel": "Konteksto asmenys",
+            "alternativeProfilesButtonLabel": "Alternatyvūs profiliai",
+            "idleModalLabel": "Artėja sesijos pabaiga",
+            "idleModalPrimaryLabel": "Tęsti darbą",
+            "idleModalSecondaryLabel": "Baigti darbą",
+            "descriptionMinutes": "Iki sesijos pabaigos liko {count} minučių",
+            "descriptionMinutesSmall": "ir {count} sekundžių",
+            "idleDescription": "Iki sesijos pabaigos liko {count} sekundžių",
+            "themeTitle": "Išvaizdos pasirinkimas",
+            "themeAuto": "Automatinis režimas",
+            "themeLight": "Šviesus režimas",
+            "themeDark": "Tamsus režimas",
+            "themeContrast": "Kontrastinis režimas",
+            "animations": "Sumažinti judesius",
+            "transparency": "Sumažinti permatomumą",
+            "fonts": "Įrenginio šriftai",
+            "touchMode": "Jutiklinis režimas",
+            "reduceMotionOff": "Ne",
+            "reduceMotionOn": "Taip",
+            "reduceTransparencyOff": "Ne",
+            "reduceTransparencyOn": "Taip",
+            "systemFontsOff": "Ne",
+            "systemFontsOn": "Taip",
+            "touchModeOff": "Ne",
+            "touchModeOn": "Taip",
+            "confirmModalSecondaryDefaultLabel": "Ne",
+            "confirmModalPrimaryDefaultLabel": "Taip",
+            "previousAlertTitle": "Ankstesnis pranešimas",
+            "nextAlertTitle": "Kitas pranešimas",
+            "userTitle": "Vartotojas",
+            "menu": "Meniu",
+            "showAllLabel": "Daugiau",
+            "megaMenuTitle": "Programos",
+            "successSvgTitle": "Sėkmingas pranešimas",
+            "warningSvgTitle": "Įspėjimas",
+            "errorSvgTitle": "Klaida",
+            "infoSvgTitle": "Informacija",
+            "svgTitle": "Pranešimas",
+            "skipLinkLabel": "Pereiti prie puslapio turinio",
+            "skipLinkTitle": "Pereiti prie puslapio turinio",
+            "customButton": "Tinkintas mygtukas",
+            "overflowNavItems": "Atidaryti papildomą meniu",
+            "scrollUp": "Grįžti į viršų",
+            "contextPersonsBirthDate": "Gimimo data",
+            "settings": "Nustatymai",
+            "contextPersonsTooltipLabel": "Konteksto asmuo",
+            "contextPersonsTooltipDescription": "Konteksto asmens aprašymas",
+            "badgeTypes": {
+                "default": "informatinis pranešimas",
+                "info": "informatinis pranešimas",
+                "warning": "įspėjimas",
+                "good": "sėkmingas pranešimas",
+                "important": "svarbus pranešimas"
+            },
+            "spotlight": {
+                "label": "Programos gidas",
+                "close": "Uždaryti",
+                "next": "Kitas",
+                "back": "Atgal",
+                "showMore": "Sužinoti daugiau",
+                "of": "iš"
+            },
+            "userProfile": "Žiūrėti profilį",
+            "notifications": {
+                "logoutSuccess": "Jūsų sesija buvo sėkmingai užbaigta",
+                "agreement": "Turite sutikti su naudojimo sąlygomis",
+                "unknownState": "Įvyko klaida apdorojant vartotojo būseną",
+                "err401": "Prisijunkite prie sistemos, kad galėtumėte naudotis funkcionalumu",
+                "sessionContinued": "Sesija sėkmingai pratęsta",
+                "sessionContinuedFailed": "Sesijos pratęsti nepavyko",
+                "sessionEndingSoon": "Jūsų sesija greitai baigsis"
+            },
+            "sessionExpiring": {
+                "label": "Artėja sesijos pabaiga",
+                "description": "Iki sesijos pabaigos liko {count} sekundė | Iki sesijos pabaigos liko {count} sekundės",
+                "descriptionMinutes": "Iki sesijos pabaigos liko {count} minutė | Iki sesijos pabaigos liko {count} minutės",
+                "descriptionMinutesSmall": "ir {count} sekundė | ir {count} sekundės",
+                "primaryLabel": "Tęsti darbą",
+                "secondaryLabel": "Baigti darbą"
+            }
+        },
+        "list": {
+            "clear": "Išvalyti",
+            "placeholder": "Įveskite pavadinimo arba aprašymo dalį, kad rastumėte įrašus",
+            "notFoundSearch": "Nerasta:",
+            "noItems": "Nėra įrašų",
+            "noItemsDescription": " ",
+            "loadMore": "Įkelti daugiau",
+            "search": "Ieškoti",
+            "items": {
+                "singular": "įrašas",
+                "plural": "įrašai",
+                "endingWith234": "įrašai",
+                "endingWith1": "įrašas"
+            },
+            "ofItems": {
+                "label": "Įrašai",
+                "singular": "įrašo",
+                "plural": "įrašams",
+                "endingWith234": "įrašams",
+                "endingWith1": "įrašo"
+            },
+            "selected": {
+                "singular": "Pasirinktas",
+                "plural": "Pasirinkti",
+                "endingWith234": "Pasirinkti",
+                "endingWith1": "Pasirinktas"
+            },
+            "of": "iš",
+            "clearSelected": "Išvalyti pasirinkimą",
+            "selectAllRows": "Pasirinkti viską",
+            "selectWholeGroup": "Pasirinkti visą grupę",
+            "loadingError": "Įvyko įkėlimo klaida",
+            "reload": "Įkelti iš naujo",
+            "collapse": "Suskleisti elementą",
+            "expand": "Išskleisti elementą",
+            "openSearch": "Atidaryti paiešką",
+            "closeSearch": "Uždaryti paiešką",
+            "skipLinkLabel": "Praleisti sąrašą",
+            "skipLinkTitle": "Praleisti sąrašą",
+            "overflowMenu": "Atidaryti papildomas parinktis"
+        }
     },
-    "dashboard": {
-      "title": "Pradinis puslapis",
-      "disclaimer": "Visas čia esančios medžiagos yra skirtos tik mokymosi tikslams. Daugelis čia esančių dainų yra vartotojų interpretacijos ir gali tiksliai neatitikti originalo. Jei čia yra tavo daina ir nenori, kad ją mokytųsi kiti, arba turi klausimų ar komentarų, rašyk į info[at]akordi.lv."
+    "greeting": {
+        "default": "Sveiki",
+        "morning": "Labas rytas",
+        "day": "Laba diena",
+        "evening": "Labas vakaras",
+        "night": "Labanaktis"
+    },
+    "pages": {
+        "chordsLibrary": {
+            "title": "Akordų biblioteka",
+            "description": "Čia galite rasti visus palaikomus akordus.",
+            "showGuitarChords": {
+                "label": "Gitara"
+            },
+            "showUkuleleChords": {
+                "label": "Ukulėlė"
+            },
+            "showBaritoneUkuleleChords": {
+                "label": "Baritono ukulėlė"
+            },
+            "instrument": "Instrumentas",
+            "key": "Tonacija"
+        },
+        "dashboard": {
+            "title": "Pradinis puslapis",
+            "disclaimer": "Visas čia esančios medžiagos yra skirtos tik mokymosi tikslams. Daugelis čia esančių dainų yra vartotojų interpretacijos ir gali tiksliai neatitikti originalo. Jei čia yra tavo daina ir nenori, kad ją mokytųsi kiti, arba turi klausimų ar komentarų, rašyk į info[at]akordi.lv."
+        },
+        "songs": {
+            "title": "Dainų katalogas"
+        },
+        "songSearch": {
+            "title": "Dainų paieška",
+            "description": "Naudokite paiešką ir raskite ką pagroti iš {songCount} akordai.lt dainų",
+            "search": {
+                "error": "Klaida ieškant dainų. Prašome bandyti vėliau."
+            }
+        },
+        "songListNew": {
+            "title": "Naujausios dainos",
+            "description": "Neseniai pridėtos dainos",
+            "list": {
+                "error": "Klaida įkeliant dainas. Prašome bandyti vėliau."
+            }
+        },
+        "songListTop": {
+            "title": "Populiariausios dainos",
+            "description": "Praėjusios savaitės populiariausios dainos, kurias žiūrėjo ir grojo kiti vartotojai",
+            "list": {
+                "error": "Klaida įkeliant dainas. Prašome bandyti vėliau."
+            }
+        },
+        "songEdit": {
+            "title": "Dainos taisymas",
+            "description": "Čia galite pateikti dainos pataisymus"
+        },
+        "songNew": {
+            "title": "Pateikti dainą",
+            "description": "Čia galite pateikti dainą, kad ji būtų pridėta prie portalo. Puslapis skirtas tik lietuviškoms dainoms (dainos kalbai nėra reikšmės). Ji bus patikrinta ir pridėta prie duomenų bazės."
+        },
+        "akordiSongView": {
+            "title": "Akordai.lt dainos",
+            "copy": {
+                "label": "Kopijuoti dainą",
+                "description": "Kopijuoti dainos tekstą, kad sukurtumėte savo versiją"
+            },
+            "hideChords": {
+                "label": "Nerodyti akordų",
+                "description": "Slėpti dainos akordų tabulatūrą"
+            },
+            "showSheet": {
+                "label": "Rodyti natas",
+                "description": "Rodyti dainos natas"
+            },
+            "autoScroll": {
+                "label": "Automatinis slinkimas ({speed})",
+                "playDescription": "Pagreitinti automatinį slinkimą",
+                "stopDescription": "Sustabdyti automatinį slinkimą"
+            },
+            "showGuitarChords": {
+                "label": "Rodyti gitaros akordus",
+                "description": "Rodyti arba slėpti dainos akordų tabulatūrą gitara"
+            },
+            "showUkuleleChords": {
+                "label": "Rodyti ukulelės akordus",
+                "description": "Rodyti arba slėpti dainos ukulelės akordus"
+            },
+            "showBaritoneUkuleleChords": {
+                "label": "Rodyti baritono ukulelės akordus",
+                "description": "Rodyti arba slėpti dainos baritono ukulelės akordus"
+            },
+            "transposeUp": {
+                "label": "Transponuoti aukštyn",
+                "description": "Perkelti dainą aukštyn per pusę tono"
+            },
+            "transposeDown": {
+                "label": "Transponuoti žemyn",
+                "description": "Perkelti dainą žemyn per pusę tono"
+            },
+            "fontUp": {
+                "label": "Padidinti šriftą",
+                "description": "Padidinti šrifto dydį dainos tekste"
+            },
+            "fontDown": {
+                "label": "Sumažinti šriftą",
+                "description": "Sumažinti šrifto dydį dainos tekste"
+            },
+            "transposeDisabled": "Transponavimas išjungtas, nes dainos tekste nerasta akordų",
+            "transposeLoadError": "Nepavyko įkelti išsaugoto transponavimo",
+            "transposeSaveError": "Nepavyko išsaugoti transponavimo",
+            "audioNotSupported": "Jūsų naršyklė nepalaiko garso",
+            "transposeHeader": "Transponuoti ({offset})",
+            "addToList": {
+                "label": "Pridėti į dainų knygą",
+                "description": "Pridėkite šią dainą į vieną iš savo dainų knygų",
+                "success": "Daina sėkmingai pridėta",
+                "error": "Klaida pridedant dainą"
+            },
+            "authRequired": {
+                "title": "Reikia prisijungti",
+                "description": "Norėdami pridėti dainą į savo dainų knygas, pirmiausia prisijunkite. Po prisijungimo grįšite į šią dainą.",
+                "login": "Prisijungti"
+            },
+            "createSongbook": {
+                "action": "Sukurti dainų knygą",
+                "title": "Nauja dainų knyga",
+                "createAndAdd": "Sukurti ir pridėti dainą",
+                "description": "Jei reikiamos dainų knygos dar nėra, sukurkite naują.",
+                "name": "Nauja dainų knyga",
+                "placeholder": "Dainų knygos pavadinimas",
+                "nameRequired": "Įveskite dainų knygos pavadinimą",
+                "success": "Dainų knyga sukurta ir daina pridėta",
+                "error": "Nepavyko sukurti dainų knygos"
+            },
+            "removeFromList": {
+                "label": "Išimti iš dainų knygos",
+                "description": "Išimkite šią dainą iš vienos iš savo dainų knygų",
+                "success": "Daina sėkmingai išimta",
+                "error": "Klaida išimant dainą"
+            }
+        },
+        "songbook": {
+            "title": "Mano dainų knygos",
+            "description": "Čia galite tvarkyti savo asmenines dainų knygas",
+            "empty": "Dar neturite jokių dainų knygų",
+            "add": "Sukurti dainų knygą",
+            "delete": {
+                "title": "Ištrinti dainų knygą",
+                "message": "Ar tikrai norite ištrinti dainų knygą „{name}“?",
+                "success": "Dainų knyga sėkmingai ištrinta",
+                "error": "Klaida trinant dainų knygą"
+            },
+            "save": {
+                "success": "Dainų knyga sėkmingai išsaugota",
+                "error": "Klaida saugant dainų knygą"
+            },
+            "addSong": {
+                "success": "Daina pridėta į dainų knygą",
+                "error": "Klaida pridedant dainą"
+            },
+            "removeSong": {
+                "success": "Daina išimta iš dainų knygos",
+                "error": "Klaida išimant dainą iš dainų knygos"
+            },
+            "songs": "Dainos dainų knygoje"
+        },
+        "akordiArtistLetter": {
+            "title": "Atlikėjų katalogas A-Z",
+            "description": "Naršyti atlikėjų sąrašą abėcėlės tvarka nuo A iki Z",
+            "search": {
+                "error": "Klaida ieškant atlikėjų. Prašome bandyti vėliau."
+            }
+        },
+        "tagList": {
+            "title": "Žymės",
+            "description": "Čia galite naršyti temines dainų kategorijas",
+            "list": {
+                "error": "Klaida įkeliant dainas. Prašome bandyti vėliau."
+            }
+        },
+        "tagView": {
+            "title": "Žyma #{title}",
+            "metaDescription": "Dainos su akordais ir tabulaturėmis {songTitles}",
+            "list": {
+                "error": "Klaida įkeliant dainas. Prašome bandyti vėliau."
+            }
+        },
+        "login": {
+            "title": "Pasirinkite autentifikavimo būdą",
+            "buttons": {
+                "signIn": "Prisijungti",
+                "register": "Registruotis",
+                "forgotPassword": "Pamiršote slaptažodį?"
+            },
+            "options": {
+                "google": {
+                    "name": "Google",
+                    "description": "Prisijungti su Google paskyra"
+                },
+                "facebook": {
+                    "name": "Facebook",
+                    "description": "Prisijungti su Facebook paskyra"
+                }
+            },
+            "email": "El. paštas",
+            "password": "Slaptažodis",
+            "errors": {
+                "4000002": "Šis laukas yra privalomas",
+                "4000006": "Neteisingas el. paštas ir/arba slaptažodis",
+                "1060003": "El. laiškas su atkūrimo kodu išsiųstas jūsų el. pašto adresu. Jei jo negavote, patikrinkite, ar el. paštas nurodytas teisingai.",
+                "1080002": "El. paštas sėkmingai patvirtintas.",
+                "1080003": "El. laiškas su patvirtinimo kodu išsiųstas. Jei jo negavote, patikrinkite, ar el. paštas nurodytas teisingai."
+            }
+        },
+        "verification": {
+            "title": "Patvirtinimas",
+            "code": "Patvirtinimo kodas",
+            "success": "Patvirtinta!",
+            "successDescription": "El. pašto adresas sėkmingai patvirtintas.",
+            "buttons": {
+                "continue": "Tęsti",
+                "resendCode": "Siųsti kodą dar kartą",
+                "submit": "Patvirtinti"
+            }
+        },
+        "recovery": {
+            "title": "Slaptažodžio atkūrimas",
+            "email": "El. paštas",
+            "code": "Patvirtinimo kodas",
+            "buttons": {
+                "submit": "Siųsti kodą",
+                "verify": "Patvirtinti kodą",
+                "resend": "Siųsti kodą dar kartą"
+            }
+        },
+        "register": {
+            "title": "Registracija",
+            "incorrectCredentials": "Neteisingas vartotojo vardas arba slaptažodis",
+            "buttons": {
+                "continue": "Tęsti",
+                "previous": "Atgal"
+            },
+            "options": {
+                "google": {
+                    "name": "Google",
+                    "description": "Registruotis su Google paskyra"
+                },
+                "facebook": {
+                    "name": "Facebook",
+                    "description": "Registruotis su Facebook paskyra"
+                }
+            },
+            "errors": {
+                "4000002": "Šis laukas yra privalomas",
+                "4000007": "Vartotojas su šiuo el. paštu jau registruotas.",
+                "4000006": "Šis slaptažodis rastas nutekėjusių slaptažodžių registre. Prašome pasirinkti kitą slaptažodį.",
+                "1040009": "Prašome pasirinkti slaptažodį tolesniam autentifikavimui.",
+                "1080003": "El. laiškas su patvirtinimo kodu išsiųstas. Jei jo negavote, patikrinkite, ar el. paštas nurodytas teisingai.",
+                "4070006": "Patvirtinimo kodas neteisingas arba jau panaudotas. Prašome bandyti dar kartą."
+            },
+            "email": {
+                "label": "El. paštas"
+            },
+            "givenName": {
+                "label": "Vardas"
+            },
+            "familyName": {
+                "label": "Pavardė"
+            },
+            "password": {
+                "label": "Slaptažodis"
+            }
+        },
+        "profile": {
+            "title": "Vartotojo profilis",
+            "buttons": {
+                "continue": "Išsaugoti",
+                "changePassword": "Keisti slaptažodį"
+            },
+            "errors": {
+                "4000002": "Šis laukas yra privalomas",
+                "4000007": "Vartotojas su šiuo el. paštu jau registruotas.",
+                "4000006": "Šis slaptažodis rastas nutekėjusių slaptažodžių registre. Prašome pasirinkti kitą slaptažodį.",
+                "4000034": "Šis slaptažodis rastas nutekėjusių slaptažodžių registre. Prašome pasirinkti kitą slaptažodį.",
+                "1040009": "Prašome pasirinkti slaptažodį tolesniam autentifikavimui.",
+                "1050001": "Pakeitimai sėkmingai išsaugoti!",
+                "1060001": "Sėkmingai atnaujinote savo paskyrą. Prašome pakeisti slaptažodį arba nustatyti alternatyvų prisijungimo būdą (pvz., socialinį prisijungimą) per 60 minučių.",
+                "1080003": "El. laiškas su patvirtinimo kodu išsiųstas. Jei jo negavote, patikrinkite, ar el. paštas nurodytas teisingai.",
+                "4070006": "Patvirtinimo kodas neteisingas arba jau panaudotas. Prašome bandyti dar kartą."
+            },
+            "email": {
+                "label": "El. paštas"
+            },
+            "givenName": {
+                "label": "Vardas"
+            },
+            "familyName": {
+                "label": "Pavardė"
+            },
+            "password": {
+                "label": "Slaptažodis"
+            }
+        },
+        "home": {
+            "title": "Akordai",
+            "buttons": {
+                "loginUnauthorized": "Prisijungti"
+            }
+        },
+        "sessionEnded": {
+            "title": "Jūsų sesija baigėsi",
+            "description": "Sesijai skirtas laikas baigėsi. Norėdami tęsti darbą, prisijunkite iš naujo"
+        },
+        "userProfile": {
+            "title": "Vartotojo profilis",
+            "givenNameLabel": "Vardas",
+            "familyNameLabel": "Pavardė",
+            "phoneLabel": "Kontaktinis telefonas",
+            "emailLabel": "El. pašto adresas",
+            "viewProfile": "Žiūrėti profilį",
+            "sessionTime": "Sesijos darbo laikas:",
+            "sections": {
+                "profile": "Profilis",
+                "preferences": "Nustatymai",
+                "songbooks": "Dainų knygos"
+            },
+            "preferences": {
+                "description": "Šie nustatymai saugomi jūsų paskyroje ir naudojami atidarius dainas.",
+                "instrument": "Numatytasis akordų instrumentas",
+                "loadError": "Nepavyko įkelti profilio nustatymų",
+                "saveSuccess": "Nustatymai išsaugoti",
+                "saveError": "Nepavyko išsaugoti nustatymų"
+            },
+            "songbooks": {
+                "description": "Turite {count} dainų knygas"
+            }
+        },
+        "users": {
+            "title": "Vartotojai"
+        },
+        "error": {
+            "goBack": "Grįžti atgal",
+            "goHome": "Grįžti į pradžią",
+            "title": "Įvyko netikėta klaida"
+        },
+        "auth": {
+            "title": "Vyksta apdorojimas",
+            "description": "Vyksta apdorojimas. Prašome palaukti!",
+            "errors": {
+                "unknownTitle": "Nežinoma autorizacijos klaida",
+                "unknownDescription": "Bandykite autorizuotis iš naujo.",
+                "blockedTitle": "Vartotojas užblokuotas",
+                "blockedDescription": "Susisiekite su sistemos administratoriumi.",
+                "invalidRightsTitle": "Jums nesuteiktos teisės naudotis šia sistema",
+                "invalidRightsDescription": "Susisiekite su sistemos administratoriumi.",
+                "invalidRequestTitle": "Klaidingas autorizacijos prašymas",
+                "invalidRequestDescription": "Bandykite autorizuotis iš naujo."
+            }
+        },
+        "artistView": {
+            "pageTitle": "{artist} dainos",
+            "metaDescription": "Dainos su akordais ir tabulaturėmis {songTitles}"
+        },
+        "notFound": {
+            "title": "Puslapis nerastas",
+            "description": "Patikrinkite, ar puslapio adresas yra teisinga ir bandykite dar kartą, arba grįžkite į pradžią"
+        }
+    },
+    "cookieConsent": {
+        "title": "Slapukų politika",
+        "description": "Ši svetainė naudoja slapukus, kad užtikrintų populiariausių dainų statistiką ir pagerintų vartotojo patirtį. \nPrašome sutikti su slapukų naudojimu, kad galėtumėte toliau naudotis šia svetaine.",
+        "accept": "Sutinku",
+        "reject": "Uždaryti"
+    },
+    "confirm": {
+        "yes": "Taip",
+        "no": "Ne",
+        "logout": {
+            "title": "Atsijungti",
+            "message": "Ar tikrai norite atsijungti?",
+            "yes": "Taip",
+            "no": "Ne"
+        }
+    },
+    "menu": {
+        "home": "Pradžia",
+        "users": "Vartotojai",
+        "login": "Autorizacija",
+        "logout": "Atsijungti"
+    },
+    "errors": {
+        "logoutFailed": "Įvyko klaida atsijungiant nuo sistemos, perkraukite puslapį ir bandykite dar kartą.",
+        "classifierLoadFailed": "Įvyko klaida įkeliant filtro klasifikatorius, perkraukite puslapį ir bandykite dar kartą.",
+        "roleLoadFailed": "Įvyko klaida įkeliant vartotojo roles, perkraukite puslapį ir bandykite dar kartą.",
+        "institutionLoadFailed": "Įvyko klaida įkeliant vartotojui prieinamas įstaigas, perkraukite puslapį ir bandykite dar kartą.",
+        "hospitalLoadFailed": "Įvyko klaida įkeliant vartotojui prieinamas ligonines, perkraukite puslapį ir bandykite dar kartą.",
+        "forbidden": "Jūs neturite teisės atlikti šio veiksmo!",
+        "loadFailed": "Nepavyko įkelti duomenų",
+        "helpLoadFailed": "Nepavyko įkelti pagalbos informacijos",
+        "loadSongFailed": "Nepavyko įkelti dainos",
+        "unexpectedError": "Netikėta klaida:"
+    },
+    "save": "Išsaugoti",
+    "add": "Pridėti",
+    "edit": "Redaguoti",
+    "suggestEdit": "Pasiūlyti pataisymą",
+    "delete": "Ištrinti",
+    "copy": "Kopijuoti",
+    "cancel": "Atšaukti",
+    "search": "Ieškoti",
+    "song": {
+        "title": "Pavadinimas",
+        "artist": "Atlikėjas",
+        "performer": "Atlikėjas",
+        "composer": "Muzikos autorius",
+        "poet": "Žodžių autorius",
+        "tags": "Žymės",
+        "youtubeLink": "Youtube video",
+        "createdAt": "Sukurta",
+        "updatedAt": "Paskutinį kartą redaguota",
+        "reference": "Nuoroda",
+        "lyrics": "Dainos žodžiai",
+        "body": "Dainos tekstas su akordais",
+        "bodyTooltip": "Pageidautina pridėti dainas su pilnais dainų tekstais. Teksto išdėstymui naudoti tarpus, o ne tabuliavimą."
     },
     "songs": {
-      "title": "Dainų katalogas"
-    },
-    "songSearch": {
-      "title": "Dainų paieška",
-      "description": "Naudokite paiešką ir raskite ką pagroti iš {songCount} akordai.lt dainų",
-      "search": {
-        "error": "Klaida ieškant dainų. Prašome bandyti vėliau."
-      }
-    },
-    "songListNew": {
-      "title": "Naujausios dainos",
-      "description": "Neseniai pridėtos dainos",
-      "list": {
-        "error": "Klaida įkeliant dainas. Prašome bandyti vėliau."
-      }
-    },
-    "songListTop": {
-      "title": "Populiariausios dainos",
-      "description": "Praėjusios savaitės populiariausios dainos, kurias žiūrėjo ir grojo kiti vartotojai",
-      "list": {
-        "error": "Klaida įkeliant dainas. Prašome bandyti vėliau."
-      }
-    },
-    "songEdit": {
-      "title": "Dainos taisymas",
-      "description": "Čia galite pateikti dainos pataisymus"
-    },
-    "songNew": {
-      "title": "Pateikti dainą",
-      "description": "Čia galite pateikti dainą, kad ji būtų pridėta prie portalo. Puslapis skirtas tik lietuviškoms dainoms (dainos kalbai nėra reikšmės). Ji bus patikrinta ir pridėta prie duomenų bazės."
-    },
-    "akordiSongView": {
-      "title": "Akordai.lt dainos",
-      "copy": {
-        "label": "Kopijuoti dainą",
-        "description": "Kopijuoti dainos tekstą, kad sukurtumėte savo versiją"
-      },
-      "hideChords": {
-        "label": "Nerodyti akordų",
-        "description": "Slėpti dainos akordų tabulatūrą"
-      },
-      "showSheet": {
-        "label": "Rodyti natas",
-        "description": "Rodyti dainos natas"
-      },
-      "autoScroll": {
-        "label": "Automatinis slinkimas ({speed})",
-        "playDescription": "Pagreitinti automatinį slinkimą",
-        "stopDescription": "Sustabdyti automatinį slinkimą"
-      },
-      "showGuitarChords": {
-        "label": "Rodyti gitaros akordus",
-        "description": "Rodyti arba slėpti dainos akordų tabulatūrą gitara"
-      },
-      "showUkuleleChords": {
-        "label": "Rodyti ukulelės akordus",
-        "description": "Rodyti arba slėpti dainos ukulelės akordus"
-      },
-      "showBaritoneUkuleleChords": {
-        "label": "Rodyti baritono ukulelės akordus",
-        "description": "Rodyti arba slėpti dainos baritono ukulelės akordus"
-      },
-      "transposeUp": {
-        "label": "Transponuoti aukštyn",
-        "description": "Perkelti dainą aukštyn per pusę tono"
-      },
-      "transposeDown": {
-        "label": "Transponuoti žemyn",
-        "description": "Perkelti dainą žemyn per pusę tono"
-      },
-      "fontUp": {
-        "label": "Padidinti šriftą",
-        "description": "Padidinti šrifto dydį dainos tekste"
-      },
-      "fontDown": {
-        "label": "Sumažinti šriftą",
-        "description": "Sumažinti šrifto dydį dainos tekste"
-      },
-      "transposeDisabled": "Transponavimas išjungtas, nes dainos tekste nerasta akordų",
-      "transposeLoadError": "Nepavyko įkelti išsaugoto transponavimo",
-      "transposeSaveError": "Nepavyko išsaugoti transponavimo",
-      "audioNotSupported": "Jūsų naršyklė nepalaiko garso",
-      "transposeHeader": "Transponuoti ({offset})",
-      "addToList": {
-        "label": "Pridėti į dainų knygą",
-        "description": "Pridėkite šią dainą į vieną iš savo dainų knygų",
-        "success": "Daina sėkmingai pridėta",
-        "error": "Klaida pridedant dainą"
-      },
-      "authRequired": {
-        "title": "Reikia prisijungti",
-        "description": "Norėdami pridėti dainą į savo dainų knygas, pirmiausia prisijunkite. Po prisijungimo grįšite į šią dainą.",
-        "login": "Prisijungti"
-      },
-      "createSongbook": {
-        "action": "Sukurti dainų knygą",
-        "title": "Nauja dainų knyga",
-        "createAndAdd": "Sukurti ir pridėti dainą",
-        "description": "Jei reikiamos dainų knygos dar nėra, sukurkite naują.",
-        "name": "Nauja dainų knyga",
-        "placeholder": "Dainų knygos pavadinimas",
-        "nameRequired": "Įveskite dainų knygos pavadinimą",
-        "success": "Dainų knyga sukurta ir daina pridėta",
-        "error": "Nepavyko sukurti dainų knygos"
-      },
-      "removeFromList": {
-        "label": "Išimti iš dainų knygos",
-        "description": "Išimkite šią dainą iš vienos iš savo dainų knygų",
-        "success": "Daina sėkmingai išimta",
-        "error": "Klaida išimant dainą"
-      }
-    },
-    "akordiArtistLetter": {
-      "title": "Atlikėjų katalogas A-Z",
-      "description": "Naršyti atlikėjų sąrašą abėcėlės tvarka nuo A iki Z",
-      "search": {
-        "error": "Klaida ieškant atlikėjų. Prašome bandyti vėliau."
-      }
-    },
-    "tagList": {
-      "title": "Žymės",
-      "description": "Čia galite naršyti temines dainų kategorijas",
-      "list": {
-        "error": "Klaida įkeliant dainas. Prašome bandyti vėliau."
-      }
-    },
-    "tagView": {
-      "title": "Žyma #{title}",
-      "metaDescription": "Dainos su akordais ir tabulaturėmis {songTitles}",
-      "list": {
-        "error": "Klaida įkeliant dainas. Prašome bandyti vėliau."
-      }
-    },
-    "login": {
-      "title": "Pasirinkite autentifikavimo būdą",
-      "buttons": {
-        "signIn": "Prisijungti",
-        "register": "Registruotis",
-        "forgotPassword": "Pamiršote slaptažodį?"
-      },
-      "options": {
-        "google": {
-          "name": "Google",
-          "description": "Prisijungti su Google paskyra"
-        },
-        "facebook": {
-          "name": "Facebook",
-          "description": "Prisijungti su Facebook paskyra"
+        "save": {
+            "success": "Daina sėkmingai pateikta patvirtinimui",
+            "error": "Klaida išsaugant dainą"
         }
-      },
-      "email": "El. paštas",
-      "password": "Slaptažodis",
-      "errors": {
-        "4000002": "Šis laukas yra privalomas",
-        "4000006": "Neteisingas el. paštas ir/arba slaptažodis",
-        "1060003": "El. laiškas su atkūrimo kodu išsiųstas jūsų el. pašto adresu. Jei jo negavote, patikrinkite, ar el. paštas nurodytas teisingai.",
-        "1080002": "El. paštas sėkmingai patvirtintas.",
-        "1080003": "El. laiškas su patvirtinimo kodu išsiųstas. Jei jo negavote, patikrinkite, ar el. paštas nurodytas teisingai."
-      }
     },
-    "verification": {
-      "title": "Patvirtinimas",
-      "code": "Patvirtinimo kodas",
-      "success": "Patvirtinta!",
-      "successDescription": "El. pašto adresas sėkmingai patvirtintas.",
-      "buttons": {
-        "continue": "Tęsti",
-        "resendCode": "Siųsti kodą dar kartą",
-        "submit": "Patvirtinti"
-      }
+    "artist": {
+        "title": "Pavadinimas"
     },
-    "recovery": {
-      "title": "Slaptažodžio atkūrimas",
-      "email": "El. paštas",
-      "code": "Patvirtinimo kodas",
-      "buttons": {
-        "submit": "Siųsti kodą",
-        "verify": "Patvirtinti kodą",
-        "resend": "Siųsti kodą dar kartą"
-      }
-    },
-    "register": {
-      "title": "Registracija",
-      "incorrectCredentials": "Neteisingas vartotojo vardas arba slaptažodis",
-      "buttons": {
-        "continue": "Tęsti",
-        "previous": "Atgal"
-      },
-      "options": {
-        "google": {
-          "name": "Google",
-          "description": "Registruotis su Google paskyra"
+    "artists": {
+        "save": {
+            "success": "Atlikėjas sėkmingai išsaugotas",
+            "error": "Klaida išsaugant atlikėją"
         },
-        "facebook": {
-          "name": "Facebook",
-          "description": "Registruotis su Facebook paskyra"
+        "delete": {
+            "success": "Atlikėjas sėkmingai ištrintas",
+            "error": "Klaida trinant atlikėją"
         }
-      },
-      "errors": {
-        "4000002": "Šis laukas yra privalomas",
-        "4000007": "Vartotojas su šiuo el. paštu jau registruotas.",
-        "4000006": "Šis slaptažodis rastas nutekėjusių slaptažodžių registre. Prašome pasirinkti kitą slaptažodį.",
-        "1040009": "Prašome pasirinkti slaptažodį tolesniam autentifikavimui.",
-        "1080003": "El. laiškas su patvirtinimo kodu išsiųstas. Jei jo negavote, patikrinkite, ar el. paštas nurodytas teisingai.",
-        "4070006": "Patvirtinimo kodas neteisingas arba jau panaudotas. Prašome bandyti dar kartą."
-      },
-      "email": {
-        "label": "El. paštas"
-      },
-      "givenName": {
-        "label": "Vardas"
-      },
-      "familyName": {
-        "label": "Pavardė"
-      },
-      "password": {
-        "label": "Slaptažodis"
-      }
-    },
-    "profile": {
-      "title": "Vartotojo profilis",
-      "buttons": {
-        "continue": "Išsaugoti",
-        "changePassword": "Keisti slaptažodį"
-      },
-      "errors": {
-        "4000002": "Šis laukas yra privalomas",
-        "4000007": "Vartotojas su šiuo el. paštu jau registruotas.",
-        "4000006": "Šis slaptažodis rastas nutekėjusių slaptažodžių registre. Prašome pasirinkti kitą slaptažodį.",
-        "4000034": "Šis slaptažodis rastas nutekėjusių slaptažodžių registre. Prašome pasirinkti kitą slaptažodį.",
-        "1040009": "Prašome pasirinkti slaptažodį tolesniam autentifikavimui.",
-        "1050001": "Pakeitimai sėkmingai išsaugoti!",
-        "1060001": "Sėkmingai atnaujinote savo paskyrą. Prašome pakeisti slaptažodį arba nustatyti alternatyvų prisijungimo būdą (pvz., socialinį prisijungimą) per 60 minučių.",
-        "1080003": "El. laiškas su patvirtinimo kodu išsiųstas. Jei jo negavote, patikrinkite, ar el. paštas nurodytas teisingai.",
-        "4070006": "Patvirtinimo kodas neteisingas arba jau panaudotas. Prašome bandyti dar kartą."
-      },
-      "email": {
-        "label": "El. paštas"
-      },
-      "givenName": {
-        "label": "Vardas"
-      },
-      "familyName": {
-        "label": "Pavardė"
-      },
-      "password": {
-        "label": "Slaptažodis"
-      }
-    },
-    "home": {
-      "title": "Akordai",
-      "buttons": {
-        "loginUnauthorized": "Prisijungti"
-      }
-    },
-    "sessionEnded": {
-      "title": "Jūsų sesija baigėsi",
-      "description": "Sesijai skirtas laikas baigėsi. Norėdami tęsti darbą, prisijunkite iš naujo"
-    },
-    "userProfile": {
-      "title": "Vartotojo profilis",
-      "givenNameLabel": "Vardas",
-      "familyNameLabel": "Pavardė",
-      "phoneLabel": "Kontaktinis telefonas",
-      "emailLabel": "El. pašto adresas",
-      "viewProfile": "Žiūrėti profilį",
-      "sessionTime": "Sesijos darbo laikas:",
-      "sections": {
-        "profile": "Profilis",
-        "preferences": "Nustatymai",
-        "songbooks": "Dainų knygos"
-      },
-      "preferences": {
-        "description": "Šie nustatymai saugomi jūsų paskyroje ir naudojami atidarius dainas.",
-        "instrument": "Numatytasis akordų instrumentas",
-        "loadError": "Nepavyko įkelti profilio nustatymų",
-        "saveSuccess": "Nustatymai išsaugoti",
-        "saveError": "Nepavyko išsaugoti nustatymų"
-      },
-      "songbooks": {
-        "description": "Turite {count} dainų knygas"
-      }
-    },
-    "users": {
-      "title": "Vartotojai"
     },
     "error": {
-      "goBack": "Grįžti atgal",
-      "goHome": "Grįžti į pradžią",
-      "title": "Įvyko netikėta klaida"
+        "validation": "Prašome užpildyti laukus"
     },
-    "auth": {
-      "title": "Vyksta apdorojimas",
-      "description": "Vyksta apdorojimas. Prašome palaukti!",
-      "errors": {
-        "unknownTitle": "Nežinoma autorizacijos klaida",
-        "unknownDescription": "Bandykite autorizuotis iš naujo.",
-        "blockedTitle": "Vartotojas užblokuotas",
-        "blockedDescription": "Susisiekite su sistemos administratoriumi.",
-        "invalidRightsTitle": "Jums nesuteiktos teisės naudotis šia sistema",
-        "invalidRightsDescription": "Susisiekite su sistemos administratoriumi.",
-        "invalidRequestTitle": "Klaidingas autorizacijos prašymas",
-        "invalidRequestDescription": "Bandykite autorizuotis iš naujo."
-      }
+    "validations": {
+        "required": "Šis laukas yra privalomas"
     },
-    "artistView": {
-      "pageTitle": "{artist} dainos",
-      "metaDescription": "Dainos su akordais ir tabulaturėmis {songTitles}"
-    },
-    "notFound": {
-      "title": "Puslapis nerastas",
-      "description": "Patikrinkite, ar puslapio adresas yra teisinga ir bandykite dar kartą, arba grįžkite į pradžią"
-    },
-    "songbook": {
-      "title": "Mano dainų knygos",
-      "description": "Čia galite tvarkyti savo asmenines dainų knygas",
-      "empty": "Dar neturite jokių dainų knygų",
-      "add": "Sukurti dainų knygą",
-      "delete": {
-        "title": "Ištrinti dainų knygą",
-        "message": "Ar tikrai norite ištrinti dainų knygą „{name}“?",
-        "success": "Dainų knyga sėkmingai ištrinta",
-        "error": "Klaida trinant dainų knygą"
-      },
-      "save": {
-        "success": "Dainų knyga sėkmingai išsaugota",
-        "error": "Klaida saugant dainų knygą"
-      },
-      "addSong": {
-        "success": "Daina pridėta į dainų knygą",
-        "error": "Klaida pridedant dainą"
-      },
-      "removeSong": {
-        "success": "Daina išimta iš dainų knygos",
-        "error": "Klaida išimant dainą iš dainų knygos"
-      },
-      "songs": "Dainos dainų knygoje"
+    "accessibilitySettings": {
+        "title": "Prieinamumo nustatymai",
+        "description": "Įrankiai ir nustatymai, padedantys pritaikyti programą skirtingiems vartotojams ir jų poreikiams.",
+        "appearance": "Vizualinė išvaizda",
+        "animations": "Judesys ir animacijos",
+        "fonts": "Tekstas ir šriftai",
+        "interactions": "Sąveika",
+        "reset": "Atkurti nustatymus",
+        "themeTitle": "Temos pasirinkimas",
+        "transparencyTitle": "Permatomumas",
+        "animationsTitle": "Animacijos",
+        "fontsTitle": "Sistemos šriftai",
+        "touchModeTitle": "Jutiklinis režimas",
+        "transparencyDescription": "Permatomumas yra vizualinis efektas, leidžiantis matyti fono dalį po aktyviais langais ar skydeliais. Šis nustatymas leidžia sumažinti arba išjungti permatomumą, kad fonas būtų vientisas, pagerinant kontrastingumą tarp turinio ir fono bei palengvinant turinio suvokimą. Tinka vartotojams, turintiems regėjimo sutrikimų, koncentracijos sunkumų ar spalvų suvokimo problemų.",
+        "animationsDescription": "Animacijos yra vizualiniai judesio efektai, atsirandantys pereinant, spustelint ir atliekant kitus veiksmus, pvz., atidarant langus ar perjungiant meniu elementus. Šis nustatymas leidžia sumažinti arba išjungti animacijas, kad sąsaja būtų ramesnė ir mažiau blaškanti. Svarbu vartotojams, turintiems vestibuliarinio aparato sutrikimų ar padidėjusį jautrumą judesiui.",
+        "fontsDescription": "Sistemos šriftai yra numatytieji įrenginio ar operacinės sistemos šriftai. Jų naudojimas pagerina teksto skaitomumą ir atpažįstamumą, užtikrinant nuoseklią ir įprastą teksto išvaizdą.",
+        "touchModeDescription": "Įjungus jutiklinį režimą, programa optimizuojama naudojimui pirštu jutikliniuose ekranuose. Paspaudžiami elementai (mygtukai, meniu ir kt.) yra padidinami, kad būtų patogiau naudotis.",
+        "themeAuto": "Automatinis",
+        "themeLight": "Šviesus",
+        "themeDark": "Tamsus",
+        "themeContrast": "Kontrastinis",
+        "themeAutoDescription": "Automatinė tema atitinka įrenginio ar sistemos išvaizdos nustatymus.",
+        "themeLightDescription": "Šviesi tema su tamsiu tekstu šviesiame fone.",
+        "themeDarkDescription": "Tamsi tema su šviesiu tekstu tamsiame fone.",
+        "themeContrastDescription": "Tema su padidintu spalvų kontrastu, pagerinanti turinio skaitomumą.",
+        "transparencyLinkLabel": "Prieinamumo standartai (WCAG Contrast (Minimum))",
+        "animationsLinkLabel": "Prieinamumo standartai (WCAG Animation from Interactions)"
     }
-  },
-  "cookieConsent": {
-    "title": "Slapukų politika",
-    "description": "Ši svetainė naudoja slapukus, kad užtikrintų populiariausių dainų statistiką ir pagerintų vartotojo patirtį. \nPrašome sutikti su slapukų naudojimu, kad galėtumėte toliau naudotis šia svetaine.",
-    "accept": "Sutinku",
-    "reject": "Uždaryti"
-  },
-  "confirm": {
-    "yes": "Taip",
-    "no": "Ne",
-    "logout": {
-      "title": "Atsijungti",
-      "message": "Ar tikrai norite atsijungti?",
-      "yes": "Taip",
-      "no": "Ne"
-    }
-  },
-  "menu": {
-    "home": "Pradžia",
-    "users": "Vartotojai",
-    "login": "Autorizacija",
-    "logout": "Atsijungti"
-  },
-  "errors": {
-    "logoutFailed": "Įvyko klaida atsijungiant nuo sistemos, perkraukite puslapį ir bandykite dar kartą.",
-    "classifierLoadFailed": "Įvyko klaida įkeliant filtro klasifikatorius, perkraukite puslapį ir bandykite dar kartą.",
-    "roleLoadFailed": "Įvyko klaida įkeliant vartotojo roles, perkraukite puslapį ir bandykite dar kartą.",
-    "institutionLoadFailed": "Įvyko klaida įkeliant vartotojui prieinamas įstaigas, perkraukite puslapį ir bandykite dar kartą.",
-    "hospitalLoadFailed": "Įvyko klaida įkeliant vartotojui prieinamas ligonines, perkraukite puslapį ir bandykite dar kartą.",
-    "forbidden": "Jūs neturite teisės atlikti šio veiksmo!",
-    "loadFailed": "Nepavyko įkelti duomenų",
-    "helpLoadFailed": "Nepavyko įkelti pagalbos informacijos",
-    "loadSongFailed": "Nepavyko įkelti dainos",
-    "unexpectedError": "Netikėta klaida:"
-  },
-  "save": "Išsaugoti",
-  "edit": "Redaguoti",
-  "suggestEdit": "Pasiūlyti pataisymą",
-  "delete": "Ištrinti",
-  "copy": "Kopijuoti",
-  "cancel": "Atšaukti",
-  "search": "Ieškoti",
-  "song": {
-    "title": "Pavadinimas",
-    "artist": "Atlikėjas",
-    "performer": "Atlikėjas",
-    "composer": "Muzikos autorius",
-    "poet": "Žodžių autorius",
-    "tags": "Žymės",
-    "youtubeLink": "Youtube video",
-    "createdAt": "Sukurta",
-    "updatedAt": "Paskutinį kartą redaguota",
-    "reference": "Nuoroda",
-    "lyrics": "Dainos žodžiai",
-    "body": "Dainos tekstas su akordais",
-    "bodyTooltip": "Pageidautina pridėti dainas su pilnais dainų tekstais. Teksto išdėstymui naudoti tarpus, o ne tabuliavimą."
-  },
-  "songs": {
-    "save": {
-      "success": "Daina sėkmingai pateikta patvirtinimui",
-      "error": "Klaida išsaugant dainą"
-    }
-  },
-  "artist": {
-    "title": "Pavadinimas"
-  },
-  "artists": {
-    "save": {
-      "success": "Atlikėjas sėkmingai išsaugotas",
-      "error": "Klaida išsaugant atlikėją"
-    },
-    "delete": {
-      "success": "Atlikėjas sėkmingai ištrintas",
-      "error": "Klaida trinant atlikėją"
-    }
-  },
-  "error": {
-    "validation": "Prašome užpildyti laukus"
-  },
-  "validations": {
-    "required": "Šis laukas yra privalomas"
-  },
-  "accessibilitySettings": {
-    "title": "Prieinamumo nustatymai",
-    "description": "Įrankiai ir nustatymai, padedantys pritaikyti programą skirtingiems vartotojams ir jų poreikiams.",
-    "appearance": "Vizualinė išvaizda",
-    "animations": "Judesys ir animacijos",
-    "fonts": "Tekstas ir šriftai",
-    "interactions": "Sąveika",
-    "reset": "Atkurti nustatymus",
-    "themeTitle": "Temos pasirinkimas",
-    "transparencyTitle": "Permatomumas",
-    "animationsTitle": "Animacijos",
-    "fontsTitle": "Sistemos šriftai",
-    "touchModeTitle": "Jutiklinis režimas",
-    "transparencyDescription": "Permatomumas yra vizualinis efektas, leidžiantis matyti fono dalį po aktyviais langais ar skydeliais. Šis nustatymas leidžia sumažinti arba išjungti permatomumą, kad fonas būtų vientisas, pagerinant kontrastingumą tarp turinio ir fono bei palengvinant turinio suvokimą. Tinka vartotojams, turintiems regėjimo sutrikimų, koncentracijos sunkumų ar spalvų suvokimo problemų.",
-    "animationsDescription": "Animacijos yra vizualiniai judesio efektai, atsirandantys pereinant, spustelint ir atliekant kitus veiksmus, pvz., atidarant langus ar perjungiant meniu elementus. Šis nustatymas leidžia sumažinti arba išjungti animacijas, kad sąsaja būtų ramesnė ir mažiau blaškanti. Svarbu vartotojams, turintiems vestibuliarinio aparato sutrikimų ar padidėjusį jautrumą judesiui.",
-    "fontsDescription": "Sistemos šriftai yra numatytieji įrenginio ar operacinės sistemos šriftai. Jų naudojimas pagerina teksto skaitomumą ir atpažįstamumą, užtikrinant nuoseklią ir įprastą teksto išvaizdą.",
-    "touchModeDescription": "Įjungus jutiklinį režimą, programa optimizuojama naudojimui pirštu jutikliniuose ekranuose. Paspaudžiami elementai (mygtukai, meniu ir kt.) yra padidinami, kad būtų patogiau naudotis.",
-    "themeAuto": "Automatinis",
-    "themeLight": "Šviesus",
-    "themeDark": "Tamsus",
-    "themeContrast": "Kontrastinis",
-    "themeAutoDescription": "Automatinė tema atitinka įrenginio ar sistemos išvaizdos nustatymus.",
-    "themeLightDescription": "Šviesi tema su tamsiu tekstu šviesiame fone.",
-    "themeDarkDescription": "Tamsi tema su šviesiu tekstu tamsiame fone.",
-    "themeContrastDescription": "Tema su padidintu spalvų kontrastu, pagerinanti turinio skaitomumą.",
-    "transparencyLinkLabel": "Prieinamumo standartai (WCAG Contrast (Minimum))",
-    "animationsLinkLabel": "Prieinamumo standartai (WCAG Animation from Interactions)"
-  }
 }

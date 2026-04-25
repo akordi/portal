@@ -165,6 +165,8 @@ export function shellTexts() {
     svgTitle: t.t('lx.shell.svgTitle'),
     skipLinkLabel: t.t('lx.shell.skipLinkLabel'),
     skipLinkTitle: t.t('lx.shell.skipLinkTitle'),
+    loginButtonLabel: t.t('lx.shell.loginButtonLabel'),
+    loginButtonTitle: t.t('lx.shell.loginButtonTitle'),
   };
 }
 

@@ -1,628 +1,628 @@
 {
-  "title": {
-    "default": "Akordi.lv",
-    "prefix": "Latviešu dziesmu akordi, tabi un vārdi - ",
-    "fullName": "Akordi.lv",
-    "fullNameFormatted": "Akordi.lv",
-    "subheader": "Dziesmu vārdu, akordu un tabu krātuve",
-    "shortName": "Akordi",
-    "description": "Meklējiet akordus un dziesmu vārdus latviešu dziesmām un atrodiet tūkstošiem populāru dziesmu datubāzē."
-  },
-  "lx": {
-    "shell": {
-      "defaultBack": "Atpakaļ",
-      "logOut": "Iziet",
-      "openAlerts": "Atvērt sarakstu",
-      "noAlerts": "Nav paziņojumu",
-      "openNavbar": "Atvērt izvēlni",
-      "helpTitle": "Palīdzība",
-      "alertsTitle": "Paziņojumi",
-      "languagesTitle": "Valodu izvēle",
-      "contextPersonTitle": "Saistīto personu dati",
-      "close": "Aizvērt",
-      "contextPersonsLabel": "Izvēlēties personu",
-      "contextPersonsInfoLabel": "Pacients",
-      "contextPersonsInfoTitle": "Konteksta persona",
-      "contextPersonsOwnData": "Skatīt manus datus",
-      "alternativeProfilesLabel": "Izvēlieties alternatīvu profilu",
-      "contextPersonsButtonLabel": "Konteksta personas",
-      "alternativeProfilesButtonLabel": "Alternatīvie profili",
-      "idleModalLabel": "Tuvojas sesijas beigas",
-      "idleModalPrimaryLabel": "Turpināt darbu",
-      "idleModalSecondaryLabel": "Beigt darbu",
-      "descriptionMinutes": "Līdz sesijas beigām ir palikušas {count} minūtes",
-      "descriptionMinutesSmall": "un {count} sekundes",
-      "idleDescription": "Līdz sesijas beigām ir palikušas {count} sekundes",
-      "themeTitle": "Noformējuma izvēle",
-      "themeAuto": "Automātiskais režīms",
-      "themeLight": "Gaišais režīms",
-      "themeDark": "Tumšais režīms",
-      "themeContrast": "Kontrastainais režīms",
-      "animations": "Samazināt kustības",
-      "transparency": "Samazināt caurspīdīgumu",
-      "fonts": "Iekārtas fonti",
-      "touchMode": "Skārienjūtīgs režīms",
-      "reduceMotionOff": "Nē",
-      "reduceMotionOn": "Jā",
-      "reduceTransparencyOff": "Nē",
-      "reduceTransparencyOn": "Jā",
-      "systemFontsOff": "Nē",
-      "systemFontsOn": "Jā",
-      "touchModeOff": "Nē",
-      "touchModeOn": "Jā",
-      "confirmModalSecondaryDefaultLabel": "Nē",
-      "confirmModalPrimaryDefaultLabel": "Jā",
-      "previousAlertTitle": "Iepriekšējais paziņojums",
-      "nextAlertTitle": "Nākamais paziņojums",
-      "userTitle": "Lietotājs",
-      "menu": "Izvēlne",
-      "showAllLabel": "Vairāk",
-      "megaMenuTitle": "Lietotnes",
-      "successSvgTitle": "Veiksmīgs paziņojums",
-      "warningSvgTitle": "Brīdinājums",
-      "errorSvgTitle": "Kļūda",
-      "infoSvgTitle": "Informācija",
-      "svgTitle": "Paziņojums",
-      "skipLinkLabel": "Pāriet uz lapas saturu",
-      "skipLinkTitle": "Pāriet uz lapas saturu",
-      "customButton": "Pielāgojamā poga",
-      "overflowNavItems": "Atvērt papildu izvēlni",
-      "scrollUp": "Atgriezties uz augšu",
-      "contextPersonsBirthDate": "Dzimšanas datums",
-      "settings": "Iestatījumi",
-      "contextPersonsTooltipLabel": "Konteksta persona",
-      "contextPersonsTooltipDescription": "Konteksta personas apraksts",
-      "badgeTypes": {
-        "default": "informatīvs paziņojums",
-        "info": "informatīvs paziņojums",
-        "warning": "brīdinājums",
-        "good": "sekmīgs paziņojums",
-        "important": "svarīgs paziņojums"
-      },
-      "spotlight": {
-        "label": "Lietotnes ceļvedis",
-        "close": "Aizvērt",
-        "next": "Tālāk",
-        "back": "Atpakaļ",
-        "showMore": "Uzzināt vairāk",
-        "of": "no"
-      },
-      "userProfile": "Skatīt profilu",
-      "notifications": {
-        "logoutSuccess": "Jūsu sesija ir veiksmīgi pabeigta",
-        "agreement": "Jums ir jāpiekrīt lietošanas noteikumiem",
-        "unknownState": "Notika kļūda lietotāja statusa apstrādē",
-        "err401": "Ieejiet sistēmā, lai piekļūtu funkcionalitātei",
-        "sessionContinued": "Sesija veiksmīgi pagarināta",
-        "sessionContinuedFailed": "Sesijas pagarināšana nav izdevusies",
-        "sessionEndingSoon": "Jūsu sesija drīz beigsies"
-      },
-      "sessionExpiring": {
-        "label": "Tuvojas sesijas beigas",
-        "description": "Līdz sesijas beigām ir palikusi {count} sekunde | Līdz sesijas beigām ir palikušas {count} sekundes",
-        "descriptionMinutes": "Līdz sesijas beigām ir palikusi {count} minūte | Līdz sesijas beigām ir palikušas {count} minūtes",
-        "descriptionMinutesSmall": "un {count} sekunde | un {count} sekundes",
-        "primaryLabel": "Turpināt darbu",
-        "secondaryLabel": "Beigt darbu"
-      }
+    "title": {
+        "default": "Akordi.lv",
+        "prefix": "Latviešu dziesmu akordi, tabi un vārdi - ",
+        "fullName": "Akordi.lv",
+        "fullNameFormatted": "Akordi.lv",
+        "subheader": "Dziesmu vārdu, akordu un tabu krātuve",
+        "shortName": "Akordi",
+        "description": "Meklējiet akordus un dziesmu vārdus latviešu dziesmām un atrodiet tūkstošiem populāru dziesmu datubāzē."
     },
-    "list": {
-      "clear": "Notīrīt",
-      "placeholder": "Ievadiet nosaukuma vai apraksta daļu, lai sameklētu ierakstus",
-      "notFoundSearch": "Nav atrasts:",
-      "noItems": "Nav ierakstu",
-      "noItemsDescription": "",
-      "loadMore": "Ielādēt vēl",
-      "search": "Meklēt",
-      "items": {
-        "singular": "ieraksts",
-        "plural": "ieraksti",
-        "endingWith234": "ieraksti",
-        "endingWith1": "ieraksts"
-      },
-      "ofItems": {
-        "label": "Ieraksti",
-        "singular": "ieraksta",
-        "plural": "ierakstiem",
-        "endingWith234": "ierakstiem",
-        "endingWith1": "ieraksta"
-      },
-      "selected": {
-        "singular": "Izvēlēts",
-        "plural": "Izvēlēti",
-        "endingWith234": "Izvēlēti",
-        "endingWith1": "Izvēlēts"
-      },
-      "of": "no",
-      "clearSelected": "Attīrīt izvēles",
-      "selectAllRows": "Izvēlēties visu",
-      "selectWholeGroup": "Izvēlēties visu grupu",
-      "loadingError": "Notika ielādes kļūda",
-      "reload": "Ielādēt atkārtoti",
-      "collapse": "Sakļaut elementu",
-      "expand": "Izvērst elementu",
-      "openSearch": "Atvērt meklētāju",
-      "closeSearch": "Aizvērt meklētāju",
-      "skipLinkLabel": "Izlaist sarakstu",
-      "skipLinkTitle": "Izlaist sarakstu",
-      "overflowMenu": "Atvērt papildu iespējas"
-    }
-  },
-  "greeting": {
-    "default": "Sveicināti",
-    "morning": "Labrīt",
-    "day": "Labdien",
-    "evening": "Labvakar",
-    "night": "Arlabunakti"
-  },
-  "pages": {
-    "chordsLibrary": {
-      "title": "Akordu bibliotēka",
-      "description": "Šeit jūs varat atrast visus atbalstītos akordus.",
-      "showGuitarChords": {
-        "label": "Ģitāra"
-      },
-      "showUkuleleChords": {
-        "label": "Ukulele"
-      },
-      "showBaritoneUkuleleChords": {
-        "label": "Baritona ukulele"
-      },
-      "instrument": "Instruments",
-      "key": "Tonis"
+    "lx": {
+        "shell": {
+            "defaultBack": "Atpakaļ",
+            "logOut": "Iziet",
+            "openAlerts": "Atvērt sarakstu",
+            "noAlerts": "Nav paziņojumu",
+            "openNavbar": "Atvērt izvēlni",
+            "helpTitle": "Palīdzība",
+            "alertsTitle": "Paziņojumi",
+            "languagesTitle": "Valodu izvēle",
+            "contextPersonTitle": "Saistīto personu dati",
+            "close": "Aizvērt",
+            "contextPersonsLabel": "Izvēlēties personu",
+            "contextPersonsInfoLabel": "Pacients",
+            "contextPersonsInfoTitle": "Konteksta persona",
+            "contextPersonsOwnData": "Skatīt manus datus",
+            "alternativeProfilesLabel": "Izvēlieties alternatīvu profilu",
+            "contextPersonsButtonLabel": "Konteksta personas",
+            "alternativeProfilesButtonLabel": "Alternatīvie profili",
+            "idleModalLabel": "Tuvojas sesijas beigas",
+            "idleModalPrimaryLabel": "Turpināt darbu",
+            "idleModalSecondaryLabel": "Beigt darbu",
+            "descriptionMinutes": "Līdz sesijas beigām ir palikušas {count} minūtes",
+            "descriptionMinutesSmall": "un {count} sekundes",
+            "idleDescription": "Līdz sesijas beigām ir palikušas {count} sekundes",
+            "themeTitle": "Noformējuma izvēle",
+            "themeAuto": "Automātiskais režīms",
+            "themeLight": "Gaišais režīms",
+            "themeDark": "Tumšais režīms",
+            "themeContrast": "Kontrastainais režīms",
+            "animations": "Samazināt kustības",
+            "transparency": "Samazināt caurspīdīgumu",
+            "fonts": "Iekārtas fonti",
+            "touchMode": "Skārienjūtīgs režīms",
+            "reduceMotionOff": "Nē",
+            "reduceMotionOn": "Jā",
+            "reduceTransparencyOff": "Nē",
+            "reduceTransparencyOn": "Jā",
+            "systemFontsOff": "Nē",
+            "systemFontsOn": "Jā",
+            "touchModeOff": "Nē",
+            "touchModeOn": "Jā",
+            "confirmModalSecondaryDefaultLabel": "Nē",
+            "confirmModalPrimaryDefaultLabel": "Jā",
+            "previousAlertTitle": "Iepriekšējais paziņojums",
+            "nextAlertTitle": "Nākamais paziņojums",
+            "userTitle": "Lietotājs",
+            "menu": "Izvēlne",
+            "showAllLabel": "Vairāk",
+            "megaMenuTitle": "Lietotnes",
+            "successSvgTitle": "Veiksmīgs paziņojums",
+            "warningSvgTitle": "Brīdinājums",
+            "errorSvgTitle": "Kļūda",
+            "infoSvgTitle": "Informācija",
+            "svgTitle": "Paziņojums",
+            "skipLinkLabel": "Pāriet uz lapas saturu",
+            "skipLinkTitle": "Pāriet uz lapas saturu",
+            "customButton": "Pielāgojamā poga",
+            "overflowNavItems": "Atvērt papildu izvēlni",
+            "scrollUp": "Atgriezties uz augšu",
+            "contextPersonsBirthDate": "Dzimšanas datums",
+            "settings": "Iestatījumi",
+            "contextPersonsTooltipLabel": "Konteksta persona",
+            "contextPersonsTooltipDescription": "Konteksta personas apraksts",
+            "badgeTypes": {
+                "default": "informatīvs paziņojums",
+                "info": "informatīvs paziņojums",
+                "warning": "brīdinājums",
+                "good": "sekmīgs paziņojums",
+                "important": "svarīgs paziņojums"
+            },
+            "spotlight": {
+                "label": "Lietotnes ceļvedis",
+                "close": "Aizvērt",
+                "next": "Tālāk",
+                "back": "Atpakaļ",
+                "showMore": "Uzzināt vairāk",
+                "of": "no"
+            },
+            "userProfile": "Skatīt profilu",
+            "notifications": {
+                "logoutSuccess": "Jūsu sesija ir veiksmīgi pabeigta",
+                "agreement": "Jums ir jāpiekrīt lietošanas noteikumiem",
+                "unknownState": "Notika kļūda lietotāja statusa apstrādē",
+                "err401": "Ieejiet sistēmā, lai piekļūtu funkcionalitātei",
+                "sessionContinued": "Sesija veiksmīgi pagarināta",
+                "sessionContinuedFailed": "Sesijas pagarināšana nav izdevusies",
+                "sessionEndingSoon": "Jūsu sesija drīz beigsies"
+            },
+            "sessionExpiring": {
+                "label": "Tuvojas sesijas beigas",
+                "description": "Līdz sesijas beigām ir palikusi {count} sekunde | Līdz sesijas beigām ir palikušas {count} sekundes",
+                "descriptionMinutes": "Līdz sesijas beigām ir palikusi {count} minūte | Līdz sesijas beigām ir palikušas {count} minūtes",
+                "descriptionMinutesSmall": "un {count} sekunde | un {count} sekundes",
+                "primaryLabel": "Turpināt darbu",
+                "secondaryLabel": "Beigt darbu"
+            }
+        },
+        "list": {
+            "clear": "Notīrīt",
+            "placeholder": "Ievadiet nosaukuma vai apraksta daļu, lai sameklētu ierakstus",
+            "notFoundSearch": "Nav atrasts:",
+            "noItems": "Nav ierakstu",
+            "noItemsDescription": " ",
+            "loadMore": "Ielādēt vēl",
+            "search": "Meklēt",
+            "items": {
+                "singular": "ieraksts",
+                "plural": "ieraksti",
+                "endingWith234": "ieraksti",
+                "endingWith1": "ieraksts"
+            },
+            "ofItems": {
+                "label": "Ieraksti",
+                "singular": "ieraksta",
+                "plural": "ierakstiem",
+                "endingWith234": "ierakstiem",
+                "endingWith1": "ieraksta"
+            },
+            "selected": {
+                "singular": "Izvēlēts",
+                "plural": "Izvēlēti",
+                "endingWith234": "Izvēlēti",
+                "endingWith1": "Izvēlēts"
+            },
+            "of": "no",
+            "clearSelected": "Attīrīt izvēles",
+            "selectAllRows": "Izvēlēties visu",
+            "selectWholeGroup": "Izvēlēties visu grupu",
+            "loadingError": "Notika ielādes kļūda",
+            "reload": "Ielādēt atkārtoti",
+            "collapse": "Sakļaut elementu",
+            "expand": "Izvērst elementu",
+            "openSearch": "Atvērt meklētāju",
+            "closeSearch": "Aizvērt meklētāju",
+            "skipLinkLabel": "Izlaist sarakstu",
+            "skipLinkTitle": "Izlaist sarakstu",
+            "overflowMenu": "Atvērt papildu iespējas"
+        }
     },
-    "dashboard": {
-      "title": "Sākumlapa",
-      "disclaimer": "Viss šeit atrodamais saturs izvietots tikai izglītošanās nolūkā. Liela daļa lapā atrodamo dziesmu ir lietotāju interpretācijas un var precīzi nesakrist ar oriģinālu. Ja te ir kāda Tava dziesma, un negribi, lai to mācās citi, vai arī ir radušies kādi jautājumi vai komentāri, tad raksti uz info[at]akordi.lv."
+    "greeting": {
+        "default": "Sveicināti",
+        "morning": "Labrīt",
+        "day": "Labdien",
+        "evening": "Labvakar",
+        "night": "Arlabunakti"
+    },
+    "pages": {
+        "chordsLibrary": {
+            "title": "Akordu bibliotēka",
+            "description": "Šeit jūs varat atrast visus atbalstītos akordus.",
+            "showGuitarChords": {
+                "label": "Ģitāra"
+            },
+            "showUkuleleChords": {
+                "label": "Ukulele"
+            },
+            "showBaritoneUkuleleChords": {
+                "label": "Baritona ukulele"
+            },
+            "instrument": "Instruments",
+            "key": "Tonis"
+        },
+        "dashboard": {
+            "title": "Sākumlapa",
+            "disclaimer": "Viss šeit atrodamais saturs izvietots tikai izglītošanās nolūkā. Liela daļa lapā atrodamo dziesmu ir lietotāju interpretācijas un var precīzi nesakrist ar oriģinālu. Ja te ir kāda Tava dziesma, un negribi, lai to mācās citi, vai arī ir radušies kādi jautājumi vai komentāri, tad raksti uz info[at]akordi.lv."
+        },
+        "songs": {
+            "title": "Dziesmu katalogs"
+        },
+        "songSearch": {
+            "title": "Dziesmu meklētājs",
+            "description": "Izmanto meklētāju un atrodi ko uzspēlēt kādā starp {songCount} akordi.lv dziesmām",
+            "search": {
+                "error": "Kļūda meklējot dziesmas. Lūdzu mēģiniet vēlāk."
+            }
+        },
+        "songListNew": {
+            "title": "Jaunākās dziesmas",
+            "description": "Nesen pievienotās dziesmas",
+            "list": {
+                "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
+            }
+        },
+        "songListTop": {
+            "title": "Populārākās dziesmas",
+            "description": "Pagājušās nedēļas populārākās dziesmas, kuras ir skatījušies un spēlējuši citi lietotāji",
+            "list": {
+                "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
+            }
+        },
+        "songEdit": {
+            "title": "Dziesmas labojums",
+            "description": "Šeit vari iesniegt dziesmas labojumus"
+        },
+        "songNew": {
+            "title": "Iesniegt dziesmu",
+            "description": "Šeit jūs varat iesniegt dziesmu, lai tā tiktu pievienota portālā. Lapa paredzēta tikai latviešu dziesmām (dziesmas valodai nav nozīmes). Tā tiks pārbaudīta un pievienota datu bāzei."
+        },
+        "akordiSongView": {
+            "title": "Akordi.lv dziesmas",
+            "copy": {
+                "label": "Kopēt dziesmu",
+                "description": "Kopēt dziesmas tekstu, lai izveidotu savu versiju"
+            },
+            "hideChords": {
+                "label": "Nerādīt akordus",
+                "description": "Slēpt dziesmas akordu tabulutūru"
+            },
+            "showSheet": {
+                "label": "Rādīt notis",
+                "description": "Rādīt dziesmas notis"
+            },
+            "autoScroll": {
+                "label": "Automātiska ritināšana ({speed})",
+                "playDescription": "Paātrināt automātisko ritināšanu",
+                "stopDescription": "Apstādināt automātisko ritināšanu"
+            },
+            "showGuitarChords": {
+                "label": "Rādīt ģitāras akordus",
+                "description": "Rādīt vai slēpt dziesmas akordu tabulutūru ģitārai"
+            },
+            "showUkuleleChords": {
+                "label": "Rādīt ukuleles akordus",
+                "description": "Rādīt vai slēpt dziesmas akordu tabulutūru ukulelei"
+            },
+            "showBaritoneUkuleleChords": {
+                "label": "Rādīt baritona ukuleles akordus",
+                "description": "Rādīt vai slēpt dziesmas akordu tabulutūru baritona ukulelei"
+            },
+            "transposeUp": {
+                "label": "Transponēt augšup",
+                "description": "Pārnest dziesmu augšup par pustoni"
+            },
+            "transposeDown": {
+                "label": "Transponēt lejup",
+                "description": "Pārnest dziesmu lejup par pustoni"
+            },
+            "fontUp": {
+                "label": "Palielināt burtus",
+                "description": "Palielināt burtu izmēru dziesmas tekstā"
+            },
+            "fontDown": {
+                "label": "Samazināt burtus",
+                "description": "Samazināt burtu izmēru dziesmas tekstā"
+            },
+            "transposeDisabled": "Transponēšana ir atspējota, jo dziesmas tekstā nav atrodami akordi",
+            "transposeLoadError": "Neizdevās ielādēt saglabāto transpozīciju",
+            "transposeSaveError": "Neizdevās saglabāt transpozīciju",
+            "audioNotSupported": "Jūsu pārlūks neatbalsta audio",
+            "transposeHeader": "Transponēt ({offset})",
+            "addToList": {
+                "label": "Pievienot dziesmu grāmatai",
+                "description": "Pievienot šo dziesmu vienai no savām dziesmu grāmatām",
+                "success": "Dziesma veiksmīgi pievienota",
+                "error": "Kļūda pievienojot dziesmu"
+            },
+            "authRequired": {
+                "title": "Nepieciešama pieslēgšanās",
+                "description": "Lai pievienotu dziesmu savām dziesmu grāmatām, vispirms pieslēdzies savam kontam. Pēc pieslēgšanās atgriezīsies šajā dziesmā.",
+                "login": "Pieslēgties"
+            },
+            "createSongbook": {
+                "action": "Izveidot dziesmu grāmatu",
+                "title": "Jauna dziesmu grāmata",
+                "createAndAdd": "Izveidot un pievienot dziesmu",
+                "description": "Ja vajadzīgās dziesmu grāmatas vēl nav, izveido jaunu.",
+                "name": "Jauna dziesmu grāmata",
+                "placeholder": "Dziesmu grāmatas nosaukums",
+                "nameRequired": "Ievadi dziesmu grāmatas nosaukumu",
+                "success": "Dziesmu grāmata izveidota un dziesma pievienota",
+                "error": "Neizdevās izveidot dziesmu grāmatu"
+            },
+            "removeFromList": {
+                "label": "Izņemt no dziesmu grāmatas",
+                "description": "Izņemt šo dziesmu no vienas no savām dziesmu grāmatām",
+                "success": "Dziesma veiksmīgi izņemta",
+                "error": "Kļūda izņemot dziesmu"
+            }
+        },
+        "songbook": {
+            "title": "Manas dziesmu grāmatas",
+            "description": "Šeit vari pārvaldīt savas personīgās dziesmu grāmatas",
+            "empty": "Tev vēl nav nevienas dziesmu grāmatas",
+            "add": "Izveidot dziesmu grāmatu",
+            "delete": {
+                "title": "Dzēst dziesmu grāmatu",
+                "message": "Vai tiešām vēlaties dzēst dziesmu grāmatu \"{name}\"?",
+                "success": "Dziesmu grāmata veiksmīgi dzēsta",
+                "error": "Kļūda dzēšot dziesmu grāmatu"
+            },
+            "save": {
+                "success": "Dziesmu grāmata veiksmīgi saglabāta",
+                "error": "Kļūda saglabājot dziesmu grāmatu"
+            },
+            "addSong": {
+                "success": "Dziesma pievienota dziesmu grāmatai",
+                "error": "Kļūda pievienojot dziesmu"
+            },
+            "removeSong": {
+                "success": "Dziesma izņemta no dziesmu grāmatas",
+                "error": "Kļūda izņemot dziesmu no dziesmu grāmatas"
+            },
+            "songs": "Dziesmas dziesmu grāmatā"
+        },
+        "akordiArtistLetter": {
+            "title": "Mākslinieku katalogs A-Z",
+            "description": "Pārlūko mākslinieku sarakstu alfabēta secībā no A līdz Z",
+            "search": {
+                "error": "Kļūda meklējot māksliniekus. Lūdzu mēģiniet vēlāk."
+            }
+        },
+        "tagList": {
+            "title": "Birkas",
+            "description": "Šeit vari pārlūkot tematiskas dziesmu kategorijas",
+            "list": {
+                "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
+            }
+        },
+        "tagView": {
+            "title": "Birka #{title}",
+            "metaDescription": "Dziesmas ar akordiem un tabulatūrām {songTitles}",
+            "list": {
+                "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
+            }
+        },
+        "login": {
+            "title": "Izvēlieties autentifikācijas veidu",
+            "buttons": {
+                "signIn": "Pieslēgties",
+                "register": "Reģistrēties",
+                "forgotPassword": "Aizmirsu paroli?"
+            },
+            "options": {
+                "google": {
+                    "name": "Google",
+                    "description": "Pieslēgties ar Google kontu"
+                },
+                "facebook": {
+                    "name": "Facebook",
+                    "description": "Pieslēgties ar Facebook kontu"
+                }
+            },
+            "email": "E-pasts",
+            "password": "Parole",
+            "errors": {
+                "4000002": "Šis lauks ir obligāts",
+                "4000006": "Nepareizs e-pasts un/vai parole",
+                "1060003": "E-pasts ar atjaunošanas kodu nosūtīts uz jūsu e-pastu. Ja tas nav saņemts e-pasts, pārbaudiet vai e-pasts norādīts pareizi.",
+                "1080002": "E-pasts veiksmīgi verificēts.",
+                "1080003": "E-pasts ar verifikācijas kodu ir nosūtīts. Ja tas nav saņemts e-pasts, pārbaudiet vai e-pasts norādīts pareizi."
+            }
+        },
+        "verification": {
+            "title": "Verifikācija",
+            "code": "Verifikācijas kods",
+            "success": "Verificēts!",
+            "successDescription": "E-pasta adrese veiksmīgi verificēta.",
+            "buttons": {
+                "continue": "Turpināt",
+                "resendCode": "Nosūtīt kodu atkārtoti",
+                "submit": "Verificēt"
+            }
+        },
+        "recovery": {
+            "title": "Paroles atjaunošana",
+            "email": "E-pasts",
+            "code": "Verifikācijas kods",
+            "buttons": {
+                "submit": "Sūtīt kodu",
+                "verify": "Verificēt kodu",
+                "resend": "Sūtīt kodu atkārtoti"
+            }
+        },
+        "register": {
+            "title": "Reģistrēšanās",
+            "incorrectCredentials": "Nepareizs lietotājvārds vai parole",
+            "buttons": {
+                "continue": "Turpināt",
+                "previous": "Atpakaļ"
+            },
+            "options": {
+                "google": {
+                    "name": "Google",
+                    "description": "Reģistrēties ar Google kontu"
+                },
+                "facebook": {
+                    "name": "Facebook",
+                    "description": "Reģistrēties ar Facebook kontu"
+                }
+            },
+            "errors": {
+                "4000002": "Šis lauks ir obligāts",
+                "4000007": "Lietotājs ar šādu e-pastu jau reģistrēts.",
+                "4000006": "Šī parole ir atrodama noplūdušu paroļu reģistrā. Lūdzu izvēlieties citu paroli.",
+                "1040009": "Lūdzu izvēlieties paroli turpmākai autentifikācijai.",
+                "1080003": "E-pasts ar verifikācijas kodu ir nosūtīts. Ja tas nav saņemts e-pasts, pārbaudiet vai e-pasts norādīts pareizi.",
+                "4070006": "Verifikācijas kods ir nepareizs vai jau ir izmantots. Lūdzu mēģiniet vēlreiz."
+            },
+            "email": {
+                "label": "E-pasts"
+            },
+            "givenName": {
+                "label": "Vārds"
+            },
+            "familyName": {
+                "label": "Uzvārds"
+            },
+            "password": {
+                "label": "Parole"
+            }
+        },
+        "profile": {
+            "title": "Lietotāja profils",
+            "buttons": {
+                "continue": "Saglabāt",
+                "changePassword": "Mainīt paroli"
+            },
+            "errors": {
+                "4000002": "Šis lauks ir obligāts",
+                "4000007": "Lietotājs ar šādu e-pastu jau reģistrēts.",
+                "4000006": "Šī parole ir atrodama noplūdušu paroļu reģistrā. Lūdzu izvēlieties citu paroli.",
+                "4000034": "Šī parole ir atrodama noplūdušu paroļu reģistrā. Lūdzu izvēlieties citu paroli.",
+                "1040009": "Lūdzu izvēlieties paroli turpmākai autentifikācijai.",
+                "1050001": "Izmaiņas veiksmīgi saglabātas!",
+                "1060001": "Jūs veiksmīgi atjauninājat savu kontu. Lūdzu, mainiet paroli vai uzstādiet alternatīvo pieteikšanās veidu (piemēram, sociālā pieteikšanās) 60 minūtēs.",
+                "1080003": "E-pasts ar verifikācijas kodu ir nosūtīts. Ja tas nav saņemts e-pasts, pārbaudiet vai e-pasts norādīts pareizi.",
+                "4070006": "Verifikācijas kods ir nepareizs vai jau ir izmantots. Lūdzu mēģiniet vēlreiz."
+            },
+            "email": {
+                "label": "E-pasts"
+            },
+            "givenName": {
+                "label": "Vārds"
+            },
+            "familyName": {
+                "label": "Uzvārds"
+            },
+            "password": {
+                "label": "Parole"
+            }
+        },
+        "home": {
+            "title": "Akordi",
+            "buttons": {
+                "loginUnauthorized": "Ienākt"
+            }
+        },
+        "sessionEnded": {
+            "title": "Jūsu sesija ir beigusies",
+            "description": "Sesijas atvēlētais laiks ir beidzies. Lai turpinātu darbu, ienāciet sistēmā atkārtoti"
+        },
+        "userProfile": {
+            "title": "Lietotāja profils",
+            "givenNameLabel": "Vārds",
+            "familyNameLabel": "Uzvārds",
+            "phoneLabel": "Kontakttālrunis",
+            "emailLabel": "E-pasta adrese",
+            "viewProfile": "Skatīt profilu",
+            "sessionTime": "Sesijas darbības laiks:",
+            "sections": {
+                "profile": "Profils",
+                "preferences": "Iestatījumi",
+                "songbooks": "Dziesmu grāmatas"
+            },
+            "preferences": {
+                "description": "Šie iestatījumi tiek saglabāti tavā kontā un izmantoti, kad atver dziesmas.",
+                "instrument": "Noklusētais instruments akordiem",
+                "loadError": "Neizdevās ielādēt profila iestatījumus",
+                "saveSuccess": "Iestatījumi saglabāti",
+                "saveError": "Neizdevās saglabāt iestatījumus"
+            },
+            "songbooks": {
+                "description": "Tev ir {count} dziesmu grāmatas"
+            }
+        },
+        "users": {
+            "title": "Lietotāji"
+        },
+        "error": {
+            "goBack": "Atgriezties atpakaļ",
+            "goHome": "Atgriezties uz sākumu",
+            "title": "Notika negaidīta kļūda"
+        },
+        "auth": {
+            "title": "Notiek apstrāde",
+            "description": "Notiek apstrāde. Lūdzu, uzgaidiet!",
+            "errors": {
+                "unknownTitle": "Nezināma autorizācijas kļūda",
+                "unknownDescription": "Mēģiniet veikt atkārtotu autorizāciju.",
+                "blockedTitle": "Lietotājs ir bloķēts",
+                "blockedDescription": "Sazinieties ar sistēmas administratoru.",
+                "invalidRightsTitle": "Jums nav piešķirtas tiesības lietot šo sistēmu",
+                "invalidRightsDescription": "Sazinieties ar sistēmas administratoru.",
+                "invalidRequestTitle": "Kļūdains autorizācijas pieprasījums",
+                "invalidRequestDescription": "Mēģiniet veikt atkārtotu autorizāciju."
+            }
+        },
+        "artistView": {
+            "pageTitle": "{artist} dziesmas",
+            "metaDescription": "Dziesmas ar akordiem un tabulatūrām {songTitles}"
+        },
+        "notFound": {
+            "title": "Lapa nav atrasta",
+            "description": "Pārbaudiet, vai lapas adrese ir pareiza un mēģiniet vēlreiz, vai atgriezieties uz sākumlapu"
+        }
+    },
+    "cookieConsent": {
+        "title": "Sīkdatņu politika",
+        "description": "Šī vietne izmanto sīkdatnes, lai nodrošinātu populārāko dziesmu statistiku un uzlabotu lietotāja pieredzi. \nLūdzu, piekrītiet sīkdatņu izmantošanai, lai turpinātu izmantot šo vietni.",
+        "accept": "Piekrītu",
+        "reject": "Aizvērt"
+    },
+    "confirm": {
+        "yes": "Jā",
+        "no": "Nē",
+        "logout": {
+            "title": "Iziet",
+            "message": "Vai tiešām vēlaties iziet?",
+            "yes": "Jā",
+            "no": "Nē"
+        }
+    },
+    "menu": {
+        "home": "Sākums",
+        "users": "Lietotāji",
+        "login": "Autorizācija",
+        "logout": "Iziet"
+    },
+    "errors": {
+        "logoutFailed": "Radās kļūda, veicot atteikšanos no sistēmas, pārlādējiet lapu un mēģiniet atkārtoti.",
+        "classifierLoadFailed": "Radās kļūda, ielādējot filtra klasifikatorus, pārlādējiet lapu un mēģiniet atkārtoti.",
+        "roleLoadFailed": "Radās kļūda, ielādējot lietotāja lomas, pārlādējiet lapu un mēģiniet atkārtoti.",
+        "institutionLoadFailed": "Radās kļūda, ielādējot lietotājam pieejamās iestādes, pārlādējiet lapu un mēģiniet atkārtoti.",
+        "hospitalLoadFailed": "Radās kļūda, ielādējot lietotājam pieejamās slimnīcas, pārlādējiet lapu un mēģiniet atkārtoti.",
+        "forbidden": "Jums nav tiesību veikt šo darbību!",
+        "loadFailed": "Neizdevās ielādēt datus",
+        "helpLoadFailed": "Neizdevās ielādēt palīdzības informāciju",
+        "loadSongFailed": "Neizdevās ielādēt dziesmu",
+        "unexpectedError": "Neparedzēta kļūda:"
+    },
+    "save": "Saglabāt",
+    "add": "Pievienot",
+    "edit": "Rediģēt",
+    "suggestEdit": "Ieteikt labojumu",
+    "delete": "Dzēst",
+    "copy": "Kopēt",
+    "cancel": "Atcelt",
+    "search": "Meklēt",
+    "song": {
+        "title": "Nosaukums",
+        "artist": "Izpildītājs",
+        "performer": "Izpildītājs",
+        "composer": "Mūzikas autors",
+        "poet": "Vārdu autors",
+        "tags": "Birkas",
+        "youtubeLink": "Youtube video",
+        "createdAt": "Izveidots",
+        "updatedAt": "Pēdējo reizi labots",
+        "reference": "Atsauce",
+        "lyrics": "Dziesmas vārdi",
+        "body": "Dziesmas teksts ar akordiem",
+        "bodyTooltip": "Vēlams pievienot dziesmas ar pilniem dziesmu tekstiem. Teksta izkārtojumam lietot atstarpes nevis tab."
     },
     "songs": {
-      "title": "Dziesmu katalogs"
-    },
-    "songSearch": {
-      "title": "Dziesmu meklētājs",
-      "description": "Izmanto meklētāju un atrodi ko uzspēlēt kādā starp {songCount} akordi.lv dziesmām",
-      "search": {
-        "error": "Kļūda meklējot dziesmas. Lūdzu mēģiniet vēlāk."
-      }
-    },
-    "songListNew": {
-      "title": "Jaunākās dziesmas",
-      "description": "Nesen pievienotās dziesmas",
-      "list": {
-        "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
-      }
-    },
-    "songListTop": {
-      "title": "Populārākās dziesmas",
-      "description": "Pagājušās nedēļas populārākās dziesmas, kuras ir skatījušies un spēlējuši citi lietotāji",
-      "list": {
-        "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
-      }
-    },
-    "songEdit": {
-      "title": "Dziesmas labojums",
-      "description": "Šeit vari iesniegt dziesmas labojumus"
-    },
-    "songNew": {
-      "title": "Iesniegt dziesmu",
-      "description": "Šeit jūs varat iesniegt dziesmu, lai tā tiktu pievienota portālā. Lapa paredzēta tikai latviešu dziesmām (dziesmas valodai nav nozīmes). Tā tiks pārbaudīta un pievienota datu bāzei."
-    },
-    "akordiSongView": {
-      "title": "Akordi.lv dziesmas",
-      "copy": {
-        "label": "Kopēt dziesmu",
-        "description": "Kopēt dziesmas tekstu, lai izveidotu savu versiju"
-      },
-      "hideChords": {
-        "label": "Nerādīt akordus",
-        "description": "Slēpt dziesmas akordu tabulutūru"
-      },
-      "showSheet": {
-        "label": "Rādīt notis",
-        "description": "Rādīt dziesmas notis"
-      },
-      "autoScroll": {
-        "label": "Automātiska ritināšana ({speed})",
-        "playDescription": "Paātrināt automātisko ritināšanu",
-        "stopDescription": "Apstādināt automātisko ritināšanu"
-      },
-      "showGuitarChords": {
-        "label": "Rādīt ģitāras akordus",
-        "description": "Rādīt vai slēpt dziesmas akordu tabulutūru ģitārai"
-      },
-      "showUkuleleChords": {
-        "label": "Rādīt ukuleles akordus",
-        "description": "Rādīt vai slēpt dziesmas akordu tabulutūru ukulelei"
-      },
-      "showBaritoneUkuleleChords": {
-        "label": "Rādīt baritona ukuleles akordus",
-        "description": "Rādīt vai slēpt dziesmas akordu tabulutūru baritona ukulelei"
-      },
-      "transposeUp": {
-        "label": "Transponēt augšup",
-        "description": "Pārnest dziesmu augšup par pustoni"
-      },
-      "transposeDown": {
-        "label": "Transponēt lejup",
-        "description": "Pārnest dziesmu lejup par pustoni"
-      },
-      "fontUp": {
-        "label": "Palielināt burtus",
-        "description": "Palielināt burtu izmēru dziesmas tekstā"
-      },
-      "fontDown": {
-        "label": "Samazināt burtus",
-        "description": "Samazināt burtu izmēru dziesmas tekstā"
-      },
-      "transposeDisabled": "Transponēšana ir atspējota, jo dziesmas tekstā nav atrodami akordi",
-      "transposeLoadError": "Neizdevās ielādēt saglabāto transpozīciju",
-      "transposeSaveError": "Neizdevās saglabāt transpozīciju",
-      "audioNotSupported": "Jūsu pārlūks neatbalsta audio",
-      "transposeHeader": "Transponēt ({offset})",
-      "addToList": {
-        "label": "Pievienot dziesmu grāmatai",
-        "description": "Pievienot šo dziesmu vienai no savām dziesmu grāmatām",
-        "success": "Dziesma veiksmīgi pievienota",
-        "error": "Kļūda pievienojot dziesmu"
-      },
-      "authRequired": {
-        "title": "Nepieciešama pieslēgšanās",
-        "description": "Lai pievienotu dziesmu savām dziesmu grāmatām, vispirms pieslēdzies savam kontam. Pēc pieslēgšanās atgriezīsies šajā dziesmā.",
-        "login": "Pieslēgties"
-      },
-      "createSongbook": {
-        "action": "Izveidot dziesmu grāmatu",
-        "title": "Jauna dziesmu grāmata",
-        "createAndAdd": "Izveidot un pievienot dziesmu",
-        "description": "Ja vajadzīgās dziesmu grāmatas vēl nav, izveido jaunu.",
-        "name": "Jauna dziesmu grāmata",
-        "placeholder": "Dziesmu grāmatas nosaukums",
-        "nameRequired": "Ievadi dziesmu grāmatas nosaukumu",
-        "success": "Dziesmu grāmata izveidota un dziesma pievienota",
-        "error": "Neizdevās izveidot dziesmu grāmatu"
-      },
-      "removeFromList": {
-        "label": "Izņemt no dziesmu grāmatas",
-        "description": "Izņemt šo dziesmu no vienas no savām dziesmu grāmatām",
-        "success": "Dziesma veiksmīgi izņemta",
-        "error": "Kļūda izņemot dziesmu"
-      }
-    },
-    "songbook": {
-      "title": "Manas dziesmu grāmatas",
-      "description": "Šeit vari pārvaldīt savas personīgās dziesmu grāmatas",
-      "empty": "Tev vēl nav nevienas dziesmu grāmatas",
-      "add": "Izveidot dziesmu grāmatu",
-      "delete": {
-        "title": "Dzēst dziesmu grāmatu",
-        "message": "Vai tiešām vēlaties dzēst dziesmu grāmatu \"{name}\"?",
-        "success": "Dziesmu grāmata veiksmīgi dzēsta",
-        "error": "Kļūda dzēšot dziesmu grāmatu"
-      },
-      "save": {
-        "success": "Dziesmu grāmata veiksmīgi saglabāta",
-        "error": "Kļūda saglabājot dziesmu grāmatu"
-      },
-      "addSong": {
-        "success": "Dziesma pievienota dziesmu grāmatai",
-        "error": "Kļūda pievienojot dziesmu"
-      },
-      "removeSong": {
-        "success": "Dziesma izņemta no dziesmu grāmatas",
-        "error": "Kļūda izņemot dziesmu no dziesmu grāmatas"
-      },
-      "songs": "Dziesmas dziesmu grāmatā"
-    },
-    "akordiArtistLetter": {
-      "title": "Mākslinieku katalogs A-Z",
-      "description": "Pārlūko mākslinieku sarakstu alfabēta secībā no A līdz Z",
-      "search": {
-        "error": "Kļūda meklējot māksliniekus. Lūdzu mēģiniet vēlāk."
-      }
-    },
-    "tagList": {
-      "title": "Birkas",
-      "description": "Šeit vari pārlūkot tematiskas dziesmu kategorijas",
-      "list": {
-        "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
-      }
-    },
-    "tagView": {
-      "title": "Birka #{title}",
-      "metaDescription": "Dziesmas ar akordiem un tabulatūrām {songTitles}",
-      "list": {
-        "error": "Kļūda ielādējot dziesmas. Lūdzu mēģiniet vēlāk."
-      }
-    },
-    "login": {
-      "title": "Izvēlieties autentifikācijas veidu",
-      "buttons": {
-        "signIn": "Pieslēgties",
-        "register": "Reģistrēties",
-        "forgotPassword": "Aizmirsu paroli?"
-      },
-      "options": {
-        "google": {
-          "name": "Google",
-          "description": "Pieslēgties ar Google kontu"
-        },
-        "facebook": {
-          "name": "Facebook",
-          "description": "Pieslēgties ar Facebook kontu"
+        "save": {
+            "success": "Dziesma veiksmīgi iesniegta apstiprināšanai",
+            "error": "Kļūda saglabājot dziesmu"
         }
-      },
-      "email": "E-pasts",
-      "password": "Parole",
-      "errors": {
-        "4000002": "Šis lauks ir obligāts",
-        "4000006": "Nepareizs e-pasts un/vai parole",
-        "1060003": "E-pasts ar atjaunošanas kodu nosūtīts uz jūsu e-pastu. Ja tas nav saņemts e-pasts, pārbaudiet vai e-pasts norādīts pareizi.",
-        "1080002": "E-pasts veiksmīgi verificēts.",
-        "1080003": "E-pasts ar verifikācijas kodu ir nosūtīts. Ja tas nav saņemts e-pasts, pārbaudiet vai e-pasts norādīts pareizi."
-      }
     },
-    "verification": {
-      "title": "Verifikācija",
-      "code": "Verifikācijas kods",
-      "success": "Verificēts!",
-      "successDescription": "E-pasta adrese veiksmīgi verificēta.",
-      "buttons": {
-        "continue": "Turpināt",
-        "resendCode": "Nosūtīt kodu atkārtoti",
-        "submit": "Verificēt"
-      }
+    "artist": {
+        "title": "Nosaukums"
     },
-    "recovery": {
-      "title": "Paroles atjaunošana",
-      "email": "E-pasts",
-      "code": "Verifikācijas kods",
-      "buttons": {
-        "submit": "Sūtīt kodu",
-        "verify": "Verificēt kodu",
-        "resend": "Sūtīt kodu atkārtoti"
-      }
-    },
-    "register": {
-      "title": "Reģistrēšanās",
-      "incorrectCredentials": "Nepareizs lietotājvārds vai parole",
-      "buttons": {
-        "continue": "Turpināt",
-        "previous": "Atpakaļ"
-      },
-      "options": {
-        "google": {
-          "name": "Google",
-          "description": "Reģistrēties ar Google kontu"
+    "artists": {
+        "save": {
+            "success": "Mākslinieks veiksmīgi saglabāts",
+            "error": "Kļūda saglabājot mākslinieku"
         },
-        "facebook": {
-          "name": "Facebook",
-          "description": "Reģistrēties ar Facebook kontu"
+        "delete": {
+            "success": "Mākslinieks veiksmīgi dzēsts",
+            "error": "Kļūda dzēšot mākslinieku"
         }
-      },
-      "errors": {
-        "4000002": "Šis lauks ir obligāts",
-        "4000007": "Lietotājs ar šādu e-pastu jau reģistrēts.",
-        "4000006": "Šī parole ir atrodama noplūdušu paroļu reģistrā. Lūdzu izvēlieties citu paroli.",
-        "1040009": "Lūdzu izvēlieties paroli turpmākai autentifikācijai.",
-        "1080003": "E-pasts ar verifikācijas kodu ir nosūtīts. Ja tas nav saņemts e-pasts, pārbaudiet vai e-pasts norādīts pareizi.",
-        "4070006": "Verifikācijas kods ir nepareizs vai jau ir izmantots. Lūdzu mēģiniet vēlreiz."
-      },
-      "email": {
-        "label": "E-pasts"
-      },
-      "givenName": {
-        "label": "Vārds"
-      },
-      "familyName": {
-        "label": "Uzvārds"
-      },
-      "password": {
-        "label": "Parole"
-      }
-    },
-    "profile": {
-      "title": "Lietotāja profils",
-      "buttons": {
-        "continue": "Saglabāt",
-        "changePassword": "Mainīt paroli"
-      },
-      "errors": {
-        "4000002": "Šis lauks ir obligāts",
-        "4000007": "Lietotājs ar šādu e-pastu jau reģistrēts.",
-        "4000006": "Šī parole ir atrodama noplūdušu paroļu reģistrā. Lūdzu izvēlieties citu paroli.",
-        "4000034": "Šī parole ir atrodama noplūdušu paroļu reģistrā. Lūdzu izvēlieties citu paroli.",
-        "1040009": "Lūdzu izvēlieties paroli turpmākai autentifikācijai.",
-        "1050001": "Izmaiņas veiksmīgi saglabātas!",
-        "1060001": "Jūs veiksmīgi atjauninājat savu kontu. Lūdzu, mainiet paroli vai uzstādiet alternatīvo pieteikšanās veidu (piemēram, sociālā pieteikšanās) 60 minūtēs.",
-        "1080003": "E-pasts ar verifikācijas kodu ir nosūtīts. Ja tas nav saņemts e-pasts, pārbaudiet vai e-pasts norādīts pareizi.",
-        "4070006": "Verifikācijas kods ir nepareizs vai jau ir izmantots. Lūdzu mēģiniet vēlreiz."
-      },
-      "email": {
-        "label": "E-pasts"
-      },
-      "givenName": {
-        "label": "Vārds"
-      },
-      "familyName": {
-        "label": "Uzvārds"
-      },
-      "password": {
-        "label": "Parole"
-      }
-    },
-    "home": {
-      "title": "Akordi",
-      "buttons": {
-        "loginUnauthorized": "Ienākt"
-      }
-    },
-    "sessionEnded": {
-      "title": "Jūsu sesija ir beigusies",
-      "description": "Sesijas atvēlētais laiks ir beidzies. Lai turpinātu darbu, ienāciet sistēmā atkārtoti"
-    },
-    "userProfile": {
-      "title": "Lietotāja profils",
-      "givenNameLabel": "Vārds",
-      "familyNameLabel": "Uzvārds",
-      "phoneLabel": "Kontakttālrunis",
-      "emailLabel": "E-pasta adrese",
-      "viewProfile": "Skatīt profilu",
-      "sessionTime": "Sesijas darbības laiks:",
-      "sections": {
-        "profile": "Profils",
-        "preferences": "Iestatījumi",
-        "songbooks": "Dziesmu grāmatas"
-      },
-      "preferences": {
-        "description": "Šie iestatījumi tiek saglabāti tavā kontā un izmantoti, kad atver dziesmas.",
-        "instrument": "Noklusētais instruments akordiem",
-        "loadError": "Neizdevās ielādēt profila iestatījumus",
-        "saveSuccess": "Iestatījumi saglabāti",
-        "saveError": "Neizdevās saglabāt iestatījumus"
-      },
-      "songbooks": {
-        "description": "Tev ir {count} dziesmu grāmatas"
-      }
-    },
-    "users": {
-      "title": "Lietotāji"
     },
     "error": {
-      "goBack": "Atgriezties atpakaļ",
-      "goHome": "Atgriezties uz sākumu",
-      "title": "Notika negaidīta kļūda"
+        "validation": "Lūdzu aizpildiet laukus"
     },
-    "auth": {
-      "title": "Notiek apstrāde",
-      "description": "Notiek apstrāde. Lūdzu, uzgaidiet!",
-      "errors": {
-        "unknownTitle": "Nezināma autorizācijas kļūda",
-        "unknownDescription": "Mēģiniet veikt atkārtotu autorizāciju.",
-        "blockedTitle": "Lietotājs ir bloķēts",
-        "blockedDescription": "Sazinieties ar sistēmas administratoru.",
-        "invalidRightsTitle": "Jums nav piešķirtas tiesības lietot šo sistēmu",
-        "invalidRightsDescription": "Sazinieties ar sistēmas administratoru.",
-        "invalidRequestTitle": "Kļūdains autorizācijas pieprasījums",
-        "invalidRequestDescription": "Mēģiniet veikt atkārtotu autorizāciju."
-      }
+    "validations": {
+        "required": "Šis lauks ir obligāts"
     },
-    "artistView": {
-      "pageTitle": "{artist} dziesmas",
-      "metaDescription": "Dziesmas ar akordiem un tabulatūrām {songTitles}"
-    },
-    "notFound": {
-      "title": "Lapa nav atrasta",
-      "description": "Pārbaudiet, vai lapas adrese ir pareiza un mēģiniet vēlreiz, vai atgriezieties uz sākumlapu"
+    "accessibilitySettings": {
+        "title": "Piekļūstamības iestatījumi",
+        "description": "Rīki un iestatījumi, kas palīdz pielāgot lietotni dažādiem lietotājiem un to vajadzībām.",
+        "appearance": "Vizuālais izskats",
+        "animations": "Kustība un animācijas",
+        "fonts": "Teksts un fonti",
+        "interactions": "Mijiedarbība",
+        "reset": "Atiestatīt iestatījumus",
+        "themeTitle": "Noformējuma izvēle",
+        "transparencyTitle": "Caurspīdīgums",
+        "animationsTitle": "Animācijas",
+        "fontsTitle": "Iekārtas fonti",
+        "touchModeTitle": "Skārienvadība",
+        "transparencyDescription": "Caurspīdīgums ir vizuāls efekts, kas ļauj redzēt daļu no fona zem aktīviem logiem vai paneļiem. Šis iestatījums ļauj samazināt vai izslēgt caurspīdīgumu, lai fons būtu vienkrāsains, tā uzlabojot satura un fona atšķirību, padarot saturu vieglāk uztveramu. Piemērots lietotājiem ar redzes traucējumiem, koncentrēšanās grūtībām vai krāsu uztveres problēmām.",
+        "animationsDescription": "Animācijas ir vizuāli kustīgi efekti, kas parādās pārejās, klikšķos un citu elementu mijiedarbībā, piemēram, kad tiek atvērti logi vai pārslēgti izvēlnes elementi. Šis iestatījums ļauj samazināt vai izslēgt animācijas, lai saskarne būtu mierīgāka un mazāk traucējoša. Svarīgi lietotājiem ar vestibulāriem traucējumiem vai paaugstinātu jutību pret kustību.",
+        "fontsDescription": "Iekārtas fonti ir ierīces vai operētājsistēmas noklusējuma fonti. To izmantošana uzlabo teksta salasāmību un atpazīstamību, nodrošinot konsekventu un lietotājam pazīstamu teksta attēlojumu.",
+        "touchModeDescription": "Ieslēdzot skārienjutīgu režīmu, lietotne tiek pielāgota lietošanai ar pirkstu uz skārienekrāna. Tiek palielināti nospiežamie elementi (pogas, izvēlnes u.c. ), lai uzlabotu lietošanas ērtumu.",
+        "themeAuto": "Automātisks",
+        "themeLight": "Gaišs",
+        "themeDark": "Tumšs",
+        "themeContrast": "Kontrastains",
+        "themeAutoDescription": "Automātiskais noformējums ņem vērā ierīces vai sistēmas iestatījumus.",
+        "themeLightDescription": "Gaišs noformējums ar tumšu tekstu uz gaiša fona.",
+        "themeDarkDescription": "Tumšs noformējums ar gaišu tekstu uz tumša fona.",
+        "themeContrastDescription": "Noformējums ar paaugstinātu krāsu kontrastu, kas uzlabo satura salasāmību.",
+        "transparencyLinkLabel": "Piekļūstamības standarti (WCAG Contrast (Minimum))",
+        "animationsLinkLabel": "Piekļūstamības standarti (WCAG Animation from Interactions)"
     }
-  },
-  "cookieConsent": {
-    "title": "Sīkdatņu politika",
-    "description": "Šī vietne izmanto sīkdatnes, lai nodrošinātu populārāko dziesmu statistiku un uzlabotu lietotāja pieredzi. \nLūdzu, piekrītiet sīkdatņu izmantošanai, lai turpinātu izmantot šo vietni.",
-    "accept": "Piekrītu",
-    "reject": "Aizvērt"
-  },
-  "confirm": {
-    "yes": "Jā",
-    "no": "Nē",
-    "logout": {
-      "title": "Iziet",
-      "message": "Vai tiešām vēlaties iziet?",
-      "yes": "Jā",
-      "no": "Nē"
-    }
-  },
-  "menu": {
-    "home": "Sākums",
-    "users": "Lietotāji",
-    "login": "Autorizācija",
-    "logout": "Iziet"
-  },
-  "errors": {
-    "logoutFailed": "Radās kļūda, veicot atteikšanos no sistēmas, pārlādējiet lapu un mēģiniet atkārtoti.",
-    "classifierLoadFailed": "Radās kļūda, ielādējot filtra klasifikatorus, pārlādējiet lapu un mēģiniet atkārtoti.",
-    "roleLoadFailed": "Radās kļūda, ielādējot lietotāja lomas, pārlādējiet lapu un mēģiniet atkārtoti.",
-    "institutionLoadFailed": "Radās kļūda, ielādējot lietotājam pieejamās iestādes, pārlādējiet lapu un mēģiniet atkārtoti.",
-    "hospitalLoadFailed": "Radās kļūda, ielādējot lietotājam pieejamās slimnīcas, pārlādējiet lapu un mēģiniet atkārtoti.",
-    "forbidden": "Jums nav tiesību veikt šo darbību!",
-    "loadFailed": "Neizdevās ielādēt datus",
-    "helpLoadFailed": "Neizdevās ielādēt palīdzības informāciju",
-    "loadSongFailed": "Neizdevās ielādēt dziesmu",
-    "unexpectedError": "Neparedzēta kļūda:"
-  },
-  "save": "Saglabāt",
-  "add": "Pievienot",
-  "edit": "Rediģēt",
-  "suggestEdit": "Ieteikt labojumu",
-  "delete": "Dzēst",
-  "copy": "Kopēt",
-  "cancel": "Atcelt",
-  "search": "Meklēt",
-  "song": {
-    "title": "Nosaukums",
-    "artist": "Izpildītājs",
-    "performer": "Izpildītājs",
-    "composer": "Mūzikas autors",
-    "poet": "Vārdu autors",
-    "tags": "Birkas",
-    "youtubeLink": "Youtube video",
-    "createdAt": "Izveidots",
-    "updatedAt": "Pēdējo reizi labots",
-    "reference": "Atsauce",
-    "lyrics": "Dziesmas vārdi",
-    "body": "Dziesmas teksts ar akordiem",
-    "bodyTooltip": "Vēlams pievienot dziesmas ar pilniem dziesmu tekstiem. Teksta izkārtojumam lietot atstarpes nevis tab."
-  },
-  "songs": {
-    "save": {
-      "success": "Dziesma veiksmīgi iesniegta apstiprināšanai",
-      "error": "Kļūda saglabājot dziesmu"
-    }
-  },
-  "artist": {
-    "title": "Nosaukums"
-  },
-  "artists": {
-    "save": {
-      "success": "Mākslinieks veiksmīgi saglabāts",
-      "error": "Kļūda saglabājot mākslinieku"
-    },
-    "delete": {
-      "success": "Mākslinieks veiksmīgi dzēsts",
-      "error": "Kļūda dzēšot mākslinieku"
-    }
-  },
-  "error": {
-    "validation": "Lūdzu aizpildiet laukus"
-  },
-  "validations": {
-    "required": "Šis lauks ir obligāts"
-  },
-  "accessibilitySettings": {
-      "title": "Piekļūstamības iestatījumi",
-      "description": "Rīki un iestatījumi, kas palīdz pielāgot lietotni dažādiem lietotājiem un to vajadzībām.",
-      "appearance": "Vizuālais izskats",
-      "animations": "Kustība un animācijas",
-      "fonts": "Teksts un fonti",
-      "interactions": "Mijiedarbība",
-      "reset": "Atiestatīt iestatījumus",
-      "themeTitle": "Noformējuma izvēle",
-      "transparencyTitle": "Caurspīdīgums",
-      "animationsTitle": "Animācijas",
-      "fontsTitle": "Iekārtas fonti",
-      "touchModeTitle": "Skārienvadība",
-      "transparencyDescription": "Caurspīdīgums ir vizuāls efekts, kas ļauj redzēt daļu no fona zem aktīviem logiem vai paneļiem. Šis iestatījums ļauj samazināt vai izslēgt caurspīdīgumu, lai fons būtu vienkrāsains, tā uzlabojot satura un fona atšķirību, padarot saturu vieglāk uztveramu. Piemērots lietotājiem ar redzes traucējumiem, koncentrēšanās grūtībām vai krāsu uztveres problēmām.",
-      "animationsDescription": "Animācijas ir vizuāli kustīgi efekti, kas parādās pārejās, klikšķos un citu elementu mijiedarbībā, piemēram, kad tiek atvērti logi vai pārslēgti izvēlnes elementi. Šis iestatījums ļauj samazināt vai izslēgt animācijas, lai saskarne būtu mierīgāka un mazāk traucējoša. Svarīgi lietotājiem ar vestibulāriem traucējumiem vai paaugstinātu jutību pret kustību.",
-      "fontsDescription": "Iekārtas fonti ir ierīces vai operētājsistēmas noklusējuma fonti. To izmantošana uzlabo teksta salasāmību un atpazīstamību, nodrošinot konsekventu un lietotājam pazīstamu teksta attēlojumu.",
-      "touchModeDescription": "Ieslēdzot skārienjutīgu režīmu, lietotne tiek pielāgota lietošanai ar pirkstu uz skārienekrāna. Tiek palielināti nospiežamie elementi (pogas, izvēlnes u.c. ), lai uzlabotu lietošanas ērtumu.",
-      "themeAuto": "Automātisks",
-      "themeLight": "Gaišs",
-      "themeDark": "Tumšs",
-      "themeContrast": "Kontrastains",
-      "themeAutoDescription": "Automātiskais noformējums ņem vērā ierīces vai sistēmas iestatījumus.",
-      "themeLightDescription": "Gaišs noformējums ar tumšu tekstu uz gaiša fona.",
-      "themeDarkDescription": "Tumšs noformējums ar gaišu tekstu uz tumša fona.",
-      "themeContrastDescription": "Noformējums ar paaugstinātu krāsu kontrastu, kas uzlabo satura salasāmību.",
-      "transparencyLinkLabel": "Piekļūstamības standarti (WCAG Contrast (Minimum))",
-      "animationsLinkLabel": "Piekļūstamības standarti (WCAG Animation from Interactions)"
-  }
 }

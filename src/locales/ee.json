@@ -1,627 +1,628 @@
 {
-  "title": {
-    "default": "Akordid.ee",
-    "prefix": "Eesti laulude akordid, tablatuurid ja sõnad - ",
-    "fullName": "Akordid.ee",
-    "fullNameFormatted": "Akordid.ee",
-    "subheader": "Laulusõnade, akordide ja tablatuuride hoidla",
-    "shortName": "Akordid",
-    "description": "Otsige akorde ja laulusõnu eesti lauludele ning leidke tuhandeid populaarseid laule andmebaasist."
-  },
-  "lx": {
-    "shell": {
-      "defaultBack": "Tagasi",
-      "logOut": "Logi välja",
-      "openAlerts": "Ava nimekiri",
-      "noAlerts": "Teateid pole",
-      "openNavbar": "Ava menüü",
-      "helpTitle": "Abi",
-      "alertsTitle": "Teated",
-      "languagesTitle": "Keele valik",
-      "contextPersonTitle": "Seotud isikute andmed",
-      "close": "Sulge",
-      "contextPersonsLabel": "Vali isik",
-      "contextPersonsInfoLabel": "Patsient",
-      "contextPersonsInfoTitle": "Konteksti isik",
-      "contextPersonsOwnData": "Vaata minu andmeid",
-      "alternativeProfilesLabel": "Valige alternatiivne profiil",
-      "contextPersonsButtonLabel": "Konteksti isikud",
-      "alternativeProfilesButtonLabel": "Alternatiivsed profiilid",
-      "idleModalLabel": "Sessiooni lõpp läheneb",
-      "idleModalPrimaryLabel": "Jätka tööd",
-      "idleModalSecondaryLabel": "Lõpeta töö",
-      "descriptionMinutes": "Sessiooni lõpuni on jäänud {count} minutit",
-      "descriptionMinutesSmall": "ja {count} sekundit",
-      "idleDescription": "Sessiooni lõpuni on jäänud {count} sekundit",
-      "themeTitle": "Välimuse valik",
-      "themeAuto": "Automaatne režiim",
-      "themeLight": "Hele režiim",
-      "themeDark": "Tume režiim",
-      "themeContrast": "Kontrastne režiim",
-      "animations": "Vähenda liigutusi",
-      "transparency": "Vähenda läbipaistvust",
-      "fonts": "Seadme fondid",
-      "touchMode": "Puute režiim",
-      "reduceMotionOff": "Ei",
-      "reduceMotionOn": "Jah",
-      "reduceTransparencyOff": "Ei",
-      "reduceTransparencyOn": "Jah",
-      "systemFontsOff": "Ei",
-      "systemFontsOn": "Jah",
-      "touchModeOff": "Ei",
-      "touchModeOn": "Jah",
-      "confirmModalSecondaryDefaultLabel": "Ei",
-      "confirmModalPrimaryDefaultLabel": "Jah",
-      "previousAlertTitle": "Eelmine teade",
-      "nextAlertTitle": "Järgmine teade",
-      "userTitle": "Kasutaja",
-      "menu": "Menüü",
-      "showAllLabel": "Rohkem",
-      "megaMenuTitle": "Rakendused",
-      "successSvgTitle": "Edukalt teade",
-      "warningSvgTitle": "Hoiatus",
-      "errorSvgTitle": "Viga",
-      "infoSvgTitle": "Teave",
-      "svgTitle": "Teade",
-      "skipLinkLabel": "Mine lehe sisule",
-      "skipLinkTitle": "Mine lehe sisule",
-      "customButton": "Kohandatud nupp",
-      "overflowNavItems": "Ava täiendav menüü",
-      "scrollUp": "Mine üles",
-      "contextPersonsBirthDate": "Sünniaeg",
-      "settings": "Seaded",
-      "contextPersonsTooltipLabel": "Konteksti isik",
-      "contextPersonsTooltipDescription": "Konteksti isiku kirjeldus",
-      "badgeTypes": {
-        "default": "informatiivne teade",
-        "info": "informatiivne teade",
-        "warning": "hoiatus",
-        "good": "edukas teade",
-        "important": "tähtis teade"
-      },
-      "spotlight": {
-        "label": "Rakenduse juhend",
-        "close": "Sulge",
-        "next": "Järgmine",
-        "back": "Tagasi",
-        "showMore": "Uuri rohkem",
-        "of": "-st"
-      },
-      "userProfile": "Vaata profiili",
-      "notifications": {
-        "logoutSuccess": "Teie sessioon on edukalt lõpetatud",
-        "agreement": "Te peate nõustuma kasutustingimustega",
-        "unknownState": "Kasutaja oleku töötlemisel tekkis viga",
-        "err401": "Logige sisse, et kasutada funktsionaalsust",
-        "sessionContinued": "Sessioon edukalt pikendatud",
-        "sessionContinuedFailed": "Sessiooni pikendamine ebaõnnestus",
-        "sessionEndingSoon": "Teie sessioon lõpeb varsti"
-      },
-      "sessionExpiring": {
-        "label": "Sessiooni lõpp läheneb",
-        "description": "Sessiooni lõpuni on jäänud {count} sekund | Sessiooni lõpuni on jäänud {count} sekundit",
-        "descriptionMinutes": "Sessiooni lõpuni on jäänud {count} minut | Sessiooni lõpuni on jäänud {count} minutit",
-        "descriptionMinutesSmall": "ja {count} sekund | ja {count} sekundit",
-        "primaryLabel": "Jätka tööd",
-        "secondaryLabel": "Lõpeta töö"
-      }
+    "title": {
+        "default": "Akordid.ee",
+        "prefix": "Eesti laulude akordid, tablatuurid ja sõnad - ",
+        "fullName": "Akordid.ee",
+        "fullNameFormatted": "Akordid.ee",
+        "subheader": "Laulusõnade, akordide ja tablatuuride hoidla",
+        "shortName": "Akordid",
+        "description": "Otsige akorde ja laulusõnu eesti lauludele ning leidke tuhandeid populaarseid laule andmebaasist."
     },
-    "list": {
-      "clear": "Tühjenda",
-      "placeholder": "Sisestage nime või kirjelduse osa, et leida kirjeid",
-      "notFoundSearch": "Ei leitud:",
-      "noItems": "Kirjeid pole",
-      "noItemsDescription": "",
-      "loadMore": "Laadi veel",
-      "search": "Otsi",
-      "items": {
-        "singular": "kirje",
-        "plural": "kirjed",
-        "endingWith234": "kirjed",
-        "endingWith1": "kirje"
-      },
-      "ofItems": {
-        "label": "Kirjed",
-        "singular": "kirje",
-        "plural": "kirjetele",
-        "endingWith234": "kirjetele",
-        "endingWith1": "kirje"
-      },
-      "selected": {
-        "singular": "Valitud",
-        "plural": "Valitud",
-        "endingWith234": "Valitud",
-        "endingWith1": "Valitud"
-      },
-      "of": "kokku",
-      "clearSelected": "Tühjenda valik",
-      "selectAllRows": "Vali kõik",
-      "selectWholeGroup": "Vali kogu grupp",
-      "loadingError": "Laadimisel tekkis viga",
-      "reload": "Laadi uuesti",
-      "collapse": "Ahenda element",
-      "expand": "Laienda element",
-      "openSearch": "Ava otsing",
-      "closeSearch": "Sulge otsing",
-      "skipLinkLabel": "Jäta loend vahele",
-      "skipLinkTitle": "Jäta loend vahele",
-      "overflowMenu": "Ava lisavalikud"
-    }
-  },
-  "greeting": {
-    "default": "Tere tulemast",
-    "morning": "Tere hommikust",
-    "day": "Tere päevast",
-    "evening": "Tere õhtust",
-    "night": "Head ööd"
-  },
-  "pages": {
-    "chordsLibrary": {
-      "title": "Akordide kogu",
-      "description": "Siit leiate kõik toetatud akordid.",
-      "showGuitarChords": {
-        "label": "Kitarr"
-      },
-      "showUkuleleChords": {
-        "label": "Ukulele"
-      },
-      "showBaritoneUkuleleChords": {
-        "label": "Bariton ukulele"
-      },
-      "instrument": "Instrument",
-      "key": "Helistik"
+    "lx": {
+        "shell": {
+            "defaultBack": "Tagasi",
+            "logOut": "Logi välja",
+            "openAlerts": "Ava nimekiri",
+            "noAlerts": "Teateid pole",
+            "openNavbar": "Ava menüü",
+            "helpTitle": "Abi",
+            "alertsTitle": "Teated",
+            "languagesTitle": "Keele valik",
+            "contextPersonTitle": "Seotud isikute andmed",
+            "close": "Sulge",
+            "contextPersonsLabel": "Vali isik",
+            "contextPersonsInfoLabel": "Patsient",
+            "contextPersonsInfoTitle": "Konteksti isik",
+            "contextPersonsOwnData": "Vaata minu andmeid",
+            "alternativeProfilesLabel": "Valige alternatiivne profiil",
+            "contextPersonsButtonLabel": "Konteksti isikud",
+            "alternativeProfilesButtonLabel": "Alternatiivsed profiilid",
+            "idleModalLabel": "Sessiooni lõpp läheneb",
+            "idleModalPrimaryLabel": "Jätka tööd",
+            "idleModalSecondaryLabel": "Lõpeta töö",
+            "descriptionMinutes": "Sessiooni lõpuni on jäänud {count} minutit",
+            "descriptionMinutesSmall": "ja {count} sekundit",
+            "idleDescription": "Sessiooni lõpuni on jäänud {count} sekundit",
+            "themeTitle": "Välimuse valik",
+            "themeAuto": "Automaatne režiim",
+            "themeLight": "Hele režiim",
+            "themeDark": "Tume režiim",
+            "themeContrast": "Kontrastne režiim",
+            "animations": "Vähenda liigutusi",
+            "transparency": "Vähenda läbipaistvust",
+            "fonts": "Seadme fondid",
+            "touchMode": "Puute režiim",
+            "reduceMotionOff": "Ei",
+            "reduceMotionOn": "Jah",
+            "reduceTransparencyOff": "Ei",
+            "reduceTransparencyOn": "Jah",
+            "systemFontsOff": "Ei",
+            "systemFontsOn": "Jah",
+            "touchModeOff": "Ei",
+            "touchModeOn": "Jah",
+            "confirmModalSecondaryDefaultLabel": "Ei",
+            "confirmModalPrimaryDefaultLabel": "Jah",
+            "previousAlertTitle": "Eelmine teade",
+            "nextAlertTitle": "Järgmine teade",
+            "userTitle": "Kasutaja",
+            "menu": "Menüü",
+            "showAllLabel": "Rohkem",
+            "megaMenuTitle": "Rakendused",
+            "successSvgTitle": "Edukalt teade",
+            "warningSvgTitle": "Hoiatus",
+            "errorSvgTitle": "Viga",
+            "infoSvgTitle": "Teave",
+            "svgTitle": "Teade",
+            "skipLinkLabel": "Mine lehe sisule",
+            "skipLinkTitle": "Mine lehe sisule",
+            "customButton": "Kohandatud nupp",
+            "overflowNavItems": "Ava täiendav menüü",
+            "scrollUp": "Mine üles",
+            "contextPersonsBirthDate": "Sünniaeg",
+            "settings": "Seaded",
+            "contextPersonsTooltipLabel": "Konteksti isik",
+            "contextPersonsTooltipDescription": "Konteksti isiku kirjeldus",
+            "badgeTypes": {
+                "default": "informatiivne teade",
+                "info": "informatiivne teade",
+                "warning": "hoiatus",
+                "good": "edukas teade",
+                "important": "tähtis teade"
+            },
+            "spotlight": {
+                "label": "Rakenduse juhend",
+                "close": "Sulge",
+                "next": "Järgmine",
+                "back": "Tagasi",
+                "showMore": "Uuri rohkem",
+                "of": "-st"
+            },
+            "userProfile": "Vaata profiili",
+            "notifications": {
+                "logoutSuccess": "Teie sessioon on edukalt lõpetatud",
+                "agreement": "Te peate nõustuma kasutustingimustega",
+                "unknownState": "Kasutaja oleku töötlemisel tekkis viga",
+                "err401": "Logige sisse, et kasutada funktsionaalsust",
+                "sessionContinued": "Sessioon edukalt pikendatud",
+                "sessionContinuedFailed": "Sessiooni pikendamine ebaõnnestus",
+                "sessionEndingSoon": "Teie sessioon lõpeb varsti"
+            },
+            "sessionExpiring": {
+                "label": "Sessiooni lõpp läheneb",
+                "description": "Sessiooni lõpuni on jäänud {count} sekund | Sessiooni lõpuni on jäänud {count} sekundit",
+                "descriptionMinutes": "Sessiooni lõpuni on jäänud {count} minut | Sessiooni lõpuni on jäänud {count} minutit",
+                "descriptionMinutesSmall": "ja {count} sekund | ja {count} sekundit",
+                "primaryLabel": "Jätka tööd",
+                "secondaryLabel": "Lõpeta töö"
+            }
+        },
+        "list": {
+            "clear": "Tühjenda",
+            "placeholder": "Sisestage nime või kirjelduse osa, et leida kirjeid",
+            "notFoundSearch": "Ei leitud:",
+            "noItems": "Kirjeid pole",
+            "noItemsDescription": " ",
+            "loadMore": "Laadi veel",
+            "search": "Otsi",
+            "items": {
+                "singular": "kirje",
+                "plural": "kirjed",
+                "endingWith234": "kirjed",
+                "endingWith1": "kirje"
+            },
+            "ofItems": {
+                "label": "Kirjed",
+                "singular": "kirje",
+                "plural": "kirjetele",
+                "endingWith234": "kirjetele",
+                "endingWith1": "kirje"
+            },
+            "selected": {
+                "singular": "Valitud",
+                "plural": "Valitud",
+                "endingWith234": "Valitud",
+                "endingWith1": "Valitud"
+            },
+            "of": "kokku",
+            "clearSelected": "Tühjenda valik",
+            "selectAllRows": "Vali kõik",
+            "selectWholeGroup": "Vali kogu grupp",
+            "loadingError": "Laadimisel tekkis viga",
+            "reload": "Laadi uuesti",
+            "collapse": "Ahenda element",
+            "expand": "Laienda element",
+            "openSearch": "Ava otsing",
+            "closeSearch": "Sulge otsing",
+            "skipLinkLabel": "Jäta loend vahele",
+            "skipLinkTitle": "Jäta loend vahele",
+            "overflowMenu": "Ava lisavalikud"
+        }
     },
-    "dashboard": {
-      "title": "Avaleht",
-      "disclaimer": "Kogu siin leiduva sisu on mõeldud ainult õppeotstarbeks. Paljud siin leiduvaid laule on kasutajate interpretatsioonid ja võivad täpselt ei vasta originaalile. Kui siin on sinu laul ja sa ei taha, et teised seda õpiksid, või on tekkinud küsimusi või kommentaare, kirjuta info[at]akordi.lv."
+    "greeting": {
+        "default": "Tere tulemast",
+        "morning": "Tere hommikust",
+        "day": "Tere päevast",
+        "evening": "Tere õhtust",
+        "night": "Head ööd"
+    },
+    "pages": {
+        "chordsLibrary": {
+            "title": "Akordide kogu",
+            "description": "Siit leiate kõik toetatud akordid.",
+            "showGuitarChords": {
+                "label": "Kitarr"
+            },
+            "showUkuleleChords": {
+                "label": "Ukulele"
+            },
+            "showBaritoneUkuleleChords": {
+                "label": "Bariton ukulele"
+            },
+            "instrument": "Instrument",
+            "key": "Helistik"
+        },
+        "dashboard": {
+            "title": "Avaleht",
+            "disclaimer": "Kogu siin leiduva sisu on mõeldud ainult õppeotstarbeks. Paljud siin leiduvaid laule on kasutajate interpretatsioonid ja võivad täpselt ei vasta originaalile. Kui siin on sinu laul ja sa ei taha, et teised seda õpiksid, või on tekkinud küsimusi või kommentaare, kirjuta info[at]akordi.lv."
+        },
+        "songs": {
+            "title": "Laulude kataloog"
+        },
+        "songSearch": {
+            "title": "Laulude otsing",
+            "description": "Kasutage otsingut ja leidke midagi mängida {songCount} akordid.ee laulu hulgast",
+            "search": {
+                "error": "Viga laulude otsimisel. Palun proovige hiljem uuesti."
+            }
+        },
+        "songListNew": {
+            "title": "Uusimad laulud",
+            "description": "Hiljuti lisatud laulud",
+            "list": {
+                "error": "Viga laulude laadimisel. Palun proovige hiljem uuesti."
+            }
+        },
+        "songListTop": {
+            "title": "Populaarseimad laulud",
+            "description": "Eelmise nädala populaarseimad laulud, mida on vaadanud ja mänginud teised kasutajad",
+            "list": {
+                "error": "Viga laulude laadimisel. Palun proovige hiljem uuesti."
+            }
+        },
+        "songEdit": {
+            "title": "Laulu muutmine",
+            "description": "Siin saate esitada laulu parandusi"
+        },
+        "songNew": {
+            "title": "Esita laul",
+            "description": "Siin saate esitada laulu, et see lisataks portaali. Leht on mõeldud ainult eesti lauludele (laulu keelel pole tähtsust). See kontrollitakse ja lisatakse andmebaasi."
+        },
+        "akordiSongView": {
+            "title": "Akordid.ee laulud",
+            "copy": {
+                "label": "Kopeeri laul",
+                "description": "Kopeeri laulu tekst, et luua oma versioon"
+            },
+            "hideChords": {
+                "label": "Ära näita akorde",
+                "description": "Peida laulu akordide tablatuur"
+            },
+            "showSheet": {
+                "label": "Näita noote",
+                "description": "Näita laulu noote"
+            },
+            "autoScroll": {
+                "label": "Automaatne kerimine ({speed})",
+                "playDescription": "Kiirenda automaatset kerimist",
+                "stopDescription": "Peata automaatne kerimine"
+            },
+            "showGuitarChords": {
+                "label": "Näita kitarr akorde",
+                "description": "Näita või peida laulu akordide tablatuur kitarril"
+            },
+            "showUkuleleChords": {
+                "label": "Näita ukulele akorde",
+                "description": "Näita või peida laulu akordide tablatuur ukulelele"
+            },
+            "showBaritoneUkuleleChords": {
+                "label": "Näita bariton ukulele akorde",
+                "description": "Näita või peida laulu bariton ukulele akorde"
+            },
+            "transposeUp": {
+                "label": "Transponeeri üles",
+                "description": "Tõsta laulu üles pooltooni võrra"
+            },
+            "transposeDown": {
+                "label": "Transponeeri alla",
+                "description": "Tõsta laulu alla pooltooni võrra"
+            },
+            "fontUp": {
+                "label": "Suurenda fonti",
+                "description": "Suurenda fondi suurust laulu tekstis"
+            },
+            "fontDown": {
+                "label": "Vähenda fonti",
+                "description": "Vähenda fondi suurust laulu tekstis"
+            },
+            "transposeDisabled": "Transponeerimine on keelatud, kuna laulu tekstist ei leitud akorde",
+            "transposeLoadError": "Salvestatud transponeeringut ei õnnestunud laadida",
+            "transposeSaveError": "Transponeeringut ei õnnestunud salvestada",
+            "audioNotSupported": "Teie brauser ei toeta heli",
+            "transposeHeader": "Transponeeri ({offset})",
+            "addToList": {
+                "label": "Lisa lauluraamatusse",
+                "description": "Lisa see laul ühte oma lauluraamatusse",
+                "success": "Laul edukalt lisatud",
+                "error": "Viga laulu lisamisel"
+            },
+            "authRequired": {
+                "title": "Sisselogimine on vajalik",
+                "description": "Laulu lisamiseks oma lauluraamatutesse logige esmalt sisse. Pärast sisselogimist jõuate tagasi selle laulu juurde.",
+                "login": "Logi sisse"
+            },
+            "createSongbook": {
+                "action": "Loo lauluraamat",
+                "title": "Uus lauluraamat",
+                "createAndAdd": "Loo ja lisa laul",
+                "description": "Kui sobivat lauluraamatut veel pole, looge uus.",
+                "name": "Uus lauluraamat",
+                "placeholder": "Lauluraamatu nimi",
+                "nameRequired": "Sisestage lauluraamatu nimi",
+                "success": "Lauluraamat loodud ja laul lisatud",
+                "error": "Lauluraamatut ei õnnestunud luua"
+            },
+            "removeFromList": {
+                "label": "Eemalda lauluraamatust",
+                "description": "Eemalda see laul ühest oma lauluraamatust",
+                "success": "Laul edukalt eemaldatud",
+                "error": "Viga laulu eemaldamisel"
+            }
+        },
+        "songbook": {
+            "title": "Minu lauluraamatud",
+            "description": "Siin saate hallata oma isiklikke lauluraamatuid",
+            "empty": "Teil pole veel ühtegi lauluraamatut",
+            "add": "Loo lauluraamat",
+            "delete": {
+                "title": "Kustuta lauluraamat",
+                "message": "Kas olete kindel, et soovite lauluraamatu \"{name}\" kustutada?",
+                "success": "Lauluraamat edukalt kustutatud",
+                "error": "Viga lauluraamatu kustutamisel"
+            },
+            "save": {
+                "success": "Lauluraamat edukalt salvestatud",
+                "error": "Viga lauluraamatu salvestamisel"
+            },
+            "addSong": {
+                "success": "Laul lisatud lauluraamatusse",
+                "error": "Viga laulu lisamisel"
+            },
+            "removeSong": {
+                "success": "Laul eemaldatud lauluraamatust",
+                "error": "Viga laulu eemaldamisel lauluraamatust"
+            },
+            "songs": "Laulud lauluraamatus"
+        },
+        "akordiArtistLetter": {
+            "title": "Esitajate kataloog A-Z",
+            "description": "Sirvige esitajate nimekirja tähestikulises järjekorras A-st Z-ni",
+            "search": {
+                "error": "Viga esitajate otsimisel. Palun proovige hiljem uuesti."
+            }
+        },
+        "tagList": {
+            "title": "Sildid",
+            "description": "Siin saate sirvida temaatilisi laulukategooriaid",
+            "list": {
+                "error": "Viga laulude laadimisel. Palun proovige hiljem uuesti."
+            }
+        },
+        "tagView": {
+            "title": "Silt #{title}",
+            "metaDescription": "Laulud akordide ja tabulatuuridega {songTitles}",
+            "list": {
+                "error": "Laulude laadimisel tekkis viga. Palun proovige hiljem uuesti."
+            }
+        },
+        "login": {
+            "title": "Valige autentimise meetod",
+            "buttons": {
+                "signIn": "Logi sisse",
+                "register": "Registreeri",
+                "forgotPassword": "Unustasid parooli?"
+            },
+            "options": {
+                "google": {
+                    "name": "Google",
+                    "description": "Logige sisse Google kontoga"
+                },
+                "facebook": {
+                    "name": "Facebook",
+                    "description": "Logige sisse Facebook kontoga"
+                }
+            },
+            "email": "E-post",
+            "password": "Parool",
+            "errors": {
+                "4000002": "See väli on kohustuslik",
+                "4000006": "Vale e-post ja/või parool",
+                "1060003": "Taastamiskoodiga e-kiri on saadetud teie e-posti aadressile. Kui te seda ei saanud, kontrollige, kas e-post on õigesti sisestatud.",
+                "1080002": "E-post on edukalt kinnitatud.",
+                "1080003": "Kinnituskoodiga e-kiri on saadetud. Kui te seda ei saanud, kontrollige, kas e-post on õigesti sisestatud."
+            }
+        },
+        "verification": {
+            "title": "Kinnitamine",
+            "code": "Kinnituskood",
+            "success": "Kinnitatud!",
+            "successDescription": "E-posti aadress on edukalt kinnitatud.",
+            "buttons": {
+                "continue": "Jätka",
+                "resendCode": "Saada kood uuesti",
+                "submit": "Kinnita"
+            }
+        },
+        "recovery": {
+            "title": "Parooli taastamine",
+            "email": "E-post",
+            "code": "Kinnituskood",
+            "buttons": {
+                "submit": "Saada kood",
+                "verify": "Kinnita kood",
+                "resend": "Saada kood uuesti"
+            }
+        },
+        "register": {
+            "title": "Registreerimine",
+            "incorrectCredentials": "Vale kasutajanimi või parool",
+            "buttons": {
+                "continue": "Jätka",
+                "previous": "Tagasi"
+            },
+            "options": {
+                "google": {
+                    "name": "Google",
+                    "description": "Registreeri Google kontoga"
+                },
+                "facebook": {
+                    "name": "Facebook",
+                    "description": "Registreeri Facebook kontoga"
+                }
+            },
+            "errors": {
+                "4000002": "See väli on kohustuslik",
+                "4000007": "Selle e-postiga kasutaja on juba registreeritud.",
+                "4000006": "See parool on leitud lekkinud paroolide registrist. Palun valige muu parool.",
+                "1040009": "Palun valige parool edasiseks autentimiseks.",
+                "1080003": "Kinnituskoodiga e-kiri on saadetud. Kui te seda ei saanud, kontrollige, kas e-post on õigesti sisestatud.",
+                "4070006": "Kinnituskood on vale või juba kasutatud. Palun proovige uuesti."
+            },
+            "email": {
+                "label": "E-post"
+            },
+            "givenName": {
+                "label": "Eesnimi"
+            },
+            "familyName": {
+                "label": "Perekonnanimi"
+            },
+            "password": {
+                "label": "Parool"
+            }
+        },
+        "profile": {
+            "title": "Kasutaja profiil",
+            "buttons": {
+                "continue": "Salvesta",
+                "changePassword": "Muuda parooli"
+            },
+            "errors": {
+                "4000002": "See väli on kohustuslik",
+                "4000007": "Selle e-postiga kasutaja on juba registreeritud.",
+                "4000006": "See parool on leitud lekkinud paroolide registrist. Palun valige muu parool.",
+                "4000034": "See parool on leitud lekkinud paroolide registrist. Palun valige muu parool.",
+                "1040009": "Palun valige parool edasiseks autentimiseks.",
+                "1050001": "Muudatused edukalt salvestatud!",
+                "1060001": "Olete oma kontot edukalt uuendanud. Palun muutke parool või seadistage alternatiivne sisselogimisviis (nt sotsiaalne sisselogimine) 60 minuti jooksul.",
+                "1080003": "Kinnituskoodiga e-kiri on saadetud. Kui te seda ei saanud, kontrollige, kas e-post on õigesti sisestatud.",
+                "4070006": "Kinnituskood on vale või juba kasutatud. Palun proovige uuesti."
+            },
+            "email": {
+                "label": "E-post"
+            },
+            "givenName": {
+                "label": "Eesnimi"
+            },
+            "familyName": {
+                "label": "Perekonnanimi"
+            },
+            "password": {
+                "label": "Parool"
+            }
+        },
+        "home": {
+            "title": "Akordid",
+            "buttons": {
+                "loginUnauthorized": "Logi sisse"
+            }
+        },
+        "sessionEnded": {
+            "title": "Teie sessioon on lõppenud",
+            "description": "Sessioonile eraldatud aeg on lõppenud. Töö jätkamiseks logige uuesti sisse"
+        },
+        "userProfile": {
+            "title": "Kasutaja profiil",
+            "givenNameLabel": "Eesnimi",
+            "familyNameLabel": "Perekonnanimi",
+            "phoneLabel": "Kontakttelefon",
+            "emailLabel": "E-posti aadress",
+            "viewProfile": "Vaata profiili",
+            "sessionTime": "Sessiooni tööaeg:",
+            "sections": {
+                "profile": "Profiil",
+                "preferences": "Seaded",
+                "songbooks": "Lauluraamatud"
+            },
+            "preferences": {
+                "description": "Need seaded salvestatakse teie kontole ja kasutatakse laulude avamisel.",
+                "instrument": "Akordide vaikimisi instrument",
+                "loadError": "Profiili seadeid ei õnnestunud laadida",
+                "saveSuccess": "Seaded salvestatud",
+                "saveError": "Seadeid ei õnnestunud salvestada"
+            },
+            "songbooks": {
+                "description": "Teil on {count} lauluraamatut"
+            }
+        },
+        "users": {
+            "title": "Kasutajad"
+        },
+        "error": {
+            "goBack": "Mine tagasi",
+            "goHome": "Mine avalehele",
+            "title": "Tekkis ootamatu viga"
+        },
+        "auth": {
+            "title": "Töötlemine käib",
+            "description": "Töötlemine käib. Palun oodake!",
+            "errors": {
+                "unknownTitle": "Tundmatu autoriseerimise viga",
+                "unknownDescription": "Proovige autoriseerimist uuesti.",
+                "blockedTitle": "Kasutaja on blokeeritud",
+                "blockedDescription": "Võtke ühendust süsteemi administraatoriga.",
+                "invalidRightsTitle": "Teil pole õigusi selle süsteemi kasutamiseks",
+                "invalidRightsDescription": "Võtke ühendust süsteemi administraatoriga.",
+                "invalidRequestTitle": "Vigane autoriseerimise päring",
+                "invalidRequestDescription": "Proovige autoriseerimist uuesti."
+            }
+        },
+        "artistView": {
+            "pageTitle": "{artist} laulud",
+            "metaDescription": "Laulud akordide ja tabulatuuridega {songTitles}"
+        },
+        "notFound": {
+            "title": "Lehte ei leitud",
+            "description": "Kontrollige, kas lehe aadress on õige ja proovige uuesti, või naaske avalehele"
+        }
+    },
+    "cookieConsent": {
+        "title": "Küpsiste poliitika",
+        "description": "See veebisait kasutab küpsiseid, et tagada populaarseimate laulude statistika ja parandada kasutaja kogemust. \nPalun nõustuge küpsiste kasutamisega, et jätkata selle veebisaidi kasutamist.",
+        "accept": "Nõustun",
+        "reject": "Sulge"
+    },
+    "confirm": {
+        "yes": "Jah",
+        "no": "Ei",
+        "logout": {
+            "title": "Logi välja",
+            "message": "Kas olete kindel, et soovite välja logida?",
+            "yes": "Jah",
+            "no": "Ei"
+        }
+    },
+    "menu": {
+        "home": "Avaleht",
+        "users": "Kasutajad",
+        "login": "Autoriseerimine",
+        "logout": "Logi välja"
+    },
+    "errors": {
+        "logoutFailed": "Süsteemist väljalogimisel tekkis viga, laadige leht uuesti ja proovige uuesti.",
+        "classifierLoadFailed": "Filtri klassifikaatorite laadimisel tekkis viga, laadige leht uuesti ja proovige uuesti.",
+        "roleLoadFailed": "Kasutaja rollide laadimisel tekkis viga, laadige leht uuesti ja proovige uuesti.",
+        "institutionLoadFailed": "Kasutajale kättesaadavate asutuste laadimisel tekkis viga, laadige leht uuesti ja proovige uuesti.",
+        "hospitalLoadFailed": "Kasutajale kättesaadavate haiglate laadimisel tekkis viga, laadige leht uuesti ja proovige uuesti.",
+        "forbidden": "Teil pole õigust seda toimingut teha!",
+        "loadFailed": "Andmete laadimine ebaõnnestus",
+        "helpLoadFailed": "Abiteabe laadimine ebaõnnestus",
+        "loadSongFailed": "Laulu laadimine ebaõnnestus",
+        "unexpectedError": "Ootamatu viga:"
+    },
+    "save": "Salvesta",
+    "add": "Lisa",
+    "edit": "Muuda",
+    "suggestEdit": "Soovita parandust",
+    "delete": "Kustuta",
+    "copy": "Kopeeri",
+    "cancel": "Tühista",
+    "search": "Otsi",
+    "song": {
+        "title": "Pealkiri",
+        "artist": "Esitaja",
+        "performer": "Esitaja",
+        "composer": "Muusika autor",
+        "poet": "Sõnade autor",
+        "tags": "Sildid",
+        "youtubeLink": "Youtube video",
+        "createdAt": "Loodud",
+        "updatedAt": "Viimati muudetud",
+        "reference": "Viide",
+        "lyrics": "Laulusõnad",
+        "body": "Laulu tekst akordidega",
+        "bodyTooltip": "Eelistatav on lisada laule täielike laulusõnadega. Teksti paigutamiseks kasutage tühikuid, mitte tabeldusklahvi."
     },
     "songs": {
-      "title": "Laulude kataloog"
-    },
-    "songSearch": {
-      "title": "Laulude otsing",
-      "description": "Kasutage otsingut ja leidke midagi mängida {songCount} akordid.ee laulu hulgast",
-      "search": {
-        "error": "Viga laulude otsimisel. Palun proovige hiljem uuesti."
-      }
-    },
-    "songListNew": {
-      "title": "Uusimad laulud",
-      "description": "Hiljuti lisatud laulud",
-      "list": {
-        "error": "Viga laulude laadimisel. Palun proovige hiljem uuesti."
-      }
-    },
-    "songListTop": {
-      "title": "Populaarseimad laulud",
-      "description": "Eelmise nädala populaarseimad laulud, mida on vaadanud ja mänginud teised kasutajad",
-      "list": {
-        "error": "Viga laulude laadimisel. Palun proovige hiljem uuesti."
-      }
-    },
-    "songEdit": {
-      "title": "Laulu muutmine",
-      "description": "Siin saate esitada laulu parandusi"
-    },
-    "songNew": {
-      "title": "Esita laul",
-      "description": "Siin saate esitada laulu, et see lisataks portaali. Leht on mõeldud ainult eesti lauludele (laulu keelel pole tähtsust). See kontrollitakse ja lisatakse andmebaasi."
-    },
-    "akordiSongView": {
-      "title": "Akordid.ee laulud",
-      "copy": {
-        "label": "Kopeeri laul",
-        "description": "Kopeeri laulu tekst, et luua oma versioon"
-      },
-      "hideChords": {
-        "label": "Ära näita akorde",
-        "description": "Peida laulu akordide tablatuur"
-      },
-      "showSheet": {
-        "label": "Näita noote",
-        "description": "Näita laulu noote"
-      },
-      "autoScroll": {
-        "label": "Automaatne kerimine ({speed})",
-        "playDescription": "Kiirenda automaatset kerimist",
-        "stopDescription": "Peata automaatne kerimine"
-      },
-      "showGuitarChords": {
-        "label": "Näita kitarr akorde",
-        "description": "Näita või peida laulu akordide tablatuur kitarril"
-      },
-      "showUkuleleChords": {
-        "label": "Näita ukulele akorde",
-        "description": "Näita või peida laulu akordide tablatuur ukulelele"
-      },
-      "showBaritoneUkuleleChords": {
-        "label": "Näita bariton ukulele akorde",
-        "description": "Näita või peida laulu bariton ukulele akorde"
-      },
-      "transposeUp": {
-        "label": "Transponeeri üles",
-        "description": "Tõsta laulu üles pooltooni võrra"
-      },
-      "transposeDown": {
-        "label": "Transponeeri alla",
-        "description": "Tõsta laulu alla pooltooni võrra"
-      },
-      "fontUp": {
-        "label": "Suurenda fonti",
-        "description": "Suurenda fondi suurust laulu tekstis"
-      },
-      "fontDown": {
-        "label": "Vähenda fonti",
-        "description": "Vähenda fondi suurust laulu tekstis"
-      },
-      "transposeDisabled": "Transponeerimine on keelatud, kuna laulu tekstist ei leitud akorde",
-      "transposeLoadError": "Salvestatud transponeeringut ei õnnestunud laadida",
-      "transposeSaveError": "Transponeeringut ei õnnestunud salvestada",
-      "audioNotSupported": "Teie brauser ei toeta heli",
-      "transposeHeader": "Transponeeri ({offset})",
-      "addToList": {
-        "label": "Lisa lauluraamatusse",
-        "description": "Lisa see laul ühte oma lauluraamatusse",
-        "success": "Laul edukalt lisatud",
-        "error": "Viga laulu lisamisel"
-      },
-      "authRequired": {
-        "title": "Sisselogimine on vajalik",
-        "description": "Laulu lisamiseks oma lauluraamatutesse logige esmalt sisse. Pärast sisselogimist jõuate tagasi selle laulu juurde.",
-        "login": "Logi sisse"
-      },
-      "createSongbook": {
-        "action": "Loo lauluraamat",
-        "title": "Uus lauluraamat",
-        "createAndAdd": "Loo ja lisa laul",
-        "description": "Kui sobivat lauluraamatut veel pole, looge uus.",
-        "name": "Uus lauluraamat",
-        "placeholder": "Lauluraamatu nimi",
-        "nameRequired": "Sisestage lauluraamatu nimi",
-        "success": "Lauluraamat loodud ja laul lisatud",
-        "error": "Lauluraamatut ei õnnestunud luua"
-      },
-      "removeFromList": {
-        "label": "Eemalda lauluraamatust",
-        "description": "Eemalda see laul ühest oma lauluraamatust",
-        "success": "Laul edukalt eemaldatud",
-        "error": "Viga laulu eemaldamisel"
-      }
-    },
-    "akordiArtistLetter": {
-      "title": "Esitajate kataloog A-Z",
-      "description": "Sirvige esitajate nimekirja tähestikulises järjekorras A-st Z-ni",
-      "search": {
-        "error": "Viga esitajate otsimisel. Palun proovige hiljem uuesti."
-      }
-    },
-    "tagList": {
-      "title": "Sildid",
-      "description": "Siin saate sirvida temaatilisi laulukategooriaid",
-      "list": {
-        "error": "Viga laulude laadimisel. Palun proovige hiljem uuesti."
-      }
-    },
-    "tagView": {
-      "title": "Silt #{title}",
-      "metaDescription": "Laulud akordide ja tabulatuuridega {songTitles}",
-      "list": {
-        "error": "Laulude laadimisel tekkis viga. Palun proovige hiljem uuesti."
-      }
-    },
-    "login": {
-      "title": "Valige autentimise meetod",
-      "buttons": {
-        "signIn": "Logi sisse",
-        "register": "Registreeri",
-        "forgotPassword": "Unustasid parooli?"
-      },
-      "options": {
-        "google": {
-          "name": "Google",
-          "description": "Logige sisse Google kontoga"
-        },
-        "facebook": {
-          "name": "Facebook",
-          "description": "Logige sisse Facebook kontoga"
+        "save": {
+            "success": "Laul edukalt esitatud kinnitamiseks",
+            "error": "Viga laulu salvestamisel"
         }
-      },
-      "email": "E-post",
-      "password": "Parool",
-      "errors": {
-        "4000002": "See väli on kohustuslik",
-        "4000006": "Vale e-post ja/või parool",
-        "1060003": "Taastamiskoodiga e-kiri on saadetud teie e-posti aadressile. Kui te seda ei saanud, kontrollige, kas e-post on õigesti sisestatud.",
-        "1080002": "E-post on edukalt kinnitatud.",
-        "1080003": "Kinnituskoodiga e-kiri on saadetud. Kui te seda ei saanud, kontrollige, kas e-post on õigesti sisestatud."
-      }
     },
-    "verification": {
-      "title": "Kinnitamine",
-      "code": "Kinnituskood",
-      "success": "Kinnitatud!",
-      "successDescription": "E-posti aadress on edukalt kinnitatud.",
-      "buttons": {
-        "continue": "Jätka",
-        "resendCode": "Saada kood uuesti",
-        "submit": "Kinnita"
-      }
+    "artist": {
+        "title": "Pealkiri"
     },
-    "recovery": {
-      "title": "Parooli taastamine",
-      "email": "E-post",
-      "code": "Kinnituskood",
-      "buttons": {
-        "submit": "Saada kood",
-        "verify": "Kinnita kood",
-        "resend": "Saada kood uuesti"
-      }
-    },
-    "register": {
-      "title": "Registreerimine",
-      "incorrectCredentials": "Vale kasutajanimi või parool",
-      "buttons": {
-        "continue": "Jätka",
-        "previous": "Tagasi"
-      },
-      "options": {
-        "google": {
-          "name": "Google",
-          "description": "Registreeri Google kontoga"
+    "artists": {
+        "save": {
+            "success": "Esitaja edukalt salvestatud",
+            "error": "Viga esitaja salvestamisel"
         },
-        "facebook": {
-          "name": "Facebook",
-          "description": "Registreeri Facebook kontoga"
+        "delete": {
+            "success": "Esitaja edukalt kustutatud",
+            "error": "Viga esitaja kustutamisel"
         }
-      },
-      "errors": {
-        "4000002": "See väli on kohustuslik",
-        "4000007": "Selle e-postiga kasutaja on juba registreeritud.",
-        "4000006": "See parool on leitud lekkinud paroolide registrist. Palun valige muu parool.",
-        "1040009": "Palun valige parool edasiseks autentimiseks.",
-        "1080003": "Kinnituskoodiga e-kiri on saadetud. Kui te seda ei saanud, kontrollige, kas e-post on õigesti sisestatud.",
-        "4070006": "Kinnituskood on vale või juba kasutatud. Palun proovige uuesti."
-      },
-      "email": {
-        "label": "E-post"
-      },
-      "givenName": {
-        "label": "Eesnimi"
-      },
-      "familyName": {
-        "label": "Perekonnanimi"
-      },
-      "password": {
-        "label": "Parool"
-      }
-    },
-    "profile": {
-      "title": "Kasutaja profiil",
-      "buttons": {
-        "continue": "Salvesta",
-        "changePassword": "Muuda parooli"
-      },
-      "errors": {
-        "4000002": "See väli on kohustuslik",
-        "4000007": "Selle e-postiga kasutaja on juba registreeritud.",
-        "4000006": "See parool on leitud lekkinud paroolide registrist. Palun valige muu parool.",
-        "4000034": "See parool on leitud lekkinud paroolide registrist. Palun valige muu parool.",
-        "1040009": "Palun valige parool edasiseks autentimiseks.",
-        "1050001": "Muudatused edukalt salvestatud!",
-        "1060001": "Olete oma kontot edukalt uuendanud. Palun muutke parool või seadistage alternatiivne sisselogimisviis (nt sotsiaalne sisselogimine) 60 minuti jooksul.",
-        "1080003": "Kinnituskoodiga e-kiri on saadetud. Kui te seda ei saanud, kontrollige, kas e-post on õigesti sisestatud.",
-        "4070006": "Kinnituskood on vale või juba kasutatud. Palun proovige uuesti."
-      },
-      "email": {
-        "label": "E-post"
-      },
-      "givenName": {
-        "label": "Eesnimi"
-      },
-      "familyName": {
-        "label": "Perekonnanimi"
-      },
-      "password": {
-        "label": "Parool"
-      }
-    },
-    "home": {
-      "title": "Akordid",
-      "buttons": {
-        "loginUnauthorized": "Logi sisse"
-      }
-    },
-    "sessionEnded": {
-      "title": "Teie sessioon on lõppenud",
-      "description": "Sessioonile eraldatud aeg on lõppenud. Töö jätkamiseks logige uuesti sisse"
-    },
-    "userProfile": {
-      "title": "Kasutaja profiil",
-      "givenNameLabel": "Eesnimi",
-      "familyNameLabel": "Perekonnanimi",
-      "phoneLabel": "Kontakttelefon",
-      "emailLabel": "E-posti aadress",
-      "viewProfile": "Vaata profiili",
-      "sessionTime": "Sessiooni tööaeg:",
-      "sections": {
-        "profile": "Profiil",
-        "preferences": "Seaded",
-        "songbooks": "Lauluraamatud"
-      },
-      "preferences": {
-        "description": "Need seaded salvestatakse teie kontole ja kasutatakse laulude avamisel.",
-        "instrument": "Akordide vaikimisi instrument",
-        "loadError": "Profiili seadeid ei õnnestunud laadida",
-        "saveSuccess": "Seaded salvestatud",
-        "saveError": "Seadeid ei õnnestunud salvestada"
-      },
-      "songbooks": {
-        "description": "Teil on {count} lauluraamatut"
-      }
-    },
-    "users": {
-      "title": "Kasutajad"
     },
     "error": {
-      "goBack": "Mine tagasi",
-      "goHome": "Mine avalehele",
-      "title": "Tekkis ootamatu viga"
+        "validation": "Palun täitke väljad"
     },
-    "auth": {
-      "title": "Töötlemine käib",
-      "description": "Töötlemine käib. Palun oodake!",
-      "errors": {
-        "unknownTitle": "Tundmatu autoriseerimise viga",
-        "unknownDescription": "Proovige autoriseerimist uuesti.",
-        "blockedTitle": "Kasutaja on blokeeritud",
-        "blockedDescription": "Võtke ühendust süsteemi administraatoriga.",
-        "invalidRightsTitle": "Teil pole õigusi selle süsteemi kasutamiseks",
-        "invalidRightsDescription": "Võtke ühendust süsteemi administraatoriga.",
-        "invalidRequestTitle": "Vigane autoriseerimise päring",
-        "invalidRequestDescription": "Proovige autoriseerimist uuesti."
-      }
+    "validations": {
+        "required": "See väli on kohustuslik"
     },
-    "artistView": {
-      "pageTitle": "{artist} laulud",
-      "metaDescription": "Laulud akordide ja tabulatuuridega {songTitles}"
-    },
-    "notFound": {
-      "title": "Lehte ei leitud",
-      "description": "Kontrollige, kas lehe aadress on õige ja proovige uuesti, või naaske avalehele"
-    },
-    "songbook": {
-      "title": "Minu lauluraamatud",
-      "description": "Siin saate hallata oma isiklikke lauluraamatuid",
-      "empty": "Teil pole veel ühtegi lauluraamatut",
-      "add": "Loo lauluraamat",
-      "delete": {
-        "title": "Kustuta lauluraamat",
-        "message": "Kas olete kindel, et soovite lauluraamatu \"{name}\" kustutada?",
-        "success": "Lauluraamat edukalt kustutatud",
-        "error": "Viga lauluraamatu kustutamisel"
-      },
-      "save": {
-        "success": "Lauluraamat edukalt salvestatud",
-        "error": "Viga lauluraamatu salvestamisel"
-      },
-      "addSong": {
-        "success": "Laul lisatud lauluraamatusse",
-        "error": "Viga laulu lisamisel"
-      },
-      "removeSong": {
-        "success": "Laul eemaldatud lauluraamatust",
-        "error": "Viga laulu eemaldamisel lauluraamatust"
-      },
-      "songs": "Laulud lauluraamatus"
+    "accessibilitySettings": {
+        "title": "Juurdepääsetavuse seaded",
+        "description": "Tööriistad ja seaded rakenduse kohandamiseks erinevatele kasutajatele ja nende vajadustele.",
+        "appearance": "Visuaalne välimus",
+        "animations": "Liikumine ja animatsioonid",
+        "fonts": "Tekst ja fondid",
+        "interactions": "Interaktsioonid",
+        "reset": "Taasta seaded",
+        "themeTitle": "Teema valik",
+        "transparencyTitle": "Läbipaistvus",
+        "animationsTitle": "Animatsioonid",
+        "fontsTitle": "Süsteemi fondid",
+        "touchModeTitle": "Puuterežiim",
+        "transparencyDescription": "Läbipaistvus on visuaalne efekt, mis võimaldab näha osa taustast aktiivsete akende või paneelide all. See seade võimaldab läbipaistvust vähendada või keelata, et taust oleks ühtlane, parandades sisu ja tausta kontrasti ning muutes sisu kergemini tajutavaks. Sobib nägemispuudega, keskendumisraskustega või värvitaju probleemidega kasutajatele.",
+        "animationsDescription": "Animatsioonid on visuaalsed liikumisefektid, mis ilmuvad üleminekutel, klõpsamisel ja muudes interaktsioonides, näiteks akende avamisel või menüüelementide vahetamisel. See seade võimaldab animatsioone vähendada või keelata, et liides oleks rahulikum ja vähem häiriv. Oluline vestibulaarhäirete või liikumistundlikkusega kasutajatele.",
+        "fontsDescription": "Süsteemi fondid on seadme või operatsioonisüsteemi vaikimisi fondid. Nende kasutamine parandab teksti loetavust ja äratuntavust, tagades ühtlase ja tuttava teksti välimuse.",
+        "touchModeDescription": "Kui puuterežiim on lubatud, optimeeritakse rakendus puuteekraanidel sõrmega kasutamiseks. Vajutatavad elemendid (nupud, menüüd jne) suurendatakse kasutatavuse parandamiseks.",
+        "themeAuto": "Automaatne",
+        "themeLight": "Hele",
+        "themeDark": "Tume",
+        "themeContrast": "Kontrastne",
+        "themeAutoDescription": "Automaatne teema järgib seadme või süsteemi välimuse seadeid.",
+        "themeLightDescription": "Hele teema tumeda tekstiga heledal taustal.",
+        "themeDarkDescription": "Tume teema heleda tekstiga tumedal taustal.",
+        "themeContrastDescription": "Suurendatud värvikontrastiga teema sisu loetavuse parandamiseks.",
+        "transparencyLinkLabel": "Juurdepääsetavuse standardid (WCAG Contrast (Minimum))",
+        "animationsLinkLabel": "Juurdepääsetavuse standardid (WCAG Animation from Interactions)"
     }
-  },
-  "cookieConsent": {
-    "title": "Küpsiste poliitika",
-    "description": "See veebisait kasutab küpsiseid, et tagada populaarseimate laulude statistika ja parandada kasutaja kogemust. \nPalun nõustuge küpsiste kasutamisega, et jätkata selle veebisaidi kasutamist.",
-    "accept": "Nõustun",
-    "reject": "Sulge"
-  },
-  "confirm": {
-    "yes": "Jah",
-    "no": "Ei",
-    "logout": {
-      "title": "Logi välja",
-      "message": "Kas olete kindel, et soovite välja logida?",
-      "yes": "Jah",
-      "no": "Ei"
-    }
-  },
-  "menu": {
-    "home": "Avaleht",
-    "users": "Kasutajad",
-    "login": "Autoriseerimine",
-    "logout": "Logi välja"
-  },
-  "errors": {
-    "logoutFailed": "Süsteemist väljalogimisel tekkis viga, laadige leht uuesti ja proovige uuesti.",
-    "classifierLoadFailed": "Filtri klassifikaatorite laadimisel tekkis viga, laadige leht uuesti ja proovige uuesti.",
-    "roleLoadFailed": "Kasutaja rollide laadimisel tekkis viga, laadige leht uuesti ja proovige uuesti.",
-    "institutionLoadFailed": "Kasutajale kättesaadavate asutuste laadimisel tekkis viga, laadige leht uuesti ja proovige uuesti.",
-    "hospitalLoadFailed": "Kasutajale kättesaadavate haiglate laadimisel tekkis viga, laadige leht uuesti ja proovige uuesti.",
-    "forbidden": "Teil pole õigust seda toimingut teha!",
-    "loadFailed": "Andmete laadimine ebaõnnestus",
-    "helpLoadFailed": "Abiteabe laadimine ebaõnnestus",
-    "loadSongFailed": "Laulu laadimine ebaõnnestus",
-    "unexpectedError": "Ootamatu viga:"
-  },
-  "save": "Salvesta",
-  "edit": "Muuda",
-  "suggestEdit": "Soovita parandust",
-  "delete": "Kustuta",
-  "copy": "Kopeeri",
-  "cancel": "Tühista",
-  "search": "Otsi",
-  "song": {
-    "title": "Pealkiri",
-    "artist": "Esitaja",
-    "performer": "Esitaja",
-    "composer": "Muusika autor",
-    "poet": "Sõnade autor",
-    "tags": "Sildid",
-    "youtubeLink": "Youtube video",
-    "createdAt": "Loodud",
-    "updatedAt": "Viimati muudetud",
-    "reference": "Viide",
-    "lyrics": "Laulusõnad",
-    "body": "Laulu tekst akordidega",
-    "bodyTooltip": "Eelistatav on lisada laule täielike laulusõnadega. Teksti paigutamiseks kasutage tühikuid, mitte tabeldusklahvi."
-  },
-  "songs": {
-    "save": {
-      "success": "Laul edukalt esitatud kinnitamiseks",
-      "error": "Viga laulu salvestamisel"
-    }
-  },
-  "artist": {
-    "title": "Pealkiri"
-  },
-  "artists": {
-    "save": {
-      "success": "Esitaja edukalt salvestatud",
-      "error": "Viga esitaja salvestamisel"
-    },
-    "delete": {
-      "success": "Esitaja edukalt kustutatud",
-      "error": "Viga esitaja kustutamisel"
-    }
-  },
-  "error": {
-    "validation": "Palun täitke väljad"
-  },
-  "validations": {
-    "required": "See väli on kohustuslik"
-  },
-  "accessibilitySettings": {
-    "title": "Juurdepääsetavuse seaded",
-    "description": "Tööriistad ja seaded rakenduse kohandamiseks erinevatele kasutajatele ja nende vajadustele.",
-    "appearance": "Visuaalne välimus",
-    "animations": "Liikumine ja animatsioonid",
-    "fonts": "Tekst ja fondid",
-    "interactions": "Interaktsioonid",
-    "reset": "Taasta seaded",
-    "themeTitle": "Teema valik",
-    "transparencyTitle": "Läbipaistvus",
-    "animationsTitle": "Animatsioonid",
-    "fontsTitle": "Süsteemi fondid",
-    "touchModeTitle": "Puuterežiim",
-    "transparencyDescription": "Läbipaistvus on visuaalne efekt, mis võimaldab näha osa taustast aktiivsete akende või paneelide all. See seade võimaldab läbipaistvust vähendada või keelata, et taust oleks ühtlane, parandades sisu ja tausta kontrasti ning muutes sisu kergemini tajutavaks. Sobib nägemispuudega, keskendumisraskustega või värvitaju probleemidega kasutajatele.",
-    "animationsDescription": "Animatsioonid on visuaalsed liikumisefektid, mis ilmuvad üleminekutel, klõpsamisel ja muudes interaktsioonides, näiteks akende avamisel või menüüelementide vahetamisel. See seade võimaldab animatsioone vähendada või keelata, et liides oleks rahulikum ja vähem häiriv. Oluline vestibulaarhäirete või liikumistundlikkusega kasutajatele.",
-    "fontsDescription": "Süsteemi fondid on seadme või operatsioonisüsteemi vaikimisi fondid. Nende kasutamine parandab teksti loetavust ja äratuntavust, tagades ühtlase ja tuttava teksti välimuse.",
-    "touchModeDescription": "Kui puuterežiim on lubatud, optimeeritakse rakendus puuteekraanidel sõrmega kasutamiseks. Vajutatavad elemendid (nupud, menüüd jne) suurendatakse kasutatavuse parandamiseks.",
-    "themeAuto": "Automaatne",
-    "themeLight": "Hele",
-    "themeDark": "Tume",
-    "themeContrast": "Kontrastne",
-    "themeAutoDescription": "Automaatne teema järgib seadme või süsteemi välimuse seadeid.",
-    "themeLightDescription": "Hele teema tumeda tekstiga heledal taustal.",
-    "themeDarkDescription": "Tume teema heleda tekstiga tumedal taustal.",
-    "themeContrastDescription": "Suurendatud värvikontrastiga teema sisu loetavuse parandamiseks.",
-    "transparencyLinkLabel": "Juurdepääsetavuse standardid (WCAG Contrast (Minimum))",
-    "animationsLinkLabel": "Juurdepääsetavuse standardid (WCAG Animation from Interactions)"
-  }
 }
