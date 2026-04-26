@@ -51,6 +51,7 @@ import '@dativa-lv/lx-ui/dist/styles/lx-shell-grid-public.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-forms-grid.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-treelist.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-stack.css';
+import '@dativa-lv/lx-ui/dist/styles/lx-toggles.css';
 
 import '@/assets/styles.css';
 import '@/assets/lx-pt-akordi.css';
