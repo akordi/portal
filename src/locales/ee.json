@@ -68,8 +68,6 @@
             "customButton": "Kohandatud nupp",
             "overflowNavItems": "Ava täiendav menüü",
             "scrollUp": "Mine üles",
-            "loginButtonLabel": "Logi sisse",
-            "loginButtonTitle": "Logi sisse süsteemi",
             "contextPersonsBirthDate": "Sünniaeg",
             "settings": "Seaded",
             "contextPersonsTooltipLabel": "Konteksti isik",
@@ -106,7 +104,9 @@
                 "descriptionMinutesSmall": "ja {count} sekund | ja {count} sekundit",
                 "primaryLabel": "Jätka tööd",
                 "secondaryLabel": "Lõpeta töö"
-            }
+            },
+            "loginButtonLabel": "Logi sisse",
+            "loginButtonTitle": "Logi sisse süsteemi"
         },
         "list": {
             "clear": "Tühjenda",

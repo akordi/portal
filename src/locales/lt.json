@@ -68,8 +68,6 @@
             "customButton": "Tinkintas mygtukas",
             "overflowNavItems": "Atidaryti papildomą meniu",
             "scrollUp": "Grįžti į viršų",
-            "loginButtonLabel": "Prisijungti",
-            "loginButtonTitle": "Prisijungti prie sistemos",
             "contextPersonsBirthDate": "Gimimo data",
             "settings": "Nustatymai",
             "contextPersonsTooltipLabel": "Konteksto asmuo",
@@ -106,7 +104,9 @@
                 "descriptionMinutesSmall": "ir {count} sekundė | ir {count} sekundės",
                 "primaryLabel": "Tęsti darbą",
                 "secondaryLabel": "Baigti darbą"
-            }
+            },
+            "loginButtonLabel": "Prisijungti",
+            "loginButtonTitle": "Prisijungti prie sistemos"
         },
         "list": {
             "clear": "Išvalyti",

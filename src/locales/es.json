@@ -68,8 +68,6 @@
             "customButton": "Botón personalizable",
             "overflowNavItems": "Abrir menú adicional",
             "scrollUp": "Volver arriba",
-            "loginButtonLabel": "Entrar",
-            "loginButtonTitle": "Iniciar sesión en el sistema",
             "contextPersonsBirthDate": "Fecha de nacimiento",
             "settings": "Ajustes",
             "contextPersonsTooltipLabel": "Persona de contexto",
@@ -106,7 +104,9 @@
                 "descriptionMinutesSmall": "y {count} segundo | y {count} segundos",
                 "primaryLabel": "Continuar trabajando",
                 "secondaryLabel": "Terminar trabajo"
-            }
+            },
+            "loginButtonLabel": "Entrar",
+            "loginButtonTitle": "Iniciar sesión en el sistema"
         },
         "list": {
             "clear": "Limpiar",

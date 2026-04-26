@@ -68,8 +68,6 @@
             "customButton": "Pielāgojamā poga",
             "overflowNavItems": "Atvērt papildu izvēlni",
             "scrollUp": "Atgriezties uz augšu",
-            "loginButtonLabel": "Ienākt",
-            "loginButtonTitle": "Pieslēgties sistēmā",
             "contextPersonsBirthDate": "Dzimšanas datums",
             "settings": "Iestatījumi",
             "contextPersonsTooltipLabel": "Konteksta persona",
@@ -106,7 +104,9 @@
                 "descriptionMinutesSmall": "un {count} sekunde | un {count} sekundes",
                 "primaryLabel": "Turpināt darbu",
                 "secondaryLabel": "Beigt darbu"
-            }
+            },
+            "loginButtonLabel": "Ienākt",
+            "loginButtonTitle": "Pieslēgties sistēmā"
         },
         "list": {
             "clear": "Notīrīt",
