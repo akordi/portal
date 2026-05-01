@@ -1593,10 +1593,9 @@ packages:
     peerDependencies:
       vue: ^3.5.0
 
-  '@xmldom/xmldom@0.9.9':
-    resolution: {integrity: sha512-qycIHAucxy/LXAYIjmLmtQ8q9GPnMbnjG1KXhWm9o5sCr6pOYDATkMPiTNa6/v8eELyqOQ2FsEqeoFYmgv/gJg==}
+  '@xmldom/xmldom@0.9.10':
+    resolution: {integrity: sha512-A9gOqLdi6cV4ibazAjcQufGj0B1y/vDqYrcuP6d/6x8P27gRS8643Dj9o1dEKtB6O7fwxb2FgBmJS2mX7gpvdw==}
     engines: {node: '>=14.6'}
-    deprecated: this version has critical issues, please update to the latest version
 
   '@zzdats/prettier-config@1.0.0':
     resolution: {integrity: sha512-VHLMZ2YV337MvN6zoUEdRSkn6S+6C5AvFalvbqPG08trHHGUZTBuE+pJPLJgY85/0xltolMKgm0+0HQrI0yiqA==}
@@ -3532,8 +3531,8 @@ packages:
     resolution: {integrity: sha512-rEYkQOMUCEMhsKbK66tbEU9QVIxbhN18YiniAwA7XQYTVBqrBy+P2p5JcdqsHgKM2zWylp8d7J6eszocfds5Sw==}
     engines: {node: '>=4'}
 
-  postcss@8.5.8:
-    resolution: {integrity: sha512-OW/rX8O/jXnm82Ey1k44pObPtdblfiuWnrd8X7GJ7emImCOstunGbXUpp7HdBrFQX6rJzn3sPT397Wp5aCwCHg==}
+  postcss@8.5.10:
+    resolution: {integrity: sha512-pMMHxBOZKFU6HgAZ4eyGnwXF/EvPGGqUr0MnZ5+99485wwW41kW91A4LOGxSHhgugZmSChL5AlElNdwlNgcnLQ==}
     engines: {node: ^10 || ^12 || >=14}
 
   prelude-ls@1.2.1:
@@ -5811,7 +5810,7 @@ snapshots:
       '@vue/shared': 3.5.28
       estree-walker: 2.0.2
       magic-string: 0.30.21
-      postcss: 8.5.8
+      postcss: 8.5.10
       source-map-js: 1.2.1
 
   '@vue/compiler-sfc@3.5.32':
@@ -5823,7 +5822,7 @@ snapshots:
       '@vue/shared': 3.5.32
       estree-walker: 2.0.2
       magic-string: 0.30.21
-      postcss: 8.5.8
+      postcss: 8.5.10
       source-map-js: 1.2.1
 
   '@vue/compiler-ssr@3.5.28':
@@ -5992,7 +5991,7 @@ snapshots:
     dependencies:
       vue: 3.5.32
 
-  '@xmldom/xmldom@0.9.9':
+  '@xmldom/xmldom@0.9.10':
     optional: true
 
   '@zzdats/prettier-config@1.0.0': {}
@@ -6964,7 +6963,7 @@ snapshots:
 
   exifreader@4.36.1:
     optionalDependencies:
-      '@xmldom/xmldom': 0.9.9
+      '@xmldom/xmldom': 0.9.10
 
   exit-x@0.2.2: {}
 
@@ -8285,7 +8284,7 @@ snapshots:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postcss@8.5.8:
+  postcss@8.5.10:
     dependencies:
       nanoid: 3.3.11
       picocolors: 1.1.1
@@ -9023,7 +9022,7 @@ snapshots:
     dependencies:
       lightningcss: 1.32.0
       picomatch: 4.0.4
-      postcss: 8.5.8
+      postcss: 8.5.10
       rolldown: 1.0.0-rc.15
       tinyglobby: 0.2.15
     optionalDependencies:
