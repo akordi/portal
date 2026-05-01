@@ -642,10 +642,10 @@ onUnmounted(() => {
           </LxToolbar>
         </LxToolbarGroup>
       </template>
-      <template #post-header>
+      <template #postHeader>
         {{ item.createdAt }}
       </template>
-      <template #post-header-info>
+      <template #postHeaderInfo>
         <LxRow :label="$t('song.performer')" v-if="item.performers?.length > 0">
           <p class="lx-data">
             {{ item.performers.map((author) => author.title).join(', ') }}

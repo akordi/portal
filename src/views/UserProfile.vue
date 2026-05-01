@@ -83,9 +83,9 @@ onMounted(() => {
       :show-header="true"
       :showPreHeaderInfo="true"
       :column-count="1"
-      @buttonClick="buttonClicked"
+      @actionClick="buttonClicked"
     >
-      <template #pre-header
+      <template #preHeader
         >{{ t.t('pages.userProfile.sessionTime') }} {{ authStore.session.secondsToLive }}</template
       >
       <template #header>{{ authStore.fullName }}</template>

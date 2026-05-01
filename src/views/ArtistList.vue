@@ -116,7 +116,7 @@ onMounted(async () => {
 </script>
 <style>
 /* Letter context switchers on /find/0 dissapears on small screens */
-.lx-content-switcher .lx-content-switcher-item {
+.lx-content-switcher-wrapper .lx-content-switcher-item {
   min-width: 44px;
 }
 </style>
