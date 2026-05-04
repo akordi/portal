@@ -80,6 +80,7 @@
   --list-category-border-radius: 0.5rem;
   --list-item-border-radius: 0.5rem;
   --list-item-border-radius-inner: 0.5rem;
+  --list-item-border: 1px solid var(--color-chrome);
   --tile-border-radius: 0.75rem;
   --tile-border-radius-inner: 0.75rem;
   --data-block-border-radius: 0.5rem;
@@ -378,6 +379,13 @@
   --color-nav-foreground: #4a4870;
   background-color: #ffffff;
   border-bottom: 1px solid var(--c-chrome);
+}
+
+/* Dark mode header: use the deepest surface instead of brand-800 blue,
+   so the header harmonises with the purple-dark page palette. */
+.lx.lx-theme-dark .lx-layout.lx-layout-public > header {
+  background-color: var(--c-s0);
+  border-bottom-color: var(--c-s0);
 }
 
 .lx.lx-theme-dark .lx-layout.lx-layout-public > nav {
@@ -801,8 +809,18 @@
   border-color: var(--color-brand);
   outline: none;
 }
-/* LxAutoComplete: the root element is tabindex="-1" and receives focus on click.
-   Change the inner .lx-input-area border to match LxTextInput focus behaviour. */
+/* LxTextInput focus: target the visual border element (.lx-input-area) directly
+   using :has(input:focus) — works regardless of whether lx-ui forwards focus to
+   .lx-input-area programmatically or not. Also covers lx-ui's own :focus path. */
+.lx .lx-input-wrapper:not(.lx-disabled):has(input:focus) .lx-input-area,
+.lx .lx-input-wrapper:not(.lx-disabled):has(textarea:focus) .lx-input-area,
+.lx .lx-layout .lx-input-wrapper:not(.lx-disabled) .lx-input-area:focus,
+.lx .lx-layout .lx-input-wrapper:not(.lx-disabled) .lx-input-area:focus-visible {
+  border-color: var(--color-brand) !important;
+  outline-color: transparent;
+}
+/* LxAutoComplete: the root element receives focus on click;
+   target the inner .lx-input-area to match LxTextInput focus behaviour. */
 .lx .lx-autocomplete-default:focus .lx-input-area,
 .lx .lx-autocomplete-default:focus-within .lx-input-area {
   border-color: var(--color-brand);

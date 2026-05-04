@@ -77,23 +77,14 @@ function toggleChords() {
 }
 
 .chord-strip-scroll {
-  overflow-x: auto;
-  scrollbar-width: thin;
   padding: 0.75rem 1rem 1rem;
-}
-.chord-strip-scroll::-webkit-scrollbar {
-  height: 5px;
-}
-.chord-strip-scroll::-webkit-scrollbar-thumb {
-  background: var(--color-chrome);
-  border-radius: 9999px;
 }
 
 .chord-strip-inner {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   align-items: flex-start;
-  width: max-content;
 }
 
 @media (max-width: 600px) {
