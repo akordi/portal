@@ -1,15 +1,16 @@
 <script setup>
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { LxContentSwitcher } from '@dativa-lv/lx-ui';
+import { LxContentSwitcher, LxButton } from '@dativa-lv/lx-ui';
 import ChordSvg from '@/components/ChordSvg.vue';
 
 const props = defineProps({
   chords: { type: Array, default: () => [] },
   instrument: { type: String, default: 'guitar' },
+  showChords: { type: Boolean, default: true },
 });
 
-const emit = defineEmits(['update:instrument']);
+const emit = defineEmits(['update:instrument', 'update:showChords']);
 
 const { t: $t } = useI18n();
 
@@ -22,6 +23,10 @@ const instrumentOptions = computed(() => [
 function selectInstrument(id) {
   emit('update:instrument', id);
 }
+
+function toggleChords() {
+  emit('update:showChords', !props.showChords);
+}
 </script>
 
 <template>
@@ -33,14 +38,23 @@ function selectInstrument(id) {
     <header class="akordi-card-header chord-strip-header">
       <span class="akordi-card-title">{{ $t('pages.akordiSongView.chords', 'Akordi') }}</span>
       <LxContentSwitcher
+        v-show="showChords"
         :items="instrumentOptions"
         :model-value="instrument"
         id="chord-strip-instrument"
         @update:model-value="selectInstrument"
       />
+      <LxButton
+        kind="ghost"
+        variant="icon-only"
+        :icon="showChords ? 'visible' : 'hidden'"
+        :label="$t('pages.akordiSongView.hideChords.label')"
+        :active="!showChords"
+        @click="toggleChords"
+      />
     </header>
 
-    <div class="chord-strip-scroll">
+    <div v-show="showChords" class="chord-strip-scroll">
       <div class="chord-strip-inner">
         <ChordSvg
           v-for="chord in chords"

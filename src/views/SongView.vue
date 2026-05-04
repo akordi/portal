@@ -616,10 +616,12 @@ onUnmounted(() => {
       </section>
 
       <ChordStrip
-        v-show="hasChords && settingsStore.showChords"
+        v-show="hasChords"
         :chords="chords"
         :instrument="settingsStore.instrument"
+        :show-chords="settingsStore.showChords"
         @update:instrument="saveInstrument"
+        @update:show-chords="settingsStore.showChords = $event"
       />
 
       <section class="akordi-card lyrics-card">
@@ -627,14 +629,6 @@ onUnmounted(() => {
           <span class="akordi-card-title">{{
             $t('pages.akordiSongView.lyricsTitle', 'Dziesmu vārdi un akordi')
           }}</span>
-          <LxButton
-            kind="ghost"
-            variant="icon-only"
-            :icon="settingsStore.showChords ? 'visible' : 'hidden'"
-            :label="$t('pages.akordiSongView.hideChords.label')"
-            :active="!settingsStore.showChords"
-            @click="actionClicked('hideChords')"
-          />
         </header>
         <p class="pre lyrics-body" v-html="item.bodyWithMarkup" :style="{ fontSize: fontSize + 'em' }"></p>
         <footer class="lyrics-ref" v-if="item.reference">

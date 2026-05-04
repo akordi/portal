@@ -687,14 +687,14 @@
 }
 .lx .lx-content-switcher,
 .lx .lx-content-switcher-wrapper {
-  background: var(--c-s2);
+  background: transparent;
   border: none;
   padding: 3px;
   gap: 1px;
 }
 .lx.lx-theme-dark .lx-content-switcher,
 .lx.lx-theme-dark .lx-content-switcher-wrapper {
-  background: var(--c-s1);
+  background: transparent;
 }
 .lx.lx-theme-dark .lx-content-switcher .lx-content-switcher-item.lx-selected,
 .lx.lx-theme-dark .lx-content-switcher-wrapper .lx-content-switcher-item.lx-selected {
@@ -792,6 +792,19 @@
 .lx .lx-input-wrapper:focus-within input,
 .lx input.lx-input:focus,
 .lx textarea.lx-input:focus {
+  border-color: var(--color-brand);
+  outline: none;
+}
+/* LxDropdown / LxValuePicker focus */
+.lx .lx-dropdown-default:focus,
+.lx .lx-dropdown-default:focus-within {
+  border-color: var(--color-brand);
+  outline: none;
+}
+/* LxAutoComplete: the root element is tabindex="-1" and receives focus on click.
+   Change the inner .lx-input-area border to match LxTextInput focus behaviour. */
+.lx .lx-autocomplete-default:focus .lx-input-area,
+.lx .lx-autocomplete-default:focus-within .lx-input-area {
   border-color: var(--color-brand);
   outline: none;
 }
