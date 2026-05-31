@@ -791,7 +791,7 @@ onUnmounted(() => {
     size="m"
     :actionDefinitions="[
       { id: 'authenticate', name: $t('pages.akordiSongView.authRequired.login'), icon: 'next' },
-      { id: 'close', name: $t('cancel'), kind: 'secondary' },
+      { id: 'close', name: $t('cancel') },
     ]"
     @action-click="actionClicked"
   >
