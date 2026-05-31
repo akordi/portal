@@ -899,3 +899,19 @@
   border-color: var(--color-brand) !important;
   color: var(--color-data) !important;
 }
+/* Auth-required modal: the cancel action should match the primary login
+   button (a solid CTA pair), not the subdued outlined secondary above.
+   Scoped by the modal id so other modals keep the outlined cancel. */
+#auth-required-modal .lx-button-set .lx-button-secondary,
+#auth-required-modal .lx-button-set .lx-button-secondary:focus {
+  min-width: 5rem;
+  background-color: var(--color-interactive-background) !important;
+  border: 1px solid var(--color-interactive-background) !important;
+  color: var(--color-interactive-foreground) !important;
+  box-shadow: none !important;
+}
+#auth-required-modal .lx-button-set .lx-button-secondary:hover {
+  background-color: var(--color-interactive-hover-background) !important;
+  border-color: var(--color-interactive-hover-background) !important;
+  color: var(--color-interactive-hover-foreground) !important;
+}

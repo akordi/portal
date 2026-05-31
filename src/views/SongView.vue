@@ -787,11 +787,12 @@ onUnmounted(() => {
 
   <LxModal
     ref="authRequiredModal"
+    id="auth-required-modal"
     :label="$t('pages.akordiSongView.authRequired.title')"
     size="m"
     :actionDefinitions="[
       { id: 'authenticate', name: $t('pages.akordiSongView.authRequired.login'), icon: 'next' },
-      { id: 'close', name: $t('cancel') },
+      { id: 'close', name: $t('cancel'), kind: 'secondary' },
     ]"
     @action-click="actionClicked"
   >
