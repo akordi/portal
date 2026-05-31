@@ -871,7 +871,7 @@
   min-height: 2.25rem !important;
   width: auto !important;
   min-width: 5rem;
-  padding: 0 1.25rem;
+  padding: 0 1.25rem !important;
   border-radius: 0.5rem;
   font: 600 0.8125rem/1 var(--font-family);
   text-align: center;
@@ -883,40 +883,18 @@
   gap: 0.5rem;
   padding: 1rem 1.25rem 1.25rem 1.25rem;
 }
-/* Cancel / secondary modal actions read as a subdued outlined button, not a
-   heavy dark-filled CTA. lx-ui's later .lx-button chunks fill the base button,
-   overriding .lx-button-secondary's transparent background — so force it here. */
+/* Cancel / secondary modal actions: a solid button in the secondary colour,
+   same size/shape as the primary action (sized by the base rule above) so
+   every modal footer reads as a consistent pair. lx-ui's later .lx-button
+   chunks fill the base button, so the colours are forced here. */
 .lx .lx-modal .lx-button-set .lx-button-secondary,
 .lx .lx-modal .lx-button-set .lx-button-secondary:focus {
-  min-width: auto;
-  background-color: transparent !important;
-  border: 1px solid var(--color-chrome) !important;
-  color: var(--color-data) !important;
-  box-shadow: none !important;
-}
-.lx .lx-modal .lx-button-set .lx-button-secondary:hover {
-  background-color: var(--color-region) !important;
-  border-color: var(--color-brand) !important;
-  color: var(--color-data) !important;
-}
-/* Auth-required modal: render the cancel as a solid button matching the
-   primary login button's size/shape, but in the secondary colour so the
-   two read as a pair while staying distinguishable. Scoped by the modal
-   id so other modals keep the subdued outlined cancel above. */
-#auth-required-modal .lx-button-set .lx-button-secondary,
-#auth-required-modal .lx-button-set .lx-button-secondary:focus {
-  height: 2.25rem !important;
-  min-height: 2.25rem !important;
-  min-width: 5rem !important;
-  padding: 0 1.25rem !important;
-  border-radius: 0.5rem !important;
-  font: 600 0.8125rem/1 var(--font-family) !important;
   background-color: var(--color-interactive-secondary-background) !important;
   border: 1px solid var(--color-interactive-secondary-background) !important;
   color: var(--color-interactive-secondary-foreground) !important;
   box-shadow: none !important;
 }
-#auth-required-modal .lx-button-set .lx-button-secondary:hover {
+.lx .lx-modal .lx-button-set .lx-button-secondary:hover {
   background-color: var(--color-interactive-secondary-hover-background) !important;
   border-color: var(--color-interactive-secondary-hover-background) !important;
   color: var(--color-interactive-secondary-hover-foreground) !important;
