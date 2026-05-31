@@ -867,7 +867,7 @@
 
 .lx .lx-modal .lx-button-set .lx-button {
   flex: 0 0 auto;
-  height: 2.25rem;
+  height: 2.25rem !important;
   min-height: 2.25rem !important;
   width: auto !important;
   min-width: 5rem;
@@ -904,7 +904,12 @@
    Scoped by the modal id so other modals keep the outlined cancel. */
 #auth-required-modal .lx-button-set .lx-button-secondary,
 #auth-required-modal .lx-button-set .lx-button-secondary:focus {
-  min-width: 5rem;
+  height: 2.25rem !important;
+  min-height: 2.25rem !important;
+  min-width: 5rem !important;
+  padding: 0 1.25rem !important;
+  border-radius: 0.5rem !important;
+  font: 600 0.8125rem/1 var(--font-family) !important;
   background-color: var(--color-interactive-background) !important;
   border: 1px solid var(--color-interactive-background) !important;
   color: var(--color-interactive-foreground) !important;
