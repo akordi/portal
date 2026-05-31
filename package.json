@@ -21,7 +21,7 @@
     "@vueuse/core": "^14.3.0",
     "@vueuse/head": "^2.0.0",
     "@zzdats/prettier-config": "^1.0.0",
-    "abcjs": "^6.6.2",
+    "abcjs": "^6.6.3",
     "axios": "1.16.1",
     "chord-transposer": "^3.0.9",
     "pinia": "^3.0.4",
