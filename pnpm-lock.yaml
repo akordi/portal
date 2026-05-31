@@ -12,8 +12,8 @@ importers:
         specifier: 2.1.11
         version: 2.1.11(leaflet@1.9.4)(sortablejs@1.14.0)(vue@3.5.35)
       '@ory/client':
-        specifier: ^1.22.35
-        version: 1.22.35
+        specifier: ^1.22.37
+        version: 1.22.37
       '@tombatossals/chords-db':
         specifier: ^0.5.1
         version: 0.5.1
@@ -884,8 +884,8 @@ packages:
   '@one-ini/wasm@0.1.1':
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
 
-  '@ory/client@1.22.35':
-    resolution: {integrity: sha512-WXWSMLqHnSFE503GQjkqCgOAhAq6m9l+K+YYR8RrmBB7hxFzopA1pydorZkN1mtnh2VYSJSnfgMC48pgHUM6WA==}
+  '@ory/client@1.22.37':
+    resolution: {integrity: sha512-UEYHSveRRD3TCT0JB54ZKQoRMEHn7HTsNsMOjz2t3bzCs5aNjgpjYIBK4z5zE2PwNrcInZyQXfRiwK+LIUaOug==}
 
   '@oxc-project/types@0.124.0':
     resolution: {integrity: sha512-VBFWMTBvHxS11Z5Lvlr3IWgrwhMTXV+Md+EQF0Xf60+wAdsGFTBx7X7K/hP4pi8N7dcm1RvcHwDxZ16Qx8keUg==}
@@ -5413,7 +5413,7 @@ snapshots:
 
   '@one-ini/wasm@0.1.1': {}
 
-  '@ory/client@1.22.35':
+  '@ory/client@1.22.37':
     dependencies:
       axios: 1.16.1
     transitivePeerDependencies:
