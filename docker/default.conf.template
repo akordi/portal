@@ -4,6 +4,14 @@ server {
     server_name   localhost;
     server_tokens off;
 
+    # Container/orchestrator health probe. Exact match wins over the SPA
+    # fallback below; access_log off keeps probe traffic out of the logs.
+    location = /healthz {
+        access_log off;
+        default_type text/plain;
+        return 200 "healthy\n";
+    }
+
     location / {
         root   /usr/share/nginx/html;
         index  index.html;
