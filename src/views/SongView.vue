@@ -742,7 +742,7 @@ onUnmounted(() => {
     ref="addToListModal"
     :label="$t('pages.akordiSongView.addToList.label')"
     size="m"
-    :action-definitions="[{ id: 'close', name: $t('cancel'), kind: 'ghost' }]"
+    :action-definitions="[{ id: 'close', name: $t('cancel'), kind: 'secondary' }]"
     @action-click="actionClicked"
   >
     <div class="songbook-picker">

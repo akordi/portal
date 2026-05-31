@@ -867,12 +867,13 @@
 
 .lx .lx-modal .lx-button-set .lx-button {
   flex: 0 0 auto;
-  height: 2.75rem;
+  height: 2.25rem;
+  min-height: 2.25rem !important;
   width: auto !important;
-  min-width: 7rem;
-  padding: 0 1.5rem;
+  min-width: 5rem;
+  padding: 0 1.25rem;
   border-radius: 0.5rem;
-  font: 600 0.875rem/1 var(--font-family);
+  font: 600 0.8125rem/1 var(--font-family);
   text-align: center;
   justify-content: center;
 }
@@ -880,5 +881,21 @@
   flex-direction: row;
   justify-content: flex-end;
   gap: 0.5rem;
-  padding: 0 1.25rem 1.25rem 1.25rem;
+  padding: 1rem 1.25rem 1.25rem 1.25rem;
+}
+/* Cancel / secondary modal actions read as a subdued outlined button, not a
+   heavy dark-filled CTA. lx-ui's later .lx-button chunks fill the base button,
+   overriding .lx-button-secondary's transparent background — so force it here. */
+.lx .lx-modal .lx-button-set .lx-button-secondary,
+.lx .lx-modal .lx-button-set .lx-button-secondary:focus {
+  min-width: auto;
+  background-color: transparent !important;
+  border: 1px solid var(--color-chrome) !important;
+  color: var(--color-data) !important;
+  box-shadow: none !important;
+}
+.lx .lx-modal .lx-button-set .lx-button-secondary:hover {
+  background-color: var(--color-region) !important;
+  border-color: var(--color-brand) !important;
+  color: var(--color-data) !important;
 }
