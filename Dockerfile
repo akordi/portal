@@ -7,8 +7,8 @@ COPY --chown=nginx:nginx docker/default.conf.template /etc/nginx/templates/defau
 # Make the web root nginx-owned so the entrypoint can rewrite files in place
 # (sed -i writes its temp file in the target dir) as the nonroot nginx user.
 USER root
-RUN chown -R nginx:nginx /usr/share/nginx/html
+RUN chown nginx:nginx /usr/share/nginx/html
 USER nginx
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --start-interval=2s --retries=3 \
   CMD curl --fail http://127.0.0.1:8080/healthz || exit 1
