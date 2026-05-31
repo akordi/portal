@@ -481,9 +481,26 @@ onUnmounted(() => {
 }
 
 .akordi-song-dates {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1.5rem;
   margin: 0;
+}
+.akordi-date {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+.akordi-date-label {
   color: var(--c-ink3);
   font-size: 0.78rem;
+}
+.akordi-date-value {
+  color: var(--c-ink2);
+  font-size: 0.78rem;
+  font-weight: 600;
 }
 
 /* Authorship credits (composer / poet) — own line, subtle labels with
@@ -669,12 +686,6 @@ onUnmounted(() => {
             class="akordi-chip"
           >{{ tag.title }}</router-link>
         </div>
-        <p class="akordi-song-dates lx-description">
-          {{ $t('song.createdAt') }} {{ item.createdAt }}
-          <template v-if="item.updatedDate && item.updatedDate !== item.createdDate">
-            · {{ $t('song.updatedAt') }} {{ lxDateUtils.formatDate(item.updatedDate) }}
-          </template>
-        </p>
         <dl class="akordi-song-credits" v-if="item.composers?.length || item.poets?.length">
           <div class="akordi-credit" v-if="item.composers?.length">
             <dt class="akordi-credit-label">{{ $t('song.composer') }}</dt>
@@ -697,6 +708,19 @@ onUnmounted(() => {
             </dd>
           </div>
         </dl>
+        <p class="akordi-song-dates">
+          <span class="akordi-date">
+            <span class="akordi-date-label">{{ $t('song.createdAt') }}</span>
+            <span class="akordi-date-value">{{ item.createdAt }}</span>
+          </span>
+          <span
+            class="akordi-date"
+            v-if="item.updatedDate && item.updatedDate !== item.createdDate"
+          >
+            <span class="akordi-date-label">{{ $t('song.updatedAt') }}</span>
+            <span class="akordi-date-value">{{ lxDateUtils.formatDate(item.updatedDate) }}</span>
+          </span>
+        </p>
       </header>
 
       <div class="akordi-song-actions" v-if="item.id">
