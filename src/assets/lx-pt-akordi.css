@@ -383,7 +383,9 @@
 }
 
 .lx .lx-layout.lx-layout-public > header > .lx-header .lx-button:not(.lx-context-container .popper .lx-button):hover {
-  background-color: rgba(255, 255, 255, 0.12) !important;
+  /* Opaque equivalent of white 12% over the navy header (--color-layout-background:
+     #07004d) so white text reads as the high-contrast pair it actually is. */
+  background-color: #251f62 !important;
   border-color: rgba(255, 255, 255, 0.12) !important;
   color: #ffffff !important;
 }
@@ -460,7 +462,8 @@
 
 .lx.lx-theme-dark .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button {
   background-color: #21204a;
-  color: #607afb;
+  /* brand-300 rather than brand-400 to clear WCAG AA on #21204a (~6:1) */
+  color: #8fa0fc;
 }
 
 .lx.lx-theme-dark .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button svg {
