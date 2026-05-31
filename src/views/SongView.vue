@@ -43,6 +43,11 @@ const selectedLists = ref([]);
 const loadingStates = ref({}); // To track per-list loading
 const newSongbookName = ref('');
 const creatingSongbook = ref(false);
+const sortedLists = computed(() =>
+  [...userLists.value].sort((a, b) =>
+    (a.title || '').localeCompare(b.title || '', 'lv', { sensitivity: 'base' })
+  )
+);
 const songUrlParam = computed(() => route.params.url);
 const bodyTransposedIndex = ref(0);
 const item = ref({});
@@ -402,16 +407,25 @@ async function actionClicked(action) {
   }
 }
 
+function adjustSongCount(listId, delta) {
+  const list = userLists.value.find((l) => String(l.id) === String(listId));
+  if (list) {
+    list.songCount = Math.max(0, (list.songCount ?? 0) + delta);
+  }
+}
+
 async function toggleListSelection(listId, value) {
   loadingStates.value[listId] = true;
   try {
     if (value) {
       await akordiAdminListService.addSong(listId, item.value.id);
       userListSelected.value.push(listId);
+      adjustSongCount(listId, 1);
       notificationStore.pushSuccess($t('pages.akordiSongView.addToList.success'));
     } else {
       await akordiAdminListService.removeSong(listId, item.value.id);
       userListSelected.value = userListSelected.value.filter((id) => id !== listId);
+      adjustSongCount(listId, -1);
       notificationStore.pushSuccess($t('pages.akordiSongView.removeFromList.success'));
     }
     selectedLists.value = userListSelected.value.map((id) => String(id));
@@ -728,13 +742,13 @@ onUnmounted(() => {
     ref="addToListModal"
     :label="$t('pages.akordiSongView.addToList.label')"
     size="m"
-    :action-definitions="[{ id: 'close', name: $t('cancel'), kind: 'secondary' }]"
+    :action-definitions="[{ id: 'close', name: $t('cancel'), kind: 'ghost' }]"
     @action-click="actionClicked"
   >
     <div class="songbook-picker">
-      <ul class="songbook-list" v-if="userLists.length">
+      <ul class="songbook-list" v-if="sortedLists.length">
         <li
-          v-for="list in userLists"
+          v-for="list in sortedLists"
           :key="list.id"
           class="songbook-row"
           :class="{ 'songbook-row-selected': selectedLists.includes(String(list.id)) }"
