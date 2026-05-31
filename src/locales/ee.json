@@ -265,7 +265,8 @@
                 "label": "Lisa lauluraamatusse",
                 "description": "Lisa see laul ühte oma lauluraamatusse",
                 "success": "Laul edukalt lisatud",
-                "error": "Viga laulu lisamisel"
+                "error": "Viga laulu lisamisel",
+                "songCount": "{count} laul | {count} laulu"
             },
             "authRequired": {
                 "title": "Sisselogimine on vajalik",

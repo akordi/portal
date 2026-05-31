@@ -1,21 +1,901 @@
+/* ============================================================
+   Akordi.lv theme for LX-UI
+   Maps song-view.html design tokens onto the lx-ui variable
+   system. Light + dark variants. Tries hard to override only
+   tokens; layout-level overrides at the bottom for the public
+   shell where token re-pointing isn't sufficient.
+============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+/* -----------------------------------------------------------
+   LIGHT (default)
+----------------------------------------------------------- */
 .lx {
+  /* Akordi raw palette — kept available so app components and
+     song-view markup can use the same tokens as song-view.html */
+  --c-brand-900: #03002e;
+  --c-brand-800: #07004d;
+  --c-brand-700: #0d007a;
+  --c-brand-600: #1a10b0;
+  --c-brand-500: #2e28d6;
+  --c-brand-400: #607afb;
+  --c-brand-300: #8fa0fc;
+  --c-brand-200: #b8c4fd;
+  --c-brand-100: #dce3fe;
+  --c-brand-50:  #f0f3ff;
+  --c-accent:    #f5a623;
+  --c-accent-bg: #fef3da;
+
+  --c-s0: #ffffff;
+  --c-s1: #f8f9fc;
+  --c-s2: #eef0f6;
+  --c-s3: #dde1ed;
+
+  --c-ink1: #0f0e24;
+  --c-ink2: #4a4870;
+  --c-ink3: #8884b0;
+  --c-chrome: #cccae0;
+
+  /* chord diagram tokens (used by song view) */
+  --cd-dot:  #07004d;
+  --cd-line: #cccae0;
+  --cd-nut:  #4a4870;
+  --cd-text: #0f0e24;
+  --cd-open: #8884b0;
+
+  /* Typography */
+  --font-family: 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', 'Menlo', monospace;
+  --font-weight: 500;
+  --font-weight-interactive: 600;
+  --font-weight-data: 600;
+  --font-weight-bold: 700;
+  --font-weight-extra-bold: 800;
+  --font-size: 14px;
+  --small-font-size: 0.8125rem;
+  --label-font-size: 0.78rem;
+  --h1-font-size: 2.1rem;
+  --h1-font-weight: 800;
+  --h2-font-size: 1.25rem;
+  --h2-font-weight: 700;
+  --letter-spacing-1: -0.005em;
+  --letter-spacing-2: -0.012em;
+  --text-decoration-link: none;
+  --description-font-weight: 500;
+
+  /* Border radius — replace carbon's hard-edged 0 with rounded */
+  --border-radius-default: 0.5rem;            /* 8px = --r-md */
+  --border-radius-0: 0;
+  --border-radius-0125: 0.125rem;
+  --border-radius-0250: 0.25rem;              /* --r-sm */
+  --border-radius-0500: 0.5rem;               /* --r-md */
+  --border-radius-0750: 0.75rem;
+  --border-radius-1000: 1rem;                 /* --r-lg */
+  --border-radius-full: 9999px;               /* --r-pill */
+
+  /* Card / list / data block radius */
+  --card-border-radius: 1rem;
+  --list-button-border-radius: 0.5rem;
+  --list-category-border-radius: 0.5rem;
+  --list-item-border-radius: 0.5rem;
+  --list-item-border-radius-inner: 0.5rem;
+  --list-item-border: 1px solid var(--color-chrome);
+  --tile-border-radius: 0.75rem;
+  --tile-border-radius-inner: 0.75rem;
+  --data-block-border-radius: 0.5rem;
+  --data-block-border-radius-inner: 0.5rem;
+  --data-block-border-radius-expanded: 0.5rem;
+  --data-block-border-radius-inner-expanded: 0.5rem;
+  --input-border-radius: 0.5rem;
+  --input-button-border-radius: 0.5rem;
+  --button-dropdown-border-radius: 0.5rem;
+  --button-toolbar-primary-border-radius: 0.5rem;
+  --button-toolbar-secondary-border-radius: 0.5rem;
+  --button-toolbar-tertiary-border-radius: 0.5rem;
+  --button-toolbar-ghost-border-radius: 0.5rem;
+  --button-toolbar-selection-border-radius: 0.5rem;
+  --button-primary-border-radius: 0.5rem;
+  --button-secondary-border-radius: 0.5rem;
+  --button-tertiary-border-radius: 0.5rem;
+  --button-ghost-border-radius: 0.5rem;
+  --button-modal-primary-border-radius: 0.5rem;
+  --button-modal-secondary-border-radius: 0.5rem;
+  --content-switcher-container-border-radius: 9999px;
+  --content-switcher-inner-border-radius: 9999px;
+  --content-switcher-outer-border-radius: 9999px;
+  --content-switcher-inner-border-radius-selected: 9999px;
+  --content-switcher-outer-border-radius-selected: 9999px;
+  --badge-border-radius: 9999px;
+  --toggle-border-radius-m: 9999px;
+  --toggle-border-radius-s: 9999px;
+
+  /* Shadows */
+  --color-shadow: rgba(7, 0, 77, 0.11);
+  --shadow-1: 0 1px 3px rgba(7, 0, 77, 0.07), 0 1px 2px rgba(7, 0, 77, 0.05);
+  --shadow-dropdown: 0 4px 16px rgba(7, 0, 77, 0.11);
+  --shadow-modal: 0 12px 40px rgba(7, 0, 77, 0.17);
+
+  /* ======================================================
+     COLOR TOKENS
+  ====================================================== */
+  --color-h: 245;
+  --color-s: 100%;
+  --color-l: 15%;
+
+  /* Brand + interactive */
   --color-brand: #07004d;
   --color-interactive-background: #07004d;
-  --color-interactive-hover-background: #2038b5;
-  --color-background: hwb(240 92% 6%);
-  --color-highlight: #ddecff;
-  --color-layout-background: #111;
-  --color-interactive-secondary-background: #111;
-  --color-grid-hover-background: #ddd;
-  --gap-form: 1rem;
-  --font-size: 14px;
   --color-interactive-foreground: #ffffff;
+  --color-interactive-hover-background: #2038b5;
+  --color-interactive-hover-foreground: #ffffff;
+  --color-interactive-secondary-background: #4a4870;
+  --color-interactive-secondary-foreground: #ffffff;
+  --color-interactive-secondary-hover-background: #0f0e24;
+  --color-interactive-secondary-hover-foreground: #ffffff;
+  --color-interactive-active-background: #0f0e24;
+  --color-interactive-active-foreground: #ffffff;
+  --color-focus-background: #607afb;
+  --color-focus-foreground: #ffffff;
+
+  /* Surfaces */
+  --color-background: #f8f9fc;                /* page bg */
+  --color-background-overlay: rgba(248, 249, 252, 0.85);
+  --color-foreground: #0f0e24;
+  --color-region: #ffffff;                    /* cards / panels */
+  --color-region-2: #eef0f6;                  /* secondary fill */
+  --color-region-hover: #f0f3ff;              /* brand-50 hover */
+  --color-region-hover-background: #f0f3ff;
+  --color-region-hover-foreground: #07004d;
+
+  --color-data: #0f0e24;
+  --color-label: #4a4870;
+  --color-footer-label: #8884b0;
+  --color-disabled: #8884b0;
+  --color-disabled-background: #eef0f6;
+  --color-disabled-foreground: #b8b6cf;
+  --color-chrome: #dde1ed;
+  --color-placeholder: #8884b0;
+  --color-placeholder-disabled: #b8b6cf;
+
+  /* Selection / highlight */
+  --color-highlight: #f0f3ff;
+  --color-highlight-background: #f0f3ff;
+  --color-highlight-foreground: #07004d;
+  --color-selected: #07004d;
+  --color-selected-border: #07004d;
+  --color-selected-background: #f0f3ff;
+
+  /* Layout / nav (used by public + standard shell) */
+  --color-layout-background: #07004d;
+  --color-navbar-background: #ffffff;
+  --color-nav-background: #ffffff;
+  --color-nav-foreground: #0f0e24;
+  --color-nav-chrome: #dde1ed;
+  --color-nav-hover-background: #f0f3ff;
+  --color-nav-hover-foreground: #07004d;
+
+  /* Tooltip */
+  --color-tooltip-background: #0f0e24;
+  --color-tooltip-foreground: #ffffff;
+  --color-tooltip-foreground-label: #b8c4fd;
+  --color-tooltip-foreground-data: #ffffff;
+
+  /* Grid / lists */
+  --color-grid-header: #eef0f6;
+  --color-grid-hover-background: #f0f3ff;
+  --color-grid-hover-foreground: #0f0e24;
+  --color-grid-header-hover-background: #dde1ed;
+
+  /* Status colors */
+  --color-green: #22c55e;
+  --color-red: #ef4444;
+  --color-orange: #f5a623;
+  --color-purple: #6554c0;
+  --color-blue: #2e28d6;
+  --color-teal: #178295;
+  --color-yellow: #f5a623;
+  --color-grey: #4a4870;
+
+  /* Notifications */
+  --color-notification-success-foreground: #178746;
+  --color-notification-success-background: #ecfdf3;
+  --color-notification-warning-foreground: #b1761a;
+  --color-notification-warning-background: #fef3da;
+  --color-notification-error-foreground: #c92a2a;
+  --color-notification-error-background: #fdecec;
+
+  /* Buttons — selected nav (used in shell) */
+  --color-button-nav-selected: #07004d;
+  --color-button-nav-selected-background: #f0f3ff;
+  --color-button-nav-selected-border: transparent;
+  --color-button-nav-selected-left-border: #07004d;
+
+  /* Form gap */
+  --gap-form: 1.5rem;
+  --gap-buttons: 0.5rem;
+
+  /* LxTile: visible chrome border so the tile reads as a card,
+     matching song-view.html's lyrics-card / chord-strip-card style. */
+  --tile-border: 1px solid var(--color-chrome);
+
+  /* LxContentSwitcher: selected segment on region bg with brand text. */
+  --color-content-switcher-background-selected: var(--color-region);
+  --color-content-switcher-text-selected: var(--color-brand);
+  --color-content-switcher-icon-selected: var(--color-brand);
+
+  /* Inputs: full chrome border, region background and rounded corners. */
+  --input-border: 1.5px solid var(--color-chrome);
+  --input-border-disabled: 1.5px solid var(--color-disabled-foreground);
+  --input-border-bottom: 1.5px solid var(--color-chrome);
+  --input-border-bottom-disabled: 1.5px solid var(--color-disabled-foreground);
+  --color-input-background: var(--color-region);
+  --color-input-region-background: var(--color-region);
+
+  /* Modal button bar */
+  --button-modal-primary-height: 2.75rem;
+  --button-modal-secondary-height: 2.75rem;
+  --button-modal-primary-border-radius: 0.5rem;
+  --button-modal-secondary-border-radius: 0.5rem;
+  --button-modal-primary-text-align: center;
+  --button-modal-secondary-text-align: center;
+  --button-modal-primary-align: center;
+  --button-modal-secondary-align: center;
+  --button-modal-set-flex-direction: row;
+  --button-modal-set-justify: flex-end;
+  --button-modal-set-gap: 0.5rem;
+  --button-modal-set-padding: 0 1.25rem 1.25rem 1.25rem;
 }
 
+/* -----------------------------------------------------------
+   DARK
+----------------------------------------------------------- */
 .lx.lx-theme-dark {
+  /* Surfaces spread apart so cards lift off the page background
+     (dark-theme contrast bump folded in). */
+  --c-s0: #08071a;
+  --c-s1: #0e0d24;
+  --c-s2: #1d1b3f;
+  --c-s3: #2c2a55;
+  --c-ink1: #f4f2ff;
+  --c-ink2: #b9b6dc;
+  --c-ink3: #807ebd;
+  --c-chrome: #3a3868;
+  --c-brand-50:  #16142e;
+  --c-brand-100: #21204a;
+  --c-accent-bg: #2a1f00;
+
+  --cd-dot:  #607afb;
+  --cd-line: #2e2c50;
+  --cd-nut:  #a09ec0;
+  --cd-text: #f0eeff;
+  --cd-open: #6361a0;
+
+  --color-shadow: rgba(0, 0, 0, 0.4);
+  --shadow-1: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-dropdown: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-modal: 0 12px 40px rgba(0, 0, 0, 0.5);
+
+  /* Brand + interactive */
   --color-brand: #607afb;
   --color-interactive-background: #607afb;
-  --color-interactive-hover-background: #4860db;
   --color-interactive-foreground: #ffffff;
-  --color-highlight: #303f70;
+  --color-interactive-hover-background: #4860db;
+  --color-interactive-hover-foreground: #ffffff;
+  --color-interactive-secondary-background: #2e2c50;
+  --color-interactive-secondary-foreground: #f0eeff;
+  --color-interactive-secondary-hover-background: #3a3868;
+  --color-interactive-secondary-hover-foreground: #ffffff;
+  --color-interactive-active-background: #ffffff;
+  --color-interactive-active-foreground: #07004d;
+  --color-focus-background: #8fa0fc;
+
+  --color-background: #0e0d24;
+  --color-background-overlay: rgba(19, 18, 42, 0.85);
+  --color-foreground: #f4f2ff;
+  --color-region: #1d1b3f;
+  --color-region-2: #08071a;
+  --color-region-hover: #2c2a55;
+  --color-region-hover-background: #2c2a55;
+  --color-region-hover-foreground: #f0eeff;
+
+  --color-data: #f4f2ff;
+  --color-label: #b9b6dc;
+  --color-footer-label: #807ebd;
+  --color-disabled: #6361a0;
+  --color-disabled-background: #1b1938;
+  --color-disabled-foreground: #4a4870;
+  --color-chrome: #3a3868;
+  --color-placeholder: #807ebd;
+  --color-placeholder-disabled: #4a4870;
+
+  --color-highlight: #2c2a55;
+  --color-highlight-background: #2c2a55;
+  --color-highlight-foreground: #f0eeff;
+  --color-selected: #f0eeff;
+  --color-selected-border: #607afb;
+  --color-selected-background: #2c2a55;
+
+  --color-layout-background: #07004d;
+  --color-navbar-background: #1d1b3f;
+  --color-nav-background: #1d1b3f;
+  --color-nav-foreground: #f0eeff;
+  --color-nav-chrome: #2e2c50;
+  --color-nav-hover-background: #21204a;
+  --color-nav-hover-foreground: #f0eeff;
+
+  --color-tooltip-background: #f0eeff;
+  --color-tooltip-foreground: #07004d;
+  --color-tooltip-foreground-label: #4a4870;
+  --color-tooltip-foreground-data: #07004d;
+
+  --color-grid-header: #2e2c50;
+  --color-grid-hover-background: #2c2a55;
+  --color-grid-hover-foreground: #f0eeff;
+  --color-grid-header-hover-background: #2e2c50;
+
+  --color-button-nav-selected: #f0eeff;
+  --color-button-nav-selected-background: #21204a;
+  --color-button-nav-selected-left-border: #607afb;
+}
+
+/* -----------------------------------------------------------
+   PUBLIC SHELL SKIN
+   Keep the lx-shell-grid-public layout; restyle so the header
+   reads as the dark "topbar" from song-view.html, and the
+   nav row becomes a clean white strip with rounded items.
+----------------------------------------------------------- */
+.lx .lx-layout.lx-layout-public > header {
+  background-color: var(--c-brand-800);
+  border-bottom-color: var(--c-brand-800);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+  --color-region: var(--c-brand-800);
+  --color-header-hover-background: rgba(255, 255, 255, 0.1);
+  --color-header-hover-foreground: #ffffff;
+}
+
+/* Header is always brand-dark — force the white logo regardless of theme.
+   Overrides styles.css which keys logo visibility off the body theme class. */
+.lx .lx-layout.lx-layout-public > header .lx-main-button .lx-logo img {
+  display: none !important;
+}
+.lx .lx-layout.lx-layout-public > header .lx-main-button .lx-logo img#logo-dark {
+  display: block !important;
+}
+
+.lx .lx-layout.lx-layout-public > header .lx-main-button .lx-primary,
+.lx .lx-layout.lx-layout-public > header .lx-header .lx-main-button .lx-badge-text,
+.lx .lx-layout.lx-layout-public > header .lx-header .lx-main-button .lx-description {
+  color: #ffffff !important;
+}
+
+.lx .lx-layout.lx-layout-public > header > .lx-header .lx-main-button svg {
+  fill: #ffffff !important;
+}
+
+.lx .lx-layout.lx-layout-public > header > .lx-header .lx-button:not(.lx-context-container .popper .lx-button) {
+  color: rgba(255, 255, 255, 0.9);
+  border-radius: 0.5rem;
+}
+
+.lx .lx-layout.lx-layout-public > header > .lx-header .lx-button:not(.lx-context-container .popper .lx-button) svg {
+  fill: rgba(255, 255, 255, 0.9);
+}
+
+.lx .lx-layout.lx-layout-public > header > .lx-header .lx-button:not(.lx-context-container .popper .lx-button):hover {
+  /* Opaque equivalent of white 12% over the navy header (--color-layout-background:
+     #07004d) so white text reads as the high-contrast pair it actually is. */
+  background-color: #251f62 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+}
+
+.lx .lx-layout.lx-layout-public > header > .lx-header .lx-button:not(.lx-context-container .popper .lx-button):hover svg {
+  fill: #ffffff !important;
+}
+
+.lx .lx-layout.lx-layout-public > header > .lx-header .lx-user-button:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.lx .lx-layout.lx-layout-public > header .lx-header .lx-user-button .lx-user-info .lx-primary,
+.lx .lx-layout.lx-layout-public > header .lx-header .lx-user-button .lx-user-info .lx-secondary {
+  color: #ffffff;
+}
+
+.lx .lx-layout.lx-layout-public > header .lx-header .lx-user-button .lx-avatar {
+  --color-region: var(--c-brand-400);
+  --color-data: #ffffff;
+}
+
+/* Nav row: light strip with brand-50 active state */
+.lx .lx-layout.lx-layout-public > nav {
+  --color-nav-background: #ffffff;
+  --color-nav-foreground: #4a4870;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--c-chrome);
+}
+
+/* Dark mode header: use the deepest surface instead of brand-800 blue,
+   so the header harmonises with the purple-dark page palette. */
+.lx.lx-theme-dark .lx-layout.lx-layout-public > header {
+  background-color: var(--c-s0);
+  border-bottom-color: var(--c-s0);
+}
+
+.lx.lx-theme-dark .lx-layout.lx-layout-public > nav {
+  --color-nav-background: #1b1938;
+  --color-nav-foreground: #a09ec0;
+  background-color: #1b1938;
+  border-bottom-color: #2e2c50;
+}
+
+.lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li .lx-nav-item-wrapper > .lx-button {
+  color: var(--color-label);
+  font-weight: 600;
+}
+
+.lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li .lx-nav-item-wrapper > .lx-button svg {
+  fill: var(--color-label);
+}
+
+.lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li .lx-nav-item-wrapper > .lx-button:hover {
+  background-color: var(--color-region-hover);
+  color: var(--color-region-hover-foreground);
+}
+
+.lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li .lx-nav-item-wrapper > .lx-button:hover svg {
+  fill: var(--color-region-hover-foreground);
+}
+
+/* Selected nav: brand-50 background, brand text — matches song-view */
+.lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button,
+.lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected:not(.lx-nested-nav-open) .lx-nav-item-wrapper > .lx-context-container .lx-dropdown-toggler .lx-button {
+  background-color: var(--c-brand-50);
+  color: var(--color-brand);
+}
+
+.lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button svg,
+.lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected:not(.lx-nested-nav-open) .lx-nav-item-wrapper > .lx-context-container .lx-dropdown-toggler .lx-button svg {
+  fill: var(--color-brand);
+}
+
+.lx.lx-theme-dark .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button {
+  background-color: #21204a;
+  /* brand-300 rather than brand-400 to clear WCAG AA on #21204a (~6:1) */
+  color: #8fa0fc;
+}
+
+.lx.lx-theme-dark .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button svg {
+  fill: #607afb;
+}
+
+/* Page area gets the song-view body color */
+.lx .lx-layout.lx-layout-public > main {
+  background-color: var(--color-background);
+}
+
+/* Footer keeps brand wash */
+.lx .lx-layout.lx-layout-public > footer {
+  background-color: var(--c-brand-900);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* -----------------------------------------------------------
+   Misc tweaks for lyric/song views — only tokens used by
+   song-view.html, exposed under .lx so app templates can pick
+   them up if they reuse the song-view markup.
+----------------------------------------------------------- */
+.lx body, .lx { font-family: var(--font-family); }
+.lx code, .lx pre, .lx .lx-mono { font-family: var(--font-family-mono); }
+
+/* Card-style elements get the soft shadow from song-view */
+.lx .lx-card, .lx .lx-tile, .lx .lx-data-block {
+  box-shadow: var(--shadow-1);
+}
+
+.lx .lx-tile {
+  border: 1px solid var(--color-chrome);
+}
+.lx .lx-tile:hover {
+  border-color: var(--c-brand-200);
+}
+
+/* -----------------------------------------------------------
+   AKORDI CARD + TAG-CHIP HELPERS
+   Local helper classes used by song-view markup. They live
+   under the .lx scope so any component inside the LxShell
+   can use them.
+----------------------------------------------------------- */
+.lx .akordi-card {
+  background: var(--color-region);
+  border: 1px solid var(--color-chrome);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-1);
+  overflow: hidden; /* clip child backgrounds to the rounded corner */
+}
+.lx .akordi-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 3.5rem;
+  padding: 0.5rem 1.25rem;
+  background: var(--c-s2);
+  border-bottom: 1px solid var(--color-chrome);
+}
+.lx.lx-theme-dark .akordi-card-header {
+  background: var(--c-s3);
+}
+.lx .akordi-card-title {
+  font: 600 0.72rem/1 var(--font-family);
+  color: var(--c-ink3);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.lx .akordi-card-body {
+  padding: 1rem 1.25rem;
+}
+
+/* Song action buttons (Ieteikt labojumu, Pievienot dziesmu grāmatai…)
+   Styled like song-view.html .act-btn.act-ghost — chrome bordered pills. */
+.lx .akordi-song-actions .lx-button {
+  background: var(--color-region);
+  border: 1.5px solid var(--color-chrome);
+  border-radius: 0.5rem;
+  color: var(--c-ink2);
+  height: auto;
+  padding: 0.42rem 0.875rem;
+  font: 600 0.8125rem/1 var(--font-family);
+  min-width: 0;
+}
+.lx .akordi-song-actions .lx-button:hover {
+  background: var(--c-s2);
+  color: var(--c-ink1);
+  border-color: var(--c-ink3);
+}
+.lx .akordi-song-actions .lx-button svg {
+  fill: currentColor;
+  width: 1rem;
+  height: 1rem;
+}
+
+.lx .akordi-tag-set {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+.lx .akordi-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font: 600 0.78rem/1 var(--font-family);
+  border: 1px solid var(--color-chrome);
+  background: var(--c-s2);
+  color: var(--c-ink2);
+  text-decoration: none;
+  transition: all 0.15s;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.lx .akordi-chip:hover,
+.lx .akordi-chip:focus-visible {
+  background: var(--c-brand-50);
+  color: var(--color-brand);
+  border-color: var(--c-brand-100);
+  outline: none;
+}
+.lx.lx-theme-dark .akordi-chip {
+  background: var(--c-s3);
+  color: var(--c-ink2);
+  border-color: var(--c-chrome);
+}
+.lx.lx-theme-dark .akordi-chip:hover,
+.lx.lx-theme-dark .akordi-chip:focus-visible {
+  background: var(--c-brand-100);
+  color: var(--color-brand);
+  border-color: var(--c-brand-100);
+}
+
+/* -----------------------------------------------------------
+   SONG LYRICS BODY
+   Mirror song-view.html: lyrics use JetBrains Mono and chords
+   (rendered as <b> by chordsService) get the brand-500 .ct
+   chord-token treatment.
+----------------------------------------------------------- */
+.lx #song-view-form .pre {
+  font-family: var(--font-family-mono);
+  font-feature-settings: 'tnum';
+  color: var(--c-ink1);
+  line-height: 1.7;
+}
+
+.lx #song-view-form .pre b {
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 0.82em;
+  color: var(--c-brand-500);
+  background: transparent;
+  padding: 0 0.05em;
+  border-radius: 3px;
+  vertical-align: baseline;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+}
+.lx #song-view-form .pre b:hover {
+  background: var(--c-brand-50);
+}
+
+.lx.lx-theme-dark #song-view-form .pre b {
+  color: var(--c-brand-300, #8fa0fc);
+}
+
+/* -----------------------------------------------------------
+   NOTIFICATIONS
+   Round corners, drop the loud full-saturation foreground
+   colors in favor of song-view's softer status palette,
+   and keep the slim accent left-edge.
+----------------------------------------------------------- */
+.lx .lx-notifications-list .lx-notification .lx-main {
+  border-radius: 0.75rem;
+  border-width: 1px;
+  border-left-width: 4px;
+  box-shadow: var(--shadow-1);
+  padding: 0.625rem 0.875rem;
+}
+
+.lx .lx-notifications-list .lx-notification .lx-main p.lx-title {
+  font-weight: 600;
+  font-family: var(--font-family);
+}
+
+.lx .lx-notifications-list .lx-notification.lx-notification-success .lx-main {
+  background-color: var(--color-notification-success-background);
+  border-color: var(--color-notification-success-foreground);
+  color: var(--color-notification-success-foreground);
+}
+.lx .lx-notifications-list .lx-notification.lx-notification-success .lx-title {
+  color: var(--color-notification-success-foreground);
+}
+
+.lx .lx-notifications-list .lx-notification.lx-notification-warning .lx-main {
+  background-color: var(--color-notification-warning-background);
+  border-color: var(--color-notification-warning-foreground);
+}
+.lx .lx-notifications-list .lx-notification.lx-notification-warning .lx-title {
+  color: var(--color-notification-warning-foreground);
+}
+
+.lx .lx-notifications-list .lx-notification.lx-notification-error .lx-main {
+  background-color: var(--color-notification-error-background);
+  border-color: var(--color-notification-error-foreground);
+}
+.lx .lx-notifications-list .lx-notification.lx-notification-error .lx-title {
+  color: var(--color-notification-error-foreground);
+}
+
+.lx .lx-notifications-list .lx-notification svg.lx-close-icon {
+  border-radius: 0.5rem;
+}
+
+/* -----------------------------------------------------------
+   POPPER / DROPDOWN PANELS
+   The accessibility/theme popover and any other LxDropDownMenu
+   panel: round the panel itself, the inner buttons and the
+   "primary-menu" tile grid (theme picker).
+----------------------------------------------------------- */
+.lx .lx-dropdown-panel,
+.lx .popper > .lx-dropdown-panel-wrapper,
+.lx.lx-header-wrapper .popper .lx-dropdown-panel {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.lx.lx-header-wrapper .lx-dropdown-panel {
+  border-radius: 0.75rem;
+}
+
+.lx.lx-header-wrapper .lx-mega-menu-container ul li.primary-menu-tile {
+  border-radius: 0.625rem;
+}
+
+.lx.lx-header-wrapper .lx-mega-menu-container ul li.primary-menu-tile:hover,
+.lx.lx-header-wrapper .lx-mega-menu-container ul li.primary-menu-tile.selected {
+  border-radius: 0.625rem;
+}
+
+.lx.lx-header-wrapper .lx-dropdown-panel .user-menu-panel .lx-button,
+.lx.lx-header-wrapper .lx-dropdown-panel .lx-button-set .lx-button,
+.lx.lx-header-wrapper .lx-dropdown-panel > div > .lx-button,
+.lx.lx-header-wrapper .lx-dropdown-panel > .lx-button {
+  border-radius: 0.5rem;
+}
+
+/* -----------------------------------------------------------
+   CONTENT SWITCHER
+   Match song-view.html .inst-tab.on — selected pill is white
+   on the page (light) / region (dark), with brand-colored text
+   and a soft shadow, instead of the carbon black-on-white.
+----------------------------------------------------------- */
+.lx .lx-content-switcher,
+.lx .lx-content-switcher-wrapper {
+  background: transparent;
+  border: none;
+  padding: 3px;
+  gap: 1px;
+}
+.lx.lx-theme-dark .lx-content-switcher,
+.lx.lx-theme-dark .lx-content-switcher-wrapper {
+  background: transparent;
+}
+.lx.lx-theme-dark .lx-content-switcher .lx-content-switcher-item.lx-selected,
+.lx.lx-theme-dark .lx-content-switcher-wrapper .lx-content-switcher-item.lx-selected {
+  background: var(--c-s3);
+  color: var(--c-brand-300, #8fa0fc);
+  box-shadow: var(--shadow-1);
+}
+.lx .lx-content-switcher .lx-content-switcher-item,
+.lx .lx-content-switcher-wrapper .lx-content-switcher-item {
+  border-radius: 9999px;
+  border: none;
+  padding: 0.26rem 0.6rem;
+  min-width: 0;
+  height: auto;
+  font: 600 0.8125rem/1 var(--font-family);
+  color: var(--c-ink3);
+  background: transparent;
+}
+.lx .lx-content-switcher .lx-content-switcher-item:hover,
+.lx .lx-content-switcher-wrapper .lx-content-switcher-item:hover {
+  background: var(--color-region);
+  color: var(--c-ink1);
+}
+.lx .lx-content-switcher .lx-content-switcher-item.lx-selected,
+.lx .lx-content-switcher-wrapper .lx-content-switcher-item.lx-selected {
+  background: var(--color-region);
+  color: var(--color-brand);
+  box-shadow: var(--shadow-1);
+}
+/* dividers between items disappear on this look */
+.lx .lx-content-switcher .lx-content-switcher-divider,
+.lx .lx-content-switcher-wrapper .lx-content-switcher-divider {
+  display: none;
+}
+
+/* -----------------------------------------------------------
+   VALUE PICKER (tags variant) — used on /find/0 letter index
+   Round + soften so each letter reads as a chip.
+----------------------------------------------------------- */
+.lx .lx-value-picker-tags .lx-tag-set .lx-tag {
+  border-radius: 9999px;
+  border-width: 1.5px;
+  background: var(--color-region);
+  font: 600 0.8125rem/1 var(--font-family);
+  padding: 0.35rem 0.75rem;
+  min-width: 2.25rem;
+  text-align: center;
+  justify-content: center;
+}
+.lx .lx-value-picker-tags .lx-tag-set .lx-tag.lx-tags-tile-selected {
+  background: var(--c-brand-50);
+  color: var(--color-brand);
+  border-color: var(--color-brand);
+}
+.lx.lx-theme-dark .lx-value-picker-tags .lx-tag-set .lx-tag.lx-tags-tile-selected {
+  background: var(--c-brand-100);
+  color: var(--c-brand-300, #8fa0fc);
+  border-color: var(--color-brand);
+}
+
+/* -----------------------------------------------------------
+   INPUTS
+   Carbon's bottom-only border doesn't fit the rounded card
+   look — give inputs a full chrome border, region background
+   and rounded corners.
+----------------------------------------------------------- */
+.lx .lx-text-input-wrapper > .lx-text-input,
+.lx .lx-input-wrapper input,
+.lx .lx-input-wrapper textarea,
+.lx .lx-text-input,
+.lx .lx-text-area,
+.lx input.lx-input,
+.lx textarea.lx-input,
+.lx .lx-dropdown-default {
+  background: var(--color-region);
+  border: 1.5px solid var(--color-chrome);
+  border-radius: 0.5rem;
+  transition: border-color 0.15s, background 0.15s;
+}
+.lx .lx-text-input-wrapper > .lx-text-input:hover,
+.lx .lx-input-wrapper:hover input,
+.lx input.lx-input:hover,
+.lx textarea.lx-input:hover {
+  border-color: var(--c-ink3);
+}
+.lx .lx-text-input-wrapper:focus-within > .lx-text-input,
+.lx .lx-input-wrapper:focus-within input,
+.lx input.lx-input:focus,
+.lx textarea.lx-input:focus {
+  border-color: var(--color-brand);
+  outline: none;
+}
+/* LxDropdown / LxValuePicker focus */
+.lx .lx-dropdown-default:focus,
+.lx .lx-dropdown-default:focus-within {
+  border-color: var(--color-brand);
+  outline: none;
+}
+/* LxTextInput focus: target the visual border element (.lx-input-area) directly
+   using :has(input:focus) — works regardless of whether lx-ui forwards focus to
+   .lx-input-area programmatically or not. Also covers lx-ui's own :focus path. */
+.lx .lx-input-wrapper:not(.lx-disabled):has(input:focus) .lx-input-area,
+.lx .lx-input-wrapper:not(.lx-disabled):has(textarea:focus) .lx-input-area,
+.lx .lx-layout .lx-input-wrapper:not(.lx-disabled) .lx-input-area:focus,
+.lx .lx-layout .lx-input-wrapper:not(.lx-disabled) .lx-input-area:focus-visible {
+  border-color: var(--color-brand) !important;
+  outline-color: transparent;
+}
+/* LxAutoComplete: the root element receives focus on click;
+   target the inner .lx-input-area to match LxTextInput focus behaviour. */
+.lx .lx-autocomplete-default:focus .lx-input-area,
+.lx .lx-autocomplete-default:focus-within .lx-input-area {
+  border-color: var(--color-brand);
+  outline: none;
+}
+
+/* -----------------------------------------------------------
+   MODAL
+   Round modal container + close icon, and shrink the heavy
+   carbon "edge-to-edge bar" action buttons into proper pill
+   buttons inset from the modal edge.
+----------------------------------------------------------- */
+.lx .lx-modal,
+.lx .lx-modal-wrapper,
+.lx .lx-modal-content {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.lx .lx-modal .lx-close-button,
+.lx .lx-modal .lx-icon-button-close,
+.lx .lx-modal-close,
+.lx .lx-modal [class*="close"] svg {
+  border-radius: 0.5rem;
+}
+
+.lx .lx-modal .lx-button-set .lx-button {
+  flex: 0 0 auto;
+  height: 2.25rem !important;
+  min-height: 2.25rem !important;
+  width: auto !important;
+  min-width: 5rem;
+  padding: 0 1.25rem !important;
+  border-radius: 0.5rem;
+  font: 600 0.8125rem/1 var(--font-family);
+  text-align: center;
+  justify-content: center;
+}
+.lx .lx-modal .lx-button-set {
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem 1.25rem 1.25rem;
+}
+/* Cancel / secondary modal actions: a solid button in the secondary colour,
+   same size/shape as the primary action (sized by the base rule above) so
+   every modal footer reads as a consistent pair. lx-ui's later .lx-button
+   chunks fill the base button, so the colours are forced here. */
+.lx .lx-modal .lx-button-set .lx-button-secondary,
+.lx .lx-modal .lx-button-set .lx-button-secondary:focus {
+  background-color: var(--color-interactive-secondary-background) !important;
+  border: 1px solid var(--color-interactive-secondary-background) !important;
+  color: var(--color-interactive-secondary-foreground) !important;
+  box-shadow: none !important;
+}
+.lx .lx-modal .lx-button-set .lx-button-secondary:hover {
+  background-color: var(--color-interactive-secondary-hover-background) !important;
+  border-color: var(--color-interactive-secondary-hover-background) !important;
+  color: var(--color-interactive-secondary-hover-foreground) !important;
 }

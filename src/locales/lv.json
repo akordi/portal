@@ -265,7 +265,8 @@
                 "label": "Pievienot dziesmu grāmatai",
                 "description": "Pievienot šo dziesmu vienai no savām dziesmu grāmatām",
                 "success": "Dziesma veiksmīgi pievienota",
-                "error": "Kļūda pievienojot dziesmu"
+                "error": "Kļūda pievienojot dziesmu",
+                "songCount": "{count} dziesma | {count} dziesmas"
             },
             "authRequired": {
                 "title": "Nepieciešama pieslēgšanās",
