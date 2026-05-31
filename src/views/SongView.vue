@@ -5,7 +5,6 @@ import {
   LxLoaderView,
   LxModal,
   LxCheckbox,
-  LxRow,
   LxTextInput,
 } from '@dativa-lv/lx-ui';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
@@ -36,7 +35,6 @@ const route = useRoute();
 const authStore = useAuthStore();
 const isAuthorized = authStore.isAuthenticated();
 const addToListModal = ref();
-const createSongbookModal = ref();
 const authRequiredModal = ref();
 const userLists = ref([]);
 const loadingLists = ref(false);
@@ -307,6 +305,7 @@ async function createSongbookAndAddSong() {
       ...resp.data,
       id: String(resp.data.id),
       title: resp.data.name,
+      songCount: 1,
     };
     await akordiAdminListService.addSong(list.id, item.value.id);
 
@@ -315,22 +314,10 @@ async function createSongbookAndAddSong() {
     selectedLists.value = userListSelected.value.map((id) => String(id));
     newSongbookName.value = '';
     notificationStore.pushSuccess($t('pages.akordiSongView.createSongbook.success'));
-    createSongbookModal.value?.close();
   } catch (err) {
     notificationStore.pushError($t('pages.akordiSongView.createSongbook.error'));
   } finally {
     creatingSongbook.value = false;
-  }
-}
-
-function openCreateSongbookModal() {
-  addToListModal.value?.close();
-  createSongbookModal.value?.open();
-}
-
-function returnToAddToListModal() {
-  if (isAuthorized) {
-    addToListModal.value?.open();
   }
 }
 
@@ -367,11 +354,7 @@ async function actionClicked(action) {
   }
   if (actionName === 'close') {
     addToListModal.value?.close();
-    createSongbookModal.value?.close();
     authRequiredModal.value?.close();
-  }
-  if (actionName === 'createSongbook') {
-    await createSongbookAndAddSong();
   }
   if (actionName === 'authenticate') {
     await authStore.login(route.fullPath);
@@ -567,8 +550,51 @@ onUnmounted(() => {
   }
 }
 
-.create-songbook-actions {
-  margin-top: 1.25rem;
+.songbook-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.songbook-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.songbook-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.625rem 1rem;
+  border: 1px solid var(--color-chrome);
+  border-radius: 0.625rem;
+  background-color: var(--color-region);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.songbook-row:hover {
+  border-color: var(--color-brand);
+}
+.songbook-row-selected {
+  border-color: var(--color-brand);
+  background-color: var(--color-highlight-background);
+}
+.songbook-row-count {
+  flex: 0 0 auto;
+  color: var(--color-label);
+  font-size: var(--small-font-size);
+  white-space: nowrap;
+}
+.songbook-new {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+.songbook-new > :first-child {
+  flex: 1 1 auto;
 }
 </style>
 <template>
@@ -698,56 +724,45 @@ onUnmounted(() => {
     </footer>
   </LxLoaderView>
 
-  <LxModal
-    ref="addToListModal"
-    :label="$t('pages.akordiSongView.addToList.label')"
-    size="m"
-    :action-definitions="[{ id: 'close', name: $t('lx.shell.close'), kind: 'secondary' }]"
-    @action-click="actionClicked"
-  >
-    <div v-for="list in userLists" :key="list.id">
-      <LxCheckbox
-        :id="'list-' + list.id"
-        :label="list.title"
-        :model-value="selectedLists.includes(String(list.id))"
-        :disabled="loadingStates[list.id]"
-        @update:model-value="(val) => toggleListSelection(list.id, val)"
-      />
-    </div>
+  <LxModal ref="addToListModal" :label="$t('pages.akordiSongView.addToList.label')" size="m">
+    <div class="songbook-picker">
+      <ul class="songbook-list" v-if="userLists.length">
+        <li
+          v-for="list in userLists"
+          :key="list.id"
+          class="songbook-row"
+          :class="{ 'songbook-row-selected': selectedLists.includes(String(list.id)) }"
+        >
+          <LxCheckbox
+            :id="'list-' + list.id"
+            :label="list.title"
+            :model-value="selectedLists.includes(String(list.id))"
+            :disabled="loadingStates[list.id]"
+            @update:model-value="(val) => toggleListSelection(list.id, val)"
+          />
+          <span class="songbook-row-count">
+            {{ $t('pages.akordiSongView.addToList.songCount', { count: list.songCount ?? 0 }) }}
+          </span>
+        </li>
+      </ul>
 
-    <div class="create-songbook-actions">
-      <LxButton
-        icon="add"
-        kind="secondary"
-        :label="$t('pages.akordiSongView.createSongbook.action')"
-        @click="openCreateSongbookModal"
-      />
+      <form class="songbook-new" @submit.prevent="createSongbookAndAddSong">
+        <LxTextInput
+          v-model="newSongbookName"
+          :placeholder="$t('pages.akordiSongView.createSongbook.placeholder')"
+          :disabled="creatingSongbook"
+          @keyup.enter="createSongbookAndAddSong"
+        />
+        <LxButton
+          icon="add"
+          kind="ghost"
+          :label="$t('pages.akordiSongView.createSongbook.action')"
+          :busy="creatingSongbook"
+          :disabled="!newSongbookName.trim()"
+          @click="createSongbookAndAddSong"
+        />
+      </form>
     </div>
-  </LxModal>
-
-  <LxModal
-    ref="createSongbookModal"
-    :label="$t('pages.akordiSongView.createSongbook.title')"
-    size="m"
-    :action-definitions="[
-      {
-        id: 'createSongbook',
-        name: $t('pages.akordiSongView.createSongbook.createAndAdd'),
-        icon: 'add',
-        busy: creatingSongbook,
-      },
-      { id: 'close', name: $t('lx.shell.close'), kind: 'secondary' },
-    ]"
-    @action-click="actionClicked"
-    @close="returnToAddToListModal"
-  >
-    <LxRow :label="$t('pages.akordiSongView.createSongbook.name')">
-      <LxTextInput
-        v-model="newSongbookName"
-        :placeholder="$t('pages.akordiSongView.createSongbook.placeholder')"
-        @keyup.enter="createSongbookAndAddSong"
-      />
-    </LxRow>
   </LxModal>
 
   <LxModal

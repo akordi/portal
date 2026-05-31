@@ -265,7 +265,8 @@
                 "label": "Añadir al cancionero",
                 "description": "Añade esta canción a uno de tus cancioneros",
                 "success": "Canción añadida con éxito",
-                "error": "Error al añadir la canción"
+                "error": "Error al añadir la canción",
+                "songCount": "{count} canción | {count} canciones"
             },
             "authRequired": {
                 "title": "Inicio de sesión requerido",

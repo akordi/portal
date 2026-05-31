@@ -265,7 +265,8 @@
                 "label": "Pridėti į dainų knygą",
                 "description": "Pridėkite šią dainą į vieną iš savo dainų knygų",
                 "success": "Daina sėkmingai pridėta",
-                "error": "Klaida pridedant dainą"
+                "error": "Klaida pridedant dainą",
+                "songCount": "{count} daina | {count} dainos"
             },
             "authRequired": {
                 "title": "Reikia prisijungti",
