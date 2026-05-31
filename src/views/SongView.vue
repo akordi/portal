@@ -640,9 +640,9 @@ onUnmounted(() => {
 
     <footer class="akordi-song-toolbar" v-if="item.id">
       <div class="tg">
-        <label class="tg-label">{{
+        <span class="tg-label">{{
           $t('pages.akordiSongView.transposeHeader', { offset: offsetFormatted })
-        }}</label>
+        }}</span>
         <LxButton
           kind="ghost"
           variant="icon-only"
@@ -659,7 +659,7 @@ onUnmounted(() => {
         />
       </div>
       <div class="tg">
-        <label class="tg-label">{{ $t('pages.akordiSongView.fontUp.label') }}</label>
+        <span class="tg-label">{{ $t('pages.akordiSongView.fontUp.label') }}</span>
         <LxButton
           kind="ghost"
           variant="icon-only"
@@ -676,9 +676,9 @@ onUnmounted(() => {
         />
       </div>
       <div class="tg">
-        <label class="tg-label">{{
+        <span class="tg-label">{{
           $t('pages.akordiSongView.autoScroll.label', { speed: autoScrollerSpeedFormatted })
-        }}</label>
+        }}</span>
         <LxButton
           kind="ghost"
           variant="icon-only"

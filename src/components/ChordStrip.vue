@@ -32,7 +32,6 @@ function toggleChords() {
 <template>
   <section
     class="akordi-card chord-strip"
-    role="region"
     :aria-label="$t('pages.akordiSongView.chords', 'Akordi')"
   >
     <header class="akordi-card-header chord-strip-header">
