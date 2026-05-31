@@ -537,6 +537,13 @@
   padding: 1rem 1.25rem;
 }
 
+/* lx-ui anchors the list-item text header to the top of the row
+   (align-self: flex-start), leaving the title/description sitting high with a
+   larger gap below. Centre it vertically within the row instead. */
+.lx .lx-list-item > header {
+  align-self: center;
+}
+
 /* Song action buttons (Ieteikt labojumu, Pievienot dziesmu grāmatai…)
    Styled like song-view.html .act-btn.act-ghost — chrome bordered pills. */
 .lx .akordi-song-actions .lx-button {
