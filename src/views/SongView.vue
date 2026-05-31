@@ -724,7 +724,13 @@ onUnmounted(() => {
     </footer>
   </LxLoaderView>
 
-  <LxModal ref="addToListModal" :label="$t('pages.akordiSongView.addToList.label')" size="m">
+  <LxModal
+    ref="addToListModal"
+    :label="$t('pages.akordiSongView.addToList.label')"
+    size="m"
+    :action-definitions="[{ id: 'close', name: $t('cancel'), kind: 'secondary' }]"
+    @action-click="actionClicked"
+  >
     <div class="songbook-picker">
       <ul class="songbook-list" v-if="userLists.length">
         <li
