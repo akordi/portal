@@ -43,11 +43,6 @@ const selectedLists = ref([]);
 const loadingStates = ref({}); // To track per-list loading
 const newSongbookName = ref('');
 const creatingSongbook = ref(false);
-const sortedLists = computed(() =>
-  [...userLists.value].sort((a, b) =>
-    (a.title || '').localeCompare(b.title || '', 'lv', { sensitivity: 'base' })
-  )
-);
 const songUrlParam = computed(() => route.params.url);
 const bodyTransposedIndex = ref(0);
 const item = ref({});
@@ -314,7 +309,12 @@ async function createSongbookAndAddSong() {
     };
     await akordiAdminListService.addSong(list.id, item.value.id);
 
-    userLists.value.unshift(list);
+    // Keep the optimistic insert in the same alphabetical order the
+    // backend returns; on the next open the server order is authoritative.
+    userLists.value.push(list);
+    userLists.value.sort((a, b) =>
+      (a.title || '').localeCompare(b.title || '', 'lv', { sensitivity: 'base' })
+    );
     userListSelected.value.push(list.id);
     selectedLists.value = userListSelected.value.map((id) => String(id));
     newSongbookName.value = '';
@@ -746,9 +746,9 @@ onUnmounted(() => {
     @action-click="actionClicked"
   >
     <div class="songbook-picker">
-      <ul class="songbook-list" v-if="sortedLists.length">
+      <ul class="songbook-list" v-if="userLists.length">
         <li
-          v-for="list in sortedLists"
+          v-for="list in userLists"
           :key="list.id"
           class="songbook-row"
           :class="{ 'songbook-row-selected': selectedLists.includes(String(list.id)) }"
