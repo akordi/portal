@@ -13,7 +13,7 @@
     "test-watch": "vitest"
   },
   "dependencies": {
-    "@dativa-lv/lx-ui": "2.1.6",
+    "@dativa-lv/lx-ui": "2.1.11",
     "@ory/client": "^1.22.35",
     "@tombatossals/chords-db": "^0.5.1",
     "@vuelidate/core": "^2.0.3",
