@@ -214,20 +214,53 @@
   /* Form gap */
   --gap-form: 1.5rem;
   --gap-buttons: 0.5rem;
+
+  /* LxTile: visible chrome border so the tile reads as a card,
+     matching song-view.html's lyrics-card / chord-strip-card style. */
+  --tile-border: 1px solid var(--color-chrome);
+
+  /* LxContentSwitcher: selected segment on region bg with brand text. */
+  --color-content-switcher-background-selected: var(--color-region);
+  --color-content-switcher-text-selected: var(--color-brand);
+  --color-content-switcher-icon-selected: var(--color-brand);
+
+  /* Inputs: full chrome border, region background and rounded corners. */
+  --input-border: 1.5px solid var(--color-chrome);
+  --input-border-disabled: 1.5px solid var(--color-disabled-foreground);
+  --input-border-bottom: 1.5px solid var(--color-chrome);
+  --input-border-bottom-disabled: 1.5px solid var(--color-disabled-foreground);
+  --color-input-background: var(--color-region);
+  --color-input-region-background: var(--color-region);
+
+  /* Modal button bar */
+  --button-modal-primary-height: 2.75rem;
+  --button-modal-secondary-height: 2.75rem;
+  --button-modal-primary-border-radius: 0.5rem;
+  --button-modal-secondary-border-radius: 0.5rem;
+  --button-modal-primary-text-align: center;
+  --button-modal-secondary-text-align: center;
+  --button-modal-primary-align: center;
+  --button-modal-secondary-align: center;
+  --button-modal-set-flex-direction: row;
+  --button-modal-set-justify: flex-end;
+  --button-modal-set-gap: 0.5rem;
+  --button-modal-set-padding: 0 1.25rem 1.25rem 1.25rem;
 }
 
 /* -----------------------------------------------------------
    DARK
 ----------------------------------------------------------- */
 .lx.lx-theme-dark {
-  --c-s0: #0d0c1e;
-  --c-s1: #13122a;
-  --c-s2: #1b1938;
-  --c-s3: #252347;
-  --c-ink1: #f0eeff;
-  --c-ink2: #a09ec0;
-  --c-ink3: #6361a0;
-  --c-chrome: #2e2c50;
+  /* Surfaces spread apart so cards lift off the page background
+     (dark-theme contrast bump folded in). */
+  --c-s0: #08071a;
+  --c-s1: #0e0d24;
+  --c-s2: #1d1b3f;
+  --c-s3: #2c2a55;
+  --c-ink1: #f4f2ff;
+  --c-ink2: #b9b6dc;
+  --c-ink3: #807ebd;
+  --c-chrome: #3a3868;
   --c-brand-50:  #16142e;
   --c-brand-100: #21204a;
   --c-accent-bg: #2a1f00;
@@ -257,35 +290,35 @@
   --color-interactive-active-foreground: #07004d;
   --color-focus-background: #8fa0fc;
 
-  --color-background: #13122a;
+  --color-background: #0e0d24;
   --color-background-overlay: rgba(19, 18, 42, 0.85);
-  --color-foreground: #f0eeff;
-  --color-region: #1b1938;
-  --color-region-2: #0d0c1e;
-  --color-region-hover: #21204a;
-  --color-region-hover-background: #21204a;
+  --color-foreground: #f4f2ff;
+  --color-region: #1d1b3f;
+  --color-region-2: #08071a;
+  --color-region-hover: #2c2a55;
+  --color-region-hover-background: #2c2a55;
   --color-region-hover-foreground: #f0eeff;
 
-  --color-data: #f0eeff;
-  --color-label: #a09ec0;
-  --color-footer-label: #6361a0;
+  --color-data: #f4f2ff;
+  --color-label: #b9b6dc;
+  --color-footer-label: #807ebd;
   --color-disabled: #6361a0;
   --color-disabled-background: #1b1938;
   --color-disabled-foreground: #4a4870;
-  --color-chrome: #2e2c50;
-  --color-placeholder: #6361a0;
+  --color-chrome: #3a3868;
+  --color-placeholder: #807ebd;
   --color-placeholder-disabled: #4a4870;
 
-  --color-highlight: #21204a;
-  --color-highlight-background: #21204a;
+  --color-highlight: #2c2a55;
+  --color-highlight-background: #2c2a55;
   --color-highlight-foreground: #f0eeff;
   --color-selected: #f0eeff;
   --color-selected-border: #607afb;
-  --color-selected-background: #21204a;
+  --color-selected-background: #2c2a55;
 
   --color-layout-background: #07004d;
-  --color-navbar-background: #1b1938;
-  --color-nav-background: #1b1938;
+  --color-navbar-background: #1d1b3f;
+  --color-nav-background: #1d1b3f;
   --color-nav-foreground: #f0eeff;
   --color-nav-chrome: #2e2c50;
   --color-nav-hover-background: #21204a;
@@ -297,7 +330,7 @@
   --color-tooltip-foreground-data: #07004d;
 
   --color-grid-header: #2e2c50;
-  --color-grid-hover-background: #21204a;
+  --color-grid-hover-background: #2c2a55;
   --color-grid-hover-foreground: #f0eeff;
   --color-grid-header-hover-background: #2e2c50;
 
@@ -458,11 +491,6 @@
   box-shadow: var(--shadow-1);
 }
 
-/* LxTile: visible chrome border so the tile reads as a card,
-   matching song-view.html's lyrics-card / chord-strip-card style. */
-.lx {
-  --tile-border: 1px solid var(--color-chrome);
-}
 .lx .lx-tile {
   border: 1px solid var(--color-chrome);
 }
@@ -688,11 +716,6 @@
    on the page (light) / region (dark), with brand-colored text
    and a soft shadow, instead of the carbon black-on-white.
 ----------------------------------------------------------- */
-.lx {
-  --color-content-switcher-background-selected: var(--color-region);
-  --color-content-switcher-text-selected: var(--color-brand);
-  --color-content-switcher-icon-selected: var(--color-brand);
-}
 .lx .lx-content-switcher,
 .lx .lx-content-switcher-wrapper {
   background: transparent;
@@ -769,14 +792,6 @@
    look — give inputs a full chrome border, region background
    and rounded corners.
 ----------------------------------------------------------- */
-.lx {
-  --input-border: 1.5px solid var(--color-chrome);
-  --input-border-disabled: 1.5px solid var(--color-disabled-foreground);
-  --input-border-bottom: 1.5px solid var(--color-chrome);
-  --input-border-bottom-disabled: 1.5px solid var(--color-disabled-foreground);
-  --color-input-background: var(--color-region);
-  --color-input-region-background: var(--color-region);
-}
 .lx .lx-text-input-wrapper > .lx-text-input,
 .lx .lx-input-wrapper input,
 .lx .lx-input-wrapper textarea,
@@ -846,21 +861,6 @@
   border-radius: 0.5rem;
 }
 
-.lx {
-  --button-modal-primary-height: 2.75rem;
-  --button-modal-secondary-height: 2.75rem;
-  --button-modal-primary-border-radius: 0.5rem;
-  --button-modal-secondary-border-radius: 0.5rem;
-  --button-modal-primary-text-align: center;
-  --button-modal-secondary-text-align: center;
-  --button-modal-primary-align: center;
-  --button-modal-secondary-align: center;
-  --button-modal-set-flex-direction: row;
-  --button-modal-set-justify: flex-end;
-  --button-modal-set-gap: 0.5rem;
-  --button-modal-set-padding: 0 1.25rem 1.25rem 1.25rem;
-}
-
 .lx .lx-modal .lx-button-set .lx-button {
   flex: 0 0 auto;
   height: 2.75rem;
@@ -877,41 +877,4 @@
   justify-content: flex-end;
   gap: 0.5rem;
   padding: 0 1.25rem 1.25rem 1.25rem;
-}
-
-/* -----------------------------------------------------------
-   DARK THEME CONTRAST BUMP
-   Original dark surfaces were too close to each other; spread
-   them so cards lift visibly off the page background.
------------------------------------------------------------ */
-.lx.lx-theme-dark {
-  --c-s0: #08071a;        /* deepest */
-  --c-s1: #0e0d24;        /* page */
-  --c-s2: #1d1b3f;        /* cards */
-  --c-s3: #2c2a55;        /* headers / chips */
-  --c-ink1: #f4f2ff;      /* body text — slightly brighter */
-  --c-ink2: #b9b6dc;      /* secondary text — bumped */
-  --c-ink3: #807ebd;      /* tertiary — clearer */
-  --c-chrome: #3a3868;    /* visible borders */
-
-  --color-background: #0e0d24;
-  --color-foreground: #f4f2ff;
-  --color-region: #1d1b3f;
-  --color-region-2: #08071a;
-  --color-region-hover: #2c2a55;
-  --color-region-hover-background: #2c2a55;
-
-  --color-data: #f4f2ff;
-  --color-label: #b9b6dc;
-  --color-footer-label: #807ebd;
-  --color-chrome: #3a3868;
-  --color-placeholder: #807ebd;
-
-  --color-highlight: #2c2a55;
-  --color-highlight-background: #2c2a55;
-  --color-selected-background: #2c2a55;
-
-  --color-nav-background: #1d1b3f;
-  --color-navbar-background: #1d1b3f;
-  --color-grid-hover-background: #2c2a55;
 }
