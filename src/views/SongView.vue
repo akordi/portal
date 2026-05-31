@@ -107,6 +107,13 @@ const autoScrollerUp = () => {
   autoScrollerSpeed.value += 1;
 };
 
+function artistLink(artist) {
+  return {
+    name: 'akordiArtistView',
+    params: { url: artist.url.replace(/^\/band\//, '') },
+  };
+}
+
 function applyTranspose(offset) {
   bodyTransposedIndex.value = offset;
   item.value.bodyWithMarkup = chordsService.transpose(item.value.body, bodyTransposedIndex.value);
@@ -474,9 +481,65 @@ onUnmounted(() => {
 }
 
 .akordi-song-dates {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1.5rem;
   margin: 0;
+}
+.akordi-date {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+.akordi-date-label {
   color: var(--c-ink3);
   font-size: 0.78rem;
+}
+.akordi-date-value {
+  color: var(--c-ink2);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+/* Authorship credits (composer / poet) — own line, subtle labels with
+   brand-coloured artist links, matching the song-view design language. */
+.akordi-song-credits {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1.5rem;
+  margin: 0;
+}
+.akordi-credit {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+.akordi-credit-label {
+  color: var(--c-ink3);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.akordi-credit-value {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c-ink2);
+}
+.akordi-credit-item:not(:last-child)::after {
+  content: ', ';
+}
+.akordi-credit-link {
+  color: var(--color-brand);
+  text-decoration: none;
+}
+.akordi-credit-link:hover {
+  text-decoration: underline;
 }
 
 .akordi-song-actions {
@@ -623,11 +686,40 @@ onUnmounted(() => {
             class="akordi-chip"
           >{{ tag.title }}</router-link>
         </div>
-        <p class="akordi-song-dates lx-description">
-          {{ $t('song.createdAt') }} {{ item.createdAt }}
-          <template v-if="item.updatedDate && item.updatedDate !== item.createdDate">
-            · {{ $t('song.updatedAt') }} {{ lxDateUtils.formatDate(item.updatedDate) }}
-          </template>
+        <dl class="akordi-song-credits" v-if="item.composers?.length || item.poets?.length">
+          <div class="akordi-credit" v-if="item.composers?.length">
+            <dt class="akordi-credit-label">{{ $t('song.composer') }}</dt>
+            <dd class="akordi-credit-value">
+              <span v-for="c in item.composers" :key="c.id" class="akordi-credit-item">
+                <router-link :to="artistLink(c)" class="akordi-credit-link">{{
+                  c.title
+                }}</router-link>
+              </span>
+            </dd>
+          </div>
+          <div class="akordi-credit" v-if="item.poets?.length">
+            <dt class="akordi-credit-label">{{ $t('song.poet') }}</dt>
+            <dd class="akordi-credit-value">
+              <span v-for="p in item.poets" :key="p.id" class="akordi-credit-item">
+                <router-link :to="artistLink(p)" class="akordi-credit-link">{{
+                  p.title
+                }}</router-link>
+              </span>
+            </dd>
+          </div>
+        </dl>
+        <p class="akordi-song-dates">
+          <span class="akordi-date">
+            <span class="akordi-date-label">{{ $t('song.createdAt') }}</span>
+            <span class="akordi-date-value">{{ item.createdAt }}</span>
+          </span>
+          <span
+            class="akordi-date"
+            v-if="item.updatedDate && item.updatedDate !== item.createdDate"
+          >
+            <span class="akordi-date-label">{{ $t('song.updatedAt') }}</span>
+            <span class="akordi-date-value">{{ lxDateUtils.formatDate(item.updatedDate) }}</span>
+          </span>
         </p>
       </header>
 
