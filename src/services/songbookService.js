@@ -11,6 +11,10 @@ export default {
     return http(serviceUrl).get(`/me/songbooks/${id}`);
   },
 
+  findPublic(id) {
+    return http(serviceUrl).get(`/songbooks/${id}`);
+  },
+
   save(item) {
     if (item.id) {
       return http(serviceUrl).patch(`/me/songbooks/${item.id}`, item);
@@ -24,6 +28,10 @@ export default {
 
   getSongs(id) {
     return http(serviceUrl).get(`/me/songbooks/${id}/songs`);
+  },
+
+  getPublicSongs(id) {
+    return http(serviceUrl).get(`/songbooks/${id}/songs`);
   },
 
   addSong(id, songId) {

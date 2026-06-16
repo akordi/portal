@@ -314,7 +314,18 @@
                 "success": "Dziesma izņemta no dziesmu grāmatas",
                 "error": "Kļūda izņemot dziesmu no dziesmu grāmatas"
             },
-            "songs": "Dziesmas dziesmu grāmatā"
+            "songs": "Dziesmas dziesmu grāmatā",
+            "share": {
+                "title": "Kopīgot dziesmu grāmatu",
+                "button": "Kopīgot",
+                "toggle": "Publiska",
+                "toggleHint": "Ja ieslēgts, jebkurš ar saiti var skatīt šo dziesmu grāmatu",
+                "linkLabel": "Saite",
+                "copy": "Kopēt saiti",
+                "copied": "Saite nokopēta",
+                "notPublicHint": "Ieslēdz publisku skatu, lai iegūtu saiti",
+                "error": "Neizdevās mainīt publiskuma statusu"
+            }
         },
         "akordiArtistLetter": {
             "title": "Mākslinieku katalogs A-Z",

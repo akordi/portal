@@ -314,7 +314,18 @@
                 "success": "Daina išimta iš dainų knygos",
                 "error": "Klaida išimant dainą iš dainų knygos"
             },
-            "songs": "Dainos dainų knygoje"
+            "songs": "Dainos dainų knygoje",
+            "share": {
+                "title": "Dalintis dainų knyga",
+                "button": "Dalintis",
+                "toggle": "Vieša",
+                "toggleHint": "Jei įjungta, bet kas su nuoroda gali peržiūrėti šią dainų knygą",
+                "linkLabel": "Nuoroda",
+                "copy": "Kopijuoti nuorodą",
+                "copied": "Nuoroda nukopijuota",
+                "notPublicHint": "Įjunk viešą rodinį, kad gautum nuorodą",
+                "error": "Nepavyko pakeisti viešumo būsenos"
+            }
         },
         "akordiArtistLetter": {
             "title": "Atlikėjų katalogas A-Z",

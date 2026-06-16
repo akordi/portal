@@ -314,7 +314,18 @@
                 "success": "Laul eemaldatud lauluraamatust",
                 "error": "Viga laulu eemaldamisel lauluraamatust"
             },
-            "songs": "Laulud lauluraamatus"
+            "songs": "Laulud lauluraamatus",
+            "share": {
+                "title": "Lauluraamatu jagamine",
+                "button": "Jaga",
+                "toggle": "Avalik",
+                "toggleHint": "Kui sees, saavad kõik lingiga seda lauluraamatut vaadata",
+                "linkLabel": "Link",
+                "copy": "Kopeeri link",
+                "copied": "Link kopeeritud",
+                "notPublicHint": "Lülita avalik vaade sisse, et saada link",
+                "error": "Avalikkuse oleku muutmine ebaõnnestus"
+            }
         },
         "akordiArtistLetter": {
             "title": "Esitajate kataloog A-Z",

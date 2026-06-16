@@ -314,7 +314,18 @@
                 "success": "Canción eliminada del cancionero",
                 "error": "Error al eliminar la canción del cancionero"
             },
-            "songs": "Canciones en el cancionero"
+            "songs": "Canciones en el cancionero",
+            "share": {
+                "title": "Compartir cancionero",
+                "button": "Compartir",
+                "toggle": "Público",
+                "toggleHint": "Si está activado, cualquiera con el enlace puede ver este cancionero",
+                "linkLabel": "Enlace",
+                "copy": "Copiar enlace",
+                "copied": "Enlace copiado",
+                "notPublicHint": "Activa la vista pública para obtener un enlace",
+                "error": "No se pudo cambiar el estado público"
+            }
         },
         "akordiArtistLetter": {
             "title": "Catálogo de artistas A-Z",
