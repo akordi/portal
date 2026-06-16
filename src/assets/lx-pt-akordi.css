@@ -55,9 +55,9 @@
   --font-size: 14px;
   --small-font-size: 0.8125rem;
   --label-font-size: 0.78rem;
-  --h1-font-size: 2.1rem;
-  --h1-font-weight: 800;
-  --h2-font-size: 1.25rem;
+  --h1-font-size: 1.625rem;
+  --h1-font-weight: 700;
+  --h2-font-size: 1.125rem;
   --h2-font-weight: 700;
   --letter-spacing-1: -0.005em;
   --letter-spacing-2: -0.012em;
@@ -251,19 +251,22 @@
    DARK
 ----------------------------------------------------------- */
 .lx.lx-theme-dark {
-  /* Surfaces spread apart so cards lift off the page background
-     (dark-theme contrast bump folded in). */
-  --c-s0: #08071a;
-  --c-s1: #0e0d24;
-  --c-s2: #1d1b3f;
-  --c-s3: #2c2a55;
+  /* Surfaces spread further apart so cards lift off the page background
+     and the nav header reads as a distinct chrome layer. */
+  --c-s0: #07061a;
+  --c-s1: #0a0820;
+  --c-s2: #1f1d44;
+  --c-s3: #2a2858;
   --c-ink1: #f4f2ff;
   --c-ink2: #b9b6dc;
   --c-ink3: #807ebd;
-  --c-chrome: #3a3868;
+  --c-chrome: #322f60;
   --c-brand-50:  #16142e;
   --c-brand-100: #21204a;
-  --c-accent-bg: #2a1f00;
+  /* Warm accent retuned for dark: lower saturation gold + deeper bg so
+     selected chips don't read as garish neon on the purple backdrop. */
+  --c-accent: #d4a647;
+  --c-accent-bg: #2a2010;
 
   --cd-dot:  #607afb;
   --cd-line: #2e2c50;
@@ -290,13 +293,13 @@
   --color-interactive-active-foreground: #07004d;
   --color-focus-background: #8fa0fc;
 
-  --color-background: #0e0d24;
-  --color-background-overlay: rgba(19, 18, 42, 0.85);
+  --color-background: #0a0820;
+  --color-background-overlay: rgba(10, 8, 32, 0.85);
   --color-foreground: #f4f2ff;
-  --color-region: #1d1b3f;
-  --color-region-2: #08071a;
-  --color-region-hover: #2c2a55;
-  --color-region-hover-background: #2c2a55;
+  --color-region: #1f1d44;
+  --color-region-2: #07061a;
+  --color-region-hover: #2a2858;
+  --color-region-hover-background: #2a2858;
   --color-region-hover-foreground: #f0eeff;
 
   --color-data: #f4f2ff;
@@ -316,13 +319,13 @@
   --color-selected-border: #607afb;
   --color-selected-background: #2c2a55;
 
-  --color-layout-background: #07004d;
-  --color-navbar-background: #1d1b3f;
-  --color-nav-background: #1d1b3f;
-  --color-nav-foreground: #f0eeff;
-  --color-nav-chrome: #2e2c50;
-  --color-nav-hover-background: #21204a;
-  --color-nav-hover-foreground: #f0eeff;
+  --color-layout-background: #0a0830;
+  --color-navbar-background: #16143a;
+  --color-nav-background: #16143a;
+  --color-nav-foreground: #d8d6f0;
+  --color-nav-chrome: #2a2858;
+  --color-nav-hover-background: #1f1d44;
+  --color-nav-hover-foreground: #ffffff;
 
   --color-tooltip-background: #f0eeff;
   --color-tooltip-foreground: #07004d;
@@ -346,10 +349,10 @@
    nav row becomes a clean white strip with rounded items.
 ----------------------------------------------------------- */
 .lx .lx-layout.lx-layout-public > header {
-  background-color: var(--c-brand-800);
-  border-bottom-color: var(--c-brand-800);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-  --color-region: var(--c-brand-800);
+  background-color: #0a0840;
+  border-bottom: 1px solid rgba(96, 122, 251, 0.15);
+  box-shadow: 0 1px 0 rgba(96, 122, 251, 0.12), 0 6px 18px rgba(7, 0, 77, 0.18);
+  --color-region: #0a0840;
   --color-header-hover-background: rgba(255, 255, 255, 0.1);
   --color-header-hover-foreground: #ffffff;
 }
@@ -416,18 +419,20 @@
   border-bottom: 1px solid var(--c-chrome);
 }
 
-/* Dark mode header: use the deepest surface instead of brand-800 blue,
-   so the header harmonises with the purple-dark page palette. */
+/* Dark mode header: brand-tinted navy that echoes the light-theme header,
+   with a tinted bottom edge so it reads as a chrome layer over the page. */
 .lx.lx-theme-dark .lx-layout.lx-layout-public > header {
-  background-color: var(--c-s0);
-  border-bottom-color: var(--c-s0);
+  background-color: #0a0830;
+  border-bottom: 1px solid rgba(96, 122, 251, 0.18);
+  box-shadow: 0 1px 0 rgba(96, 122, 251, 0.12), 0 6px 18px rgba(0, 0, 0, 0.45);
+  --color-region: #0a0830;
 }
 
 .lx.lx-theme-dark .lx-layout.lx-layout-public > nav {
-  --color-nav-background: #1b1938;
-  --color-nav-foreground: #a09ec0;
-  background-color: #1b1938;
-  border-bottom-color: #2e2c50;
+  --color-nav-background: #16143a;
+  --color-nav-foreground: #c4c2e6;
+  background-color: #16143a;
+  border-bottom-color: rgba(96, 122, 251, 0.12);
 }
 
 .lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li .lx-nav-item-wrapper > .lx-button {
@@ -448,11 +453,13 @@
   fill: var(--color-region-hover-foreground);
 }
 
-/* Selected nav: brand-50 background, brand text — matches song-view */
+/* Selected nav: tab-style — no fill, brand text, 3px brand bottom border. */
 .lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button,
 .lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected:not(.lx-nested-nav-open) .lx-nav-item-wrapper > .lx-context-container .lx-dropdown-toggler .lx-button {
-  background-color: var(--c-brand-50);
+  background-color: transparent;
   color: var(--color-brand);
+  box-shadow: inset 0 -3px 0 var(--color-brand);
+  border-radius: 0;
 }
 
 .lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button svg,
@@ -460,10 +467,18 @@
   fill: var(--color-brand);
 }
 
+.lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button:hover {
+  background-color: var(--c-brand-50);
+}
+
 .lx.lx-theme-dark .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button {
-  background-color: #21204a;
-  /* brand-300 rather than brand-400 to clear WCAG AA on #21204a (~6:1) */
+  background-color: transparent;
   color: #8fa0fc;
+  box-shadow: inset 0 -3px 0 #607afb;
+}
+
+.lx.lx-theme-dark .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button:hover {
+  background-color: #21204a;
 }
 
 .lx.lx-theme-dark .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button svg {
@@ -494,11 +509,38 @@
   box-shadow: var(--shadow-1);
 }
 
+/* Cap long-form copy so it doesn't span 1400px on wide screens. Limits the
+   LxShell page-description block and any view-level paragraph opted in via
+   the .lx-prose helper class. */
+.lx .lx-prose,
+.lx .lx-layout-public .lx-page-header .lx-description {
+  max-width: 65ch;
+}
+
 .lx .lx-tile {
   border: 1px solid var(--color-chrome);
 }
 .lx .lx-tile:hover {
   border-color: var(--c-brand-200);
+}
+
+/* Dark mode: cards & lifted surfaces get a 1px inner top highlight so they
+   read as glass panels rather than flat outlined boxes on the deep page. */
+.lx.lx-theme-dark .lx-card,
+.lx.lx-theme-dark .lx-tile,
+.lx.lx-theme-dark .lx-data-block,
+.lx.lx-theme-dark .akordi-card,
+.lx.lx-theme-dark .lx-modal-content {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    var(--shadow-1);
+}
+.lx.lx-theme-dark .lx-tile {
+  border-color: #2a2858;
+}
+.lx.lx-theme-dark .lx-tile:hover {
+  border-color: #4860db;
+  background-color: #25224f;
 }
 
 /* -----------------------------------------------------------
@@ -787,14 +829,14 @@
   justify-content: center;
 }
 .lx .lx-value-picker-tags .lx-tag-set .lx-tag.lx-tags-tile-selected {
-  background: var(--c-brand-50);
-  color: var(--color-brand);
-  border-color: var(--color-brand);
+  background: var(--c-accent-bg);
+  color: #b1761a;
+  border-color: var(--c-accent);
 }
 .lx.lx-theme-dark .lx-value-picker-tags .lx-tag-set .lx-tag.lx-tags-tile-selected {
-  background: var(--c-brand-100);
-  color: var(--c-brand-300, #8fa0fc);
-  border-color: var(--color-brand);
+  background: var(--c-accent-bg);
+  color: var(--c-accent);
+  border-color: var(--c-accent);
 }
 
 /* -----------------------------------------------------------
