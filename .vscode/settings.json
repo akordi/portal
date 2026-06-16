@@ -4,7 +4,7 @@
     "source.fixAll.eslint": "explicit",
     "source.fixAll.stylelint": "explicit"
   },
-  "npm.packageManager": "pnpm",
+  "npm.packageManager": "bun",
   "i18n-ally.keystyle": "nested",
   "i18n-ally.localesPaths": [
     "src/locales"

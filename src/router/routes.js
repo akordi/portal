@@ -246,7 +246,7 @@ const routes = [
         path: '/songbooks/:id',
         name: 'songbookView',
         meta: {
-          anonymous: false,
+          anonymous: true,
           breadcrumbs: [{ text: 'pages.songbook.title', to: { name: 'songbook' } }],
         },
         component: () => import('@/views/SongbookView.vue'),
@@ -264,7 +264,7 @@ const routes = [
         path: '/songbooks/:id/song/:url',
         name: 'songbookViewSongView',
         meta: {
-          anonymous: false,
+          anonymous: true,
           breadcrumbs: [
             {
               text: 'pages.songbook.title',

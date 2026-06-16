@@ -4,8 +4,8 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch via pnpm",
-      "runtimeExecutable": "pnpm",
+      "name": "Launch via bun",
+      "runtimeExecutable": "bun",
       "cwd": "${workspaceFolder}",
       "runtimeArgs": [
         "dev"

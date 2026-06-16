@@ -25,7 +25,7 @@ import '@dativa-lv/lx-ui/dist/styles/lx-inputs.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-steps.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-forms.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-notifications.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-modal.css';
+import '@dativa-lv/lx-ui/dist/styles/lx-modals.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-loaders.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-lists.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-expanders.css';

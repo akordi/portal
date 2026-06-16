@@ -24,7 +24,7 @@ Akordi Portal is a Vue.js application that serves as a platform for song lyrics 
 
 - **Frontend**: [LX/UI](https://github.com/wntrtech/lx-ui) components with [Vue3](https://v3.vuejs.org/), [Pinia](https://pinia.vuejs.org/), [Vite](https://vitejs.dev/)
 - **Testing**: [Vitest](https://vitest.dev/)
-- **Package Manager**: [PNPM](https://pnpm.io/)
+- **Package Manager**: [Bun](https://bun.sh/)
 - **Linting**: [ESLint](https://eslint.org/)
 - **Containerization**: [Docker](https://docker.com/)
 
@@ -36,13 +36,13 @@ Follow these steps to set up the project locally:
 2. Install dependencies:
 
     ```bash
-    pnpm install
+    bun install
     ```
 
 3. Start the development server:
 
     ```bash
-    pnpm dev
+    bun dev
     ```
 
 4. Open your browser and navigate to `http://localhost:44341`.
@@ -52,19 +52,19 @@ Follow these steps to set up the project locally:
 1. Build the development server:
 
     ```bash
-    pnpm i
+    bun i
     ```
 
 2. Run the development server (_also possible with VS Code debug functionality (F5)_):
 
     ```bash
-    pnpm dev
+    bun dev
     ```
 
 3. Build for production:
 
     ```bash
-    pnpm build
+    bun build
     ```
 
 ## Contributing 🤝
