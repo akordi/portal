@@ -55,9 +55,9 @@
   --font-size: 14px;
   --small-font-size: 0.8125rem;
   --label-font-size: 0.78rem;
-  --h1-font-size: 2.1rem;
-  --h1-font-weight: 800;
-  --h2-font-size: 1.25rem;
+  --h1-font-size: 1.625rem;
+  --h1-font-weight: 700;
+  --h2-font-size: 1.125rem;
   --h2-font-weight: 700;
   --letter-spacing-1: -0.005em;
   --letter-spacing-2: -0.012em;
@@ -346,10 +346,10 @@
    nav row becomes a clean white strip with rounded items.
 ----------------------------------------------------------- */
 .lx .lx-layout.lx-layout-public > header {
-  background-color: var(--c-brand-800);
-  border-bottom-color: var(--c-brand-800);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-  --color-region: var(--c-brand-800);
+  background-color: #0a0840;
+  border-bottom: 1px solid rgba(96, 122, 251, 0.15);
+  box-shadow: 0 1px 0 rgba(96, 122, 251, 0.12), 0 6px 18px rgba(7, 0, 77, 0.18);
+  --color-region: #0a0840;
   --color-header-hover-background: rgba(255, 255, 255, 0.1);
   --color-header-hover-foreground: #ffffff;
 }
@@ -448,11 +448,13 @@
   fill: var(--color-region-hover-foreground);
 }
 
-/* Selected nav: brand-50 background, brand text — matches song-view */
+/* Selected nav: tab-style — no fill, brand text, 3px brand bottom border. */
 .lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button,
 .lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected:not(.lx-nested-nav-open) .lx-nav-item-wrapper > .lx-context-container .lx-dropdown-toggler .lx-button {
-  background-color: var(--c-brand-50);
+  background-color: transparent;
   color: var(--color-brand);
+  box-shadow: inset 0 -3px 0 var(--color-brand);
+  border-radius: 0;
 }
 
 .lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button svg,
@@ -460,10 +462,18 @@
   fill: var(--color-brand);
 }
 
+.lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button:hover {
+  background-color: var(--c-brand-50);
+}
+
 .lx.lx-theme-dark .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button {
-  background-color: #21204a;
-  /* brand-300 rather than brand-400 to clear WCAG AA on #21204a (~6:1) */
+  background-color: transparent;
   color: #8fa0fc;
+  box-shadow: inset 0 -3px 0 #607afb;
+}
+
+.lx.lx-theme-dark .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button:hover {
+  background-color: #21204a;
 }
 
 .lx.lx-theme-dark .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button svg {
@@ -492,6 +502,14 @@
 /* Card-style elements get the soft shadow from song-view */
 .lx .lx-card, .lx .lx-tile, .lx .lx-data-block {
   box-shadow: var(--shadow-1);
+}
+
+/* Cap long-form copy so it doesn't span 1400px on wide screens. Limits the
+   LxShell page-description block and any view-level paragraph opted in via
+   the .lx-prose helper class. */
+.lx .lx-prose,
+.lx .lx-layout-public .lx-page-header .lx-description {
+  max-width: 65ch;
 }
 
 .lx .lx-tile {
@@ -787,14 +805,14 @@
   justify-content: center;
 }
 .lx .lx-value-picker-tags .lx-tag-set .lx-tag.lx-tags-tile-selected {
-  background: var(--c-brand-50);
-  color: var(--color-brand);
-  border-color: var(--color-brand);
+  background: var(--c-accent-bg);
+  color: #b1761a;
+  border-color: var(--c-accent);
 }
 .lx.lx-theme-dark .lx-value-picker-tags .lx-tag-set .lx-tag.lx-tags-tile-selected {
-  background: var(--c-brand-100);
-  color: var(--c-brand-300, #8fa0fc);
-  border-color: var(--color-brand);
+  background: var(--c-accent-bg);
+  color: var(--c-accent);
+  border-color: var(--c-accent);
 }
 
 /* -----------------------------------------------------------
