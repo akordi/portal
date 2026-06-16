@@ -55,12 +55,7 @@ function toggleChords() {
 
     <div v-show="showChords" class="chord-strip-scroll">
       <div class="chord-strip-inner">
-        <ChordSvg
-          v-for="chord in chords"
-          :key="chord"
-          :chord="chord"
-          :instrument="instrument"
-        />
+        <ChordSvg v-for="chord in chords" :key="chord" :chord="chord" :instrument="instrument" />
       </div>
     </div>
   </section>

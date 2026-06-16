@@ -1,10 +1,10 @@
 {
   "name": "akordi-portal",
   "version": "0.0.1",
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "bun@1.2.0",
   "prettier": "@zzdats/prettier-config",
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
+    "preinstall": "npx only-allow bun",
     "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview",
@@ -13,7 +13,7 @@
     "test-watch": "vitest"
   },
   "dependencies": {
-    "@dativa-lv/lx-ui": "2.1.11",
+    "@dativa-lv/lx-ui": "2.2.3",
     "@ory/client": "^1.22.37",
     "@tombatossals/chords-db": "^0.5.1",
     "@vuelidate/core": "^2.0.3",

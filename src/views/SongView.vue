@@ -684,7 +684,8 @@ onUnmounted(() => {
             :key="tag.id"
             :to="{ name: 'tagView', params: { url: tag.url.replace(/^\/tag\//, '') } }"
             class="akordi-chip"
-          >{{ tag.title }}</router-link>
+            >{{ tag.title }}</router-link
+          >
         </div>
         <dl class="akordi-song-credits" v-if="item.composers?.length || item.poets?.length">
           <div class="akordi-credit" v-if="item.composers?.length">
@@ -762,10 +763,16 @@ onUnmounted(() => {
             $t('pages.akordiSongView.lyricsTitle', 'Dziesmu vārdi un akordi')
           }}</span>
         </header>
-        <p class="pre lyrics-body" v-html="item.bodyWithMarkup" :style="{ fontSize: fontSize + 'em' }"></p>
+        <p
+          class="pre lyrics-body"
+          v-html="item.bodyWithMarkup"
+          :style="{ fontSize: fontSize + 'em' }"
+        ></p>
         <footer class="lyrics-ref" v-if="item.reference">
           {{ $t('song.reference') }}:
-          <a :href="item.reference" target="_blank" rel="noopener noreferrer">{{ item.reference }}</a>
+          <a :href="item.reference" target="_blank" rel="noopener noreferrer">{{
+            item.reference
+          }}</a>
         </footer>
       </section>
     </article>
