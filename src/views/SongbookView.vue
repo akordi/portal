@@ -1,5 +1,5 @@
 <script setup>
-import { LxButton, LxList, LxModal, LxRow, LxTextInput, LxToggle } from '@dativa-lv/lx-ui';
+import { LxList, LxModal } from '@dativa-lv/lx-ui';
 import { computed, onMounted, ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -21,8 +21,6 @@ const notificationStore = useNotifyStore();
 const loading = shallowRef(false);
 const listId = computed(() => route.params.id);
 const isOwner = ref(false);
-const isPublic = ref(false);
-const shareModal = ref();
 const addSongModal = ref();
 const formModal = ref();
 const searchItems = ref([]);
@@ -31,8 +29,6 @@ const item = ref({
   name: '',
   songs: [],
 });
-
-const shareUrl = computed(() => `${window.location.origin}/songbooks/${listId.value}`);
 
 async function loadList() {
   loading.value = true;
@@ -44,7 +40,6 @@ async function loadList() {
         const resp = await songbookService.findOne(listId.value);
         item.value = resp.data;
         isOwner.value = true;
-        isPublic.value = !!resp.data.isPublic;
         const songsResp = await songbookService.getSongs(listId.value);
         item.value.songs = songsResp.data.content.map((song) => ({
           ...song,
@@ -64,7 +59,6 @@ async function loadList() {
 
     const pubResp = await songbookService.findPublic(listId.value);
     item.value = pubResp.data;
-    isPublic.value = !!pubResp.data.isPublic;
     const pubSongs = await songbookService.getPublicSongs(listId.value);
     item.value.songs = pubSongs.data.content.map((song) => ({
       ...song,
@@ -113,48 +107,29 @@ const toolbarActions = computed(() => {
   }
   return [
     { id: 'add', icon: 'add', name: $t('add'), kind: 'ghost' },
-    { id: 'share', icon: 'share', name: $t('pages.songbook.share.button'), kind: 'ghost' },
     { id: 'edit', icon: 'edit', name: $t('edit'), kind: 'primary' },
   ];
 });
 
-async function onShareToggle(value) {
-  try {
-    await songbookService.save({ id: item.value.id, isPublic: value });
-    isPublic.value = value;
-  } catch (err) {
-    isPublic.value = !value;
-    notificationStore.pushError($t('pages.songbook.share.error'));
-  }
-}
-
-async function copyShareLink() {
-  try {
-    await navigator.clipboard.writeText(shareUrl.value);
-    notificationStore.pushSuccess($t('pages.songbook.share.copied'));
-  } catch (err) {
-    notificationStore.pushError($t('pages.songbook.share.error'));
-  }
-}
-
 function toolbarActionClicked(actionName) {
   if (actionName === 'edit') {
-    formModal.value?.open({ id: item.value.id, name: item.value.name });
+    formModal.value?.open({
+      id: item.value.id,
+      name: item.value.name,
+      isPublic: item.value.isPublic,
+    });
     return;
   }
   if (actionName === 'add') {
     searchString.value = '';
     searchItems.value = [];
     addSongModal.value?.open();
-    return;
-  }
-  if (actionName === 'share') {
-    shareModal.value?.open();
   }
 }
 
 function onSongbookUpdated(songbook) {
   item.value.name = songbook.name;
+  item.value.isPublic = songbook.isPublic;
   viewStore.title = songbook.name;
 }
 
@@ -216,12 +191,6 @@ async function searchActionClicked(actionName, itemId) {
 function addSongModalAction(actionName) {
   if (actionName === 'cancel') {
     addSongModal.value?.close();
-  }
-}
-
-function shareModalAction(actionName) {
-  if (actionName === 'close') {
-    shareModal.value?.close();
   }
 }
 
@@ -292,34 +261,5 @@ em {
         <p class="lx-secondary pre" v-html="description"></p>
       </template>
     </LxList>
-  </LxModal>
-
-  <LxModal
-    ref="shareModal"
-    :label="$t('pages.songbook.share.title')"
-    size="m"
-    :action-definitions="[{ id: 'close', name: $t('cancel'), kind: 'secondary' }]"
-    @action-click="shareModalAction"
-  >
-    <LxRow
-      :label="$t('pages.songbook.share.toggle')"
-      :description="$t('pages.songbook.share.toggleHint')"
-    >
-      <LxToggle :model-value="isPublic" @update:model-value="onShareToggle" />
-    </LxRow>
-    <LxRow v-if="isPublic" :label="$t('pages.songbook.share.linkLabel')">
-      <LxTextInput :model-value="shareUrl" read-only />
-    </LxRow>
-    <LxRow v-if="isPublic">
-      <LxButton
-        :label="$t('pages.songbook.share.copy')"
-        icon="copy"
-        kind="primary"
-        @click="copyShareLink"
-      />
-    </LxRow>
-    <LxRow v-else>
-      <p class="lx-secondary">{{ $t('pages.songbook.share.notPublicHint') }}</p>
-    </LxRow>
   </LxModal>
 </template>
