@@ -137,16 +137,19 @@ function onSongbookDeleted() {
   router.push({ name: 'songbook' });
 }
 
+const HIGHLIGHTS_KEY = '@search.highlights';
+
+function firstHighlight(song, field) {
+  const highlights = song[HIGHLIGHTS_KEY]?.[field];
+  return highlights?.length ? highlights[0] : null;
+}
+
 function titleOrHighlight(song) {
-  return song['@search.highlights']?.title?.length
-    ? song['@search.highlights'].title[0]
-    : song.title;
+  return firstHighlight(song, 'title') ?? song.title;
 }
 
 function mainArtistTitleOrHighlight(song) {
-  return song['@search.highlights']?.mainArtistTitle?.length
-    ? song['@search.highlights'].mainArtistTitle[0]
-    : song.mainArtistTitle;
+  return firstHighlight(song, 'mainArtistTitle') ?? song.mainArtistTitle;
 }
 
 async function searchSongs(query) {
@@ -162,9 +165,7 @@ async function searchSongs(query) {
       ...song,
       name: song.title,
       title: `${mainArtistTitleOrHighlight(song)} - ${titleOrHighlight(song)}`,
-      description: song['@search.highlights']?.bodyLyrics?.length
-        ? song['@search.highlights'].bodyLyrics[0]
-        : '',
+      description: firstHighlight(song, 'bodyLyrics') ?? '',
       icon: 'add',
       clickable: true,
     }));
