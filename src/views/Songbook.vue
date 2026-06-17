@@ -21,6 +21,7 @@ async function loadLists() {
     items.value = resp.data.map((list) => ({
       ...list,
       title: list.name,
+      description: $t('pages.akordiSongView.addToList.songCount', { count: list.songCount ?? 0 }),
       clickable: true,
       icon: 'next',
     }));
@@ -51,6 +52,8 @@ onMounted(async () => {
     v-model:items="items"
     id-attribute="id"
     primary-attribute="title"
+    name-attribute="title"
+    description-attribute="description"
     :loading="loading"
     @action-click="actionClicked"
   >

@@ -630,45 +630,81 @@ onUnmounted(() => {
 .songbook-picker {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 .songbook-list {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0.125rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  /* Keep the modal compact when a user has many songbooks. */
+  max-height: 19rem;
+  overflow-y: auto;
 }
 .songbook-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.625rem 1rem;
-  border: 1px solid var(--color-chrome);
-  border-radius: 0.625rem;
+  padding: 0.7rem 0.9rem;
+  border: 1.5px solid var(--color-chrome);
+  border-radius: 0.75rem;
   background-color: var(--color-region);
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+  transition: border-color 0.18s ease, background-color 0.18s ease,
+    box-shadow 0.18s ease;
 }
 .songbook-row:hover {
-  border-color: var(--color-brand);
+  border-color: var(--c-brand-300);
+  background-color: var(--color-region-hover);
 }
-.songbook-row-selected {
+.songbook-row-selected,
+.songbook-row-selected:hover {
   border-color: var(--color-brand);
-  background-color: var(--color-highlight-background);
+  background-color: var(--color-selected-background);
+  box-shadow: inset 0 0 0 1px var(--color-brand);
 }
 .songbook-row-count {
   flex: 0 0 auto;
+  color: var(--c-ink3);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 0.15rem 0.55rem;
+  border-radius: 9999px;
+  background-color: var(--c-s2);
+}
+.songbook-row-selected .songbook-row-count {
+  color: var(--color-brand);
+  background-color: var(--c-brand-100);
+}
+
+/* "Create a new songbook" zone — clearly separated from the list. */
+.songbook-new-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--color-chrome);
+}
+.songbook-new-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-ink3);
+}
+.songbook-empty {
+  margin: 0;
   color: var(--color-label);
   font-size: var(--small-font-size);
-  white-space: nowrap;
+  line-height: 1.5;
 }
 .songbook-new {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding-top: 0.25rem;
 }
 .songbook-new > :first-child {
   flex: 1 1 auto;
@@ -841,7 +877,7 @@ onUnmounted(() => {
     ref="addToListModal"
     :label="$t('pages.akordiSongView.addToList.label')"
     size="m"
-    :action-definitions="[{ id: 'close', name: $t('cancel'), kind: 'secondary' }]"
+    :action-definitions="[{ id: 'close', name: $t('close'), kind: 'secondary' }]"
     @action-click="actionClicked"
   >
     <div class="songbook-picker">
@@ -865,22 +901,31 @@ onUnmounted(() => {
         </li>
       </ul>
 
-      <form class="songbook-new" @submit.prevent="createSongbookAndAddSong">
-        <LxTextInput
-          v-model="newSongbookName"
-          :placeholder="$t('pages.akordiSongView.createSongbook.placeholder')"
-          :disabled="creatingSongbook"
-          @keyup.enter="createSongbookAndAddSong"
-        />
-        <LxButton
-          icon="add"
-          kind="ghost"
-          :label="$t('pages.akordiSongView.createSongbook.action')"
-          :busy="creatingSongbook"
-          :disabled="!newSongbookName.trim()"
-          @click="createSongbookAndAddSong"
-        />
-      </form>
+      <p v-else class="songbook-empty">
+        {{ $t('pages.akordiSongView.createSongbook.description') }}
+      </p>
+
+      <div class="songbook-new-section">
+        <span class="songbook-new-title">{{
+          $t('pages.akordiSongView.createSongbook.title')
+        }}</span>
+        <form class="songbook-new" @submit.prevent="createSongbookAndAddSong">
+          <LxTextInput
+            v-model="newSongbookName"
+            :placeholder="$t('pages.akordiSongView.createSongbook.placeholder')"
+            :disabled="creatingSongbook"
+            @keyup.enter="createSongbookAndAddSong"
+          />
+          <LxButton
+            icon="add"
+            kind="ghost"
+            :label="$t('pages.akordiSongView.createSongbook.action')"
+            :busy="creatingSongbook"
+            :disabled="!newSongbookName.trim()"
+            @click="createSongbookAndAddSong"
+          />
+        </form>
+      </div>
     </div>
   </LxModal>
 
