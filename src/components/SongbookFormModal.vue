@@ -1,5 +1,5 @@
 <script setup>
-import { LxModal, LxRow, LxTextInput } from '@dativa-lv/lx-ui';
+import { LxButton, LxModal, LxRow, LxTextInput, LxToggle } from '@dativa-lv/lx-ui';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';
@@ -18,13 +18,17 @@ const modal = ref();
 const saving = ref(false);
 const deleting = ref(false);
 const isNew = ref(true);
-const item = ref({ name: '' });
+const item = ref({ name: '', isPublic: false });
 
 const required = withI18nMessage(validations.required);
 const rules = { name: { required } };
 const v = useVuelidate(rules, item);
 
 const title = computed(() => (isNew.value ? $t('pages.songbook.add') : $t('pages.songbook.edit')));
+
+const shareUrl = computed(() =>
+  item.value.id ? `${window.location.origin}/songbooks/${item.value.id}` : ''
+);
 
 const actionDefinitions = computed(() => {
   const actions = [{ id: 'save', name: $t('save'), icon: 'save', busy: saving.value }];
@@ -45,10 +49,10 @@ const actionDefinitions = computed(() => {
 function open(existing = null) {
   if (existing) {
     isNew.value = false;
-    item.value = { id: existing.id, name: existing.name };
+    item.value = { id: existing.id, name: existing.name, isPublic: !!existing.isPublic };
   } else {
     isNew.value = true;
-    item.value = { name: '' };
+    item.value = { name: '', isPublic: false };
   }
   v.value.$reset();
   modal.value?.open();
@@ -96,6 +100,27 @@ async function remove() {
   }
 }
 
+async function onShareToggle(value) {
+  const previous = item.value.isPublic;
+  item.value.isPublic = value;
+  try {
+    await songbookService.save({ id: item.value.id, isPublic: value });
+    emit('updated', { ...item.value });
+  } catch (err) {
+    item.value.isPublic = previous;
+    notificationStore.pushError($t('pages.songbook.share.error'));
+  }
+}
+
+async function copyShareLink() {
+  try {
+    await navigator.clipboard.writeText(shareUrl.value);
+    notificationStore.pushSuccess($t('pages.songbook.share.copied'));
+  } catch (err) {
+    notificationStore.pushError($t('pages.songbook.share.error'));
+  }
+}
+
 function actionClicked(actionName) {
   if (actionName === 'save') {
     save();
@@ -126,5 +151,28 @@ defineExpose({ open, close });
         @keyup.enter="save"
       />
     </LxRow>
+
+    <template v-if="!isNew">
+      <LxRow
+        :label="$t('pages.songbook.share.toggle')"
+        :description="$t('pages.songbook.share.toggleHint')"
+      >
+        <LxToggle :model-value="item.isPublic" @update:model-value="onShareToggle" />
+      </LxRow>
+      <LxRow v-if="item.isPublic" :label="$t('pages.songbook.share.linkLabel')">
+        <LxTextInput :model-value="shareUrl" read-only />
+      </LxRow>
+      <LxRow v-if="item.isPublic">
+        <LxButton
+          :label="$t('pages.songbook.share.copy')"
+          icon="copy"
+          kind="primary"
+          @click="copyShareLink"
+        />
+      </LxRow>
+      <LxRow v-else>
+        <p class="lx-secondary">{{ $t('pages.songbook.share.notPublicHint') }}</p>
+      </LxRow>
+    </template>
   </LxModal>
 </template>
