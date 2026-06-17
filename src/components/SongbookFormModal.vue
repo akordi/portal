@@ -27,7 +27,7 @@ const v = useVuelidate(rules, item);
 const title = computed(() => (isNew.value ? $t('pages.songbook.add') : $t('pages.songbook.edit')));
 
 const shareUrl = computed(() =>
-  item.value.id ? `${window.location.origin}/songbooks/${item.value.id}` : ''
+  item.value.id ? `${globalThis.location.origin}/songbooks/${item.value.id}` : ''
 );
 
 const actionDefinitions = computed(() => {
@@ -106,7 +106,7 @@ async function onShareToggle(value) {
   try {
     await songbookService.save({ id: item.value.id, isPublic: value });
     emit('updated', { ...item.value });
-  } catch (err) {
+  } catch {
     item.value.isPublic = previous;
     notificationStore.pushError($t('pages.songbook.share.error'));
   }
@@ -116,7 +116,7 @@ async function copyShareLink() {
   try {
     await navigator.clipboard.writeText(shareUrl.value);
     notificationStore.pushSuccess($t('pages.songbook.share.copied'));
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('pages.songbook.share.error'));
   }
 }
