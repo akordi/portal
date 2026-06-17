@@ -296,6 +296,8 @@
             "description": "Aquí puedes gestionar tus cancioneros personales",
             "empty": "Aún no tienes ningún cancionero",
             "add": "Crear cancionero",
+            "edit": "Editar cancionero",
+            "name": "Nombre",
             "delete": {
                 "title": "Eliminar cancionero",
                 "message": "¿Realmente desea eliminar el cancionero \"{name}\"?",

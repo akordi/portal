@@ -1,5 +1,6 @@
 <script setup>
 import akordiAdminListService from '@/services/songbookService';
+import SongbookFormModal from '@/components/SongbookFormModal.vue';
 import { LxButton, LxList } from '@dativa-lv/lx-ui';
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -13,6 +14,7 @@ const viewStore = useViewStore();
 const notificationStore = useNotifyStore();
 const items = ref([]);
 const loading = ref(true);
+const formModal = ref();
 
 async function loadLists() {
   try {
@@ -37,6 +39,10 @@ function actionClicked(action, id) {
   }
 }
 
+function onCreated(songbook) {
+  router.push({ name: 'songbookView', params: { id: String(songbook.id) } });
+}
+
 onMounted(async () => {
   viewStore.title = $t('pages.songbook.title');
   viewStore.goBack = true;
@@ -55,10 +61,12 @@ onMounted(async () => {
     @action-click="actionClicked"
   >
     <template #toolbar>
-      <LxButton icon="add" :label="$t('add')" @click="router.push({ name: 'songbookNewForm' })" />
+      <LxButton icon="add" :label="$t('add')" @click="formModal.open()" />
     </template>
     <template #empty>
       {{ $t('pages.songbook.empty') }}
     </template>
   </LxList>
+
+  <SongbookFormModal ref="formModal" @created="onCreated" />
 </template>

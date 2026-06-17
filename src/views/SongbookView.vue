@@ -5,6 +5,8 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import songbookService from '@/services/songbookService';
+import akordiService from '@/services/akordiService';
+import SongbookFormModal from '@/components/SongbookFormModal.vue';
 
 import useAuthStore from '@/stores/useAuthStore';
 import useNotifyStore from '@/stores/useNotifyStore';
@@ -21,6 +23,10 @@ const listId = computed(() => route.params.id);
 const isOwner = ref(false);
 const isPublic = ref(false);
 const shareModal = ref();
+const addSongModal = ref();
+const formModal = ref();
+const searchItems = ref([]);
+const searchString = ref('');
 const item = ref({
   name: '',
   songs: [],
@@ -86,7 +92,7 @@ async function itemActionClicked(actionName, itemId) {
   if (actionName === 'delete') {
     try {
       await songbookService.removeSong(item.value.id, itemId);
-      item.value.songs = item.value.songs.filter((song) => song.id !== itemId);
+      item.value.songs = item.value.songs.filter((song) => String(song.id) !== String(itemId));
       notificationStore.pushSuccess($t('pages.songbook.removeSong.success'));
     } catch (err) {
       notificationStore.pushError($t('pages.songbook.removeSong.error'));
@@ -94,11 +100,19 @@ async function itemActionClicked(actionName, itemId) {
   }
 }
 
+const songActions = computed(() => {
+  if (!isOwner.value) {
+    return [];
+  }
+  return [{ id: 'delete', icon: 'delete', name: $t('delete'), destructive: true }];
+});
+
 const toolbarActions = computed(() => {
   if (!isOwner.value) {
     return [];
   }
   return [
+    { id: 'add', icon: 'add', name: $t('add'), kind: 'ghost' },
     { id: 'share', icon: 'share', name: $t('pages.songbook.share.button'), kind: 'ghost' },
     { id: 'edit', icon: 'edit', name: $t('edit'), kind: 'primary' },
   ];
@@ -125,11 +139,83 @@ async function copyShareLink() {
 
 function toolbarActionClicked(actionName) {
   if (actionName === 'edit') {
-    router.push({ name: 'songbookEdit', params: { id: listId.value } });
+    formModal.value?.open({ id: item.value.id, name: item.value.name });
+    return;
+  }
+  if (actionName === 'add') {
+    searchString.value = '';
+    searchItems.value = [];
+    addSongModal.value?.open();
     return;
   }
   if (actionName === 'share') {
     shareModal.value?.open();
+  }
+}
+
+function onSongbookUpdated(songbook) {
+  item.value.name = songbook.name;
+  viewStore.title = songbook.name;
+}
+
+function onSongbookDeleted() {
+  router.push({ name: 'songbook' });
+}
+
+function titleOrHighlight(song) {
+  return song['@search.highlights']?.title?.length
+    ? song['@search.highlights'].title[0]
+    : song.title;
+}
+
+function mainArtistTitleOrHighlight(song) {
+  return song['@search.highlights']?.mainArtistTitle?.length
+    ? song['@search.highlights'].mainArtistTitle[0]
+    : song.mainArtistTitle;
+}
+
+async function searchSongs(query) {
+  searchString.value = query;
+  if (!query) {
+    searchItems.value = [];
+    return;
+  }
+  try {
+    loading.value = true;
+    const resp = await akordiService.search(query, { size: 10 });
+    searchItems.value = resp.data.value.map((song) => ({
+      ...song,
+      name: song.title,
+      title: `${mainArtistTitleOrHighlight(song)} - ${titleOrHighlight(song)}`,
+      description: song['@search.highlights']?.bodyLyrics?.length
+        ? song['@search.highlights'].bodyLyrics[0]
+        : '',
+      icon: 'add',
+      clickable: true,
+    }));
+  } catch (err) {
+    notificationStore.pushError($t('pages.songSearch.search.error'));
+  } finally {
+    loading.value = false;
+  }
+}
+
+async function searchActionClicked(actionName, itemId) {
+  if (actionName === 'click') {
+    try {
+      await songbookService.addSong(item.value.id, itemId);
+      searchItems.value = searchItems.value.filter((song) => song.id !== itemId);
+      await loadList();
+      notificationStore.pushSuccess($t('pages.songbook.addSong.success'));
+    } catch (err) {
+      notificationStore.pushError($t('pages.songbook.addSong.error'));
+    }
+  }
+}
+
+function addSongModalAction(actionName) {
+  if (actionName === 'cancel') {
+    addSongModal.value?.close();
   }
 }
 
@@ -170,6 +256,7 @@ em {
     list-type="2"
     v-model:items="item.songs"
     :toolbar-action-definitions="toolbarActions"
+    :action-definitions="songActions"
     @toolbar-action-click="toolbarActionClicked"
     @action-click="itemActionClicked"
   >
@@ -177,6 +264,35 @@ em {
       {{ $t('lx.list.noItems') }}
     </template>
   </LxList>
+
+  <SongbookFormModal ref="formModal" @updated="onSongbookUpdated" @deleted="onSongbookDeleted" />
+
+  <LxModal
+    ref="addSongModal"
+    :label="$t('add')"
+    size="m"
+    :action-definitions="[{ id: 'cancel', name: $t('cancel'), kind: 'secondary' }]"
+    @action-click="addSongModalAction"
+  >
+    <LxList
+      id="search-songs-list"
+      list-type="1"
+      v-model:items="searchItems"
+      :has-search="true"
+      search-side="server"
+      @action-click="searchActionClicked"
+      @update:search-string="searchSongs"
+      v-model:search-string="searchString"
+    >
+      <template #empty>
+        {{ $t('lx.list.noItems') }}
+      </template>
+      <template #customItem="{ title, description }">
+        <p class="lx-primary" v-html="title"></p>
+        <p class="lx-secondary pre" v-html="description"></p>
+      </template>
+    </LxList>
+  </LxModal>
 
   <LxModal
     ref="shareModal"

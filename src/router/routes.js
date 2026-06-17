@@ -232,17 +232,6 @@ const routes = [
         component: () => import('@/views/Songbook.vue'),
       },
       {
-        path: '/songbooks/new',
-        name: 'songbookNewForm',
-        meta: {
-          title: 'pages.songbook.add',
-          anonymous: false,
-          breadcrumbs: [{ text: 'pages.songbook.title', to: { name: 'songbook' } }],
-        },
-        component: () => import('@/views/SongbookEdit.vue'),
-        props: { isNew: true },
-      },
-      {
         path: '/songbooks/:id',
         name: 'songbookView',
         meta: {
@@ -250,15 +239,6 @@ const routes = [
           breadcrumbs: [{ text: 'pages.songbook.title', to: { name: 'songbook' } }],
         },
         component: () => import('@/views/SongbookView.vue'),
-      },
-      {
-        path: '/songbooks/:id/edit',
-        name: 'songbookEdit',
-        meta: {
-          anonymous: false,
-          breadcrumbs: [{ text: 'pages.songbook.title', to: { name: 'songbook' } }],
-        },
-        component: () => import('@/views/SongbookEdit.vue'),
       },
       {
         path: '/songbooks/:id/song/:url',
