@@ -296,6 +296,8 @@
             "description": "Siin saate hallata oma isiklikke lauluraamatuid",
             "empty": "Teil pole veel ühtegi lauluraamatut",
             "add": "Loo lauluraamat",
+            "edit": "Muuda lauluraamatut",
+            "name": "Nimi",
             "delete": {
                 "title": "Kustuta lauluraamat",
                 "message": "Kas olete kindel, et soovite lauluraamatu \"{name}\" kustutada?",

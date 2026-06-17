@@ -296,6 +296,8 @@
             "description": "Čia galite tvarkyti savo asmenines dainų knygas",
             "empty": "Dar neturite jokių dainų knygų",
             "add": "Sukurti dainų knygą",
+            "edit": "Redaguoti dainų knygą",
+            "name": "Pavadinimas",
             "delete": {
                 "title": "Ištrinti dainų knygą",
                 "message": "Ar tikrai norite ištrinti dainų knygą „{name}“?",

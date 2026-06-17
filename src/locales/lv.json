@@ -296,6 +296,8 @@
             "description": "Šeit vari pārvaldīt savas personīgās dziesmu grāmatas",
             "empty": "Tev vēl nav nevienas dziesmu grāmatas",
             "add": "Izveidot dziesmu grāmatu",
+            "edit": "Rediģēt dziesmu grāmatu",
+            "name": "Nosaukums",
             "delete": {
                 "title": "Dzēst dziesmu grāmatu",
                 "message": "Vai tiešām vēlaties dzēst dziesmu grāmatu \"{name}\"?",
