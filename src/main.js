@@ -36,6 +36,7 @@ import '@dativa-lv/lx-ui/dist/styles/lx-master-detail.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-ratings.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-day-input.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-content-switchers.css';
+import '@dativa-lv/lx-ui/dist/styles/lx-popovers.css';
 
 // Need only to hide console errors when running lx-ui locally
 // import '@dativa-lv/lx-ui/dist/lx-fonts/IBMPlexMono-SemiBold.woff';
