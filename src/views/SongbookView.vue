@@ -4,6 +4,8 @@ import { computed, onMounted, ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
+import axios from 'axios';
+
 import songbookService from '@/services/songbookService';
 import akordiService from '@/services/akordiService';
 import SongbookFormModal from '@/components/SongbookFormModal.vue';
@@ -170,6 +172,9 @@ async function searchSongs(query) {
       clickable: true,
     }));
   } catch (err) {
+    if (axios.isCancel(err)) {
+      return;
+    }
     notificationStore.pushError($t('pages.songSearch.search.error'));
   } finally {
     loading.value = false;
