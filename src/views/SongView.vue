@@ -2,10 +2,15 @@
 import {
   LxButton,
   lxDateUtils,
+  LxForm,
   LxLoaderView,
   LxModal,
   LxCheckbox,
+  LxRow,
+  LxSection,
   LxTextInput,
+  LxToolbar,
+  LxToolbarGroup,
 } from '@dativa-lv/lx-ui';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useHead } from '@vueuse/head';
@@ -14,7 +19,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 import AbcViewer from '@/components/AbcViewer.vue';
 import { pageview } from 'vue-gtag';
-import ChordStrip from '@/components/ChordStrip.vue';
+import ChordSvg from '@/components/ChordSvg.vue';
 import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
 import useAuthStore from '@/stores/useAuthStore';
 import akordiAdminListService from '@/services/songbookService';
@@ -35,6 +40,7 @@ const route = useRoute();
 const authStore = useAuthStore();
 const isAuthorized = authStore.isAuthenticated();
 const addToListModal = ref();
+const createSongbookModal = ref();
 const authRequiredModal = ref();
 const userLists = ref([]);
 const loadingLists = ref(false);
@@ -106,13 +112,6 @@ const autoScrollerUp = () => {
   }
   autoScrollerSpeed.value += 1;
 };
-
-function artistLink(artist) {
-  return {
-    name: 'akordiArtistView',
-    params: { url: artist.url.replace(/^\/band\//, '') },
-  };
-}
 
 function applyTranspose(offset) {
   bodyTransposedIndex.value = offset;
@@ -298,6 +297,64 @@ const loadSong = async () => {
   }
 };
 
+const formActions = computed(() => {
+  const nav = [
+    {
+      id: 'suggestEdit',
+      icon: 'edit',
+      name: $t('suggestEdit'),
+      kind: 'additional',
+    },
+    {
+      id: 'hideChords',
+      icon: 'hidden',
+      name: $t('pages.akordiSongView.hideChords.label'),
+      title: $t('pages.akordiSongView.hideChords.description'),
+      kind: 'additional',
+    },
+    {
+      id: 'showGuitarChords',
+      icon: 'config', // TODO: find better icon
+      name: $t('pages.akordiSongView.showGuitarChords.label'),
+      title: $t('pages.akordiSongView.showGuitarChords.description'),
+      kind: 'additional',
+    },
+    {
+      id: 'showUkuleleChords',
+      icon: 'config', // TODO: find better icon
+      name: $t('pages.akordiSongView.showUkuleleChords.label'),
+      title: $t('pages.akordiSongView.showUkuleleChords.description'),
+      kind: 'additional',
+    },
+    {
+      id: 'showBaritoneUkuleleChords',
+      icon: 'config', // TODO: find better icon
+      name: $t('pages.akordiSongView.showBaritoneUkuleleChords.label'),
+      title: $t('pages.akordiSongView.showBaritoneUkuleleChords.description'),
+      kind: 'additional',
+    },
+  ];
+
+  nav.push({
+    id: 'addToList',
+    icon: 'add',
+    name: $t('pages.akordiSongView.addToList.label'),
+    title: $t('pages.akordiSongView.addToList.description'),
+    kind: 'additional',
+  });
+
+  if (hasAbc.value) {
+    nav.push({
+      id: 'showAbc',
+      name: $t('pages.akordiSongView.showSheet.label'),
+      title: $t('pages.akordiSongView.showSheet.description'),
+      kind: 'additional',
+    });
+  }
+
+  return nav;
+});
+
 async function createSongbookAndAddSong() {
   const name = newSongbookName.value.trim();
   if (!name) {
@@ -312,24 +369,30 @@ async function createSongbookAndAddSong() {
       ...resp.data,
       id: String(resp.data.id),
       title: resp.data.name,
-      songCount: 1,
     };
     await akordiAdminListService.addSong(list.id, item.value.id);
 
-    // Keep the optimistic insert in the same alphabetical order the
-    // backend returns; on the next open the server order is authoritative.
-    userLists.value.push(list);
-    userLists.value.sort((a, b) =>
-      (a.title || '').localeCompare(b.title || '', 'lv', { sensitivity: 'base' })
-    );
+    userLists.value.unshift(list);
     userListSelected.value.push(list.id);
     selectedLists.value = userListSelected.value.map((id) => String(id));
     newSongbookName.value = '';
     notificationStore.pushSuccess($t('pages.akordiSongView.createSongbook.success'));
+    createSongbookModal.value?.close();
   } catch (err) {
     notificationStore.pushError($t('pages.akordiSongView.createSongbook.error'));
   } finally {
     creatingSongbook.value = false;
+  }
+}
+
+function openCreateSongbookModal() {
+  addToListModal.value?.close();
+  createSongbookModal.value?.open();
+}
+
+function returnToAddToListModal() {
+  if (isAuthorized) {
+    addToListModal.value?.open();
   }
 }
 
@@ -366,7 +429,11 @@ async function actionClicked(action) {
   }
   if (actionName === 'close') {
     addToListModal.value?.close();
+    createSongbookModal.value?.close();
     authRequiredModal.value?.close();
+  }
+  if (actionName === 'createSongbook') {
+    await createSongbookAndAddSong();
   }
   if (actionName === 'authenticate') {
     await authStore.login(route.fullPath);
@@ -414,25 +481,16 @@ async function actionClicked(action) {
   }
 }
 
-function adjustSongCount(listId, delta) {
-  const list = userLists.value.find((l) => String(l.id) === String(listId));
-  if (list) {
-    list.songCount = Math.max(0, (list.songCount ?? 0) + delta);
-  }
-}
-
 async function toggleListSelection(listId, value) {
   loadingStates.value[listId] = true;
   try {
     if (value) {
       await akordiAdminListService.addSong(listId, item.value.id);
       userListSelected.value.push(listId);
-      adjustSongCount(listId, 1);
       notificationStore.pushSuccess($t('pages.akordiSongView.addToList.success'));
     } else {
       await akordiAdminListService.removeSong(listId, item.value.id);
       userListSelected.value = userListSelected.value.filter((id) => id !== listId);
-      adjustSongCount(listId, -1);
       notificationStore.pushSuccess($t('pages.akordiSongView.removeFromList.success'));
     }
     selectedLists.value = userListSelected.value.map((id) => String(id));
@@ -466,427 +524,239 @@ onUnmounted(() => {
 });
 </script>
 <style>
-.akordi-song {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding-bottom: calc(var(--toolbar-h, 56px) + 1.5rem);
-}
-
-.akordi-song-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.6rem 0.75rem;
-}
-
-.akordi-song-dates {
-  flex-basis: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.25rem 1.5rem;
-  margin: 0;
-}
-.akordi-date {
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
-}
-.akordi-date-label {
-  color: var(--c-ink3);
-  font-size: 0.78rem;
-}
-.akordi-date-value {
-  color: var(--c-ink2);
-  font-size: 0.78rem;
-  font-weight: 600;
-}
-
-/* Authorship credits (composer / poet) — own line, subtle labels with
-   brand-coloured artist links, matching the song-view design language. */
-.akordi-song-credits {
-  flex-basis: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.25rem 1.5rem;
-  margin: 0;
-}
-.akordi-credit {
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
-}
-.akordi-credit-label {
-  color: var(--c-ink3);
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-.akordi-credit-value {
-  margin: 0;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--c-ink2);
-}
-.akordi-credit-item:not(:last-child)::after {
-  content: ', ';
-}
-.akordi-credit-link {
-  color: var(--color-brand);
-  text-decoration: none;
-}
-.akordi-credit-link:hover {
-  text-decoration: underline;
-}
-
-.akordi-song-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.akordi-song-section {
-  background: var(--color-region);
-  border: 1px solid var(--color-chrome);
-  border-radius: 1rem;
-  padding: 1rem 1.25rem;
-  box-shadow: var(--shadow-1);
-}
-
-.lyrics-card .pre.lyrics-body {
-  white-space: pre;
-  font-family: var(--font-family-mono);
-  color: var(--c-ink1);
-  line-height: 1.7;
-  padding: 1rem 1.25rem;
-  margin: 0;
+#song-view-form .lx-main {
   overflow-x: auto;
 }
 
-.lyrics-card .lyrics-ref {
-  padding: 0.75rem 1.25rem;
-  border-top: 1px solid var(--color-chrome);
-  font: 0.72rem/1.5 var(--font-family);
-  color: var(--c-ink3);
-}
-.lyrics-card .lyrics-ref a {
-  color: var(--c-ink3);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-/* Sticky bottom toolbar — mirrors song-view.html .song-toolbar */
-.akordi-song-toolbar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: var(--toolbar-h, 56px);
-  background: var(--color-region);
-  border-top: 1px solid var(--color-chrome);
-  box-shadow: var(--shadow-up, 0 -4px 20px rgba(7, 0, 77, 0.1));
-  display: flex;
-  align-items: center;
-  padding: 0 1rem;
-  z-index: 90;
-}
-
-.akordi-song-toolbar .tg {
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-  padding: 0 0.75rem;
-  border-right: 1px solid var(--color-chrome);
-}
-.akordi-song-toolbar .tg:first-child {
-  padding-left: 0;
-}
-.akordi-song-toolbar .tg:last-child {
-  border-right: none;
-  padding-right: 0;
-  margin-left: auto;
-}
-
-.akordi-song-toolbar .tg-label {
-  font: 500 0.72rem/1 var(--font-family);
-  color: var(--c-ink3);
-  white-space: nowrap;
-  min-width: 2.5rem;
-  text-align: center;
+#song-view-form .pre {
+  white-space: pre;
+  font-family: monospace;
 }
 
 @media (max-width: 600px) {
-  .akordi-song-toolbar .tg-label {
+  /* Hiding toolbar labels on small screens */
+  #songToolbarGroup .toolbar-label {
     display: none;
-  }
-  .akordi-song-toolbar .tg {
-    padding: 0 0.4rem;
   }
 }
 
-.songbook-picker {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.lx-footer-slot .lx-divider {
+  border-right: 1px solid var(--color-chrome);
+  height: 100%;
 }
-.songbook-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+
+.lx-footer-slot .toolbar-label {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
-.songbook-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.625rem 1rem;
-  border: 1px solid var(--color-chrome);
-  border-radius: 0.625rem;
-  background-color: var(--color-region);
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+
+#chords {
+  margin-bottom: 1em;
 }
-.songbook-row:hover {
-  border-color: var(--color-brand);
+
+.create-songbook-actions {
+  margin-top: 1.25rem;
 }
-.songbook-row-selected {
-  border-color: var(--color-brand);
-  background-color: var(--color-highlight-background);
-}
-.songbook-row-count {
-  flex: 0 0 auto;
-  color: var(--color-label);
-  font-size: var(--small-font-size);
-  white-space: nowrap;
-}
-.songbook-new {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding-top: 0.25rem;
-}
-.songbook-new > :first-child {
-  flex: 1 1 auto;
+
+.song-reference {
+  margin-top: 1rem;
 }
 </style>
 <template>
   <LxLoaderView :loading="loading">
-    <article class="akordi-song" id="song-view">
-      <header class="akordi-song-meta" v-if="item.id">
-        <div class="akordi-tag-set" v-if="item.tags?.length > 0">
-          <router-link
-            v-for="tag in item.tags"
-            :key="tag.id"
-            :to="{ name: 'tagView', params: { url: tag.url.replace(/^\/tag\//, '') } }"
-            class="akordi-chip"
-            >{{ tag.title }}</router-link
-          >
-        </div>
-        <dl class="akordi-song-credits" v-if="item.composers?.length || item.poets?.length">
-          <div class="akordi-credit" v-if="item.composers?.length">
-            <dt class="akordi-credit-label">{{ $t('song.composer') }}</dt>
-            <dd class="akordi-credit-value">
-              <span v-for="c in item.composers" :key="c.id" class="akordi-credit-item">
-                <router-link :to="artistLink(c)" class="akordi-credit-link">{{
-                  c.title
-                }}</router-link>
-              </span>
-            </dd>
-          </div>
-          <div class="akordi-credit" v-if="item.poets?.length">
-            <dt class="akordi-credit-label">{{ $t('song.poet') }}</dt>
-            <dd class="akordi-credit-value">
-              <span v-for="p in item.poets" :key="p.id" class="akordi-credit-item">
-                <router-link :to="artistLink(p)" class="akordi-credit-link">{{
-                  p.title
-                }}</router-link>
-              </span>
-            </dd>
-          </div>
-        </dl>
-        <p class="akordi-song-dates">
-          <span class="akordi-date">
-            <span class="akordi-date-label">{{ $t('song.createdAt') }}</span>
-            <span class="akordi-date-value">{{ item.createdAt }}</span>
-          </span>
-          <span
-            class="akordi-date"
-            v-if="item.updatedDate && item.updatedDate !== item.createdDate"
-          >
-            <span class="akordi-date-label">{{ $t('song.updatedAt') }}</span>
-            <span class="akordi-date-value">{{ lxDateUtils.formatDate(item.updatedDate) }}</span>
-          </span>
-        </p>
-      </header>
+    <LxForm
+      id="song-view-form"
+      :action-definitions="formActions"
+      @action-click="actionClicked"
+      :show-post-header-info="true"
+      :show-pre-header-info="true"
+      kind="compact"
+      :show-footer="true"
+      :sticky-header="false"
+      :sticky-footer="true"
+    >
+      <template #footer>
+        <LxToolbarGroup id="songToolbarGroup">
+          <LxToolbar :noBorders="true">
+            <template #leftArea>
+              <label class="lx-data toolbar-label">{{
+                $t('pages.akordiSongView.transposeHeader', {
+                  offset: offsetFormatted,
+                })
+              }}</label>
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                icon="move-up"
+                :label="$t('pages.akordiSongView.transposeUp.label')"
+                @click="actionClicked('transposeUp')"
+              />
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                icon="move-down"
+                :label="$t('pages.akordiSongView.transposeDown.label')"
+                @click="actionClicked('transposeDown')"
+              />
+              <div class="lx-divider"></div>
+              <label class="lx-data toolbar-label">{{
+                $t('pages.akordiSongView.fontUp.label')
+              }}</label>
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                icon="zoom-in"
+                :label="$t('pages.akordiSongView.fontUp.label')"
+                @click="actionClicked('fontUp')"
+              />
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                icon="zoom-out"
+                :label="$t('pages.akordiSongView.fontDown.label')"
+                @click="actionClicked('fontDown')"
+              />
+              <div class="lx-divider"></div>
 
-      <div class="akordi-song-actions" v-if="item.id">
-        <LxButton
-          kind="ghost"
-          icon="edit"
-          :label="$t('suggestEdit')"
-          @click="actionClicked('suggestEdit')"
-        />
-        <LxButton
-          kind="ghost"
-          icon="add"
-          :label="$t('pages.akordiSongView.addToList.label')"
-          @click="actionClicked('addToList')"
-        />
-      </div>
-
-      <section v-show="hasAbc && settingsStore.showAbc" class="akordi-song-section">
+              <label class="lx-data toolbar-label">{{
+                $t('pages.akordiSongView.autoScroll.label', {
+                  speed: autoScrollerSpeedFormatted,
+                })
+              }}</label>
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                :icon="pauseAutoScroll ? 'pause' : autoScrollerIcon"
+                :active="autoScrollerSpeed > 0"
+                :label="$t('pages.akordiSongView.autoScroll.playDescription')"
+                @click="autoScrollerUp"
+              />
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                icon="stop"
+                :label="$t('pages.akordiSongView.autoScroll.stopDescription')"
+                @click="autoScrollerSpeed = 0"
+              />
+            </template>
+          </LxToolbar>
+        </LxToolbarGroup>
+      </template>
+      <template #postHeader>
+        {{ item.createdAt }}
+      </template>
+      <template #postHeaderInfo>
+        <LxRow :label="$t('song.performer')" v-if="item.performers?.length > 0">
+          <p class="lx-data">
+            {{ item.performers.map((author) => author.title).join(', ') }}
+          </p>
+        </LxRow>
+        <LxRow :label="$t('song.composer')" v-if="item.composers?.length > 0">
+          <p class="lx-data">
+            {{ item.composers.map((author) => author.title).join(', ') }}
+          </p>
+        </LxRow>
+        <LxRow :label="$t('song.poet')" v-if="item.poets?.length > 0">
+          <p class="lx-data">
+            {{ item.poets.map((author) => author.title).join(', ') }}
+          </p>
+        </LxRow>
+        <LxRow :label="$t('song.tags')" v-if="item.tags?.length > 0">
+          <p class="lx-data">
+            {{ item.tags.map((tag) => tag.title).join(', ') }}
+          </p>
+        </LxRow>
+        <LxRow :label="$t('song.createdAt')">
+          <p class="lx-data">{{ lxDateUtils.formatDateTime(item.createdDate) }}</p>
+        </LxRow>
+        <LxRow :label="$t('song.updatedAt')">
+          <p class="lx-data">{{ lxDateUtils.formatDateTime(item.updatedDate) }}</p>
+        </LxRow>
+      </template>
+      <LxSection v-show="hasAbc && settingsStore.showAbc" id="bodyAbc">
         <AbcViewer
           :abc="item.bodyAbc"
           @audio-unsupported="
             notificationStore.pushWarning($t('pages.akordiSongView.audioNotSupported'))
           "
         />
-      </section>
-
-      <ChordStrip
-        v-show="hasChords"
-        :chords="chords"
-        :instrument="settingsStore.instrument"
-        :show-chords="settingsStore.showChords"
-        @update:instrument="saveInstrument"
-        @update:show-chords="settingsStore.showChords = $event"
-      />
-
-      <section class="akordi-card lyrics-card">
-        <header class="akordi-card-header">
-          <span class="akordi-card-title">{{
-            $t('pages.akordiSongView.lyricsTitle', 'Dziesmu vārdi un akordi')
-          }}</span>
-        </header>
-        <p
-          class="pre lyrics-body"
-          v-html="item.bodyWithMarkup"
-          :style="{ fontSize: fontSize + 'em' }"
-        ></p>
-        <footer class="lyrics-ref" v-if="item.reference">
-          {{ $t('song.reference') }}:
-          <a :href="item.reference" target="_blank" rel="noopener noreferrer">{{
-            item.reference
-          }}</a>
-        </footer>
-      </section>
-    </article>
-
-    <footer class="akordi-song-toolbar" v-if="item.id">
-      <div class="tg">
-        <span class="tg-label">{{
-          $t('pages.akordiSongView.transposeHeader', { offset: offsetFormatted })
-        }}</span>
-        <LxButton
-          kind="ghost"
-          variant="icon-only"
-          icon="move-up"
-          :label="$t('pages.akordiSongView.transposeUp.label')"
-          @click="actionClicked('transposeUp')"
-        />
-        <LxButton
-          kind="ghost"
-          variant="icon-only"
-          icon="move-down"
-          :label="$t('pages.akordiSongView.transposeDown.label')"
-          @click="actionClicked('transposeDown')"
-        />
-      </div>
-      <div class="tg">
-        <span class="tg-label">{{ $t('pages.akordiSongView.fontUp.label') }}</span>
-        <LxButton
-          kind="ghost"
-          variant="icon-only"
-          icon="zoom-in"
-          :label="$t('pages.akordiSongView.fontUp.label')"
-          @click="actionClicked('fontUp')"
-        />
-        <LxButton
-          kind="ghost"
-          variant="icon-only"
-          icon="zoom-out"
-          :label="$t('pages.akordiSongView.fontDown.label')"
-          @click="actionClicked('fontDown')"
-        />
-      </div>
-      <div class="tg">
-        <span class="tg-label">{{
-          $t('pages.akordiSongView.autoScroll.label', { speed: autoScrollerSpeedFormatted })
-        }}</span>
-        <LxButton
-          kind="ghost"
-          variant="icon-only"
-          :icon="pauseAutoScroll ? 'pause' : autoScrollerIcon"
-          :active="autoScrollerSpeed > 0"
-          :label="$t('pages.akordiSongView.autoScroll.playDescription')"
-          @click="autoScrollerUp"
-        />
-        <LxButton
-          kind="ghost"
-          variant="icon-only"
-          icon="stop"
-          :label="$t('pages.akordiSongView.autoScroll.stopDescription')"
-          @click="autoScrollerSpeed = 0"
-        />
-      </div>
-    </footer>
+      </LxSection>
+      <LxSection v-show="hasChords && settingsStore.showChords" id="chords">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-start">
+          <ChordSvg
+            :chord="chord"
+            :instrument="settingsStore.instrument"
+            v-for="chord in chords"
+            :key="chord"
+          ></ChordSvg>
+        </div>
+      </LxSection>
+      <LxSection id="body">
+        <p class="pre" v-html="item.bodyWithMarkup" :style="{ fontSize: fontSize + 'em' }"></p>
+      </LxSection>
+    </LxForm>
+    <section class="song-reference" v-if="item.reference">
+      <p class="lx-description">
+        {{ $t('song.reference') }}:
+        <a :href="item.reference" target="_blank" rel="noopener noreferrer">{{ item.reference }}</a>
+      </p>
+    </section>
   </LxLoaderView>
 
   <LxModal
     ref="addToListModal"
     :label="$t('pages.akordiSongView.addToList.label')"
     size="m"
-    :action-definitions="[{ id: 'close', name: $t('cancel'), kind: 'secondary' }]"
+    :action-definitions="[{ id: 'close', name: $t('lx.shell.close'), kind: 'secondary' }]"
     @action-click="actionClicked"
   >
-    <div class="songbook-picker">
-      <ul class="songbook-list" v-if="userLists.length">
-        <li
-          v-for="list in userLists"
-          :key="list.id"
-          class="songbook-row"
-          :class="{ 'songbook-row-selected': selectedLists.includes(String(list.id)) }"
-        >
-          <LxCheckbox
-            :id="'list-' + list.id"
-            :label="list.title"
-            :model-value="selectedLists.includes(String(list.id))"
-            :disabled="loadingStates[list.id]"
-            @update:model-value="(val) => toggleListSelection(list.id, val)"
-          />
-          <span class="songbook-row-count">
-            {{ $t('pages.akordiSongView.addToList.songCount', { count: list.songCount ?? 0 }) }}
-          </span>
-        </li>
-      </ul>
+    <div v-for="list in userLists" :key="list.id">
+      <LxCheckbox
+        :id="'list-' + list.id"
+        :label="list.title"
+        :model-value="selectedLists.includes(String(list.id))"
+        :disabled="loadingStates[list.id]"
+        @update:model-value="(val) => toggleListSelection(list.id, val)"
+      />
+    </div>
 
-      <form class="songbook-new" @submit.prevent="createSongbookAndAddSong">
-        <LxTextInput
-          v-model="newSongbookName"
-          :placeholder="$t('pages.akordiSongView.createSongbook.placeholder')"
-          :disabled="creatingSongbook"
-          @keyup.enter="createSongbookAndAddSong"
-        />
-        <LxButton
-          icon="add"
-          kind="ghost"
-          :label="$t('pages.akordiSongView.createSongbook.action')"
-          :busy="creatingSongbook"
-          :disabled="!newSongbookName.trim()"
-          @click="createSongbookAndAddSong"
-        />
-      </form>
+    <div class="create-songbook-actions">
+      <LxButton
+        icon="add"
+        kind="secondary"
+        :label="$t('pages.akordiSongView.createSongbook.action')"
+        @click="openCreateSongbookModal"
+      />
     </div>
   </LxModal>
 
   <LxModal
+    ref="createSongbookModal"
+    :label="$t('pages.akordiSongView.createSongbook.title')"
+    size="m"
+    :action-definitions="[
+      {
+        id: 'createSongbook',
+        name: $t('pages.akordiSongView.createSongbook.createAndAdd'),
+        icon: 'add',
+        busy: creatingSongbook,
+      },
+      { id: 'close', name: $t('lx.shell.close'), kind: 'secondary' },
+    ]"
+    @action-click="actionClicked"
+    @close="returnToAddToListModal"
+  >
+    <LxRow :label="$t('pages.akordiSongView.createSongbook.name')">
+      <LxTextInput
+        v-model="newSongbookName"
+        :placeholder="$t('pages.akordiSongView.createSongbook.placeholder')"
+        @keyup.enter="createSongbookAndAddSong"
+      />
+    </LxRow>
+  </LxModal>
+
+  <LxModal
     ref="authRequiredModal"
-    id="auth-required-modal"
     :label="$t('pages.akordiSongView.authRequired.title')"
     size="m"
     :actionDefinitions="[

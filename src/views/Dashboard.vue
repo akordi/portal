@@ -44,7 +44,7 @@ onMounted(async () => {
 
 <template>
   <div>
-    <p class="lx-prose">
+    <p>
       {{ $t('pages.dashboard.disclaimer') }}
     </p>
     <div class="lx-divider"></div>
