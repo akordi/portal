@@ -113,6 +113,13 @@ const autoScrollerUp = () => {
   autoScrollerSpeed.value += 1;
 };
 
+function artistLink(artist) {
+  return {
+    name: 'akordiArtistView',
+    params: { url: artist.url.replace(/^\/band\//, '') },
+  };
+}
+
 function applyTranspose(offset) {
   bodyTransposedIndex.value = offset;
   item.value.bodyWithMarkup = chordsService.transpose(item.value.body, bodyTransposedIndex.value);
@@ -653,12 +660,18 @@ onUnmounted(() => {
         </LxRow>
         <LxRow :label="$t('song.composer')" v-if="item.composers?.length > 0">
           <p class="lx-data">
-            {{ item.composers.map((author) => author.title).join(', ') }}
+            <template v-for="(author, index) in item.composers" :key="author.id">
+              <router-link :to="artistLink(author)">{{ author.title }}</router-link
+              ><template v-if="index < item.composers.length - 1">, </template>
+            </template>
           </p>
         </LxRow>
         <LxRow :label="$t('song.poet')" v-if="item.poets?.length > 0">
           <p class="lx-data">
-            {{ item.poets.map((author) => author.title).join(', ') }}
+            <template v-for="(author, index) in item.poets" :key="author.id">
+              <router-link :to="artistLink(author)">{{ author.title }}</router-link
+              ><template v-if="index < item.poets.length - 1">, </template>
+            </template>
           </p>
         </LxRow>
         <LxRow :label="$t('song.tags')" v-if="item.tags?.length > 0">
