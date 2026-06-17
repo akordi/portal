@@ -110,11 +110,31 @@
   --toggle-border-radius-m: 9999px;
   --toggle-border-radius-s: 9999px;
 
-  /* Shadows */
-  --color-shadow: rgba(7, 0, 77, 0.11);
-  --shadow-1: 0 1px 3px rgba(7, 0, 77, 0.07), 0 1px 2px rgba(7, 0, 77, 0.05);
-  --shadow-dropdown: 0 4px 16px rgba(7, 0, 77, 0.11);
-  --shadow-modal: 0 12px 40px rgba(7, 0, 77, 0.17);
+  /* Signature gradients + glows — the "expensive" accent, used sparingly on
+     CTAs, the active nav indicator, tile icon chips and the header. */
+  --akordi-grad: linear-gradient(135deg, #1b12a6 0%, #2e28d6 52%, #4f46e5 100%);
+  --akordi-grad-soft: linear-gradient(135deg, #f3f1ff 0%, #e8ecff 100%);
+  --akordi-grad-header: linear-gradient(180deg, #0d0856 0%, #08023f 100%);
+  --akordi-ring: 0 0 0 3px rgba(96, 122, 251, 0.28);
+  --akordi-glow: 0 8px 24px -8px rgba(46, 40, 214, 0.45);
+
+  /* Shadows — layered, soft ambient + key light for genuine depth. */
+  --color-shadow: rgba(13, 6, 74, 0.10);
+  --shadow-1:
+    0 1px 2px rgba(13, 6, 74, 0.05),
+    0 4px 12px -3px rgba(13, 6, 74, 0.08);
+  --shadow-2:
+    0 2px 4px rgba(13, 6, 74, 0.05),
+    0 14px 30px -8px rgba(13, 6, 74, 0.12);
+  --shadow-card-hover:
+    0 4px 8px rgba(13, 6, 74, 0.06),
+    0 18px 40px -10px rgba(27, 18, 166, 0.20);
+  --shadow-dropdown:
+    0 10px 30px -8px rgba(13, 6, 74, 0.20),
+    0 2px 8px rgba(13, 6, 74, 0.08);
+  --shadow-modal:
+    0 28px 64px -16px rgba(13, 6, 74, 0.34),
+    0 10px 28px -12px rgba(13, 6, 74, 0.18);
 
   /* ======================================================
      COLOR TOKENS
@@ -274,10 +294,29 @@
   --cd-text: #f0eeff;
   --cd-open: #6361a0;
 
-  --color-shadow: rgba(0, 0, 0, 0.4);
-  --shadow-1: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-dropdown: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-modal: 0 12px 40px rgba(0, 0, 0, 0.5);
+  /* Dark signature: brand glow reads against the deep navy page. */
+  --akordi-grad: linear-gradient(135deg, #4f46e5 0%, #607afb 100%);
+  --akordi-grad-soft: linear-gradient(135deg, #211f4a 0%, #2a2858 100%);
+  --akordi-grad-header: linear-gradient(180deg, #11103a 0%, #0a0830 100%);
+  --akordi-ring: 0 0 0 3px rgba(96, 122, 251, 0.35);
+  --akordi-glow: 0 10px 30px -8px rgba(96, 122, 251, 0.45);
+
+  --color-shadow: rgba(0, 0, 0, 0.45);
+  --shadow-1:
+    0 1px 2px rgba(0, 0, 0, 0.30),
+    0 6px 16px -4px rgba(0, 0, 0, 0.45);
+  --shadow-2:
+    0 2px 6px rgba(0, 0, 0, 0.35),
+    0 16px 36px -10px rgba(0, 0, 0, 0.55);
+  --shadow-card-hover:
+    0 4px 10px rgba(0, 0, 0, 0.40),
+    0 22px 48px -12px rgba(0, 0, 0, 0.62);
+  --shadow-dropdown:
+    0 12px 34px -8px rgba(0, 0, 0, 0.55),
+    0 2px 8px rgba(0, 0, 0, 0.40);
+  --shadow-modal:
+    0 30px 70px -16px rgba(0, 0, 0, 0.70),
+    0 10px 28px -12px rgba(0, 0, 0, 0.50);
 
   /* Brand + interactive */
   --color-brand: #607afb;
@@ -947,4 +986,285 @@
   background-color: var(--color-interactive-secondary-hover-background) !important;
   border-color: var(--color-interactive-secondary-hover-background) !important;
   color: var(--color-interactive-secondary-hover-foreground) !important;
+}
+
+/* ============================================================
+   ★ PREMIUM POLISH LAYER
+   A cohesive "expensive" pass on top of the token mapping:
+   layered depth, a restrained signature gradient, tactile
+   hover/press states and refined typography. Everything stays
+   token-driven and reversible; nothing changes the layout.
+============================================================ */
+
+/* -----------------------------------------------------------
+   PAGE CANVAS
+   A barely-there cool wash instead of a flat fill, so cards
+   and the header read as distinct layers. Keep it subtle —
+   it should feel like quality paper, not a gradient.
+----------------------------------------------------------- */
+.lx .lx-layout.lx-layout-public > main {
+  background-color: var(--color-background);
+  background-image:
+    radial-gradient(1200px 600px at 78% -8%, rgba(96, 122, 251, 0.07), transparent 60%),
+    radial-gradient(900px 520px at 0% 0%, rgba(46, 40, 214, 0.045), transparent 55%);
+  background-attachment: fixed;
+}
+.lx.lx-theme-dark .lx-layout.lx-layout-public > main {
+  background-image:
+    radial-gradient(1100px 600px at 82% -10%, rgba(96, 122, 251, 0.12), transparent 60%),
+    radial-gradient(820px 520px at -5% 0%, rgba(79, 70, 229, 0.10), transparent 55%);
+}
+
+/* Refined native scrollbar — a small but unmistakably "designed" cue. */
+.lx * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-chrome) transparent;
+}
+.lx *::-webkit-scrollbar { width: 11px; height: 11px; }
+.lx *::-webkit-scrollbar-thumb {
+  background-color: var(--c-chrome);
+  border: 3px solid transparent;
+  border-radius: 9999px;
+  background-clip: content-box;
+}
+.lx *::-webkit-scrollbar-thumb:hover { background-color: var(--c-ink3); }
+
+/* Text selection picks up the brand. */
+.lx ::selection { background: rgba(96, 122, 251, 0.22); color: inherit; }
+
+/* -----------------------------------------------------------
+   TYPOGRAPHY — sharper hierarchy
+----------------------------------------------------------- */
+.lx {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.lx .lx-layout-public .lx-page-header h1,
+.lx .lx-layout-public .lx-page-header .lx-heading {
+  letter-spacing: -0.022em;
+  line-height: 1.08;
+}
+.lx .lx-layout-public .lx-page-header .lx-description {
+  color: var(--color-label);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+/* -----------------------------------------------------------
+   HEADER — rich gradient navy with a top sheen + soft glow.
+----------------------------------------------------------- */
+.lx .lx-layout.lx-layout-public > header {
+  background-color: #0a0840;
+  background-image: var(--akordi-grad-header);
+  border-bottom: 1px solid rgba(96, 122, 251, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 1px 0 rgba(96, 122, 251, 0.12),
+    0 10px 30px -12px rgba(7, 0, 77, 0.55);
+}
+.lx.lx-theme-dark .lx-layout.lx-layout-public > header {
+  background-image: var(--akordi-grad-header);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 10px 30px -12px rgba(0, 0, 0, 0.6);
+}
+/* Logo lockup: tighten the title, lighten the tagline. */
+.lx .lx-layout.lx-layout-public > header .lx-main-button .lx-primary {
+  letter-spacing: -0.01em;
+}
+.lx .lx-layout.lx-layout-public > header .lx-main-button .lx-description {
+  color: rgba(255, 255, 255, 0.62) !important;
+  font-weight: 600;
+}
+
+/* -----------------------------------------------------------
+   NAV ROW — refined hover pills + gradient active indicator.
+----------------------------------------------------------- */
+.lx .lx-layout.lx-layout-public > nav {
+  box-shadow: 0 1px 0 var(--c-chrome);
+}
+.lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li .lx-nav-item-wrapper > .lx-button {
+  border-radius: 0.5rem;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+/* Selected nav: gradient underline bar instead of a flat line. */
+.lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button,
+.lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected:not(.lx-nested-nav-open) .lx-nav-item-wrapper > .lx-context-container .lx-dropdown-toggler .lx-button {
+  position: relative;
+  box-shadow: none;
+}
+.lx .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button::after {
+  content: "";
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: var(--akordi-grad);
+}
+.lx.lx-theme-dark .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button {
+  box-shadow: none;
+}
+.lx.lx-theme-dark .lx-layout.lx-layout-public > nav .lx-nav-panel ul li.lx-selected .lx-nav-item-wrapper > .lx-button::after {
+  background: linear-gradient(135deg, #607afb, #8fa0fc);
+}
+
+/* -----------------------------------------------------------
+   TILES — the headline upgrade.
+   Icons sit in a soft tinted chip; the whole tile lifts on
+   hover with a brand-tinted shadow and an intensified chip.
+----------------------------------------------------------- */
+.lx .lx-tile-wrapper {
+  background: var(--color-region);
+  box-shadow: var(--shadow-1);
+  transition:
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+  will-change: transform;
+}
+.lx .lx-tile-wrapper:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--c-brand-200);
+}
+.lx.lx-theme-dark .lx-tile-wrapper:hover {
+  border-color: #4860db;
+}
+/* Icon chip */
+.lx .lx-tile > .lx-tile-icon-wrapper .lx-tile-icon {
+  box-sizing: content-box;
+  width: 1.55rem;
+  height: 1.55rem;
+  padding: 0.7rem;
+  border-radius: 0.85rem;
+  background: var(--akordi-grad-soft);
+  fill: var(--color-brand);
+  border: 1px solid var(--c-brand-100);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: background 0.22s ease, fill 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+}
+.lx.lx-theme-dark .lx-tile > .lx-tile-icon-wrapper .lx-tile-icon {
+  background: var(--akordi-grad-soft);
+  fill: #8fa0fc;
+  border-color: var(--c-chrome);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+/* On hover the chip turns into the signature gradient with a white glyph. */
+.lx .lx-tile-wrapper:hover .lx-tile > .lx-tile-icon-wrapper .lx-tile-icon,
+.lx .lx-tile-wrapper .lx-tile:not(.lx-disabled):hover .lx-tile-icon {
+  background: var(--akordi-grad);
+  fill: #ffffff !important;
+  border-color: transparent;
+  box-shadow: var(--akordi-glow);
+  transform: scale(1.04);
+}
+/* Title: a touch larger + tighter for presence. */
+.lx .lx-tile p.lx-primary {
+  letter-spacing: -0.01em;
+}
+
+/* -----------------------------------------------------------
+   CARDS — akordi-card header gets a faint gradient + the
+   standard cards gain the layered shadow.
+----------------------------------------------------------- */
+.lx .lx-card, .lx .lx-tile-wrapper, .lx .lx-data-block, .lx .akordi-card {
+  box-shadow: var(--shadow-1);
+}
+.lx .akordi-card-header {
+  background-image: linear-gradient(180deg, var(--c-s1), var(--c-s2));
+}
+.lx.lx-theme-dark .akordi-card-header {
+  background-image: linear-gradient(180deg, var(--c-s3), var(--c-s2));
+}
+
+/* -----------------------------------------------------------
+   BUTTONS — the default (filled) button becomes the signature
+   gradient with a tactile press. Driven through the primary
+   background token so nav / header / ghost / secondary buttons
+   (which use their own tokens) are untouched.
+----------------------------------------------------------- */
+.lx {
+  --color-button-primary-background: var(--akordi-grad);
+  --color-button-primary-background-hover: linear-gradient(135deg, #1610a0 0%, #2a23c4 52%, #4840d8 100%);
+  --color-button-primary-background-active: linear-gradient(135deg, #140d8c 0%, #241db0 52%, #3f37c4 100%);
+}
+.lx.lx-theme-dark {
+  --color-button-primary-background: linear-gradient(135deg, #4f46e5, #607afb);
+  --color-button-primary-background-hover: linear-gradient(135deg, #4239d4, #5470f0);
+  --color-button-primary-background-active: linear-gradient(135deg, #3a32c0, #4860db);
+}
+/* Tactile depth + press for the filled default buttons only
+   (exclude the transparent kinds, nav, header and icon buttons). */
+.lx .lx-layout .lx-button:not(.lx-button-secondary):not(.lx-button-tertiary):not(.lx-button-ghost):not(.lx-button-icon-only):not(.lx-header-button) {
+  border: none;
+  box-shadow: 0 1px 2px rgba(13, 6, 74, 0.14), var(--akordi-glow);
+  transition: transform 0.12s ease, box-shadow 0.2s ease, filter 0.18s ease;
+}
+.lx .lx-layout .lx-button:not(.lx-button-secondary):not(.lx-button-tertiary):not(.lx-button-ghost):not(.lx-button-icon-only):not(.lx-header-button):hover {
+  filter: brightness(1.06) saturate(1.02);
+  box-shadow: 0 2px 6px rgba(13, 6, 74, 0.16), 0 12px 30px -8px rgba(46, 40, 214, 0.5);
+}
+.lx .lx-layout .lx-button:not(.lx-button-secondary):not(.lx-button-tertiary):not(.lx-button-ghost):not(.lx-button-icon-only):not(.lx-header-button):active {
+  transform: translateY(1px);
+  filter: brightness(0.97);
+}
+
+/* Elegant, consistent focus ring across interactive elements. */
+.lx .lx-layout .lx-button:focus-visible,
+.lx a.lx-tile:focus-visible,
+.lx .lx-tile-wrapper:focus-within {
+  outline: none;
+  box-shadow: var(--akordi-ring), var(--shadow-1);
+}
+
+/* -----------------------------------------------------------
+   INPUTS — focus gets a soft brand glow ring on top of the
+   existing border recolor, so focus reads as deliberate.
+----------------------------------------------------------- */
+.lx .lx-text-input-wrapper:focus-within > .lx-text-input,
+.lx .lx-input-wrapper:not(.lx-disabled):has(input:focus) .lx-input-area,
+.lx .lx-input-wrapper:not(.lx-disabled):has(textarea:focus) .lx-input-area,
+.lx input.lx-input:focus,
+.lx textarea.lx-input:focus,
+.lx .lx-dropdown-default:focus,
+.lx .lx-dropdown-default:focus-within {
+  box-shadow: var(--akordi-ring);
+}
+
+/* -----------------------------------------------------------
+   CHIPS / TAGS — add a hairline lift so they read as objects.
+----------------------------------------------------------- */
+.lx .akordi-chip {
+  box-shadow: 0 1px 1px rgba(13, 6, 74, 0.04);
+}
+.lx .akordi-chip:hover,
+.lx .akordi-chip:focus-visible {
+  box-shadow: 0 2px 6px -1px rgba(46, 40, 214, 0.18);
+}
+
+/* -----------------------------------------------------------
+   DROPDOWN / MODAL — upgrade to the layered shadow set.
+----------------------------------------------------------- */
+.lx .lx-dropdown-panel,
+.lx .popper > .lx-dropdown-panel-wrapper,
+.lx.lx-header-wrapper .popper .lx-dropdown-panel {
+  box-shadow: var(--shadow-dropdown);
+  border: 1px solid var(--color-chrome);
+}
+.lx .lx-modal,
+.lx .lx-modal-content {
+  box-shadow: var(--shadow-modal);
+}
+
+/* -----------------------------------------------------------
+   COOKIE / CONSENT BAR — lift it onto a clean floating panel
+   feel rather than a flat band stuck to the bottom.
+----------------------------------------------------------- */
+.lx .lx-layout.lx-layout-public > footer {
+  background: var(--c-brand-900);
+  background-image: linear-gradient(180deg, #0a0633, var(--c-brand-900));
+  box-shadow: 0 -8px 24px -12px rgba(7, 0, 77, 0.5);
 }
