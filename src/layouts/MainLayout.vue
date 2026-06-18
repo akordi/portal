@@ -147,6 +147,12 @@ const breadcrumbs = computed(() => {
   const ret = [];
   if (route.meta.breadcrumbs) {
     route.meta.breadcrumbs.forEach((item) => {
+      // Hide breadcrumbs that link to authenticated-only pages from anonymous users
+      // (e.g. a public songbook view should not link back to "My songbooks").
+      const target = item.to ? router.resolve(item.to) : null;
+      if (target?.meta?.anonymous === false && !authStore.isAuthorized) {
+        return;
+      }
       const to = item.retainQueryParams ? { ...item.to, query: route.query } : item.to;
       ret.push({
         label: $t(item.text),
