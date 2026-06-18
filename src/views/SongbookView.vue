@@ -10,14 +10,12 @@ import songbookService from '@/services/songbookService';
 import akordiService from '@/services/akordiService';
 import SongbookFormModal from '@/components/SongbookFormModal.vue';
 
-import useAuthStore from '@/stores/useAuthStore';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
 
 const router = useRouter();
 const route = useRoute();
 const $t = useI18n().t;
-const authStore = useAuthStore();
 const viewStore = useViewStore();
 const notificationStore = useNotifyStore();
 const loading = shallowRef(false);
@@ -36,26 +34,27 @@ async function loadList() {
   loading.value = true;
   isOwner.value = false;
   try {
-    const authed = await authStore.isAuthenticated();
-    if (authed) {
-      try {
-        const resp = await songbookService.findOne(listId.value);
-        item.value = resp.data;
-        isOwner.value = true;
-        const songsResp = await songbookService.getSongs(listId.value);
-        item.value.songs = songsResp.data.content.map((song) => ({
-          ...song,
-          name: song.title,
-          description: song.mainArtist?.title,
-          clickable: true,
-        }));
-        viewStore.title = item.value.name;
+    // Try the owner endpoint first: a valid session cookie returns the user's
+    // own songbook even when the auth store isn't hydrated yet. Only fall back
+    // to the public endpoint when the caller clearly isn't the owner.
+    try {
+      const resp = await songbookService.findOne(listId.value);
+      item.value = resp.data;
+      isOwner.value = true;
+      const songsResp = await songbookService.getSongs(listId.value);
+      item.value.songs = songsResp.data.content.map((song) => ({
+        ...song,
+        name: song.title,
+        description: song.mainArtist?.title,
+        clickable: true,
+      }));
+      viewStore.title = item.value.name;
+      return;
+    } catch (err) {
+      const status = err?.response?.status;
+      if (status !== 401 && status !== 403 && status !== 404) {
+        notificationStore.pushError($t('errors.loadFailed'));
         return;
-      } catch (err) {
-        if (err?.response?.status !== 404) {
-          notificationStore.pushError($t('errors.loadFailed'));
-          return;
-        }
       }
     }
 
