@@ -42,6 +42,10 @@ export default {
     return http(serviceUrl).delete(`/me/songbooks/${id}/songs/${songId}`);
   },
 
+  reorderSongs(id, songIds) {
+    return http(serviceUrl).put(`/me/songbooks/${id}/order`, { songIds });
+  },
+
   getSongSongbooks(songId) {
     return http(serviceUrl).get(`/me/songs/${songId}/songbooks`);
   },

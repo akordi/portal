@@ -316,6 +316,11 @@
                 "success": "Daina išimta iš dainų knygos",
                 "error": "Klaida išimant dainą iš dainų knygos"
             },
+            "moveUp": "Perkelti aukštyn",
+            "moveDown": "Perkelti žemyn",
+            "reorderSong": {
+                "error": "Klaida keičiant dainų eiliškumą"
+            },
             "songs": "Dainos dainų knygoje",
             "share": {
                 "title": "Dalintis dainų knyga",

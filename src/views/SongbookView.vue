@@ -75,6 +75,28 @@ async function loadList() {
   }
 }
 
+async function moveSong(itemId, direction) {
+  const { songs } = item.value;
+  const index = songs.findIndex((song) => String(song.id) === String(itemId));
+  const target = index + direction;
+  if (index < 0 || target < 0 || target >= songs.length) {
+    return;
+  }
+  const previous = [...songs];
+  const reordered = [...songs];
+  [reordered[index], reordered[target]] = [reordered[target], reordered[index]];
+  item.value.songs = reordered;
+  try {
+    await songbookService.reorderSongs(
+      item.value.id,
+      reordered.map((song) => song.id)
+    );
+  } catch (err) {
+    item.value.songs = previous;
+    notificationStore.pushError($t('pages.songbook.reorderSong.error'));
+  }
+}
+
 async function itemActionClicked(actionName, itemId) {
   if (actionName === 'click') {
     const song = item.value.songs.find((s) => String(s.id) === String(itemId));
@@ -92,6 +114,14 @@ async function itemActionClicked(actionName, itemId) {
     } catch (err) {
       notificationStore.pushError($t('pages.songbook.removeSong.error'));
     }
+    return;
+  }
+  if (actionName === 'moveUp') {
+    await moveSong(itemId, -1);
+    return;
+  }
+  if (actionName === 'moveDown') {
+    await moveSong(itemId, 1);
   }
 }
 
@@ -99,7 +129,11 @@ const songActions = computed(() => {
   if (!isOwner.value) {
     return [];
   }
-  return [{ id: 'delete', icon: 'delete', name: $t('delete'), destructive: true }];
+  return [
+    { id: 'moveUp', icon: 'move-up', name: $t('pages.songbook.moveUp') },
+    { id: 'moveDown', icon: 'move-down', name: $t('pages.songbook.moveDown') },
+    { id: 'delete', icon: 'delete', name: $t('delete'), destructive: true },
+  ];
 });
 
 const toolbarActions = computed(() => {

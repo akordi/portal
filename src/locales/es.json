@@ -316,6 +316,11 @@
                 "success": "Canción eliminada del cancionero",
                 "error": "Error al eliminar la canción del cancionero"
             },
+            "moveUp": "Mover hacia arriba",
+            "moveDown": "Mover hacia abajo",
+            "reorderSong": {
+                "error": "Error al reordenar las canciones"
+            },
             "songs": "Canciones en el cancionero",
             "share": {
                 "title": "Compartir cancionero",
