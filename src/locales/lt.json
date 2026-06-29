@@ -310,7 +310,12 @@
             },
             "addSong": {
                 "success": "Daina pridėta į dainų knygą",
-                "error": "Klaida pridedant dainą"
+                "error": "Klaida pridedant dainą",
+                "action": "Pridėti dainą",
+                "title": "Pridėti dainą"
+            },
+            "settings": {
+                "action": "Nustatymai"
             },
             "removeSong": {
                 "success": "Daina išimta iš dainų knygos",
@@ -577,6 +582,7 @@
     "save": "Išsaugoti",
     "add": "Pridėti",
     "edit": "Redaguoti",
+    "done": "Atlikta",
     "suggestEdit": "Pasiūlyti pataisymą",
     "delete": "Ištrinti",
     "copy": "Kopijuoti",

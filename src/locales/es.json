@@ -310,7 +310,12 @@
             },
             "addSong": {
                 "success": "Canción añadida al cancionero",
-                "error": "Error al añadir la canción"
+                "error": "Error al añadir la canción",
+                "action": "Añadir canción",
+                "title": "Añadir canción"
+            },
+            "settings": {
+                "action": "Ajustes"
             },
             "removeSong": {
                 "success": "Canción eliminada del cancionero",
@@ -577,6 +582,7 @@
     "save": "Guardar",
     "add": "Añadir",
     "edit": "Editar",
+    "done": "Hecho",
     "suggestEdit": "Sugerir corrección",
     "delete": "Eliminar",
     "copy": "Copiar",

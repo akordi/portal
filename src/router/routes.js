@@ -241,6 +241,24 @@ const routes = [
         component: () => import('@/views/SongbookView.vue'),
       },
       {
+        path: '/songbooks/:id/add',
+        name: 'songbookAddSongs',
+        meta: {
+          anonymous: false,
+          breadcrumbs: [{ text: 'pages.songbook.title', to: { name: 'songbook' } }],
+        },
+        component: () => import('@/views/SongbookAddSongs.vue'),
+      },
+      {
+        path: '/songbooks/:id/settings',
+        name: 'songbookSettings',
+        meta: {
+          anonymous: false,
+          breadcrumbs: [{ text: 'pages.songbook.title', to: { name: 'songbook' } }],
+        },
+        component: () => import('@/views/SongbookSettings.vue'),
+      },
+      {
         path: '/songbooks/:id/song/:url',
         name: 'songbookViewSongView',
         meta: {

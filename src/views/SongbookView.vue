@@ -1,14 +1,10 @@
 <script setup>
-import { LxList, LxModal } from '@dativa-lv/lx-ui';
+import { LxList } from '@dativa-lv/lx-ui';
 import { computed, onMounted, ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
-import axios from 'axios';
-
 import songbookService from '@/services/songbookService';
-import akordiService from '@/services/akordiService';
-import SongbookFormModal from '@/components/SongbookFormModal.vue';
 
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
@@ -21,14 +17,20 @@ const notificationStore = useNotifyStore();
 const loading = shallowRef(false);
 const listId = computed(() => route.params.id);
 const isOwner = ref(false);
-const addSongModal = ref();
-const formModal = ref();
-const searchItems = ref([]);
-const searchString = ref('');
+const editMode = ref(false);
 const item = ref({
   name: '',
   songs: [],
 });
+
+function decorateSong(song) {
+  return {
+    ...song,
+    name: song.title,
+    description: song.mainArtist?.title,
+    clickable: !editMode.value,
+  };
+}
 
 async function loadList() {
   loading.value = true;
@@ -42,12 +44,7 @@ async function loadList() {
       item.value = resp.data;
       isOwner.value = true;
       const songsResp = await songbookService.getSongs(listId.value);
-      item.value.songs = songsResp.data.content.map((song) => ({
-        ...song,
-        name: song.title,
-        description: song.mainArtist?.title,
-        clickable: true,
-      }));
+      item.value.songs = songsResp.data.content.map(decorateSong);
       viewStore.title = item.value.name;
       return;
     } catch (err) {
@@ -61,18 +58,19 @@ async function loadList() {
     const pubResp = await songbookService.findPublic(listId.value);
     item.value = pubResp.data;
     const pubSongs = await songbookService.getPublicSongs(listId.value);
-    item.value.songs = pubSongs.data.content.map((song) => ({
-      ...song,
-      name: song.title,
-      description: song.mainArtist?.title,
-      clickable: true,
-    }));
+    item.value.songs = pubSongs.data.content.map(decorateSong);
     viewStore.title = item.value.name;
   } catch (err) {
     notificationStore.pushError($t('errors.loadFailed'));
   } finally {
     loading.value = false;
   }
+}
+
+function setEditMode(value) {
+  editMode.value = value;
+  // Songs are only clickable (navigate to the song) outside edit mode.
+  item.value.songs = item.value.songs.map((song) => ({ ...song, clickable: !value }));
 }
 
 async function moveSong(itemId, direction) {
@@ -99,6 +97,9 @@ async function moveSong(itemId, direction) {
 
 async function itemActionClicked(actionName, itemId) {
   if (actionName === 'click') {
+    if (editMode.value) {
+      return;
+    }
     const song = item.value.songs.find((s) => String(s.id) === String(itemId));
     if (song && song.url) {
       const songUrl = song.url.replace(/^\/song\//, '');
@@ -126,7 +127,7 @@ async function itemActionClicked(actionName, itemId) {
 }
 
 const songActions = computed(() => {
-  if (!isOwner.value) {
+  if (!isOwner.value || !editMode.value) {
     return [];
   }
   return [
@@ -140,96 +141,31 @@ const toolbarActions = computed(() => {
   if (!isOwner.value) {
     return [];
   }
+  if (!editMode.value) {
+    return [{ id: 'edit', icon: 'edit', name: $t('edit'), kind: 'primary' }];
+  }
   return [
-    { id: 'add', icon: 'add', name: $t('add'), kind: 'ghost' },
-    { id: 'edit', icon: 'edit', name: $t('edit'), kind: 'primary' },
+    { id: 'add', icon: 'add', name: $t('pages.songbook.addSong.action'), kind: 'ghost' },
+    { id: 'settings', icon: 'config', name: $t('pages.songbook.settings.action'), kind: 'ghost' },
+    { id: 'done', name: $t('done'), kind: 'primary' },
   ];
 });
 
 function toolbarActionClicked(actionName) {
   if (actionName === 'edit') {
-    formModal.value?.open({
-      id: item.value.id,
-      name: item.value.name,
-      isPublic: item.value.isPublic,
-    });
+    setEditMode(true);
+    return;
+  }
+  if (actionName === 'done') {
+    setEditMode(false);
     return;
   }
   if (actionName === 'add') {
-    searchString.value = '';
-    searchItems.value = [];
-    addSongModal.value?.open();
-  }
-}
-
-function onSongbookUpdated(songbook) {
-  item.value.name = songbook.name;
-  item.value.isPublic = songbook.isPublic;
-  viewStore.title = songbook.name;
-}
-
-function onSongbookDeleted() {
-  router.push({ name: 'songbook' });
-}
-
-const HIGHLIGHTS_KEY = '@search.highlights';
-
-function firstHighlight(song, field) {
-  const highlights = song[HIGHLIGHTS_KEY]?.[field];
-  return highlights?.length ? highlights[0] : null;
-}
-
-function titleOrHighlight(song) {
-  return firstHighlight(song, 'title') ?? song.title;
-}
-
-function mainArtistTitleOrHighlight(song) {
-  return firstHighlight(song, 'mainArtistTitle') ?? song.mainArtistTitle;
-}
-
-async function searchSongs(query) {
-  searchString.value = query;
-  if (!query) {
-    searchItems.value = [];
+    router.push({ name: 'songbookAddSongs', params: { id: String(item.value.id) } });
     return;
   }
-  try {
-    loading.value = true;
-    const resp = await akordiService.search(query, { size: 10 });
-    searchItems.value = resp.data.value.map((song) => ({
-      ...song,
-      name: song.title,
-      title: `${mainArtistTitleOrHighlight(song)} - ${titleOrHighlight(song)}`,
-      description: firstHighlight(song, 'bodyLyrics') ?? '',
-      icon: 'add',
-      clickable: true,
-    }));
-  } catch (err) {
-    if (axios.isCancel(err)) {
-      return;
-    }
-    notificationStore.pushError($t('pages.songSearch.search.error'));
-  } finally {
-    loading.value = false;
-  }
-}
-
-async function searchActionClicked(actionName, itemId) {
-  if (actionName === 'click') {
-    try {
-      await songbookService.addSong(item.value.id, itemId);
-      searchItems.value = searchItems.value.filter((song) => song.id !== itemId);
-      await loadList();
-      notificationStore.pushSuccess($t('pages.songbook.addSong.success'));
-    } catch (err) {
-      notificationStore.pushError($t('pages.songbook.addSong.error'));
-    }
-  }
-}
-
-function addSongModalAction(actionName) {
-  if (actionName === 'cancel') {
-    addSongModal.value?.close();
+  if (actionName === 'settings') {
+    router.push({ name: 'songbookSettings', params: { id: String(item.value.id) } });
   }
 }
 
@@ -272,33 +208,4 @@ em {
       {{ $t('lx.list.noItems') }}
     </template>
   </LxList>
-
-  <SongbookFormModal ref="formModal" @updated="onSongbookUpdated" @deleted="onSongbookDeleted" />
-
-  <LxModal
-    ref="addSongModal"
-    :label="$t('add')"
-    size="m"
-    :action-definitions="[{ id: 'cancel', name: $t('cancel'), kind: 'secondary' }]"
-    @action-click="addSongModalAction"
-  >
-    <LxList
-      id="search-songs-list"
-      list-type="1"
-      v-model:items="searchItems"
-      :has-search="true"
-      search-side="server"
-      @action-click="searchActionClicked"
-      @update:search-string="searchSongs"
-      v-model:search-string="searchString"
-    >
-      <template #empty>
-        {{ $t('lx.list.noItems') }}
-      </template>
-      <template #customItem="{ title, description }">
-        <p class="lx-primary" v-html="title"></p>
-        <p class="lx-secondary pre" v-html="description"></p>
-      </template>
-    </LxList>
-  </LxModal>
 </template>

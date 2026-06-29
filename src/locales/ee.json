@@ -310,7 +310,12 @@
             },
             "addSong": {
                 "success": "Laul lisatud lauluraamatusse",
-                "error": "Viga laulu lisamisel"
+                "error": "Viga laulu lisamisel",
+                "action": "Lisa laul",
+                "title": "Lisa laul"
+            },
+            "settings": {
+                "action": "Seaded"
             },
             "removeSong": {
                 "success": "Laul eemaldatud lauluraamatust",
@@ -577,6 +582,7 @@
     "save": "Salvesta",
     "add": "Lisa",
     "edit": "Muuda",
+    "done": "Valmis",
     "suggestEdit": "Soovita parandust",
     "delete": "Kustuta",
     "copy": "Kopeeri",

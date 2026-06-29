@@ -310,7 +310,12 @@
             },
             "addSong": {
                 "success": "Dziesma pievienota dziesmu grāmatai",
-                "error": "Kļūda pievienojot dziesmu"
+                "error": "Kļūda pievienojot dziesmu",
+                "action": "Pievienot dziesmu",
+                "title": "Pievienot dziesmu"
+            },
+            "settings": {
+                "action": "Iestatījumi"
             },
             "removeSong": {
                 "success": "Dziesma izņemta no dziesmu grāmatas",
@@ -577,6 +582,7 @@
     "save": "Saglabāt",
     "add": "Pievienot",
     "edit": "Rediģēt",
+    "done": "Gatavs",
     "suggestEdit": "Ieteikt labojumu",
     "delete": "Dzēst",
     "copy": "Kopēt",
