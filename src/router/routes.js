@@ -250,13 +250,13 @@ const routes = [
         component: () => import('@/views/SongbookAddSongs.vue'),
       },
       {
-        path: '/songbooks/:id/settings',
-        name: 'songbookSettings',
+        path: '/songbooks/:id/edit',
+        name: 'songbookEdit',
         meta: {
           anonymous: false,
           breadcrumbs: [{ text: 'pages.songbook.title', to: { name: 'songbook' } }],
         },
-        component: () => import('@/views/SongbookSettings.vue'),
+        component: () => import('@/views/SongbookEdit.vue'),
       },
       {
         path: '/songbooks/:id/song/:url',
