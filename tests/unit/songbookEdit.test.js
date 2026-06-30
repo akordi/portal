@@ -42,6 +42,9 @@ vi.mock('@/stores/useViewStore', () => ({ default: () => ({ title: '', goBack: f
 vi.mock('@/stores/useNotifyStore', () => ({
   default: () => ({ pushError: vi.fn(), pushSuccess: vi.fn() }),
 }));
+vi.mock('@/stores/useConfirmStore', () => ({
+  default: () => ({ push: vi.fn(), $state: { isOpen: false } }),
+}));
 
 import SongbookEdit from '@/views/SongbookEdit.vue';
 

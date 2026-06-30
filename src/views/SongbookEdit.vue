@@ -1,21 +1,12 @@
 <script setup>
-import {
-  LxButton,
-  LxForm,
-  LxList,
-  LxLoaderView,
-  LxModal,
-  LxRow,
-  LxSection,
-  LxTextInput,
-  LxToggle,
-} from '@dativa-lv/lx-ui';
+import { LxForm, LxList, LxLoaderView, LxRow, LxSection, LxTextInput, LxToggle } from '@dativa-lv/lx-ui';
 import { computed, onMounted, ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import songbookService from '@/services/songbookService';
 
+import useConfirmStore from '@/stores/useConfirmStore';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
 
@@ -24,13 +15,13 @@ const route = useRoute();
 const $t = useI18n().t;
 const viewStore = useViewStore();
 const notificationStore = useNotifyStore();
+const confirmStore = useConfirmStore();
 
 const loading = shallowRef(true);
 const savingName = ref(false);
 const listId = computed(() => route.params.id);
 const item = ref({ id: null, name: '', isPublic: false, songs: [] });
 const nameInvalid = ref(false);
-const confirmDeleteModal = ref();
 
 const shareUrl = computed(() =>
   item.value.id ? `${globalThis.location.origin}/songbooks/${item.value.id}` : ''
@@ -130,23 +121,83 @@ async function moveSong(itemId, direction) {
   }
 }
 
-async function itemActionClicked(actionName, itemId) {
+async function removeSong(itemId) {
+  try {
+    await songbookService.removeSong(item.value.id, itemId);
+    item.value.songs = item.value.songs.filter((song) => String(song.id) !== String(itemId));
+    notificationStore.pushSuccess($t('pages.songbook.removeSong.success'));
+  } catch (err) {
+    notificationStore.pushError($t('pages.songbook.removeSong.error'));
+  }
+}
+
+function itemActionClicked(actionName, itemId) {
   if (actionName === 'moveUp') {
-    await moveSong(itemId, -1);
-    return;
+    moveSong(itemId, -1);
+  } else if (actionName === 'moveDown') {
+    moveSong(itemId, 1);
+  } else if (actionName === 'delete') {
+    removeSong(itemId);
   }
-  if (actionName === 'moveDown') {
-    await moveSong(itemId, 1);
-    return;
+}
+
+async function removeSongbook() {
+  confirmStore.$state.isOpen = false;
+  try {
+    await songbookService.delete(item.value.id);
+    notificationStore.pushSuccess($t('pages.songbook.delete.success'));
+    router.push({ name: 'songbook' });
+  } catch (err) {
+    notificationStore.pushError($t('pages.songbook.delete.error'));
   }
-  if (actionName === 'delete') {
-    try {
-      await songbookService.removeSong(item.value.id, itemId);
-      item.value.songs = item.value.songs.filter((song) => String(song.id) !== String(itemId));
-      notificationStore.pushSuccess($t('pages.songbook.removeSong.success'));
-    } catch (err) {
-      notificationStore.pushError($t('pages.songbook.removeSong.error'));
+}
+
+function confirmDelete() {
+  confirmStore.push(
+    $t('pages.songbook.delete.title'),
+    $t('pages.songbook.delete.message', { name: item.value.name }),
+    $t('delete'),
+    $t('cancel'),
+    removeSongbook,
+    () => {
+      confirmStore.$state.isOpen = false;
     }
+  );
+}
+
+const formActions = computed(() => [
+  { id: 'save', name: $t('save'), icon: 'save', kind: 'primary', busy: savingName.value },
+]);
+
+const settingsActions = computed(() => [
+  {
+    id: 'delete',
+    name: $t('pages.songbook.delete.title'),
+    icon: 'delete',
+    kind: 'ghost',
+    destructive: true,
+  },
+]);
+
+const shareRowActions = computed(() => [
+  { id: 'copy', name: $t('pages.songbook.share.copy'), icon: 'copy' },
+]);
+
+function formActionClicked(actionName) {
+  if (actionName === 'save') {
+    saveName();
+  }
+}
+
+function settingsActionClicked(actionName) {
+  if (actionName === 'delete') {
+    confirmDelete();
+  }
+}
+
+function shareRowActionClicked(actionName) {
+  if (actionName === 'copy') {
+    copyShareLink();
   }
 }
 
@@ -166,71 +217,47 @@ function songToolbarActionClicked(actionName) {
   }
 }
 
-async function removeSongbook() {
-  try {
-    await songbookService.delete(item.value.id);
-    notificationStore.pushSuccess($t('pages.songbook.delete.success'));
-    router.push({ name: 'songbook' });
-  } catch (err) {
-    notificationStore.pushError($t('pages.songbook.delete.error'));
-  }
-}
-
 onMounted(async () => {
   viewStore.goBack = true;
   await load();
 });
 </script>
-<style>
-.songbook-name-actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-}
-
-.songbook-delete {
-  margin-top: 1rem;
-}
-</style>
 <template>
   <LxLoaderView :loading="loading">
-    <LxForm kind="compact" :column-count="1" :show-header="false" :show-footer="false">
-      <LxSection id="songbook-settings" :label="$t('pages.songbook.settings.action')">
-        <LxRow :label="$t('pages.songbook.name')" :column-span="2">
+    <LxForm
+      kind="compact"
+      :column-count="1"
+      :show-header="false"
+      :action-definitions="formActions"
+      @action-click="formActionClicked"
+    >
+      <LxSection
+        id="songbook-settings"
+        :label="$t('pages.songbook.settings.action')"
+        :action-definitions="settingsActions"
+        @action-click="settingsActionClicked"
+      >
+        <LxRow :label="$t('pages.songbook.name')">
           <LxTextInput
             id="songbookNameInput"
             v-model="item.name"
             :invalid="nameInvalid"
             @keyup.enter="saveName"
           />
-          <div class="songbook-name-actions">
-            <LxButton
-              :label="$t('save')"
-              icon="save"
-              kind="primary"
-              :busy="savingName"
-              @click="saveName"
-            />
-          </div>
         </LxRow>
-
         <LxRow
           :label="$t('pages.songbook.share.toggle')"
           :description="$t('pages.songbook.share.toggleHint')"
-          :column-span="2"
         >
           <LxToggle :model-value="item.isPublic" @update:model-value="onShareToggle" />
         </LxRow>
-        <LxRow v-if="item.isPublic" :label="$t('pages.songbook.share.linkLabel')" :column-span="2">
-          <LxTextInput :model-value="shareUrl" read-only />
-          <div class="songbook-name-actions">
-            <LxButton
-              :label="$t('pages.songbook.share.copy')"
-              icon="copy"
-              kind="secondary"
-              @click="copyShareLink"
-            />
-          </div>
+        <LxRow
+          v-if="item.isPublic"
+          :label="$t('pages.songbook.share.linkLabel')"
+          :action-definitions="shareRowActions"
+          @action-click="shareRowActionClicked"
+        >
+          <LxTextInput :model-value="shareUrl" :read-only="true" />
         </LxRow>
       </LxSection>
 
@@ -248,38 +275,7 @@ onMounted(async () => {
             {{ $t('lx.list.noItems') }}
           </template>
         </LxList>
-
-        <div class="songbook-delete">
-          <LxButton
-            :label="$t('pages.songbook.delete.title')"
-            icon="delete"
-            kind="tertiary"
-            :destructive="true"
-            @click="confirmDeleteModal.open()"
-          />
-        </div>
       </LxSection>
     </LxForm>
   </LxLoaderView>
-
-  <LxModal
-    ref="confirmDeleteModal"
-    :label="$t('pages.songbook.delete.title')"
-    size="s"
-    :action-definitions="[
-      { id: 'delete', name: $t('delete'), icon: 'delete', destructive: true },
-      { id: 'cancel', name: $t('cancel'), kind: 'secondary' },
-    ]"
-    @action-click="
-      (action) => {
-        if (action === 'delete') {
-          removeSongbook();
-        } else {
-          confirmDeleteModal.close();
-        }
-      }
-    "
-  >
-    <p class="lx-data">{{ $t('pages.songbook.delete.message', { name: item.name }) }}</p>
-  </LxModal>
 </template>
