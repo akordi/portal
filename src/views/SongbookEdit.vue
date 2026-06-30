@@ -1,6 +1,7 @@
 <script setup>
 import {
   LxButton,
+  LxForm,
   LxList,
   LxLoaderView,
   LxModal,
@@ -181,85 +182,84 @@ onMounted(async () => {
 });
 </script>
 <style>
-.songbook-edit-section {
-  margin-bottom: 1.5rem;
+.songbook-name-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
 }
 
 .songbook-delete {
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--color-chrome);
-}
-
-.songbook-name-save {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 </style>
 <template>
   <LxLoaderView :loading="loading">
-    <section class="songbook-edit-section">
-      <LxRow :label="$t('pages.songbook.name')">
-        <LxTextInput
-          id="songbookNameInput"
-          v-model="item.name"
-          :invalid="nameInvalid"
-          @keyup.enter="saveName"
-        />
-        <div class="songbook-name-save">
+    <LxForm kind="compact" :column-count="1" :show-header="false" :show-footer="false">
+      <LxSection id="songbook-settings" :label="$t('pages.songbook.settings.action')">
+        <LxRow :label="$t('pages.songbook.name')" :column-span="2">
+          <LxTextInput
+            id="songbookNameInput"
+            v-model="item.name"
+            :invalid="nameInvalid"
+            @keyup.enter="saveName"
+          />
+          <div class="songbook-name-actions">
+            <LxButton
+              :label="$t('save')"
+              icon="save"
+              kind="primary"
+              :busy="savingName"
+              @click="saveName"
+            />
+          </div>
+        </LxRow>
+
+        <LxRow
+          :label="$t('pages.songbook.share.toggle')"
+          :description="$t('pages.songbook.share.toggleHint')"
+          :column-span="2"
+        >
+          <LxToggle :model-value="item.isPublic" @update:model-value="onShareToggle" />
+        </LxRow>
+        <LxRow v-if="item.isPublic" :label="$t('pages.songbook.share.linkLabel')" :column-span="2">
+          <LxTextInput :model-value="shareUrl" read-only />
+          <div class="songbook-name-actions">
+            <LxButton
+              :label="$t('pages.songbook.share.copy')"
+              icon="copy"
+              kind="secondary"
+              @click="copyShareLink"
+            />
+          </div>
+        </LxRow>
+      </LxSection>
+
+      <LxSection id="songbook-songs" :label="$t('pages.songbook.songs')">
+        <LxList
+          id="edit-songs-list"
+          list-type="1"
+          v-model:items="item.songs"
+          :toolbar-action-definitions="songToolbarActions"
+          :action-definitions="songActions"
+          @toolbar-action-click="songToolbarActionClicked"
+          @action-click="itemActionClicked"
+        >
+          <template #empty>
+            {{ $t('lx.list.noItems') }}
+          </template>
+        </LxList>
+
+        <div class="songbook-delete">
           <LxButton
-            :label="$t('save')"
-            icon="save"
-            kind="primary"
-            :busy="savingName"
-            @click="saveName"
+            :label="$t('pages.songbook.delete.title')"
+            icon="delete"
+            kind="tertiary"
+            :destructive="true"
+            @click="confirmDeleteModal.open()"
           />
         </div>
-      </LxRow>
-
-      <LxRow
-        :label="$t('pages.songbook.share.toggle')"
-        :description="$t('pages.songbook.share.toggleHint')"
-      >
-        <LxToggle :model-value="item.isPublic" @update:model-value="onShareToggle" />
-      </LxRow>
-      <LxRow v-if="item.isPublic" :label="$t('pages.songbook.share.linkLabel')">
-        <LxTextInput :model-value="shareUrl" read-only />
-        <div class="songbook-name-save">
-          <LxButton
-            :label="$t('pages.songbook.share.copy')"
-            icon="copy"
-            kind="secondary"
-            @click="copyShareLink"
-          />
-        </div>
-      </LxRow>
-    </section>
-
-    <LxSection :label="$t('pages.songbook.songs')">
-      <LxList
-        id="edit-songs-list"
-        list-type="1"
-        v-model:items="item.songs"
-        :toolbar-action-definitions="songToolbarActions"
-        :action-definitions="songActions"
-        @toolbar-action-click="songToolbarActionClicked"
-        @action-click="itemActionClicked"
-      >
-        <template #empty>
-          {{ $t('lx.list.noItems') }}
-        </template>
-      </LxList>
-    </LxSection>
-
-    <div class="songbook-delete">
-      <LxButton
-        :label="$t('pages.songbook.delete.title')"
-        icon="delete"
-        kind="tertiary"
-        :destructive="true"
-        @click="confirmDeleteModal.open()"
-      />
-    </div>
+      </LxSection>
+    </LxForm>
   </LxLoaderView>
 
   <LxModal

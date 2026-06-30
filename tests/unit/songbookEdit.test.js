@@ -21,6 +21,7 @@ vi.mock('@dativa-lv/lx-ui', () => {
       template: '<div />',
     },
     LxLoaderView: passthrough('LxLoaderView'),
+    LxForm: passthrough('LxForm'),
     LxSection: passthrough('LxSection'),
     LxRow: passthrough('LxRow'),
     LxButton: { name: 'LxButton', props: ['label'], template: '<button />' },
