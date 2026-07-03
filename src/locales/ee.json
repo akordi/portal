@@ -321,8 +321,6 @@
                 "success": "Laul eemaldatud lauluraamatust",
                 "error": "Viga laulu eemaldamisel lauluraamatust"
             },
-            "moveUp": "Liiguta üles",
-            "moveDown": "Liiguta alla",
             "reorderSong": {
                 "error": "Viga laulude järjestuse muutmisel"
             },

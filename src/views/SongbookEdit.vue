@@ -1,5 +1,13 @@
 <script setup>
-import { LxForm, LxList, LxLoaderView, LxRow, LxSection, LxTextInput, LxToggle } from '@dativa-lv/lx-ui';
+import {
+  LxForm,
+  LxList,
+  LxLoaderView,
+  LxRow,
+  LxSection,
+  LxTextInput,
+  LxToggle,
+} from '@dativa-lv/lx-ui';
 import { computed, onMounted, ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -99,21 +107,17 @@ async function copyShareLink() {
   }
 }
 
-async function moveSong(itemId, direction) {
-  const { songs } = item.value;
-  const index = songs.findIndex((song) => String(song.id) === String(itemId));
-  const target = index + direction;
-  if (index < 0 || target < 0 || target >= songs.length) {
+async function onSongsReordered(songs) {
+  const previous = item.value.songs;
+  if (songs.map((song) => song.id).join() === previous.map((song) => song.id).join()) {
+    item.value.songs = songs;
     return;
   }
-  const previous = [...songs];
-  const reordered = [...songs];
-  [reordered[index], reordered[target]] = [reordered[target], reordered[index]];
-  item.value.songs = reordered;
+  item.value.songs = songs;
   try {
     await songbookService.reorderSongs(
       item.value.id,
-      reordered.map((song) => song.id)
+      songs.map((song) => song.id)
     );
   } catch (err) {
     item.value.songs = previous;
@@ -132,11 +136,7 @@ async function removeSong(itemId) {
 }
 
 function itemActionClicked(actionName, itemId) {
-  if (actionName === 'moveUp') {
-    moveSong(itemId, -1);
-  } else if (actionName === 'moveDown') {
-    moveSong(itemId, 1);
-  } else if (actionName === 'delete') {
+  if (actionName === 'delete') {
     removeSong(itemId);
   }
 }
@@ -201,11 +201,7 @@ function shareRowActionClicked(actionName) {
   }
 }
 
-const songActions = [
-  { id: 'moveUp', icon: 'move-up', name: $t('pages.songbook.moveUp') },
-  { id: 'moveDown', icon: 'move-down', name: $t('pages.songbook.moveDown') },
-  { id: 'delete', icon: 'delete', name: $t('delete'), destructive: true },
-];
+const songActions = [{ id: 'delete', icon: 'delete', name: $t('delete'), destructive: true }];
 
 const songToolbarActions = [
   { id: 'add', icon: 'add', name: $t('pages.songbook.addSong.action'), kind: 'ghost' },
@@ -265,7 +261,9 @@ onMounted(async () => {
         <LxList
           id="edit-songs-list"
           list-type="1"
-          v-model:items="item.songs"
+          kind="draggable"
+          :items="item.songs"
+          @update:items="onSongsReordered"
           :toolbar-action-definitions="songToolbarActions"
           :action-definitions="songActions"
           @toolbar-action-click="songToolbarActionClicked"

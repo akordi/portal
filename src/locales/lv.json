@@ -321,8 +321,6 @@
                 "success": "Dziesma izņemta no dziesmu grāmatas",
                 "error": "Kļūda izņemot dziesmu no dziesmu grāmatas"
             },
-            "moveUp": "Pārvietot augšup",
-            "moveDown": "Pārvietot lejup",
             "reorderSong": {
                 "error": "Kļūda mainot dziesmu secību"
             },
