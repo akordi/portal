@@ -1,5 +1,6 @@
 <script setup>
 import {
+  LxButton,
   LxForm,
   LxList,
   LxLoaderView,
@@ -38,6 +39,7 @@ const shareUrl = computed(() =>
 function decorateSong(song) {
   return {
     ...song,
+    id: String(song.id),
     name: song.title,
     description: song.mainArtist?.title,
     clickable: false,
@@ -117,7 +119,7 @@ async function onSongsReordered(songs) {
   try {
     await songbookService.reorderSongs(
       item.value.id,
-      songs.map((song) => song.id)
+      songs.map((song) => Number(song.id))
     );
   } catch (err) {
     item.value.songs = previous;
@@ -167,37 +169,21 @@ function confirmDelete() {
 
 const formActions = computed(() => [
   { id: 'save', name: $t('save'), icon: 'save', kind: 'primary', busy: savingName.value },
-]);
-
-const settingsActions = computed(() => [
   {
     id: 'delete',
-    name: $t('pages.songbook.delete.title'),
+    name: $t('delete'),
     icon: 'delete',
-    kind: 'ghost',
+    kind: 'tertiary',
     destructive: true,
   },
-]);
-
-const shareRowActions = computed(() => [
-  { id: 'copy', name: $t('pages.songbook.share.copy'), icon: 'copy' },
 ]);
 
 function formActionClicked(actionName) {
   if (actionName === 'save') {
     saveName();
   }
-}
-
-function settingsActionClicked(actionName) {
   if (actionName === 'delete') {
     confirmDelete();
-  }
-}
-
-function shareRowActionClicked(actionName) {
-  if (actionName === 'copy') {
-    copyShareLink();
   }
 }
 
@@ -227,12 +213,7 @@ onMounted(async () => {
       :action-definitions="formActions"
       @action-click="formActionClicked"
     >
-      <LxSection
-        id="songbook-settings"
-        :label="$t('pages.songbook.settings.action')"
-        :action-definitions="settingsActions"
-        @action-click="settingsActionClicked"
-      >
+      <LxSection id="songbook-settings" :label="$t('pages.songbook.settings.action')">
         <LxRow :label="$t('pages.songbook.name')">
           <LxTextInput
             id="songbookNameInput"
@@ -247,32 +228,35 @@ onMounted(async () => {
         >
           <LxToggle :model-value="item.isPublic" @update:model-value="onShareToggle" />
         </LxRow>
-        <LxRow
-          v-if="item.isPublic"
-          :label="$t('pages.songbook.share.linkLabel')"
-          :action-definitions="shareRowActions"
-          @action-click="shareRowActionClicked"
-        >
+        <LxRow v-if="item.isPublic" :label="$t('pages.songbook.share.linkLabel')">
           <LxTextInput :model-value="shareUrl" :read-only="true" />
+          <LxButton
+            :label="$t('pages.songbook.share.copy')"
+            icon="copy"
+            kind="tertiary"
+            @click="copyShareLink"
+          />
         </LxRow>
       </LxSection>
 
       <LxSection id="songbook-songs" :label="$t('pages.songbook.songs')">
-        <LxList
-          id="edit-songs-list"
-          list-type="1"
-          kind="draggable"
-          :items="item.songs"
-          @update:items="onSongsReordered"
-          :toolbar-action-definitions="songToolbarActions"
-          :action-definitions="songActions"
-          @toolbar-action-click="songToolbarActionClicked"
-          @action-click="itemActionClicked"
-        >
-          <template #empty>
-            {{ $t('lx.list.noItems') }}
-          </template>
-        </LxList>
+        <LxRow :label="$t('pages.songbook.songs')" hide-label>
+          <LxList
+            id="edit-songs-list"
+            list-type="1"
+            kind="draggable"
+            :items="item.songs"
+            @update:items="onSongsReordered"
+            :toolbar-action-definitions="songToolbarActions"
+            :action-definitions="songActions"
+            @toolbar-action-click="songToolbarActionClicked"
+            @action-click="itemActionClicked"
+          >
+            <template #empty>
+              {{ $t('lx.list.noItems') }}
+            </template>
+          </LxList>
+        </LxRow>
       </LxSection>
     </LxForm>
   </LxLoaderView>

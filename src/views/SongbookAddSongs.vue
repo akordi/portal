@@ -1,6 +1,6 @@
 <script setup>
 import { LxList } from '@dativa-lv/lx-ui';
-import { computed, onMounted, ref, shallowRef } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
@@ -16,7 +16,6 @@ const route = useRoute();
 const $t = useI18n().t;
 const viewStore = useViewStore();
 const notificationStore = useNotifyStore();
-const loading = shallowRef(false);
 const listId = computed(() => route.params.id);
 const searchItems = ref([]);
 const searchString = ref('');
@@ -43,10 +42,12 @@ async function searchSongs(query) {
     return;
   }
   try {
-    loading.value = true;
+    // ponytail: no loading state while typing — LxList disables (and thus
+    // defocuses) its search input whenever `loading` is set
     const resp = await akordiService.search(query, { size: 10 });
     searchItems.value = resp.data.value.map((song) => ({
       ...song,
+      id: String(song.id),
       name: song.title,
       title: `${mainArtistTitleOrHighlight(song)} - ${titleOrHighlight(song)}`,
       description: firstHighlight(song, 'bodyLyrics') ?? '',
@@ -58,8 +59,6 @@ async function searchSongs(query) {
       return;
     }
     notificationStore.pushError($t('pages.songSearch.search.error'));
-  } finally {
-    loading.value = false;
   }
 }
 
@@ -95,7 +94,6 @@ em {
     id="add-songs-list"
     list-type="1"
     v-model:items="searchItems"
-    :loading="loading"
     :has-search="true"
     search-side="server"
     @action-click="searchActionClicked"

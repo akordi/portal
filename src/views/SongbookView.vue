@@ -25,6 +25,7 @@ const item = ref({
 function decorateSong(song) {
   return {
     ...song,
+    id: String(song.id),
     name: song.title,
     description: song.mainArtist?.title,
     clickable: true,

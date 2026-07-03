@@ -22,6 +22,7 @@ async function loadLists() {
     const resp = await akordiAdminListService.findAll();
     items.value = resp.data.map((list) => ({
       ...list,
+      id: String(list.id),
       title: list.name,
       clickable: true,
       icon: 'next',
@@ -40,7 +41,7 @@ function actionClicked(action, id) {
 }
 
 function onCreated(songbook) {
-  router.push({ name: 'songbookView', params: { id: String(songbook.id) } });
+  router.push({ name: 'songbookEdit', params: { id: String(songbook.id) } });
 }
 
 onMounted(async () => {

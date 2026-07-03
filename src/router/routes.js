@@ -245,7 +245,10 @@ const routes = [
         name: 'songbookAddSongs',
         meta: {
           anonymous: false,
-          breadcrumbs: [{ text: 'pages.songbook.title', to: { name: 'songbook' } }],
+          breadcrumbs: [
+            { text: 'pages.songbook.title', to: { name: 'songbook' } },
+            { text: 'pages.songbook.edit', to: { name: 'songbookEdit' } },
+          ],
         },
         component: () => import('@/views/SongbookAddSongs.vue'),
       },

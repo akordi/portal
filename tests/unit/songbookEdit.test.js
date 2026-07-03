@@ -75,16 +75,17 @@ describe('SongbookEdit page', () => {
     expect(l.props('items').map((s) => s.title)).toEqual(['First', 'Second']);
     // Rows are not clickable here — this is the management surface.
     expect(l.props('items').every((s) => !s.clickable)).toBe(true);
-    expect(ids(l.props('actionDefinitions'))).toEqual(['moveUp', 'moveDown', 'delete']);
+    expect(ids(l.props('actionDefinitions'))).toEqual(['delete']);
     expect(ids(l.props('toolbarActionDefinitions'))).toEqual(['add']);
   });
 
-  it('persists the new order when a song is moved down', async () => {
+  it('persists the new order when songs are drag-reordered', async () => {
     reorderSongs.mockResolvedValue({});
     const wrapper = mount(SongbookEdit);
     await flushPromises();
 
-    list(wrapper).vm.$emit('action-click', 'moveDown', 1);
+    const items = list(wrapper).props('items');
+    list(wrapper).vm.$emit('update:items', [items[1], items[0]]);
     await flushPromises();
 
     expect(reorderSongs).toHaveBeenCalledWith(7, [2, 1]);
