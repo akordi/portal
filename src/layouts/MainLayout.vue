@@ -42,6 +42,10 @@ const shellMode = computed(() => {
 
 const hasLoginButton = computed(() => configBool(window.config.authEnabled));
 
+// LxShell expects an object; it maps the canonical value (staging → "test",
+// development → "dev", etc.) to the header badge shown outside production.
+const shellEnvironment = computed(() => ({ environment: window.config.environment }));
+
 const nav = computed(() => {
   const ret = [
     {
@@ -359,6 +363,7 @@ function idleModalSecondary() {
         :page-back-button-visible="showBackButton"
         :page-breadcrumbs="breadcrumbs"
         :page-index-path="{ name: 'dashboard' }"
+        :environment="shellEnvironment"
         :has-language-picker="false"
         :has-alerts="false"
         :has-help="false"
