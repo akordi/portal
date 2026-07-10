@@ -13,21 +13,21 @@
     "test-watch": "vitest"
   },
   "dependencies": {
-    "@dativa-lv/lx-ui": "2.2.7",
-    "@ory/client": "^1.22.37",
+    "@dativa-lv/lx-ui": "2.2.8",
+    "@ory/client": "^1.22.63",
     "@tombatossals/chords-db": "^0.5.1",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "@vueuse/core": "^14.3.0",
     "@vueuse/head": "^2.0.0",
     "@zzdats/prettier-config": "^1.0.0",
-    "abcjs": "^6.6.3",
-    "axios": "1.18.0",
+    "abcjs": "^6.6.4",
+    "axios": "1.18.1",
     "chord-transposer": "^3.0.9",
     "pinia": "^3.0.4",
-    "vue": "^3.5.35",
+    "vue": "^3.5.39",
     "vue-gtag": "3.7.1",
-    "vue-i18n": "11.4.5",
+    "vue-i18n": "11.4.6",
     "vue-router": "5.1.0"
   },
   "devDependencies": {
@@ -47,10 +47,10 @@
     "jest": "^30.4.2",
     "jsdom": "^29.1.1",
     "prettier": "^2.8.8",
-    "vite": "8.0.16",
+    "vite": "8.1.4",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-mkcert": "^2.0.0",
     "vite-plugin-mock-server": "^1.3.1",
-    "vitest": "^4.1.7"
+    "vitest": "^4.1.10"
   }
 }
