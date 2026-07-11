@@ -209,6 +209,16 @@
             "title": "Esita laul",
             "description": "Siin saate esitada laulu, et see lisataks portaali. Leht on mõeldud ainult eesti lauludele (laulu keelel pole tähtsust). See kontrollitakse ja lisatakse andmebaasi."
         },
+        "playAlong": {
+            "toggle": "Mängi kaasa",
+            "hint": "Esita YouTube video ja jälgi akorde reaalajas.",
+            "exit": "Tagasi teksti juurde",
+            "nowPlaying": "Praegu kõlab",
+            "nextChord": "Järgmine",
+            "changesIn": "pärast",
+            "songEnd": "Laulu lõpp",
+            "seconds": "s"
+        },
         "akordiSongView": {
             "title": "Akordid.ee laulud",
             "copy": {

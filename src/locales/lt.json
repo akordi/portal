@@ -209,6 +209,16 @@
             "title": "Pateikti dainą",
             "description": "Čia galite pateikti dainą, kad ji būtų pridėta prie portalo. Puslapis skirtas tik lietuviškoms dainoms (dainos kalbai nėra reikšmės). Ji bus patikrinta ir pridėta prie duomenų bazės."
         },
+        "playAlong": {
+            "toggle": "Groti kartu",
+            "hint": "Leisk YouTube vaizdo įrašą ir sek akordus realiu laiku.",
+            "exit": "Atgal į tekstą",
+            "nowPlaying": "Dabar skamba",
+            "nextChord": "Kitas",
+            "changesIn": "po",
+            "songEnd": "Dainos pabaiga",
+            "seconds": "s"
+        },
         "akordiSongView": {
             "title": "Akordai.lt dainos",
             "copy": {
