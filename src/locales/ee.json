@@ -211,6 +211,7 @@
         },
         "playAlong": {
             "toggle": "Mängi kaasa",
+            "hint": "Esita YouTube video ja jälgi akorde reaalajas.",
             "exit": "Tagasi teksti juurde",
             "nowPlaying": "Praegu kõlab",
             "nextChord": "Järgmine",

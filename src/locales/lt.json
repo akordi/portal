@@ -211,6 +211,7 @@
         },
         "playAlong": {
             "toggle": "Groti kartu",
+            "hint": "Leisk YouTube vaizdo įrašą ir sek akordus realiu laiku.",
             "exit": "Atgal į tekstą",
             "nowPlaying": "Dabar skamba",
             "nextChord": "Kitas",

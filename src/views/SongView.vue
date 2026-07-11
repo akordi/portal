@@ -592,6 +592,23 @@ onUnmounted(() => {
 .song-reference {
   margin-top: 1rem;
 }
+
+/* Play-along entry CTA — sits at the top of the song content. */
+.play-along-cta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.play-along-cta-hint {
+  margin: 0;
+}
+/* Exit button above the player. */
+.play-along-exit {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
 </style>
 <template>
   <LxLoaderView :loading="loading">
@@ -602,7 +619,7 @@ onUnmounted(() => {
       :show-post-header-info="true"
       :show-pre-header-info="true"
       kind="compact"
-      :show-footer="true"
+      :show-footer="!playAlong"
       :sticky-header="false"
       :sticky-footer="true"
     >
@@ -610,80 +627,65 @@ onUnmounted(() => {
         <LxToolbarGroup id="songToolbarGroup">
           <LxToolbar :noBorders="true">
             <template #leftArea>
-              <template v-if="playable">
-                <!-- Labeled (not icon-only) so this flagship action is not
-                     confused with the icon-only auto-scroll play button, which
-                     shares the 'play' glyph at rest. -->
-                <LxButton
-                  :kind="playAlong ? 'ghost' : 'primary'"
-                  :icon="playAlong ? 'close' : 'play'"
-                  :active="playAlong"
-                  :label="playAlong ? $t('pages.playAlong.exit') : $t('pages.playAlong.toggle')"
-                  @click="togglePlayAlong"
-                />
-                <div class="lx-divider"></div>
-              </template>
-              <template v-if="!playAlong">
-                <label class="lx-data toolbar-label">{{
-                  $t('pages.akordiSongView.transposeHeader', {
-                    offset: offsetFormatted,
-                  })
-                }}</label>
-                <LxButton
-                  kind="ghost"
-                  variant="icon-only"
-                  icon="move-up"
-                  :label="$t('pages.akordiSongView.transposeUp.label')"
-                  @click="actionClicked('transposeUp')"
-                />
-                <LxButton
-                  kind="ghost"
-                  variant="icon-only"
-                  icon="move-down"
-                  :label="$t('pages.akordiSongView.transposeDown.label')"
-                  @click="actionClicked('transposeDown')"
-                />
-                <div class="lx-divider"></div>
-                <label class="lx-data toolbar-label">{{
-                  $t('pages.akordiSongView.fontUp.label')
-                }}</label>
-                <LxButton
-                  kind="ghost"
-                  variant="icon-only"
-                  icon="zoom-in"
-                  :label="$t('pages.akordiSongView.fontUp.label')"
-                  @click="actionClicked('fontUp')"
-                />
-                <LxButton
-                  kind="ghost"
-                  variant="icon-only"
-                  icon="zoom-out"
-                  :label="$t('pages.akordiSongView.fontDown.label')"
-                  @click="actionClicked('fontDown')"
-                />
-                <div class="lx-divider"></div>
+              <label class="lx-data toolbar-label">{{
+                $t('pages.akordiSongView.transposeHeader', {
+                  offset: offsetFormatted,
+                })
+              }}</label>
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                icon="move-up"
+                :label="$t('pages.akordiSongView.transposeUp.label')"
+                @click="actionClicked('transposeUp')"
+              />
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                icon="move-down"
+                :label="$t('pages.akordiSongView.transposeDown.label')"
+                @click="actionClicked('transposeDown')"
+              />
+              <div class="lx-divider"></div>
+              <label class="lx-data toolbar-label">{{
+                $t('pages.akordiSongView.fontUp.label')
+              }}</label>
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                icon="zoom-in"
+                :label="$t('pages.akordiSongView.fontUp.label')"
+                @click="actionClicked('fontUp')"
+              />
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                icon="zoom-out"
+                :label="$t('pages.akordiSongView.fontDown.label')"
+                @click="actionClicked('fontDown')"
+              />
+              <div class="lx-divider"></div>
 
-                <label class="lx-data toolbar-label">{{
-                  $t('pages.akordiSongView.autoScroll.label', {
-                    speed: autoScrollerSpeedFormatted,
-                  })
-                }}</label>
-                <LxButton
-                  kind="ghost"
-                  variant="icon-only"
-                  :icon="pauseAutoScroll ? 'pause' : autoScrollerIcon"
-                  :active="autoScrollerSpeed > 0"
-                  :label="$t('pages.akordiSongView.autoScroll.playDescription')"
-                  @click="autoScrollerUp"
-                />
-                <LxButton
-                  kind="ghost"
-                  variant="icon-only"
-                  icon="stop"
-                  :label="$t('pages.akordiSongView.autoScroll.stopDescription')"
-                  @click="autoScrollerSpeed = 0"
-                />
-              </template>
+              <label class="lx-data toolbar-label">{{
+                $t('pages.akordiSongView.autoScroll.label', {
+                  speed: autoScrollerSpeedFormatted,
+                })
+              }}</label>
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                :icon="pauseAutoScroll ? 'pause' : autoScrollerIcon"
+                :active="autoScrollerSpeed > 0"
+                :label="$t('pages.akordiSongView.autoScroll.playDescription')"
+                @click="autoScrollerUp"
+              />
+              <LxButton
+                kind="ghost"
+                variant="icon-only"
+                icon="stop"
+                :label="$t('pages.akordiSongView.autoScroll.stopDescription')"
+                @click="autoScrollerSpeed = 0"
+              />
             </template>
           </LxToolbar>
         </LxToolbarGroup>
@@ -725,7 +727,29 @@ onUnmounted(() => {
           <p class="lx-data">{{ lxDateUtils.formatDateTime(item.updatedDate) }}</p>
         </LxRow>
       </template>
+      <!-- Play-along entry — a prominent CTA at the top of the song content,
+           kept out of the crowded footer toolbar. Shown only for playable
+           songs when not already in play-along. -->
+      <LxSection v-if="playable && !playAlong" id="playAlongEnter">
+        <div class="play-along-cta">
+          <LxButton
+            kind="primary"
+            icon="play"
+            :label="$t('pages.playAlong.toggle')"
+            @click="togglePlayAlong"
+          />
+          <p class="lx-description play-along-cta-hint">{{ $t('pages.playAlong.hint') }}</p>
+        </div>
+      </LxSection>
       <LxSection v-if="playAlong" id="playAlong">
+        <div class="play-along-exit">
+          <LxButton
+            kind="ghost"
+            icon="close"
+            :label="$t('pages.playAlong.exit')"
+            @click="togglePlayAlong"
+          />
+        </div>
         <ChordPlayer :video-url="videoUrl" :segments="segments" :duration="duration" />
       </LxSection>
       <LxSection v-show="!playAlong && hasAbc && settingsStore.showAbc" id="bodyAbc">

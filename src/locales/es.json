@@ -211,6 +211,7 @@
         },
         "playAlong": {
             "toggle": "Tocar junto",
+            "hint": "Reproduce el vídeo de YouTube y sigue los acordes en tiempo real.",
             "exit": "Volver a la letra",
             "nowPlaying": "Suena ahora",
             "nextChord": "Siguiente",
