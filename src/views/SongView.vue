@@ -603,11 +603,24 @@ onUnmounted(() => {
 .play-along-cta-hint {
   margin: 0;
 }
-/* Exit button above the player. */
+/* Exit button above the player, left-aligned like a back control. */
 .play-along-exit {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   margin-bottom: 0.75rem;
+}
+/* The play-along section is a CSS-grid item (LxForm), which defaults to
+   min-width:auto and would refuse to shrink below a wide child (the video).
+   Allow it to shrink to the grid track so nothing overflows on mobile. */
+#song-view-form-playAlong {
+  min-width: 0;
+}
+/* Chord diagrams below the player in play-along mode. */
+.play-along-chords {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-top: 1rem;
 }
 </style>
 <template>
@@ -745,12 +758,22 @@ onUnmounted(() => {
         <div class="play-along-exit">
           <LxButton
             kind="ghost"
-            icon="close"
+            icon="undo"
             :label="$t('pages.playAlong.exit')"
             @click="togglePlayAlong"
           />
         </div>
         <ChordPlayer :video-url="videoUrl" :segments="segments" :duration="duration" />
+        <!-- Chord fingering diagrams, same as the read view, so the player can
+             see how to play the chord the HUD is calling. -->
+        <div v-if="hasChords" class="play-along-chords">
+          <ChordSvg
+            :chord="chord"
+            :instrument="settingsStore.instrument"
+            v-for="chord in chords"
+            :key="chord"
+          ></ChordSvg>
+        </div>
       </LxSection>
       <LxSection v-show="!playAlong && hasAbc && settingsStore.showAbc" id="bodyAbc">
         <AbcViewer

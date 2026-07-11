@@ -173,10 +173,23 @@ async function build() {
   }
   player = new YT.Player(mount.value, {
     videoId: videoId.value,
+    // The API otherwise injects a fixed width="640" height="390" iframe. It is
+    // created outside Vue, so scoped CSS never reaches it — size it here so it
+    // stays fluid and never overflows narrow (mobile) layouts.
+    width: '100%',
+    height: '100%',
     playerVars: { rel: 0, modestbranding: 1, playsinline: 1 },
     events: {
       onReady: () => {
         ready.value = true;
+        // Belt and braces: the width/height options above set the iframe
+        // attributes, but pin the inline style too so a 640px attribute can
+        // never win over the responsive box.
+        const frame = player && typeof player.getIframe === 'function' && player.getIframe();
+        if (frame) {
+          frame.style.width = '100%';
+          frame.style.height = '100%';
+        }
       },
       onStateChange: (event) => {
         // 1 = playing → track time; anything else → stop the ticker.
