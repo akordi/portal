@@ -8,6 +8,19 @@ html {
   overflow-x: clip;
 }
 
+/* ...but the real culprit is position:fixed, so overflow can't contain it: on
+   mobile the collapsed (closed) public nav panel is parked off-canvas at
+   left:100vw as a 48px rail, and iOS Safari lets you pan sideways to it on
+   every page. It only holds the menu when OPEN (left:0, .lx-collapsed removed),
+   so hide it while closed. Scoped to <=900px and matching the shell's own
+   selector plus .lx-collapsed so it (a) only hides on mobile, not the desktop
+   collapsed sidebar, and (b) out-specifies the shell's display:flex rule. */
+@media (max-width: 900px) {
+  .lx .lx-layout.lx-layout-public.lx-collapsed .lx-nav-panel {
+    display: none;
+  }
+}
+
 .lx-main-button .lx-logo img {
   height: 42px;
   display: none;
