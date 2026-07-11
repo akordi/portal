@@ -765,7 +765,7 @@ onUnmounted(() => {
         </div>
         <ChordPlayer :video-url="videoUrl" :segments="segments" :duration="duration" />
         <!-- Chord fingering diagrams, same as the read view, so the player can
-             see how to play the chord the HUD is calling. -->
+             see how to finger each chord on the timeline. -->
         <div v-if="hasChords" class="play-along-chords">
           <ChordSvg
             :chord="chord"
@@ -793,7 +793,9 @@ onUnmounted(() => {
           ></ChordSvg>
         </div>
       </LxSection>
-      <LxSection v-show="!playAlong" id="body">
+      <!-- Lyrics/chord sheet: shown in read mode and kept below the player in
+           play-along mode so you can still follow the words while playing. -->
+      <LxSection id="body">
         <p class="pre" v-html="item.bodyWithMarkup" :style="{ fontSize: fontSize + 'em' }"></p>
       </LxSection>
     </LxForm>
