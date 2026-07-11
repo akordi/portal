@@ -1,3 +1,13 @@
+/* iOS horizontal-scroll fix. The shell's collapsed nav rail (.lx-nav-panel) is
+   position:fixed and parked off the right edge (left:100vw, 48px wide). body
+   already has overflow-x:hidden, but iOS Safari scrolls the <html> element, and
+   the shell leaves that overflow-x:visible — so the off-canvas rail becomes
+   pannable. Clip the root's horizontal overflow (clip, not hidden, so overflow-y
+   stays visible and the sticky toolbar/footer keep working). */
+html {
+  overflow-x: clip;
+}
+
 .lx-main-button .lx-logo img {
   height: 42px;
   display: none;
