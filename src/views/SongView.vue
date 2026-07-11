@@ -20,6 +20,8 @@ import { useRoute, useRouter } from 'vue-router';
 import AbcViewer from '@/components/AbcViewer.vue';
 import { pageview } from 'vue-gtag';
 import ChordSvg from '@/components/ChordSvg.vue';
+import ChordPlayer from '@/components/ChordPlayer.vue';
+import { youtubeId } from '@/utils/chordSync';
 import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
 import useAuthStore from '@/stores/useAuthStore';
 import akordiAdminListService from '@/services/songbookService';
@@ -56,6 +58,18 @@ const loading = ref(true);
 const hasChords = ref(false);
 const chords = ref([]);
 const hasAbc = computed(() => item.value.bodyAbc);
+
+// Play-along: derived from the loaded song. youtubeLink is stored as a bare
+// 11-char video id, so expand it to a watch URL that youtubeId() understands.
+// chordTimeline may be null/absent → segments/duration default to empty.
+const videoUrl = computed(() =>
+  item.value.youtubeLink ? `https://www.youtube.com/watch?v=${item.value.youtubeLink}` : ''
+);
+const segments = computed(() => item.value.chordTimeline?.segments ?? []);
+const duration = computed(() => item.value.chordTimeline?.duration ?? 0);
+// A song is playable only with a resolvable video AND at least one chord segment.
+const playable = computed(() => !!youtubeId(videoUrl.value) && segments.value.length > 0);
+const playAlong = ref(false);
 const fontSize = ref(1);
 const offsetFormatted = computed(() => {
   if (bodyTransposedIndex.value > 0) {
@@ -248,8 +262,18 @@ watch(autoScrollerSpeed, (level) => {
   startAutoScroll();
 });
 
+// Toggle play-along. Entering stops the auto-scroller so the two "motion"
+// features don't fight; the toolbar (and its scroll control) is hidden anyway.
+function togglePlayAlong() {
+  playAlong.value = !playAlong.value;
+  if (playAlong.value) {
+    autoScrollerSpeed.value = 0;
+  }
+}
+
 const loadSong = async () => {
   try {
+    playAlong.value = false;
     const songId = akordiService.parseUrl(songUrlParam.value);
     const resp = await akordiService.getSong(songId);
     item.value = resp.data;
@@ -586,65 +610,78 @@ onUnmounted(() => {
         <LxToolbarGroup id="songToolbarGroup">
           <LxToolbar :noBorders="true">
             <template #leftArea>
-              <label class="lx-data toolbar-label">{{
-                $t('pages.akordiSongView.transposeHeader', {
-                  offset: offsetFormatted,
-                })
-              }}</label>
-              <LxButton
-                kind="ghost"
-                variant="icon-only"
-                icon="move-up"
-                :label="$t('pages.akordiSongView.transposeUp.label')"
-                @click="actionClicked('transposeUp')"
-              />
-              <LxButton
-                kind="ghost"
-                variant="icon-only"
-                icon="move-down"
-                :label="$t('pages.akordiSongView.transposeDown.label')"
-                @click="actionClicked('transposeDown')"
-              />
-              <div class="lx-divider"></div>
-              <label class="lx-data toolbar-label">{{
-                $t('pages.akordiSongView.fontUp.label')
-              }}</label>
-              <LxButton
-                kind="ghost"
-                variant="icon-only"
-                icon="zoom-in"
-                :label="$t('pages.akordiSongView.fontUp.label')"
-                @click="actionClicked('fontUp')"
-              />
-              <LxButton
-                kind="ghost"
-                variant="icon-only"
-                icon="zoom-out"
-                :label="$t('pages.akordiSongView.fontDown.label')"
-                @click="actionClicked('fontDown')"
-              />
-              <div class="lx-divider"></div>
+              <template v-if="playable">
+                <LxButton
+                  kind="ghost"
+                  variant="icon-only"
+                  :icon="playAlong ? 'close' : 'play'"
+                  :active="playAlong"
+                  :label="playAlong ? $t('pages.playAlong.exit') : $t('pages.playAlong.toggle')"
+                  @click="togglePlayAlong"
+                />
+                <div class="lx-divider"></div>
+              </template>
+              <template v-if="!playAlong">
+                <label class="lx-data toolbar-label">{{
+                  $t('pages.akordiSongView.transposeHeader', {
+                    offset: offsetFormatted,
+                  })
+                }}</label>
+                <LxButton
+                  kind="ghost"
+                  variant="icon-only"
+                  icon="move-up"
+                  :label="$t('pages.akordiSongView.transposeUp.label')"
+                  @click="actionClicked('transposeUp')"
+                />
+                <LxButton
+                  kind="ghost"
+                  variant="icon-only"
+                  icon="move-down"
+                  :label="$t('pages.akordiSongView.transposeDown.label')"
+                  @click="actionClicked('transposeDown')"
+                />
+                <div class="lx-divider"></div>
+                <label class="lx-data toolbar-label">{{
+                  $t('pages.akordiSongView.fontUp.label')
+                }}</label>
+                <LxButton
+                  kind="ghost"
+                  variant="icon-only"
+                  icon="zoom-in"
+                  :label="$t('pages.akordiSongView.fontUp.label')"
+                  @click="actionClicked('fontUp')"
+                />
+                <LxButton
+                  kind="ghost"
+                  variant="icon-only"
+                  icon="zoom-out"
+                  :label="$t('pages.akordiSongView.fontDown.label')"
+                  @click="actionClicked('fontDown')"
+                />
+                <div class="lx-divider"></div>
 
-              <label class="lx-data toolbar-label">{{
-                $t('pages.akordiSongView.autoScroll.label', {
-                  speed: autoScrollerSpeedFormatted,
-                })
-              }}</label>
-              <LxButton
-                kind="ghost"
-                variant="icon-only"
-                :icon="pauseAutoScroll ? 'pause' : autoScrollerIcon"
-                :active="autoScrollerSpeed > 0"
-                :label="$t('pages.akordiSongView.autoScroll.playDescription')"
-                @click="autoScrollerUp"
-              />
-              <LxButton
-                kind="ghost"
-                variant="icon-only"
-                icon="stop"
-                :label="$t('pages.akordiSongView.autoScroll.stopDescription')"
-                @click="autoScrollerSpeed = 0"
-              />
+                <label class="lx-data toolbar-label">{{
+                  $t('pages.akordiSongView.autoScroll.label', {
+                    speed: autoScrollerSpeedFormatted,
+                  })
+                }}</label>
+                <LxButton
+                  kind="ghost"
+                  variant="icon-only"
+                  :icon="pauseAutoScroll ? 'pause' : autoScrollerIcon"
+                  :active="autoScrollerSpeed > 0"
+                  :label="$t('pages.akordiSongView.autoScroll.playDescription')"
+                  @click="autoScrollerUp"
+                />
+                <LxButton
+                  kind="ghost"
+                  variant="icon-only"
+                  icon="stop"
+                  :label="$t('pages.akordiSongView.autoScroll.stopDescription')"
+                  @click="autoScrollerSpeed = 0"
+                />
+              </template>
             </template>
           </LxToolbar>
         </LxToolbarGroup>
@@ -686,7 +723,10 @@ onUnmounted(() => {
           <p class="lx-data">{{ lxDateUtils.formatDateTime(item.updatedDate) }}</p>
         </LxRow>
       </template>
-      <LxSection v-show="hasAbc && settingsStore.showAbc" id="bodyAbc">
+      <LxSection v-if="playAlong" id="playAlong">
+        <ChordPlayer :video-url="videoUrl" :segments="segments" :duration="duration" />
+      </LxSection>
+      <LxSection v-show="!playAlong && hasAbc && settingsStore.showAbc" id="bodyAbc">
         <AbcViewer
           :abc="item.bodyAbc"
           @audio-unsupported="
@@ -694,7 +734,7 @@ onUnmounted(() => {
           "
         />
       </LxSection>
-      <LxSection v-show="hasChords && settingsStore.showChords" id="chords">
+      <LxSection v-show="!playAlong && hasChords && settingsStore.showChords" id="chords">
         <div style="display: flex; flex-wrap: wrap; align-items: flex-start">
           <ChordSvg
             :chord="chord"
@@ -704,7 +744,7 @@ onUnmounted(() => {
           ></ChordSvg>
         </div>
       </LxSection>
-      <LxSection id="body">
+      <LxSection v-show="!playAlong" id="body">
         <p class="pre" v-html="item.bodyWithMarkup" :style="{ fontSize: fontSize + 'em' }"></p>
       </LxSection>
     </LxForm>

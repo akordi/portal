@@ -209,6 +209,15 @@
             "title": "Enviar canción",
             "description": "Aquí puedes enviar una canción para que se añada al portal. La página está destinada únicamente a canciones españolas (el idioma de la canción no importa). Será revisada y añadida a la base de datos."
         },
+        "playAlong": {
+            "toggle": "Tocar junto",
+            "exit": "Volver a la letra",
+            "nowPlaying": "Suena ahora",
+            "nextChord": "Siguiente",
+            "changesIn": "en",
+            "songEnd": "Fin de la canción",
+            "seconds": "s"
+        },
         "akordiSongView": {
             "title": "Canciones de Akordi.es",
             "copy": {

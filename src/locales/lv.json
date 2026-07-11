@@ -209,6 +209,15 @@
             "title": "Iesniegt dziesmu",
             "description": "Šeit jūs varat iesniegt dziesmu, lai tā tiktu pievienota portālā. Lapa paredzēta tikai latviešu dziesmām (dziesmas valodai nav nozīmes). Tā tiks pārbaudīta un pievienota datu bāzei."
         },
+        "playAlong": {
+            "toggle": "Spēlēt līdzi",
+            "exit": "Atpakaļ uz tekstu",
+            "nowPlaying": "Tagad skan",
+            "nextChord": "Nākamais",
+            "changesIn": "pēc",
+            "songEnd": "Dziesmas beigas",
+            "seconds": "s"
+        },
         "akordiSongView": {
             "title": "Akordi.lv dziesmas",
             "copy": {
