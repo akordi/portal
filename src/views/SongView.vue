@@ -611,9 +611,11 @@ onUnmounted(() => {
           <LxToolbar :noBorders="true">
             <template #leftArea>
               <template v-if="playable">
+                <!-- Labeled (not icon-only) so this flagship action is not
+                     confused with the icon-only auto-scroll play button, which
+                     shares the 'play' glyph at rest. -->
                 <LxButton
-                  kind="ghost"
-                  variant="icon-only"
+                  :kind="playAlong ? 'ghost' : 'primary'"
                   :icon="playAlong ? 'close' : 'play'"
                   :active="playAlong"
                   :label="playAlong ? $t('pages.playAlong.exit') : $t('pages.playAlong.toggle')"
