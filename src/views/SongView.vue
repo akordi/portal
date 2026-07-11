@@ -609,6 +609,12 @@ onUnmounted(() => {
   justify-content: flex-start;
   margin-bottom: 0.75rem;
 }
+/* The play-along section is a CSS-grid item (LxForm), which defaults to
+   min-width:auto and would refuse to shrink below a wide child (the video).
+   Allow it to shrink to the grid track so nothing overflows on mobile. */
+#song-view-form-playAlong {
+  min-width: 0;
+}
 /* Chord diagrams below the player in play-along mode. */
 .play-along-chords {
   display: flex;
