@@ -1,23 +1,17 @@
 <script setup>
 /**
- * Plays a YouTube video and shows, at a glance, which chord to play now, how
- * much of it is left, and what comes next.
- *
- * Laying *every* chord of the whole song on one proportional track collapses a
- * real song's dozens of chords into an unreadable strip. Instead we now:
- *   - promote the current chord into a focal HUD with a depleting bar showing
- *     the time left before it changes, plus the upcoming chord + countdown;
- *   - render the chords within a fixed time span (VIEW_SPAN_SEC) on a track that
- *     scrolls continuously under a fixed playhead, so the current chord sits at
- *     the playhead, the upcoming progression is always visible ahead of it, and
- *     nothing jumps when the chord changes.
+ * Plays a YouTube video and shows which chord to play now and what comes next
+ * on a scrolling timeline: the chords within a fixed time span (VIEW_SPAN_SEC)
+ * are laid out proportionally on a track that scrolls continuously under a fixed
+ * playhead, so the current chord sits at the playhead, the upcoming progression
+ * is always visible ahead of it, and nothing jumps when the chord changes.
  * Custom markup (iframe + timeline) lives here in a component, per LX UI
  * conventions.
  */
 import { computed, onBeforeUnmount, ref, shallowRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { activeSegmentIndex, nextSegment, segmentProgress, youtubeId } from '@/utils/chordSync';
+import { activeSegmentIndex, youtubeId } from '@/utils/chordSync';
 
 const { t: $t } = useI18n();
 
@@ -44,43 +38,6 @@ let tick = null;
 
 const videoId = computed(() => youtubeId(props.videoUrl));
 const activeIndex = computed(() => activeSegmentIndex(props.segments, currentTime.value));
-const activeSeg = computed(() =>
-  activeIndex.value >= 0 ? props.segments[activeIndex.value] || null : null
-);
-const activeChord = computed(() => activeSeg.value?.label || '');
-const hasStarted = computed(() => activeIndex.value >= 0);
-const isLast = computed(() => activeIndex.value === props.segments.length - 1);
-
-// The chord coming up next. Before the first chord starts (nothing active yet)
-// we surface the opening chord so the very first change is still announced.
-const upcoming = computed(() => {
-  if (activeIndex.value < 0) {
-    return props.segments[0] || null;
-  }
-  return nextSegment(props.segments, activeIndex.value);
-});
-
-// Seconds until the upcoming chord begins (== time left on the current chord in
-// the normal case, since segments are contiguous).
-const timeToNext = computed(() => {
-  if (!upcoming.value) {
-    return 0;
-  }
-  return Math.max(0, upcoming.value.start - currentTime.value);
-});
-
-// Seconds left on the currently-playing chord, and the fraction already played
-// (drives the depleting HUD bar).
-const currentRemaining = computed(() =>
-  activeSeg.value ? Math.max(0, activeSeg.value.end - currentTime.value) : 0
-);
-const currentProgress = computed(() =>
-  segmentProgress(props.segments, activeIndex.value, currentTime.value)
-);
-// Bar fill = remaining time, so it visibly depletes as the change approaches.
-const remainingStyle = computed(() => ({
-  width: `${(1 - currentProgress.value) * 100}%`,
-}));
 
 // Start of the visible time viewport. Clamped at 0 so the intro doesn't scroll
 // in from empty space before playback; once past the lead-in the viewport
@@ -241,34 +198,6 @@ onBeforeUnmount(() => {
       <div ref="mount" class="chord-player-frame"></div>
     </div>
 
-    <!-- Heads-up display: current chord + time left, and what's next. -->
-    <div class="chord-player-hud">
-      <div class="chord-now" aria-live="polite">
-        <span class="chord-now-label">{{ $t('pages.playAlong.nowPlaying') }}</span>
-        <div class="chord-now-body">
-          <span class="chord-now-chord">{{ activeChord || '—' }}</span>
-          <span v-if="hasStarted" class="chord-now-remaining">{{ fmt(currentRemaining) }}</span>
-        </div>
-        <div class="chord-now-bar" :aria-hidden="true">
-          <div class="chord-now-bar-fill" :style="remainingStyle"></div>
-        </div>
-      </div>
-
-      <div class="chord-next">
-        <template v-if="upcoming && !isLast">
-          <span class="chord-next-label">{{ $t('pages.playAlong.nextChord') }}</span>
-          <span class="chord-next-chord">{{ upcoming.label }}</span>
-          <span class="chord-next-time"
-            >{{ $t('pages.playAlong.changesIn') }} {{ fmt(timeToNext) }}</span
-          >
-        </template>
-        <template v-else-if="isLast">
-          <span class="chord-next-label">{{ $t('pages.playAlong.nextChord') }}</span>
-          <span class="chord-next-end">{{ $t('pages.playAlong.songEnd') }}</span>
-        </template>
-      </div>
-    </div>
-
     <!-- Scrolling chord track: the chords overlapping the visible time span are
          laid out proportionally and scroll left under a fixed playhead as the
          song plays, so the current chord sits at the playhead and the upcoming
@@ -317,94 +246,6 @@ onBeforeUnmount(() => {
   height: 100%;
   border: 0;
   border-radius: 8px;
-}
-
-/* Heads-up display ------------------------------------------------------- */
-.chord-player-hud {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  gap: 0.75rem;
-  max-width: 100%;
-}
-.chord-now,
-.chord-next {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  padding: 0.75rem 1rem;
-  /* --color-region-2 is the subtle surface that reads on the white content
-     area; --color-chrome is a real border colour (unlike --color-input-border,
-     which is a 4-value underline shorthand). */
-  border: 1px solid var(--color-chrome, #e0e0e0);
-  border-radius: 8px;
-  background: var(--color-region-2, #eee);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-  box-sizing: border-box;
-}
-.chord-now {
-  flex: 2 1 14rem;
-  min-width: 0;
-}
-.chord-next {
-  flex: 1 1 9rem;
-  min-width: 0;
-  justify-content: center;
-}
-.chord-now-label,
-.chord-next-label {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-label, #757575);
-}
-.chord-now-body {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-}
-.chord-now-chord {
-  font-size: 2.75rem;
-  line-height: 1;
-  font-weight: 700;
-  font-family: monospace;
-  color: var(--color-brand, #18bc9c);
-}
-.chord-now-remaining {
-  font-size: 1rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--color-label, #757575);
-}
-.chord-now-bar {
-  width: 100%;
-  height: 6px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.14);
-  overflow: hidden;
-}
-.chord-now-bar-fill {
-  height: 100%;
-  border-radius: 999px;
-  background: var(--color-brand, #18bc9c);
-  transition: width 0.15s linear;
-}
-.chord-next-chord {
-  font-size: 1.75rem;
-  line-height: 1.1;
-  font-weight: 700;
-  font-family: monospace;
-  color: var(--color-data, #2b2b2b);
-}
-.chord-next-time {
-  font-size: 0.85rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--color-label, #757575);
-}
-.chord-next-end {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--color-label, #757575);
 }
 
 /* Windowed track --------------------------------------------------------- */
@@ -471,7 +312,6 @@ onBeforeUnmount(() => {
 
 @media (prefers-reduced-motion: reduce) {
   .chord-player-playhead,
-  .chord-now-bar-fill,
   .chord-block {
     transition: none;
   }
