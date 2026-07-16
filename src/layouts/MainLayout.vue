@@ -32,6 +32,9 @@ const secondsCheckApiInterval = 30;
 const { idle } = useIdle(secondsToIdle * 1000);
 
 const idleModalOpened = ref(false);
+// lx-ui 2.2.9 exposes the nav-bar collapsed/expanded state as a controlled
+// v-model; without binding it the menu toggle button does nothing.
+const navBarSwitch = ref(null);
 const translate = useI18n();
 const $t = translate.t;
 const route = useRoute();
@@ -377,6 +380,7 @@ function idleModalSecondary() {
         :confirmPrimaryButtonBusy="false"
         :confirmPrimaryButtonDestructive="true"
         v-model:notifications="notify.notifications"
+        v-model:navBarSwitch="navBarSwitch"
         @confirmModalClose="confirmModalClosed"
         @go-home="goHome"
         @go-back="goBack"
