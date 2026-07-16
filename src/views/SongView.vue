@@ -18,7 +18,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import AbcViewer from '@/components/AbcViewer.vue';
-import { pageview } from 'vue-gtag';
+import { event as gtagEvent, pageview } from 'vue-gtag';
 import ChordSvg from '@/components/ChordSvg.vue';
 import ChordPlayer from '@/components/ChordPlayer.vue';
 import { youtubeId } from '@/utils/chordSync';
@@ -69,6 +69,8 @@ const segments = computed(() => item.value.chordTimeline?.segments ?? []);
 const duration = computed(() => item.value.chordTimeline?.duration ?? 0);
 // A song is playable only with a resolvable video AND at least one chord segment.
 const playable = computed(() => !!youtubeId(videoUrl.value) && segments.value.length > 0);
+// ponytail: play-along hidden from frontend for now — flip to true to re-enable the entry CTA.
+const playAlongEnabled = false;
 const playAlong = ref(false);
 const fontSize = ref(1);
 const offsetFormatted = computed(() => {
@@ -125,6 +127,7 @@ const autoScrollerUp = () => {
     return;
   }
   autoScrollerSpeed.value += 1;
+  gtagEvent('autoscroll', { speed: autoScrollerSpeed.value, song: songUrlParam.value });
 };
 
 function artistLink(artist) {
@@ -266,6 +269,7 @@ watch(autoScrollerSpeed, (level) => {
 // features don't fight; the toolbar (and its scroll control) is hidden anyway.
 function togglePlayAlong() {
   playAlong.value = !playAlong.value;
+  gtagEvent('play_along', { active: playAlong.value, song: songUrlParam.value });
   if (playAlong.value) {
     autoScrollerSpeed.value = 0;
   }
@@ -429,6 +433,8 @@ function returnToAddToListModal() {
 
 async function actionClicked(action) {
   const actionName = typeof action === 'string' ? action : action?.id;
+  // Chokepoint for all song-page actions (transpose, hide chords, instrument switch, add-to-list).
+  gtagEvent('song_action', { action: actionName, song: songUrlParam.value });
 
   if (actionName === 'addToList') {
     if (!isAuthorized) {
@@ -743,7 +749,9 @@ onUnmounted(() => {
       <!-- Play-along entry — a prominent CTA at the top of the song content,
            kept out of the crowded footer toolbar. Shown only for playable
            songs when not already in play-along. -->
-      <LxSection v-if="playable && !playAlong" id="playAlongEnter">
+      <!-- ponytail: play-along hidden via playAlongEnabled flag; entry CTA is the only way to
+           set playAlong=true, so the whole feature is unreachable. Logic left intact. -->
+      <LxSection v-if="playAlongEnabled && playable && !playAlong" id="playAlongEnter">
         <div class="play-along-cta">
           <LxButton
             kind="primary"

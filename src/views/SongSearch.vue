@@ -10,6 +10,7 @@ import { useRoute, useRouter } from 'vue-router';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
 import axios from 'axios';
+import { event } from 'vue-gtag';
 
 const router = useRouter();
 const route = useRoute();
@@ -56,9 +57,12 @@ async function search(q, more = false) {
         skip: more ? items.value.length : 0,
       });
     }
+    // One event per completed server search (LxList debounces input). !more = a fresh query, not paging.
     if (resp.data.value.length === 0) {
+      if (!more) event('search_no_results', { search_term: q });
       return;
     }
+    if (!more) event('search', { search_term: q });
     totalCount.value = resp.data['@odata.count'];
     const results = resp.data.value.map((song) => ({
       ...song,
