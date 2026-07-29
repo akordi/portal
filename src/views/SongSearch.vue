@@ -1,7 +1,7 @@
 <script setup>
 import akordiService from '@/services/akordiService';
 import { LxContentSwitcher, LxList, LxLoader } from '@dativa-lv/lx-ui';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { listTexts } from '@/utils/texts';
 
@@ -24,6 +24,20 @@ const pageSize = 10;
 const searchString = ref('');
 const totalCount = ref(0);
 
+// Only report search_no_results once the user has settled on a query. LxList
+// debounces keystrokes into search calls, but a brief pause mid-typing still
+// completes a search, so partial terms (e.g. "Cir", "Circ", "Circen") were all
+// logged as no-result searches. Defer the event and cancel it if another search
+// starts first, so only the query the user actually stopped on is reported.
+const NO_RESULTS_EVENT_DELAY = 2000;
+let noResultsTimer = null;
+function cancelNoResultsEvent() {
+  if (noResultsTimer) {
+    clearTimeout(noResultsTimer);
+    noResultsTimer = null;
+  }
+}
+
 function titleOrHighlight(song) {
   return song['@search.highlights'].title?.length
     ? song['@search.highlights'].title[0]
@@ -40,6 +54,9 @@ async function search(q, more = false) {
   searchString.value = q;
   if (!more) {
     totalCount.value = 0;
+    // A fresh query means the user kept typing/searching, so drop any
+    // no-results event still pending from the previous term.
+    cancelNoResultsEvent();
   }
   if (!q) {
     items.value = [];
@@ -59,7 +76,13 @@ async function search(q, more = false) {
     }
     // One event per completed server search (LxList debounces input). !more = a fresh query, not paging.
     if (resp.data.value.length === 0) {
-      if (!more) event('search_no_results', { search_term: q });
+      if (!more) {
+        // Defer so a term the user is still typing past doesn't get logged.
+        noResultsTimer = setTimeout(() => {
+          event('search_no_results', { search_term: q });
+          noResultsTimer = null;
+        }, NO_RESULTS_EVENT_DELAY);
+      }
       return;
     }
     if (!more) event('search', { search_term: q });
@@ -128,6 +151,10 @@ onMounted(async () => {
     search(route.query.q);
   }
   viewStore.goBack = true;
+});
+onUnmounted(() => {
+  // Don't fire for a query the user abandoned by navigating away.
+  cancelNoResultsEvent();
 });
 </script>
 <style>
