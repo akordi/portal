@@ -279,6 +279,20 @@ const loadSong = async () => {
   try {
     playAlong.value = false;
     const songId = akordiService.parseUrl(songUrlParam.value);
+
+    // Fire the landing page_view from the route itself, before the song API
+    // call, not after it. Song routes are excluded from vue-gtag's automatic
+    // router pageTracker (so the real song title can be sent instead of a
+    // generic one), but that meant this was the only page_view for the
+    // highest-traffic entry point (SEO song landings) — and it was gated
+    // behind a full network round trip. A visitor who bounces before that
+    // response arrives left with no page_view at all, showing up in GA as a
+    // "(not set)" landing page with ~0% engagement instead of a real bounce
+    // on this song's URL.
+    const pagePath = `/song/${songUrlParam.value}`;
+    const canonicalUrl = `${window.location.origin}${pagePath}`;
+    pageview({ page_path: pagePath, page_location: canonicalUrl });
+
     const resp = await akordiService.getSong(songId);
     item.value = resp.data;
     item.value.createdAt = lxDateUtils.formatDate(item.value.createdDate);
@@ -293,8 +307,6 @@ const loadSong = async () => {
     }
     applyTranspose(transposeOffset);
 
-    const pagePath = `/song/${songUrlParam.value}`;
-    const canonicalUrl = `${window.location.origin}${pagePath}`;
     const pageTitle = `${item.value.mainArtist.title} - ${item.value.title}`;
     if (pagePath !== item.value.url) {
       const songUrl = item.value.url.replace(/^\/song\//, '');
@@ -303,8 +315,6 @@ const loadSong = async () => {
         params: { url: songUrl },
       });
     }
-
-    pageview({ page_path: pagePath, page_location: canonicalUrl, page_title: pageTitle });
 
     const metaDescription = item.value.bodyLyrics?.slice(0, 150) || '';
 

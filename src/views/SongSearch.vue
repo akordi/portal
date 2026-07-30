@@ -24,18 +24,29 @@ const pageSize = 10;
 const searchString = ref('');
 const totalCount = ref(0);
 
-// Only report search_no_results once the user has settled on a query. LxList
-// debounces keystrokes into search calls, but a brief pause mid-typing still
-// completes a search, so partial terms (e.g. "Cir", "Circ", "Circen") were all
-// logged as no-result searches. Defer the event and cancel it if another search
-// starts first, so only the query the user actually stopped on is reported.
-const NO_RESULTS_EVENT_DELAY = 2000;
-let noResultsTimer = null;
-function cancelNoResultsEvent() {
-  if (noResultsTimer) {
-    clearTimeout(noResultsTimer);
-    noResultsTimer = null;
+// Only report a search/search_no_results event once the user has settled on a
+// query. LxList's debounce (useSearchDebounce in Toolbar.vue) only applies to
+// searchSide="client" — for searchSide="server" (this list), @update:search-string
+// fires on every keystroke, so every partial term (e.g. "Cir", "Circ", "Circen")
+// was logged as its own event, whether or not it happened to have results. Defer
+// the event and cancel it if another search starts first, so only the query the
+// user actually stopped on is reported. This does not debounce the underlying
+// search API call itself — that still fires per keystroke and relies on
+// akordiService's abort-previous-request behaviour, which is fine for the UI but
+// deliberately not what GA sees here.
+const SEARCH_EVENT_SETTLE_DELAY = 2000;
+let searchEventTimer = null;
+function cancelPendingSearchEvent() {
+  if (searchEventTimer) {
+    clearTimeout(searchEventTimer);
+    searchEventTimer = null;
   }
+}
+function reportSearchEvent(name, term) {
+  searchEventTimer = setTimeout(() => {
+    event(name, { search_term: term });
+    searchEventTimer = null;
+  }, SEARCH_EVENT_SETTLE_DELAY);
 }
 
 function titleOrHighlight(song) {
@@ -55,8 +66,8 @@ async function search(q, more = false) {
   if (!more) {
     totalCount.value = 0;
     // A fresh query means the user kept typing/searching, so drop any
-    // no-results event still pending from the previous term.
-    cancelNoResultsEvent();
+    // event still pending from the previous term.
+    cancelPendingSearchEvent();
   }
   if (!q) {
     items.value = [];
@@ -74,18 +85,13 @@ async function search(q, more = false) {
         skip: more ? items.value.length : 0,
       });
     }
-    // One event per completed server search (LxList debounces input). !more = a fresh query, not paging.
+    // !more = a fresh query, not a "load more" page; only fresh queries are
+    // reported, and only after SEARCH_EVENT_SETTLE_DELAY of no follow-up query.
     if (resp.data.value.length === 0) {
-      if (!more) {
-        // Defer so a term the user is still typing past doesn't get logged.
-        noResultsTimer = setTimeout(() => {
-          event('search_no_results', { search_term: q });
-          noResultsTimer = null;
-        }, NO_RESULTS_EVENT_DELAY);
-      }
+      if (!more) reportSearchEvent('search_no_results', q);
       return;
     }
-    if (!more) event('search', { search_term: q });
+    if (!more) reportSearchEvent('search', q);
     totalCount.value = resp.data['@odata.count'];
     const results = resp.data.value.map((song) => ({
       ...song,
@@ -154,7 +160,7 @@ onMounted(async () => {
 });
 onUnmounted(() => {
   // Don't fire for a query the user abandoned by navigating away.
-  cancelNoResultsEvent();
+  cancelPendingSearchEvent();
 });
 </script>
 <style>

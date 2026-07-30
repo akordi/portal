@@ -53,7 +53,27 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-describe('SongSearch — search_no_results reporting', () => {
+describe('SongSearch — search / search_no_results reporting', () => {
+  it('reports only the term the user settles on for a successful search, not the prefixes typed through', async () => {
+    search.mockResolvedValue(withResults());
+    const wrapper = mount(SongSearch);
+
+    // Every one of these keystrokes independently returns results (the API
+    // has no debounce), so pre-fix each one fired its own "search" event.
+    await type(wrapper, 'D');
+    await type(wrapper, 'Da');
+    await type(wrapper, 'Dak');
+    await type(wrapper, 'Dakota');
+
+    expect(gtagEvent).not.toHaveBeenCalled();
+
+    await vi.advanceTimersByTimeAsync(2000);
+
+    const searchCalls = gtagEvent.mock.calls.filter((c) => c[0] === 'search');
+    expect(searchCalls).toHaveLength(1);
+    expect(searchCalls[0][1]).toEqual({ search_term: 'Dakota' });
+  });
+
   it('reports only the term the user settles on, not the prefixes typed through', async () => {
     search.mockResolvedValue(noResults());
     const wrapper = mount(SongSearch);
