@@ -656,11 +656,11 @@ onUnmounted(() => {
         <LxToolbarGroup id="songToolbarGroup">
           <LxToolbar :noBorders="true">
             <template #leftArea>
-              <label class="lx-data toolbar-label">{{
+              <span class="lx-data toolbar-label">{{
                 $t('pages.akordiSongView.transposeHeader', {
                   offset: offsetFormatted,
                 })
-              }}</label>
+              }}</span>
               <LxButton
                 kind="ghost"
                 variant="icon-only"
@@ -676,9 +676,9 @@ onUnmounted(() => {
                 @click="actionClicked('transposeDown')"
               />
               <div class="lx-divider"></div>
-              <label class="lx-data toolbar-label">{{
+              <span class="lx-data toolbar-label">{{
                 $t('pages.akordiSongView.fontUp.label')
-              }}</label>
+              }}</span>
               <LxButton
                 kind="ghost"
                 variant="icon-only"
@@ -695,11 +695,11 @@ onUnmounted(() => {
               />
               <div class="lx-divider"></div>
 
-              <label class="lx-data toolbar-label">{{
+              <span class="lx-data toolbar-label">{{
                 $t('pages.akordiSongView.autoScroll.label', {
                   speed: autoScrollerSpeedFormatted,
                 })
-              }}</label>
+              }}</span>
               <LxButton
                 kind="ghost"
                 variant="icon-only"
