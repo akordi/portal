@@ -23,14 +23,12 @@ const withI18nMessage = validations.createI18nMessage({ t: $t });
 const required = withI18nMessage(validations.required);
 const isUrl = withI18nMessage(validations.url);
 
+// artist/title are never shown to the submitter — only the YouTube URL is
+// user input. They're inherited entirely from the video's own title (see
+// guessArtistTitle) and carried along only to send with the submission.
 const item = ref({ youtubeUrl: '', artist: '', title: '' });
-// Artist/title are optional user input — best-effort inherited from the
-// YouTube video's own title (see guessArtistTitle) when left blank, rather
-// than forcing the submitter to type them.
 const rules = {
   youtubeUrl: { required, url: isUrl },
-  artist: {},
-  title: {},
 };
 const v = useVuelidate(rules, item);
 
@@ -309,7 +307,11 @@ onUnmounted(() => {
       :show-header="false"
       required-mode="required-asterisk"
     >
-      <LxRow :label="$t('pages.chordGenerator.form.youtubeUrl')" :required="true">
+      <LxRow
+        :label="$t('pages.chordGenerator.form.youtubeUrl')"
+        :description="$t('pages.chordGenerator.form.youtubeUrlHint')"
+        :required="true"
+      >
         <LxTextInput
           id="chordGenYoutubeUrlInput"
           v-model="item.youtubeUrl"
@@ -318,19 +320,9 @@ onUnmounted(() => {
           @blur="onYoutubeUrlBlur"
         />
       </LxRow>
-      <LxRow
-        :label="$t('pages.chordGenerator.form.artist')"
-        :description="$t('pages.chordGenerator.form.artistHint')"
-      >
-        <LxTextInput id="chordGenArtistInput" v-model="item.artist" />
-      </LxRow>
-      <LxRow
-        :label="$t('pages.chordGenerator.form.title')"
-        :description="$t('pages.chordGenerator.form.titleHint')"
-      >
-        <LxTextInput id="chordGenTitleInput" v-model="item.title" />
-      </LxRow>
     </LxForm>
-    <p class="lx-description" v-if="submittingMessage">{{ submittingMessage }}</p>
+    <LxRow v-if="submittingMessage">
+      <LxInfoBox :label="submittingMessage" variant="info" />
+    </LxRow>
   </template>
 </template>

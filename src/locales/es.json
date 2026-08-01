@@ -228,10 +228,7 @@
             "submitTitle": "Generar acordes",
             "form": {
                 "youtubeUrl": "Enlace de YouTube",
-                "artist": "Artista",
-                "artistHint": "Si lo dejas en blanco, intentaremos detectarlo a partir del título del vídeo.",
-                "title": "Título de la canción",
-                "titleHint": "Si lo dejas en blanco, usaremos el título del vídeo.",
+                "youtubeUrlHint": "Detectaremos el título y el artista automáticamente a partir del vídeo.",
                 "submit": "Generar"
             },
             "loginRequired": {

@@ -228,10 +228,7 @@
             "submitTitle": "Ģenerēt akordus",
             "form": {
                 "youtubeUrl": "YouTube saite",
-                "artist": "Izpildītājs",
-                "artistHint": "Ja atstāsi tukšu, mēģināsim to noteikt no video nosaukuma.",
-                "title": "Dziesmas nosaukums",
-                "titleHint": "Ja atstāsi tukšu, izmantosim video nosaukumu.",
+                "youtubeUrlHint": "Nosaukumu un izpildītāju noteiksim automātiski no video.",
                 "submit": "Ģenerēt"
             },
             "loginRequired": {

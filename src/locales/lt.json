@@ -228,10 +228,7 @@
             "submitTitle": "Generuoti akordus",
             "form": {
                 "youtubeUrl": "YouTube nuoroda",
-                "artist": "Atlikėjas",
-                "artistHint": "Jei paliksite tuščią, pabandysime nustatyti iš vaizdo įrašo pavadinimo.",
-                "title": "Dainos pavadinimas",
-                "titleHint": "Jei paliksite tuščią, naudosime vaizdo įrašo pavadinimą.",
+                "youtubeUrlHint": "Pavadinimą ir atlikėją nustatysime automatiškai iš vaizdo įrašo.",
                 "submit": "Generuoti"
             },
             "loginRequired": {
