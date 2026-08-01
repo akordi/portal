@@ -217,7 +217,48 @@
             "nextChord": "Järgmine",
             "changesIn": "pärast",
             "songEnd": "Laulu lõpp",
-            "seconds": "s"
+            "seconds": "s",
+            "generateOwn": "Sellel laulul pole akordide ajaskaalat? Proovi seda ise genereerida."
+        },
+        "chordGenerator": {
+            "title": "Akordigeneraator",
+            "description": "Lisa YouTube link ja tehisintellekt loob akordide ajaskaala, millega saad kaasa mängida.",
+            "empty": "Ühtegi genereeritud akordikirjet veel ei ole.",
+            "add": "Genereeri uus",
+            "submitTitle": "Genereeri akordid",
+            "form": {
+                "youtubeUrl": "YouTube link",
+                "artist": "Esitaja",
+                "title": "Laulu pealkiri",
+                "submit": "Genereeri"
+            },
+            "loginRequired": {
+                "title": "Sisselogimine on vajalik",
+                "message": "Uue laulu genereerimiseks esitamiseks pead esmalt sisse logima.",
+                "action": "Logi sisse"
+            },
+            "queue": {
+                "depth": "Järjekorras: {pending}, töötlemisel: {running}",
+                "eta": "Eeldatav ooteaeg: {eta}",
+                "none": "Järjekord on hetkel tühi"
+            },
+            "status": {
+                "pending": "Ootab järjekorras...",
+                "running": "Akordide genereerimine käib...",
+                "exists": "See laul on juba saadaval",
+                "rateLimited": "Esituste limiit on täis. Palun proovi hiljem uuesti.",
+                "error": "Akordide loomine ebaõnnestus"
+            },
+            "errors": {
+                "invalidUrl": "Sisesta kehtiv YouTube link",
+                "submitFailed": "Laulu esitamine ebaõnnestus",
+                "loadFailed": "Andmete laadimine ebaõnnestus"
+            },
+            "rating": {
+                "yours": "Sinu hinnang",
+                "average": "Keskmine hinnang",
+                "none": "Hinnanguid veel pole"
+            }
         },
         "akordiSongView": {
             "title": "Akordid.ee laulud",

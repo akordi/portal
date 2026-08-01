@@ -217,7 +217,48 @@
             "nextChord": "Nākamais",
             "changesIn": "pēc",
             "songEnd": "Dziesmas beigas",
-            "seconds": "s"
+            "seconds": "s",
+            "generateOwn": "Nav akordu laika skalas šai dziesmai? Izmēģini ģenerēt to pats."
+        },
+        "chordGenerator": {
+            "title": "Akordu ģenerators",
+            "description": "Ievieto YouTube saiti un mākslīgais intelekts izveidos akordu laika skalu, kurai vari spēlēt līdzi.",
+            "empty": "Vēl nav neviena ģenerēta akordu ieraksta.",
+            "add": "Ģenerēt jaunu",
+            "submitTitle": "Ģenerēt akordus",
+            "form": {
+                "youtubeUrl": "YouTube saite",
+                "artist": "Izpildītājs",
+                "title": "Dziesmas nosaukums",
+                "submit": "Ģenerēt"
+            },
+            "loginRequired": {
+                "title": "Nepieciešama pieslēgšanās",
+                "message": "Lai iesniegtu jaunu dziesmu ģenerēšanai, vispirms jāpieslēdzas.",
+                "action": "Pieslēgties"
+            },
+            "queue": {
+                "depth": "Rindā: {pending}, apstrādē: {running}",
+                "eta": "Aptuvenais gaidīšanas laiks: {eta}",
+                "none": "Rinda pašlaik ir tukša"
+            },
+            "status": {
+                "pending": "Rindā gaida apstrādi...",
+                "running": "Tiek ģenerēti akordi...",
+                "exists": "Šī dziesma jau ir pieejama",
+                "rateLimited": "Sasniegts iesniegumu limits. Lūdzu, mēģini vēlāk.",
+                "error": "Neizdevās izveidot akordus"
+            },
+            "errors": {
+                "invalidUrl": "Norādi derīgu YouTube saiti",
+                "submitFailed": "Neizdevās iesniegt dziesmu",
+                "loadFailed": "Neizdevās ielādēt datus"
+            },
+            "rating": {
+                "yours": "Tavs vērtējums",
+                "average": "Vidējais vērtējums",
+                "none": "Vēl nav vērtējumu"
+            }
         },
         "akordiSongView": {
             "title": "Akordi.lv dziesmas",
