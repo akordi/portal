@@ -1,5 +1,5 @@
 <script setup>
-import { LxButton, LxForm, LxInfoBox, LxRow, LxTextInput } from '@dativa-lv/lx-ui';
+import { LxButton, LxForm, LxInfoBox, LxLoader, LxRow, LxTextInput } from '@dativa-lv/lx-ui';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -80,20 +80,33 @@ const queueMessage = computed(() => {
   return `${depth} · ${$t('pages.chordGenerator.queue.eta', { eta: wait })}`;
 });
 
-const submittingMessage = computed(() => {
-  if (!jobStatus.value) {
-    return '';
-  }
-  if (jobStatus.value.status === 'running') {
+// Live progress panel shown instead of the queue snapshot while a job is in
+// flight — label is the job state, description carries queue position + ETA.
+const progressLabel = computed(() => {
+  if (jobStatus.value?.status === 'running') {
     return $t('pages.chordGenerator.status.running');
   }
-  if (jobStatus.value.status === 'pending') {
-    if (jobStatus.value.queueAhead != null) {
-      return `${$t('pages.chordGenerator.status.pending')} (${jobStatus.value.queueAhead})`;
-    }
-    return $t('pages.chordGenerator.status.pending');
+  return $t('pages.chordGenerator.status.pending');
+});
+
+const progressDescription = computed(() => {
+  if (jobStatus.value?.status !== 'pending') {
+    return '';
   }
-  return '';
+  const parts = [];
+  const ahead = jobStatus.value.queueAhead;
+  if (ahead != null) {
+    parts.push($t('pages.chordGenerator.status.position', { count: ahead }));
+  }
+  // Prefer an ETA scoped to this job's queue position; fall back to the
+  // whole-queue estimate when the position is unknown.
+  const avg = queue.value?.avgProcessingSeconds;
+  const wait = ahead != null && avg ? (ahead + 1) * avg : queue.value?.estimatedWaitSeconds;
+  const eta = formatWait(wait);
+  if (eta) {
+    parts.push($t('pages.chordGenerator.queue.eta', { eta }));
+  }
+  return parts.join(' · ');
 });
 
 async function loadQueue() {
@@ -184,6 +197,10 @@ async function pollJob(jobId) {
     notificationStore.pushError($t('pages.chordGenerator.status.error'));
     return;
   }
+  // Keep the queue snapshot live too — it feeds the ETA in the progress panel
+  // and goes back to being the visible banner once the job finishes. Fire and
+  // forget: loadQueue swallows its own failures.
+  loadQueue();
   try {
     const resp = await chordgenSongService.getMyJob(jobId);
     const { data } = resp;
@@ -304,7 +321,13 @@ onUnmounted(() => {
     </LxRow>
   </template>
   <template v-else>
-    <LxRow v-if="queueMessage">
+    <!-- One merged status panel: a live progress view while a job is in
+         flight, otherwise the current queue snapshot. Never both, and the
+         snapshot is refreshed on every poll so it can't go stale. -->
+    <LxRow v-if="jobStatus">
+      <LxLoader loading variant="bar" :label="progressLabel" :description="progressDescription" />
+    </LxRow>
+    <LxRow v-else-if="queueMessage">
       <LxInfoBox :label="queueMessage" variant="info" />
     </LxRow>
     <LxForm
@@ -327,8 +350,5 @@ onUnmounted(() => {
         />
       </LxRow>
     </LxForm>
-    <LxRow v-if="submittingMessage">
-      <LxInfoBox :label="submittingMessage" variant="info" />
-    </LxRow>
   </template>
 </template>

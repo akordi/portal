@@ -243,6 +243,7 @@
             },
             "status": {
                 "pending": "Esperando en la cola...",
+                "position": "Por delante en la cola: {count}",
                 "running": "Generando los acordes...",
                 "exists": "Esta canción ya está disponible",
                 "rateLimited": "Se alcanzó el límite de envíos. Inténtalo más tarde.",

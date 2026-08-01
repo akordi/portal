@@ -243,6 +243,7 @@
             },
             "status": {
                 "pending": "Laukiama eilėje...",
+                "position": "Prieš tave eilėje: {count}",
                 "running": "Generuojami akordai...",
                 "exists": "Ši daina jau yra pridėta",
                 "rateLimited": "Pasiektas pateikimų limitas. Bandyk vėliau.",

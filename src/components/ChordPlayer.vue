@@ -10,7 +10,9 @@
  */
 import { computed, onBeforeUnmount, ref, shallowRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { LxContentSwitcher } from '@dativa-lv/lx-ui';
 
+import ChordSvg from '@/components/ChordSvg.vue';
 import { activeSegmentIndex, youtubeId } from '@/utils/chordSync';
 
 const { t: $t } = useI18n();
@@ -19,7 +21,14 @@ const props = defineProps({
   videoUrl: { type: String, default: '' },
   segments: { type: Array, default: () => [] },
   duration: { type: Number, default: 0 },
+  // Opt-in side panel with fingering diagrams for every chord in the song,
+  // highlighting the one under the playhead. Off by default so existing
+  // usages (SongView play-along renders its own diagram grid) are unchanged.
+  showDiagrams: { type: Boolean, default: false },
+  instrument: { type: String, default: 'guitar' },
 });
+
+const emit = defineEmits(['update:instrument']);
 
 // Fixed-playhead scroller. The playhead stays put and the chord strip scrolls
 // continuously under it based on playback time, so nothing jumps when the chord
@@ -38,6 +47,28 @@ let tick = null;
 
 const videoId = computed(() => youtubeId(props.videoUrl));
 const activeIndex = computed(() => activeSegmentIndex(props.segments, currentTime.value));
+
+// Diagram panel data: every distinct chord of the song, in order of first
+// appearance, plus the label of the chord currently under the playhead.
+const uniqueChords = computed(() => {
+  const seen = new Set();
+  const out = [];
+  props.segments.forEach((seg) => {
+    if (seg.label && !seen.has(seg.label)) {
+      seen.add(seg.label);
+      out.push(seg.label);
+    }
+  });
+  return out;
+});
+
+const activeChord = computed(() => props.segments[activeIndex.value]?.label ?? null);
+
+const instrumentOptions = computed(() => [
+  { id: 'guitar', name: $t('pages.chordsLibrary.showGuitarChords.label') },
+  { id: 'ukulele', name: $t('pages.chordsLibrary.showUkuleleChords.label') },
+  { id: 'baritone-ukulele', name: $t('pages.chordsLibrary.showBaritoneUkuleleChords.label') },
+]);
 
 // Start of the visible time viewport. Clamped at 0 so the intro doesn't scroll
 // in from empty space before playback; once past the lead-in the viewport
@@ -193,37 +224,65 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="chord-player">
-    <div class="chord-player-stage">
-      <div ref="mount" class="chord-player-frame"></div>
+  <div class="chord-player" :class="{ 'has-diagrams': showDiagrams && uniqueChords.length }">
+    <div class="chord-player-main">
+      <div class="chord-player-stage">
+        <div ref="mount" class="chord-player-frame"></div>
+      </div>
+
+      <!-- Scrolling chord track: the chords overlapping the visible time span are
+           laid out proportionally and scroll left under a fixed playhead as the
+           song plays, so the current chord sits at the playhead and the upcoming
+           progression is always visible ahead of it. -->
+      <div class="chord-player-track">
+        <!-- Rendered as role=button divs (not <button>) so the global LX UI
+             button sizing doesn't clamp the proportional width to a min square.
+             The visible text is the label only, so the accessible name matches
+             the chord exactly. -->
+        <div
+          v-for="item in visibleSegments"
+          :key="item.index"
+          class="chord-block"
+          role="button"
+          tabindex="0"
+          :class="{ 'is-active': item.index === activeIndex, 'is-past': item.index < activeIndex }"
+          :style="blockStyle(item.seg)"
+          :title="`${item.seg.label} · ${fmt(item.seg.end - item.seg.start)}`"
+          @click="seek(item.seg)"
+          @keydown.enter.prevent="seek(item.seg)"
+          @keydown.space.prevent="seek(item.seg)"
+        >
+          <span class="chord-block-label">{{ item.seg.label }}</span>
+        </div>
+        <div class="chord-player-playhead" :style="playheadStyle"></div>
+      </div>
     </div>
 
-    <!-- Scrolling chord track: the chords overlapping the visible time span are
-         laid out proportionally and scroll left under a fixed playhead as the
-         song plays, so the current chord sits at the playhead and the upcoming
-         progression is always visible ahead of it. -->
-    <div class="chord-player-track">
-      <!-- Rendered as role=button divs (not <button>) so the global LX UI
-           button sizing doesn't clamp the proportional width to a min square.
-           The visible text is the label only, so the accessible name matches
-           the chord exactly. -->
-      <div
-        v-for="item in visibleSegments"
-        :key="item.index"
-        class="chord-block"
-        role="button"
-        tabindex="0"
-        :class="{ 'is-active': item.index === activeIndex, 'is-past': item.index < activeIndex }"
-        :style="blockStyle(item.seg)"
-        :title="`${item.seg.label} · ${fmt(item.seg.end - item.seg.start)}`"
-        @click="seek(item.seg)"
-        @keydown.enter.prevent="seek(item.seg)"
-        @keydown.space.prevent="seek(item.seg)"
-      >
-        <span class="chord-block-label">{{ item.seg.label }}</span>
+    <!-- Fingering panel: one diagram per distinct chord in the song; the chord
+         under the playhead is highlighted in sync with the timeline. Sits to
+         the right of the video on wide screens, below it on narrow ones. -->
+    <aside
+      v-if="showDiagrams && uniqueChords.length"
+      class="chord-player-diagrams"
+      :aria-label="$t('pages.chordsLibrary.instrument')"
+    >
+      <LxContentSwitcher
+        id="chordPlayerInstrumentSwitcher"
+        :items="instrumentOptions"
+        :model-value="instrument"
+        @update:model-value="(value) => emit('update:instrument', value)"
+      />
+      <div class="chord-diagram-grid">
+        <div
+          v-for="chord in uniqueChords"
+          :key="chord"
+          class="chord-diagram"
+          :class="{ 'is-active': chord === activeChord }"
+        >
+          <ChordSvg :chord="chord" :instrument="instrument" />
+        </div>
       </div>
-      <div class="chord-player-playhead" :style="playheadStyle"></div>
-    </div>
+    </aside>
   </div>
 </template>
 
@@ -233,6 +292,48 @@ onBeforeUnmount(() => {
   flex-direction: column;
   gap: 1rem;
   max-width: 100%;
+}
+.chord-player-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+/* Diagram side panel ------------------------------------------------------ */
+.chord-player-diagrams {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+.chord-diagram-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 0.25rem;
+}
+.chord-diagram {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.chord-diagram.is-active {
+  border-color: var(--color-brand, #18bc9c);
+  background: var(--color-region-2, #eee);
+}
+
+/* Side-by-side once there is room for the video and a diagram column. */
+@media (min-width: 64rem) {
+  .chord-player.has-diagrams {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  .chord-player.has-diagrams .chord-player-diagrams {
+    flex: 0 0 18rem;
+  }
 }
 .chord-player-stage {
   position: relative;

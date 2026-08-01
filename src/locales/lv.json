@@ -243,6 +243,7 @@
             },
             "status": {
                 "pending": "Rindā gaida apstrādi...",
+                "position": "Priekšā rindā: {count}",
                 "running": "Tiek ģenerēti akordi...",
                 "exists": "Šī dziesma jau ir pieejama",
                 "rateLimited": "Sasniegts iesniegumu limits. Lūdzu, mēģini vēlāk.",

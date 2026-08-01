@@ -243,6 +243,7 @@
             },
             "status": {
                 "pending": "Ootab järjekorras...",
+                "position": "Sinu ees järjekorras: {count}",
                 "running": "Akordide genereerimine käib...",
                 "exists": "See laul on juba saadaval",
                 "rateLimited": "Esituste limiit on täis. Palun proovi hiljem uuesti.",
