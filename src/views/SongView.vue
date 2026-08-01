@@ -70,15 +70,6 @@ const duration = computed(() => item.value.chordTimeline?.duration ?? 0);
 // A song is playable only with a resolvable video AND at least one chord segment.
 const playable = computed(() => !!youtubeId(videoUrl.value) && segments.value.length > 0);
 const playAlongEnabled = true;
-// Prefills the self-service chord generator with what we already know about
-// this song, for the "generate your own" entry point shown when it's not playable.
-const generateOwnQuery = computed(() => {
-  const q = {};
-  if (item.value.youtubeLink) q.youtubeUrl = videoUrl.value;
-  if (item.value.mainArtist?.title) q.artist = item.value.mainArtist.title;
-  if (item.value.title) q.title = item.value.title;
-  return q;
-});
 const playAlong = ref(false);
 const fontSize = ref(1);
 const offsetFormatted = computed(() => {
@@ -777,16 +768,6 @@ onUnmounted(() => {
           />
           <p class="lx-description play-along-cta-hint">{{ $t('pages.playAlong.hint') }}</p>
         </div>
-      </LxSection>
-      <!-- Not playable (no video/timeline yet) — point people at the self-service
-           chord generator instead, prefilled with what we already know. -->
-      <LxSection v-if="playAlongEnabled && !playable" id="playAlongGenerateOwn">
-        <router-link
-          class="lx-secondary play-along-generate-own"
-          :to="{ name: 'chordGeneratorSubmit', query: generateOwnQuery }"
-        >
-          {{ $t('pages.playAlong.generateOwn') }}
-        </router-link>
       </LxSection>
       <LxSection v-if="playAlong" id="playAlong">
         <div class="play-along-exit">
