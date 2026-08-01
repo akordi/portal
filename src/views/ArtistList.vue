@@ -95,7 +95,7 @@ function actionClicked(action, id) {
 
 function loadMore() {
   page.value += 1;
-  loadArtists(page.value);
+  loadArtists();
 }
 function changeLetter(id) {
   letterParam.value = id;

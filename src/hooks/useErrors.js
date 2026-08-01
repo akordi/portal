@@ -6,9 +6,9 @@ import { onMounted } from 'vue';
 import useNotifyStore from '@/stores/useNotifyStore';
 
 const validatorMsgRegex =
-  /(Key: '(\S+)\.(\S+)'\s+)?Error:.*(for '(?<field>\S+)').*('(?<tag>\S+)' tag)/;
+  /(Key: '([^'.]+)\.([^']+)'\s+)?Error:[^']*for '(?<field>[^']+)'[^']*'(?<tag>[^']+)' tag/;
 
-const errMsgRegex = /\[(?<code>.*)\]\s*(?<message>.*)/;
+const errMsgRegex = /\[(?<code>[^\]]*)\]\s*(?<message>[\s\S]*)/;
 
 const validationMsg = {
   max: 'validation.max',

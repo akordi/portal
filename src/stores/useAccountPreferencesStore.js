@@ -8,6 +8,16 @@ const defaultPreferences = {
   instrument: 'guitar',
 };
 
+async function getSongPreferences(songId) {
+  const resp = await preferenceService.getSongPreferences(songId);
+  return resp.data;
+}
+
+async function saveSongTransposeOffset(songId, transposeOffset) {
+  const resp = await preferenceService.saveSongPreferences(songId, { transposeOffset });
+  return resp.data;
+}
+
 export default defineStore('accountPreferencesStore', () => {
   const preferences = ref({ ...defaultPreferences });
   const loading = ref(false);
@@ -39,16 +49,6 @@ export default defineStore('accountPreferencesStore', () => {
     };
     loaded.value = true;
     return preferences.value;
-  }
-
-  async function getSongPreferences(songId) {
-    const resp = await preferenceService.getSongPreferences(songId);
-    return resp.data;
-  }
-
-  async function saveSongTransposeOffset(songId, transposeOffset) {
-    const resp = await preferenceService.saveSongPreferences(songId, { transposeOffset });
-    return resp.data;
   }
 
   function $reset() {
