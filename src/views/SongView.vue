@@ -782,7 +782,7 @@ onUnmounted(() => {
            chord generator instead, prefilled with what we already know. -->
       <LxSection v-if="playAlongEnabled && !playable" id="playAlongGenerateOwn">
         <router-link
-          class="lx-secondary"
+          class="lx-secondary play-along-generate-own"
           :to="{ name: 'chordGeneratorSubmit', query: generateOwnQuery }"
         >
           {{ $t('pages.playAlong.generateOwn') }}
