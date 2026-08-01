@@ -99,8 +99,12 @@ const loadCopyFrom = async () => {
       title: i.title,
     }));
   } catch (err) {
+    // The user has been told; rethrowing from an async onMounted only turns this
+    // into an unhandled rejection and skips the rest of the hook (tags never
+    // load). The form stays without a song id, which the save guard rejects.
     notificationStore.pushError($t('errors.loadSongFailed'));
-    throw err;
+    // eslint-disable-next-line no-console
+    console.error(err);
   } finally {
     loading.value = false;
   }
@@ -152,6 +156,13 @@ async function actionClicked(actionName) {
     const isFormCorrect = await v.value.$validate();
     if (!isFormCorrect) {
       notify.pushError($t('error.validation'));
+      return;
+    }
+    // An edit whose song never loaded (failed fetch, unknown id) would be
+    // submitted with no id and land in the queue as a new song, so refuse it
+    // rather than silently turning an edit into a duplicate.
+    if (!props.isNew && !item.value.id) {
+      notify.pushError($t('errors.loadSongFailed'));
       return;
     }
     try {
@@ -233,7 +244,28 @@ async function loadTags() {
   }
 }
 
+// The form takes its mode from the route (/add is a new song, /edit is an edit)
+// but its target song from ?id=, and nothing used to reconcile the two: /add
+// ignored the id, so a submission from that URL was stored as a brand new song
+// instead of an edit of the song it named, and /edit without an id offered a
+// blank form that submitted the same way. Send each URL to the route that
+// matches what it is actually asking for before the form renders.
+const routeModeMismatch = async () => {
+  if (props.isNew && idParam.value) {
+    await router.replace({ name: 'songEdit', query: { id: idParam.value } });
+    return true;
+  }
+  if (!props.isNew && !idParam.value) {
+    await router.replace({ name: 'songNew' });
+    return true;
+  }
+  return false;
+};
+
 onMounted(async () => {
+  if (await routeModeMismatch()) {
+    return;
+  }
   viewStore.$reset();
   viewStore.goBack = true;
   if (props.isNew) {
