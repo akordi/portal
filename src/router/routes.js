@@ -277,13 +277,16 @@ const routes = [
         component: () => import('@/views/SongView.vue'),
       },
       {
-        path: '/akordu-generators',
+        // Locale-neutral slug — this same route tree is deployed to every
+        // country site (lv/lt/ee/es), so it can't be a Latvian word like the
+        // old /akordu-generators was.
+        path: '/chordgen',
         name: 'chordGeneratorList',
         meta: { title: 'pages.chordGenerator.title', anonymous: true },
         component: () => import('@/views/ChordGeneratorList.vue'),
       },
       {
-        path: '/akordu-generators/jauns',
+        path: '/chordgen/new',
         name: 'chordGeneratorSubmit',
         meta: {
           title: 'pages.chordGenerator.submitTitle',
@@ -293,7 +296,7 @@ const routes = [
         component: () => import('@/views/ChordGeneratorSubmit.vue'),
       },
       {
-        path: '/akordu-generators/:id',
+        path: '/chordgen/:id',
         name: 'chordGeneratorView',
         meta: {
           anonymous: true,
