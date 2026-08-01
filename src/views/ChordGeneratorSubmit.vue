@@ -24,10 +24,13 @@ const required = withI18nMessage(validations.required);
 const isUrl = withI18nMessage(validations.url);
 
 const item = ref({ youtubeUrl: '', artist: '', title: '' });
+// Artist/title are optional user input — best-effort inherited from the
+// YouTube video's own title (see guessArtistTitle) when left blank, rather
+// than forcing the submitter to type them.
 const rules = {
   youtubeUrl: { required, url: isUrl },
-  artist: { required },
-  title: { required },
+  artist: {},
+  title: {},
 };
 const v = useVuelidate(rules, item);
 
@@ -104,10 +107,8 @@ async function loadQueue() {
   }
 }
 
-// Best-effort YouTube oEmbed autofill: only kicks in when the URL is filled
-// but artist+title are still both empty (i.e. no query prefill happened).
-// Any failure (network, non-200, no separator match) is silently ignored —
-// this must never block or error the form.
+// Best-effort split of a YouTube video title into artist/title, for the
+// common "Artist - Title" upload naming convention.
 function splitArtistTitle(rawTitle) {
   const separators = [' - ', ' – ', ' — '];
   const sep = separators.find((candidate) => rawTitle.includes(candidate));
@@ -121,31 +122,50 @@ function splitArtistTitle(rawTitle) {
   };
 }
 
-async function onYoutubeUrlBlur() {
-  if (!item.value.youtubeUrl || item.value.artist || item.value.title) {
-    return;
-  }
+async function fetchOembedTitle(youtubeUrl) {
   try {
     const resp = await fetch(
-      `https://www.youtube.com/oembed?url=${encodeURIComponent(item.value.youtubeUrl)}&format=json`
+      `https://www.youtube.com/oembed?url=${encodeURIComponent(youtubeUrl)}&format=json`
     );
     if (!resp.ok) {
-      return;
+      return null;
     }
     const data = await resp.json();
-    const guess = data?.title ? splitArtistTitle(data.title) : null;
-    if (!guess) {
-      return;
-    }
-    if (!item.value.artist && guess.artist) {
+    return data?.title || null;
+  } catch (err) {
+    return null;
+  }
+}
+
+// Artist/title are optional — this fills them in from the YouTube video's own
+// title whenever possible, but never blocks submission if it can't. Splits
+// "Artist - Title"-style video titles when recognisable; otherwise the whole
+// video title is inherited as the song title (artist stays blank, editable).
+// Never overwrites a value the submitter already typed. Any failure (network,
+// non-200, unparsable) is silently ignored.
+async function guessArtistTitle() {
+  if (!item.value.youtubeUrl || item.value.title) {
+    return;
+  }
+  const rawTitle = await fetchOembedTitle(item.value.youtubeUrl);
+  if (!rawTitle) {
+    return;
+  }
+  const guess = splitArtistTitle(rawTitle);
+  if (guess) {
+    if (!item.value.artist) {
       item.value.artist = guess.artist;
     }
-    if (!item.value.title && guess.title) {
+    if (!item.value.title) {
       item.value.title = guess.title;
     }
-  } catch (err) {
-    // Silently ignore — best-effort only.
+  } else if (!item.value.title) {
+    item.value.title = rawTitle;
   }
+}
+
+async function onYoutubeUrlBlur() {
+  await guessArtistTitle();
 }
 
 function stopPolling() {
@@ -196,6 +216,9 @@ async function onSubmit() {
     notificationStore.pushError($t('error.validation'));
     return;
   }
+  // Last-resort inherit: covers submitting before the URL field ever blurred
+  // (e.g. a prefilled/pasted URL followed straight by a submit click).
+  await guessArtistTitle();
   submitting.value = true;
   jobStatus.value = null;
   try {
@@ -249,6 +272,7 @@ onMounted(async () => {
   }
   if (isAuthorized) {
     await loadQueue();
+    await guessArtistTitle();
   }
 });
 
@@ -294,21 +318,17 @@ onUnmounted(() => {
           @blur="onYoutubeUrlBlur"
         />
       </LxRow>
-      <LxRow :label="$t('pages.chordGenerator.form.artist')" :required="true">
-        <LxTextInput
-          id="chordGenArtistInput"
-          v-model="item.artist"
-          :invalid="v.artist.$error"
-          :invalidation-message="v.artist.$error ? v.artist.$errors[0].$message : ''"
-        />
+      <LxRow
+        :label="$t('pages.chordGenerator.form.artist')"
+        :description="$t('pages.chordGenerator.form.artistHint')"
+      >
+        <LxTextInput id="chordGenArtistInput" v-model="item.artist" />
       </LxRow>
-      <LxRow :label="$t('pages.chordGenerator.form.title')" :required="true">
-        <LxTextInput
-          id="chordGenTitleInput"
-          v-model="item.title"
-          :invalid="v.title.$error"
-          :invalidation-message="v.title.$error ? v.title.$errors[0].$message : ''"
-        />
+      <LxRow
+        :label="$t('pages.chordGenerator.form.title')"
+        :description="$t('pages.chordGenerator.form.titleHint')"
+      >
+        <LxTextInput id="chordGenTitleInput" v-model="item.title" />
       </LxRow>
     </LxForm>
     <p class="lx-description" v-if="submittingMessage">{{ submittingMessage }}</p>
