@@ -177,6 +177,10 @@ async function pollJob(jobId) {
   if (Date.now() > pollDeadline) {
     stopPolling();
     submitting.value = false;
+    // Without this, the "generating..." banner (driven by jobStatus) stays
+    // stuck showing the last pending/running text forever — only the button
+    // stops being busy, since jobStatus itself was never cleared.
+    jobStatus.value = null;
     notificationStore.pushError($t('pages.chordGenerator.status.error'));
     return;
   }
@@ -186,12 +190,14 @@ async function pollJob(jobId) {
     if (data.status === 'done') {
       stopPolling();
       submitting.value = false;
+      jobStatus.value = null;
       router.push({ name: 'chordGeneratorView', params: { id: data.songId } });
       return;
     }
     if (data.status === 'error') {
       stopPolling();
       submitting.value = false;
+      jobStatus.value = null;
       notificationStore.pushError(data.error || $t('pages.chordGenerator.status.error'));
       return;
     }
