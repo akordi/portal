@@ -34,6 +34,7 @@ async function loadSong() {
     const resp = await chordgenSongService.findOne(route.params.id);
     song.value = resp.data;
     viewStore.title = `${song.value.artist} — ${song.value.title}`;
+    viewStore.description = '';
     viewStore.goBack = true;
   } catch (err) {
     notificationStore.pushError($t('pages.chordGenerator.errors.loadFailed'));

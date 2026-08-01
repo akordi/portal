@@ -236,6 +236,7 @@ function actionClicked(actionName) {
 
 onMounted(async () => {
   viewStore.title = $t('pages.chordGenerator.submitTitle');
+  viewStore.description = '';
   viewStore.goBack = true;
   if (route.query.youtubeUrl) {
     item.value.youtubeUrl = String(route.query.youtubeUrl);
@@ -258,20 +259,26 @@ onUnmounted(() => {
 
 <template>
   <template v-if="!isAuthorized">
-    <LxInfoBox
-      :label="$t('pages.chordGenerator.loginRequired.title')"
-      :description="$t('pages.chordGenerator.loginRequired.message')"
-      variant="info"
-    />
-    <LxButton
-      kind="primary"
-      icon="next"
-      :label="$t('pages.chordGenerator.loginRequired.action')"
-      @click="authStore.login(route.fullPath)"
-    />
+    <LxRow>
+      <LxInfoBox
+        :label="$t('pages.chordGenerator.loginRequired.title')"
+        :description="$t('pages.chordGenerator.loginRequired.message')"
+        variant="info"
+      />
+    </LxRow>
+    <LxRow>
+      <LxButton
+        kind="primary"
+        icon="next"
+        :label="$t('pages.chordGenerator.loginRequired.action')"
+        @click="authStore.login(route.fullPath)"
+      />
+    </LxRow>
   </template>
   <template v-else>
-    <LxInfoBox v-if="queueMessage" :label="queueMessage" variant="info" />
+    <LxRow v-if="queueMessage">
+      <LxInfoBox :label="queueMessage" variant="info" />
+    </LxRow>
     <LxForm
       :action-definitions="formActions"
       @action-click="actionClicked"
