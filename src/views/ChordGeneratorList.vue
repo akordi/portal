@@ -21,7 +21,8 @@ function mapSong(song) {
   return {
     ...song,
     id: String(song.id),
-    title: `${song.artist} — ${song.title}`,
+    // Artist is optional — don't show a dangling "— Title" when it's blank.
+    title: song.artist ? `${song.artist} — ${song.title}` : song.title,
     averageRating: song.averageRating ?? 0,
     ratingsCount: song.ratingsCount ?? 0,
     clickable: true,

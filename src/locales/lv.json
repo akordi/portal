@@ -229,7 +229,9 @@
             "form": {
                 "youtubeUrl": "YouTube saite",
                 "artist": "Izpildītājs",
+                "artistHint": "Ja atstāsi tukšu, mēģināsim to noteikt no video nosaukuma.",
                 "title": "Dziesmas nosaukums",
+                "titleHint": "Ja atstāsi tukšu, izmantosim video nosaukumu.",
                 "submit": "Ģenerēt"
             },
             "loginRequired": {

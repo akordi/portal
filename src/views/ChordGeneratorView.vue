@@ -28,12 +28,17 @@ const ratingSummary = computed(() => {
   return `${(song.value.averageRating || 0).toFixed(1)} (${song.value.ratingsCount})`;
 });
 
+// Artist is optional — don't show a dangling "— Title" when it's blank.
+const displayTitle = computed(() =>
+  song.value.artist ? `${song.value.artist} — ${song.value.title}` : song.value.title || ''
+);
+
 async function loadSong() {
   try {
     loading.value = true;
     const resp = await chordgenSongService.findOne(route.params.id);
     song.value = resp.data;
-    viewStore.title = `${song.value.artist} — ${song.value.title}`;
+    viewStore.title = displayTitle.value;
     viewStore.description = '';
     viewStore.goBack = true;
   } catch (err) {
@@ -75,7 +80,7 @@ onMounted(async () => {
 
 <template>
   <LxLoaderView :loading="loading">
-    <p class="lx-primary">{{ song.artist }} — {{ song.title }}</p>
+    <p class="lx-primary">{{ displayTitle }}</p>
 
     <ChordPlayer :video-url="song.youtubeUrl" :segments="song.segments" :duration="song.duration" />
 

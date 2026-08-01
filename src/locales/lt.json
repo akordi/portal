@@ -229,7 +229,9 @@
             "form": {
                 "youtubeUrl": "YouTube nuoroda",
                 "artist": "Atlikėjas",
+                "artistHint": "Jei paliksite tuščią, pabandysime nustatyti iš vaizdo įrašo pavadinimo.",
                 "title": "Dainos pavadinimas",
+                "titleHint": "Jei paliksite tuščią, naudosime vaizdo įrašo pavadinimą.",
                 "submit": "Generuoti"
             },
             "loginRequired": {

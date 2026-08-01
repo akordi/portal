@@ -229,7 +229,9 @@
             "form": {
                 "youtubeUrl": "YouTube link",
                 "artist": "Esitaja",
+                "artistHint": "Kui jätad tühjaks, proovime tuvastada video pealkirja põhjal.",
                 "title": "Laulu pealkiri",
+                "titleHint": "Kui jätad tühjaks, kasutame video pealkirja.",
                 "submit": "Genereeri"
             },
             "loginRequired": {
