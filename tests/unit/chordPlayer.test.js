@@ -45,12 +45,11 @@ describe('ChordPlayer chord diagram panel', () => {
     expect(diagrams.map((d) => d.props('chord'))).toEqual(['Am', 'C', 'G']);
   });
 
-  it('highlights the chord under the playhead', () => {
+  it('does not highlight diagrams in sync with playback (static reference only)', () => {
     const wrapper = mountPlayer({ showDiagrams: true });
-    // Playback starts at 0s, which falls in the first segment (Am).
-    const active = wrapper.findAll('.chord-diagram.is-active');
-    expect(active).toHaveLength(1);
-    expect(active[0].findComponent({ name: 'ChordSvg' }).props('chord')).toBe('Am');
+    // The timeline is the only place tracking the current chord — the diagram
+    // panel stays static so there aren't two competing highlights.
+    expect(wrapper.find('.chord-player-diagrams .is-active').exists()).toBe(false);
   });
 
   it('passes the instrument to diagrams and re-emits switcher changes', async () => {

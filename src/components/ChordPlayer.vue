@@ -49,7 +49,9 @@ const videoId = computed(() => youtubeId(props.videoUrl));
 const activeIndex = computed(() => activeSegmentIndex(props.segments, currentTime.value));
 
 // Diagram panel data: every distinct chord of the song, in order of first
-// appearance, plus the label of the chord currently under the playhead.
+// appearance. Deliberately NOT synced to the playhead — the timeline already
+// highlights the current chord, and a second moving highlight reads as
+// fragmented; the panel is a static fingering reference.
 const uniqueChords = computed(() => {
   const seen = new Set();
   const out = [];
@@ -61,8 +63,6 @@ const uniqueChords = computed(() => {
   });
   return out;
 });
-
-const activeChord = computed(() => props.segments[activeIndex.value]?.label ?? null);
 
 const instrumentOptions = computed(() => [
   { id: 'guitar', name: $t('pages.chordsLibrary.showGuitarChords.label') },
@@ -258,9 +258,9 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
-    <!-- Fingering panel: one diagram per distinct chord in the song; the chord
-         under the playhead is highlighted in sync with the timeline. Sits to
-         the right of the video on wide screens, below it on narrow ones. -->
+    <!-- Fingering panel: a static reference with one diagram per distinct
+         chord in the song. Sits to the right of the video on wide screens,
+         below it on narrow ones. -->
     <aside
       v-if="showDiagrams && uniqueChords.length"
       class="chord-player-diagrams"
@@ -273,14 +273,12 @@ onBeforeUnmount(() => {
         @update:model-value="(value) => emit('update:instrument', value)"
       />
       <div class="chord-diagram-grid">
-        <div
+        <ChordSvg
           v-for="chord in uniqueChords"
           :key="chord"
-          class="chord-diagram"
-          :class="{ 'is-active': chord === activeChord }"
-        >
-          <ChordSvg :chord="chord" :instrument="instrument" />
-        </div>
+          :chord="chord"
+          :instrument="instrument"
+        />
       </div>
     </aside>
   </div>
@@ -314,15 +312,6 @@ onBeforeUnmount(() => {
   align-items: flex-start;
   align-content: flex-start;
   gap: 0.25rem;
-}
-.chord-diagram {
-  border: 2px solid transparent;
-  border-radius: 8px;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
-}
-.chord-diagram.is-active {
-  border-color: var(--color-brand, #18bc9c);
-  background: var(--color-region-2, #eee);
 }
 
 /* Side-by-side once there is room for the video and a diagram column. */
