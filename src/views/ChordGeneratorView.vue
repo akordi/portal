@@ -80,8 +80,8 @@ onMounted(async () => {
 
 <template>
   <LxLoaderView :loading="loading">
-    <p class="lx-primary">{{ displayTitle }}</p>
-
+    <!-- The page header (viewStore.title, set in loadSong) already shows the
+         title — no need to repeat it here. -->
     <ChordPlayer :video-url="song.youtubeUrl" :segments="song.segments" :duration="song.duration" />
 
     <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem">
