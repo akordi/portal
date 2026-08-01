@@ -276,6 +276,31 @@ const routes = [
         },
         component: () => import('@/views/SongView.vue'),
       },
+      {
+        path: '/akordu-generators',
+        name: 'chordGeneratorList',
+        meta: { title: 'pages.chordGenerator.title', anonymous: true },
+        component: () => import('@/views/ChordGeneratorList.vue'),
+      },
+      {
+        path: '/akordu-generators/jauns',
+        name: 'chordGeneratorSubmit',
+        meta: {
+          title: 'pages.chordGenerator.submitTitle',
+          anonymous: true,
+          breadcrumbs: [{ text: 'pages.chordGenerator.title', to: { name: 'chordGeneratorList' } }],
+        },
+        component: () => import('@/views/ChordGeneratorSubmit.vue'),
+      },
+      {
+        path: '/akordu-generators/:id',
+        name: 'chordGeneratorView',
+        meta: {
+          anonymous: true,
+          breadcrumbs: [{ text: 'pages.chordGenerator.title', to: { name: 'chordGeneratorList' } }],
+        },
+        component: () => import('@/views/ChordGeneratorView.vue'),
+      },
 
       {
         path: '/error',

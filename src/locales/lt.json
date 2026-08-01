@@ -217,7 +217,48 @@
             "nextChord": "Kitas",
             "changesIn": "po",
             "songEnd": "Dainos pabaiga",
-            "seconds": "s"
+            "seconds": "s",
+            "generateOwn": "Nėra akordų laiko juostos šiai dainai? Pabandyk sugeneruoti pats."
+        },
+        "chordGenerator": {
+            "title": "Akordų generatorius",
+            "description": "Įklijuok YouTube nuorodą, ir dirbtinis intelektas sukurs akordų laiko juostą, kuriai galėsi groti kartu.",
+            "empty": "Kol kas nėra nė vieno sugeneruoto akordų įrašo.",
+            "add": "Generuoti naują",
+            "submitTitle": "Generuoti akordus",
+            "form": {
+                "youtubeUrl": "YouTube nuoroda",
+                "artist": "Atlikėjas",
+                "title": "Dainos pavadinimas",
+                "submit": "Generuoti"
+            },
+            "loginRequired": {
+                "title": "Būtina prisijungti",
+                "message": "Norint pateikti naują dainą generavimui, pirmiausia reikia prisijungti.",
+                "action": "Prisijungti"
+            },
+            "queue": {
+                "depth": "Eilėje: {pending}, apdorojama: {running}",
+                "eta": "Numatomas laukimo laikas: {eta}",
+                "none": "Eilė šiuo metu tuščia"
+            },
+            "status": {
+                "pending": "Laukiama eilėje...",
+                "running": "Generuojami akordai...",
+                "exists": "Ši daina jau yra pridėta",
+                "rateLimited": "Pasiektas pateikimų limitas. Bandyk vėliau.",
+                "error": "Nepavyko sugeneruoti akordų"
+            },
+            "errors": {
+                "invalidUrl": "Nurodyk galiojančią YouTube nuorodą",
+                "submitFailed": "Nepavyko pateikti dainos",
+                "loadFailed": "Nepavyko įkelti duomenų"
+            },
+            "rating": {
+                "yours": "Tavo įvertinimas",
+                "average": "Vidutinis įvertinimas",
+                "none": "Kol kas nėra įvertinimų"
+            }
         },
         "akordiSongView": {
             "title": "Akordai.lt dainos",
