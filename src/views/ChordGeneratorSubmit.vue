@@ -167,15 +167,11 @@ async function loadQueue() {
 }
 
 async function loadLimit() {
-  try {
-    const resp = await chordgenSongService.getMyLimit();
-    limitStatus.value = resp.data;
-  } catch (err) {
-    // Non-critical: without allowance info the form behaves as before (the
-    // server still enforces the limit on submit). Clearing the state also
-    // drops a stale allowance line rather than showing outdated numbers.
-    limitStatus.value = null;
-  }
+  // Non-critical: without allowance info the form behaves as before (the
+  // server still enforces the limit on submit). A failed fetch clears the
+  // state so no stale allowance line lingers.
+  const resp = await chordgenSongService.getMyLimit().catch(() => null);
+  limitStatus.value = resp?.data ?? null;
 }
 
 // Best-effort split of a YouTube video title into artist/title, for the
