@@ -1,5 +1,5 @@
 <script setup>
-import { LxButton, LxForm, LxInfoBox, LxLoader, LxRow, LxTextInput } from '@dativa-lv/lx-ui';
+import { LxButton, LxForm, LxInfoBox, LxRow, LxTextInput } from '@dativa-lv/lx-ui';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -80,8 +80,10 @@ const queueMessage = computed(() => {
   return `${depth} · ${$t('pages.chordGenerator.queue.eta', { eta: wait })}`;
 });
 
-// Live progress panel shown instead of the queue snapshot while a job is in
-// flight — label is the job state, description carries queue position + ETA.
+// While a job is in flight the same info box switches to live job status —
+// label is the job state, description carries queue position + ETA. One
+// persistent component for both states, so nothing visually swaps out on
+// submit (the busy spinner on the submit button already signals activity).
 const progressLabel = computed(() => {
   if (jobStatus.value?.status === 'running') {
     return $t('pages.chordGenerator.status.running');
@@ -321,11 +323,11 @@ onUnmounted(() => {
     </LxRow>
   </template>
   <template v-else>
-    <!-- One merged status panel: a live progress view while a job is in
-         flight, otherwise the current queue snapshot. Never both, and the
+    <!-- One persistent status box: the current queue snapshot while idle,
+         live job status (position + ETA) while a job is in flight. The
          snapshot is refreshed on every poll so it can't go stale. -->
     <LxRow v-if="jobStatus">
-      <LxLoader loading variant="bar" :label="progressLabel" :description="progressDescription" />
+      <LxInfoBox :label="progressLabel" :description="progressDescription" variant="info" />
     </LxRow>
     <LxRow v-else-if="queueMessage">
       <LxInfoBox :label="queueMessage" variant="info" />

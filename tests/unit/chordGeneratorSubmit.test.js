@@ -17,10 +17,9 @@ vi.mock('@dativa-lv/lx-ui', () => ({
     emits: ['action-click'],
     template: '<form><slot /></form>',
   },
-  LxInfoBox: { name: 'LxInfoBox', props: ['label', 'variant'], template: '<div />' },
-  LxLoader: {
-    name: 'LxLoader',
-    props: ['loading', 'variant', 'label', 'description'],
+  LxInfoBox: {
+    name: 'LxInfoBox',
+    props: ['label', 'description', 'variant'],
     template: '<div />',
   },
   LxRow: { name: 'LxRow', props: ['label'], template: '<div><slot /></div>' },
@@ -82,17 +81,16 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe('ChordGeneratorSubmit live status panel', () => {
+describe('ChordGeneratorSubmit persistent status box', () => {
   it('shows the queue snapshot before any submission', async () => {
     getQueue.mockResolvedValue(queueSnapshot());
     const wrapper = mount(ChordGeneratorSubmit);
     await flushPromises();
 
     expect(getQueue).toHaveBeenCalledTimes(1);
-    expect(wrapper.findComponent({ name: 'LxInfoBox' }).props('label')).toBe(
-      'pages.chordGenerator.queue.none'
-    );
-    expect(wrapper.findComponent({ name: 'LxLoader' }).exists()).toBe(false);
+    const box = wrapper.findComponent({ name: 'LxInfoBox' });
+    expect(box.props('label')).toBe('pages.chordGenerator.queue.none');
+    expect(box.props('description')).toBeFalsy();
   });
 
   it('replaces the snapshot with a live progress panel and re-fetches the queue on every poll', async () => {
@@ -111,12 +109,11 @@ describe('ChordGeneratorSubmit live status panel', () => {
     expect(getMyJob).toHaveBeenCalledTimes(1);
     expect(getQueue).toHaveBeenCalledTimes(2);
 
-    // The stale "queue is empty" info box is gone; the live panel is shown
-    // with the job's own position in the queue.
-    expect(wrapper.findComponent({ name: 'LxInfoBox' }).exists()).toBe(false);
-    const loader = wrapper.findComponent({ name: 'LxLoader' });
-    expect(loader.props('label')).toBe('pages.chordGenerator.status.pending');
-    expect(loader.props('description')).toContain('pages.chordGenerator.status.position');
+    // The same info box persists but now shows live job status with the
+    // job's own position in the queue instead of the stale snapshot.
+    const box = wrapper.findComponent({ name: 'LxInfoBox' });
+    expect(box.props('label')).toBe('pages.chordGenerator.status.pending');
+    expect(box.props('description')).toContain('pages.chordGenerator.status.position');
 
     // Every subsequent poll tick refreshes both the job and the queue.
     await vi.advanceTimersByTimeAsync(3000);
@@ -134,8 +131,8 @@ describe('ChordGeneratorSubmit live status panel', () => {
     wrapper.findComponent({ name: 'LxForm' }).vm.$emit('action-click', 'submit');
     await flushPromises();
 
-    const loader = wrapper.findComponent({ name: 'LxLoader' });
-    expect(loader.props('label')).toBe('pages.chordGenerator.status.running');
-    expect(loader.props('description')).toBe('');
+    const box = wrapper.findComponent({ name: 'LxInfoBox' });
+    expect(box.props('label')).toBe('pages.chordGenerator.status.running');
+    expect(box.props('description')).toBe('');
   });
 });

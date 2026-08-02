@@ -25,12 +25,12 @@ const loading = ref(true);
 const song = ref({});
 const myRating = ref(null);
 
-const ratingSummary = computed(() => {
-  if (!song.value.ratingsCount) {
-    return $t('pages.chordGenerator.rating.none');
-  }
-  return `${(song.value.averageRating || 0).toFixed(1)} (${song.value.ratingsCount})`;
-});
+// Only rendered when ratings exist — a "no ratings yet" line next to the
+// rate-this-song control reads oddly, so the average row is simply hidden
+// until the first rating lands.
+const ratingSummary = computed(
+  () => `${(song.value.averageRating || 0).toFixed(1)} (${song.value.ratingsCount})`
+);
 
 // Artist is optional — don't show a dangling "— Title" when it's blank.
 const displayTitle = computed(() =>
@@ -110,7 +110,10 @@ onMounted(async () => {
       @update:instrument="selectInstrument"
     />
 
-    <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem">
+    <div
+      v-if="song.ratingsCount"
+      style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem"
+    >
       <LxRating :model-value="song.averageRating || 0" read-only kind="5stars" :focusable="false" />
       <span class="lx-secondary">{{ ratingSummary }}</span>
     </div>
