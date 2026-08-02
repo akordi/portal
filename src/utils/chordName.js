@@ -40,7 +40,7 @@ export function parseChordName(label) {
   if (typeof label !== 'string') {
     return null;
   }
-  const match = label.trim().match(/^([A-G][#b]?)([^/]*)(?:\/([A-G][#b]?))?$/);
+  const match = /^([A-G][#b]?)([^/]*)(?:\/([A-G][#b]?))?$/.exec(label.trim());
   if (!match) {
     return null;
   }

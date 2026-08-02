@@ -171,8 +171,10 @@ async function loadLimit() {
     const resp = await chordgenSongService.getMyLimit();
     limitStatus.value = resp.data;
   } catch (err) {
-    // Non-critical: without allowance info the form just behaves as before
-    // (the server still enforces the limit on submit).
+    // Non-critical: without allowance info the form behaves as before (the
+    // server still enforces the limit on submit). Clearing the state also
+    // drops a stale allowance line rather than showing outdated numbers.
+    limitStatus.value = null;
   }
 }
 
