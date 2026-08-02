@@ -10,11 +10,11 @@
  */
 import { computed, onBeforeUnmount, ref, shallowRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { LxButton, LxContentSwitcher } from '@dativa-lv/lx-ui';
+import { LxButton, LxValuePicker } from '@dativa-lv/lx-ui';
 
 import ChordSvg from '@/components/ChordSvg.vue';
 import { activeSegmentIndex, youtubeId } from '@/utils/chordSync';
-import { capoForOffset, transposeChord } from '@/utils/chordName';
+import { capoForOffset, isNoChord, transposeChord } from '@/utils/chordName';
 
 const { t: $t } = useI18n();
 
@@ -120,12 +120,13 @@ const displaySegments = computed(() => {
 // Diagram panel data: every distinct chord of the song, in order of first
 // appearance. Deliberately NOT synced to the playhead — the timeline already
 // highlights the current chord, and a second moving highlight reads as
-// fragmented; the panel is a static fingering reference.
+// fragmented; the panel is a static fingering reference. No-chord markers
+// (N/N.C.) belong on the timeline as gaps, not in the fingering panel.
 const uniqueChords = computed(() => {
   const seen = new Set();
   const out = [];
   displaySegments.value.forEach((seg) => {
-    if (seg.label && !seen.has(seg.label)) {
+    if (seg.label && !isNoChord(seg.label) && !seen.has(seg.label)) {
       seen.add(seg.label);
       out.push(seg.label);
     }
@@ -344,10 +345,15 @@ onBeforeUnmount(() => {
       <!-- Practice controls: playback speed for everyone; transpose (with a
            capo hint) only where the host view opts in. -->
       <div class="chord-player-controls">
+        <!-- horizontal LxValuePicker, not LxContentSwitcher: the switcher
+             collapses labels to bare index numbers below 800px viewport
+             width, which turns speeds into meaningless "1 2 3" on phones. -->
         <div class="chord-player-control">
           <span class="lx-label" id="chordPlayerSpeedLabel">{{ $t('pages.playAlong.speed') }}</span>
-          <LxContentSwitcher
+          <LxValuePicker
             id="chordPlayerSpeedSwitcher"
+            variant="tags"
+            selection-kind="single"
             :items="speedOptions"
             v-model="speedId"
             label-id="chordPlayerSpeedLabel"
@@ -396,8 +402,13 @@ onBeforeUnmount(() => {
       class="chord-player-diagrams"
       :aria-label="$t('pages.chordsLibrary.instrument')"
     >
-      <LxContentSwitcher
+      <!-- Dropdown rather than a content switcher: the side panel is too
+           narrow for three instrument names, and a switcher degrades to
+           truncated labels there. -->
+      <LxValuePicker
         id="chordPlayerInstrumentSwitcher"
+        variant="dropdown"
+        selection-kind="single"
         :items="instrumentOptions"
         :model-value="instrument"
         @update:model-value="(value) => emit('update:instrument', value)"

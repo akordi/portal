@@ -2,9 +2,9 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 
 vi.mock('@dativa-lv/lx-ui', () => ({
-  LxContentSwitcher: {
-    name: 'LxContentSwitcher',
-    props: ['items', 'modelValue'],
+  LxValuePicker: {
+    name: 'LxValuePicker',
+    props: ['items', 'modelValue', 'variant'],
     emits: ['update:modelValue'],
     template: '<div />',
   },
@@ -77,8 +77,8 @@ async function mountPlayer(props = {}) {
 
 const speedSwitcher = (wrapper) =>
   wrapper
-    .findAllComponents({ name: 'LxContentSwitcher' })
-    .find((c) => c.props('items')?.some((i) => i.id === '0.5'));
+    .findAllComponents({ name: 'LxValuePicker' })
+    .find((c) => c.props('variant') === 'tags');
 
 describe('ChordPlayer chord diagram panel', () => {
   it('is hidden by default so existing usages are unchanged', async () => {
@@ -102,10 +102,11 @@ describe('ChordPlayer chord diagram panel', () => {
     const diagrams = wrapper.findAllComponents({ name: 'ChordSvg' });
     expect(diagrams.every((d) => d.props('instrument') === 'ukulele')).toBe(true);
 
-    const switcher = wrapper
-      .findAllComponents({ name: 'LxContentSwitcher' })
-      .find((c) => c.props('modelValue') === 'ukulele');
-    switcher.vm.$emit('update:modelValue', 'guitar');
+    const dropdown = wrapper
+      .findAllComponents({ name: 'LxValuePicker' })
+      .find((c) => c.props('variant') === 'dropdown');
+    expect(dropdown.props('modelValue')).toBe('ukulele');
+    dropdown.vm.$emit('update:modelValue', 'guitar');
     expect(wrapper.emitted('update:instrument')).toEqual([['guitar']]);
   });
 
@@ -115,6 +116,19 @@ describe('ChordPlayer chord diagram panel', () => {
       segments: [{ start: 0, end: 2, label: '' }],
     });
     expect(wrapper.find('.chord-player-diagrams').exists()).toBe(false);
+  });
+
+  it('keeps no-chord markers out of the fingering panel', async () => {
+    const wrapper = await mountPlayer({
+      showDiagrams: true,
+      segments: [
+        { start: 0, end: 2, label: 'Am' },
+        { start: 2, end: 4, label: 'N' },
+        { start: 4, end: 6, label: 'C' },
+      ],
+    });
+    const diagrams = wrapper.findAllComponents({ name: 'ChordSvg' });
+    expect(diagrams.map((d) => d.props('chord'))).toEqual(['Am', 'C']);
   });
 });
 

@@ -28,6 +28,17 @@ const SHARP_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#',
 const FLAT_SCALE = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 
 /**
+ * Whether a timeline label marks "no chord" (rests/noise between chords) —
+ * chord recognisers emit these as N / NC / N.C. They belong on the timeline
+ * as gaps but never in a fingering panel.
+ * @param {string} label
+ * @returns {boolean}
+ */
+export function isNoChord(label) {
+  return typeof label === 'string' && /^n\.?c?\.?$/i.test(label.trim());
+}
+
+/**
  * Split a chord label into root, suffix, and optional slash bass note.
  * Examples: 'Am7' → {root:'A', suffix:'m7', bass:null};
  * 'D/F#' → {root:'D', suffix:'', bass:'F#'}.
