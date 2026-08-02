@@ -218,7 +218,13 @@
             "changesIn": "pärast",
             "songEnd": "Laulu lõpp",
             "seconds": "s",
-            "generateOwn": "Sellel laulul pole akordide ajaskaalat? Proovi seda ise genereerida."
+            "generateOwn": "Sellel laulul pole akordide ajaskaalat? Proovi seda ise genereerida.",
+            "speed": "Kiirus",
+            "transpose": "Transponeeri",
+            "transposeUp": "Pooltoon kõrgemale",
+            "transposeDown": "Pooltoon madalamale",
+            "transposeReset": "Taasta algne helistik",
+            "capoHint": "Capo {fret}. vahel kõlab originaalhelistikus"
         },
         "chordGenerator": {
             "title": "Akordigeneraator",
@@ -241,6 +247,10 @@
                 "eta": "Eeldatav ooteaeg: {eta}",
                 "none": "Järjekord on hetkel tühi"
             },
+            "limit": {
+                "remaining": "Täna alles jäänud esitusi: {remaining} / {limit}",
+                "exhaustedUntil": "Päevalimiit on täis. Järgmine esitus võimalik: {time}"
+            },
             "status": {
                 "pending": "Ootab järjekorras...",
                 "position": "Sinu ees järjekorras: {count}",
@@ -256,8 +266,7 @@
             },
             "rating": {
                 "yours": "Sinu hinnang",
-                "average": "Keskmine hinnang",
-                "none": "Hinnanguid veel pole"
+                "average": "Keskmine hinnang"
             }
         },
         "akordiSongView": {
@@ -704,5 +713,8 @@
         "themeContrastDescription": "Suurendatud värvikontrastiga teema sisu loetavuse parandamiseks.",
         "transparencyLinkLabel": "Juurdepääsetavuse standardid (WCAG Contrast (Minimum))",
         "animationsLinkLabel": "Juurdepääsetavuse standardid (WCAG Animation from Interactions)"
+    },
+    "chordDiagram": {
+        "unavailable": "Diagramm pole saadaval"
     }
 }

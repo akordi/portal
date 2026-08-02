@@ -218,7 +218,13 @@
             "changesIn": "en",
             "songEnd": "Fin de la canción",
             "seconds": "s",
-            "generateOwn": "¿No hay una línea de tiempo de acordes para esta canción? Prueba a generarla tú mismo."
+            "generateOwn": "¿No hay una línea de tiempo de acordes para esta canción? Prueba a generarla tú mismo.",
+            "speed": "Velocidad",
+            "transpose": "Transportar",
+            "transposeUp": "Un semitono más alto",
+            "transposeDown": "Un semitono más bajo",
+            "transposeReset": "Restablecer tonalidad",
+            "capoHint": "Con cejilla en el traste {fret} suena en la tonalidad original"
         },
         "chordGenerator": {
             "title": "Generador de acordes",
@@ -241,6 +247,10 @@
                 "eta": "Tiempo de espera estimado: {eta}",
                 "none": "La cola está vacía en este momento"
             },
+            "limit": {
+                "remaining": "Envíos restantes hoy: {remaining} de {limit}",
+                "exhaustedUntil": "Límite diario alcanzado. Próximo envío posible: {time}"
+            },
             "status": {
                 "pending": "Esperando en la cola...",
                 "position": "Por delante en la cola: {count}",
@@ -256,8 +266,7 @@
             },
             "rating": {
                 "yours": "Tu valoración",
-                "average": "Valoración media",
-                "none": "Todavía no hay valoraciones"
+                "average": "Valoración media"
             }
         },
         "akordiSongView": {
@@ -704,5 +713,8 @@
         "themeContrastDescription": "Tema con mayor contraste de color para mejorar la legibilidad del contenido.",
         "transparencyLinkLabel": "Estándares de accesibilidad (WCAG Contrast (Minimum))",
         "animationsLinkLabel": "Estándares de accesibilidad (WCAG Animation from Interactions)"
+    },
+    "chordDiagram": {
+        "unavailable": "Diagrama no disponible"
     }
 }

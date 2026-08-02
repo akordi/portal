@@ -26,6 +26,10 @@ export default {
     return http(serviceUrl).get(`/me/chordgen-songs/jobs/${jobId}`);
   },
 
+  getMyLimit() {
+    return http(serviceUrl).get('/me/chordgen-songs/limit');
+  },
+
   getMyRating(id) {
     return http(serviceUrl).get(`/me/chordgen-songs/${id}/rating`);
   },

@@ -218,7 +218,13 @@
             "changesIn": "pēc",
             "songEnd": "Dziesmas beigas",
             "seconds": "s",
-            "generateOwn": "Nav akordu laika skalas šai dziesmai? Izmēģini ģenerēt to pats."
+            "generateOwn": "Nav akordu laika skalas šai dziesmai? Izmēģini ģenerēt to pats.",
+            "speed": "Ātrums",
+            "transpose": "Transponēt",
+            "transposeUp": "Pustoni augstāk",
+            "transposeDown": "Pustoni zemāk",
+            "transposeReset": "Atiestatīt tonalitāti",
+            "capoHint": "Ar capo {fret}. zīmē skan oriģinālā tonalitāte"
         },
         "chordGenerator": {
             "title": "Akordu ģenerators",
@@ -241,6 +247,10 @@
                 "eta": "Aptuvenais gaidīšanas laiks: {eta}",
                 "none": "Rinda pašlaik ir tukša"
             },
+            "limit": {
+                "remaining": "Šodien atlikuši iesniegumi: {remaining} no {limit}",
+                "exhaustedUntil": "Dienas limits sasniegts. Nākamais iesniegums iespējams: {time}"
+            },
             "status": {
                 "pending": "Rindā gaida apstrādi...",
                 "position": "Priekšā rindā: {count}",
@@ -256,8 +266,7 @@
             },
             "rating": {
                 "yours": "Tavs vērtējums",
-                "average": "Vidējais vērtējums",
-                "none": "Vēl nav vērtējumu"
+                "average": "Vidējais vērtējums"
             }
         },
         "akordiSongView": {
@@ -704,5 +713,8 @@
         "themeContrastDescription": "Noformējums ar paaugstinātu krāsu kontrastu, kas uzlabo satura salasāmību.",
         "transparencyLinkLabel": "Piekļūstamības standarti (WCAG Contrast (Minimum))",
         "animationsLinkLabel": "Piekļūstamības standarti (WCAG Animation from Interactions)"
+    },
+    "chordDiagram": {
+        "unavailable": "Diagramma nav pieejama"
     }
 }

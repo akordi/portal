@@ -10,10 +10,11 @@
  */
 import { computed, onBeforeUnmount, ref, shallowRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { LxContentSwitcher } from '@dativa-lv/lx-ui';
+import { LxButton, LxContentSwitcher } from '@dativa-lv/lx-ui';
 
 import ChordSvg from '@/components/ChordSvg.vue';
 import { activeSegmentIndex, youtubeId } from '@/utils/chordSync';
+import { capoForOffset, transposeChord } from '@/utils/chordName';
 
 const { t: $t } = useI18n();
 
@@ -26,9 +27,21 @@ const props = defineProps({
   // usages (SongView play-along renders its own diagram grid) are unchanged.
   showDiagrams: { type: Boolean, default: false },
   instrument: { type: String, default: 'guitar' },
+  // Opt-in transpose control (±semitones with a capo hint). Off by default:
+  // SongView's play-along already has a body-level transpose, and a second
+  // transposer there would fight it.
+  hasTranspose: { type: Boolean, default: false },
 });
 
 const emit = defineEmits(['update:instrument']);
+
+// Practice speeds the YouTube player reliably supports on any video.
+const PLAYBACK_RATES = [0.5, 0.75, 1];
+// Display transpose bounds: every distinct pitch is reachable within ±11.
+const TRANSPOSE_MIN = -11;
+const TRANSPOSE_MAX = 11;
+// Capo suggestions above this fret are impractical on a real neck.
+const CAPO_MAX_FRET = 7;
 
 // Fixed-playhead scroller. The playhead stays put and the chord strip scrolls
 // continuously under it based on playback time, so nothing jumps when the chord
@@ -48,6 +61,62 @@ let tick = null;
 const videoId = computed(() => youtubeId(props.videoUrl));
 const activeIndex = computed(() => activeSegmentIndex(props.segments, currentTime.value));
 
+// Playback speed — applied to the YouTube player, remembered across song
+// switches within the component's lifetime.
+const playbackRate = ref(1);
+
+// Display transpose in semitones. Affects labels only (timeline + diagrams);
+// timing and playback are untouched.
+const transpose = ref(0);
+
+const speedOptions = PLAYBACK_RATES.map((rate) => ({ id: String(rate), name: `${rate}×` }));
+
+const speedId = computed({
+  get: () => String(playbackRate.value),
+  set: (value) => {
+    playbackRate.value = Number(value);
+  },
+});
+
+function applyPlaybackRate() {
+  if (player && typeof player.setPlaybackRate === 'function') {
+    player.setPlaybackRate(playbackRate.value);
+  }
+}
+
+function bumpTranspose(step) {
+  transpose.value = Math.min(TRANSPOSE_MAX, Math.max(TRANSPOSE_MIN, transpose.value + step));
+}
+
+const transposeLabel = computed(() =>
+  transpose.value > 0 ? `+${transpose.value}` : String(transpose.value)
+);
+
+// "Play these easier shapes with a capo and it still sounds like the record."
+// Only meaningful when transposed, and only for frets a real capo reaches.
+const capoHint = computed(() => {
+  if (!props.hasTranspose || transpose.value === 0) {
+    return '';
+  }
+  const fret = capoForOffset(transpose.value);
+  if (fret < 1 || fret > CAPO_MAX_FRET) {
+    return '';
+  }
+  return $t('pages.playAlong.capoHint', { fret });
+});
+
+// Segments as displayed: original timing, labels transposed when the control
+// is active. Everything downstream (timeline, diagrams) reads these.
+const displaySegments = computed(() => {
+  if (!props.hasTranspose || transpose.value === 0) {
+    return props.segments;
+  }
+  return props.segments.map((seg) => ({
+    ...seg,
+    label: transposeChord(seg.label, transpose.value),
+  }));
+});
+
 // Diagram panel data: every distinct chord of the song, in order of first
 // appearance. Deliberately NOT synced to the playhead — the timeline already
 // highlights the current chord, and a second moving highlight reads as
@@ -55,7 +124,7 @@ const activeIndex = computed(() => activeSegmentIndex(props.segments, currentTim
 const uniqueChords = computed(() => {
   const seen = new Set();
   const out = [];
-  props.segments.forEach((seg) => {
+  displaySegments.value.forEach((seg) => {
     if (seg.label && !seen.has(seg.label)) {
       seen.add(seg.label);
       out.push(seg.label);
@@ -79,9 +148,10 @@ const viewStart = computed(() => Math.max(0, currentTime.value - LEAD_FRACTION *
 const visibleSegments = computed(() => {
   const start = viewStart.value;
   const end = start + VIEW_SPAN_SEC;
+  const segments = displaySegments.value;
   const out = [];
-  for (let i = 0; i < props.segments.length; i += 1) {
-    const seg = props.segments[i];
+  for (let i = 0; i < segments.length; i += 1) {
+    const seg = segments[i];
     if (seg.end >= start && seg.start <= end) {
       out.push({ seg, index: i });
     }
@@ -178,6 +248,9 @@ async function build() {
           frame.style.width = '100%';
           frame.style.height = '100%';
         }
+        // A non-default speed picked before the player finished loading (or
+        // carried over from the previous video) must survive the (re)build.
+        applyPlaybackRate();
       },
       onStateChange: (event) => {
         // 1 = playing → track time; anything else → stop the ticker.
@@ -199,14 +272,25 @@ function seek(seg) {
   }
 }
 
+watch(playbackRate, () => {
+  applyPlaybackRate();
+});
+
 watch(
   videoId,
-  (id) => {
+  (id, previous) => {
+    // A different song is a different key — a leftover transpose offset would
+    // silently show wrong chords for it.
+    if (previous !== undefined) {
+      transpose.value = 0;
+    }
     if (!id) {
       return;
     }
     if (player && typeof player.loadVideoById === 'function') {
       player.loadVideoById(id);
+      // loadVideoById resets the playback rate to 1 on some clients.
+      applyPlaybackRate();
     } else {
       build();
     }
@@ -256,6 +340,52 @@ onBeforeUnmount(() => {
         </div>
         <div class="chord-player-playhead" :style="playheadStyle"></div>
       </div>
+
+      <!-- Practice controls: playback speed for everyone; transpose (with a
+           capo hint) only where the host view opts in. -->
+      <div class="chord-player-controls">
+        <div class="chord-player-control">
+          <span class="lx-label" id="chordPlayerSpeedLabel">{{ $t('pages.playAlong.speed') }}</span>
+          <LxContentSwitcher
+            id="chordPlayerSpeedSwitcher"
+            :items="speedOptions"
+            v-model="speedId"
+            label-id="chordPlayerSpeedLabel"
+          />
+        </div>
+        <div v-if="hasTranspose" class="chord-player-control">
+          <span class="lx-label">{{ $t('pages.playAlong.transpose') }}</span>
+          <LxButton
+            id="chordPlayerTransposeDown"
+            :label="$t('pages.playAlong.transposeDown')"
+            icon="subtract"
+            variant="icon-only"
+            kind="ghost"
+            :disabled="transpose <= TRANSPOSE_MIN"
+            @click="bumpTranspose(-1)"
+          />
+          <span class="chord-player-transpose-value lx-data">{{ transposeLabel }}</span>
+          <LxButton
+            id="chordPlayerTransposeUp"
+            :label="$t('pages.playAlong.transposeUp')"
+            icon="add"
+            variant="icon-only"
+            kind="ghost"
+            :disabled="transpose >= TRANSPOSE_MAX"
+            @click="bumpTranspose(1)"
+          />
+          <LxButton
+            v-if="transpose !== 0"
+            id="chordPlayerTransposeReset"
+            :label="$t('pages.playAlong.transposeReset')"
+            icon="undo"
+            variant="icon-only"
+            kind="ghost"
+            @click="transpose = 0"
+          />
+          <span v-if="capoHint" class="lx-secondary chord-player-capo-hint">{{ capoHint }}</span>
+        </div>
+      </div>
     </div>
 
     <!-- Fingering panel: a static reference with one diagram per distinct
@@ -297,6 +427,28 @@ onBeforeUnmount(() => {
   gap: 1rem;
   min-width: 0;
   flex: 1 1 auto;
+}
+
+/* Practice controls ------------------------------------------------------- */
+.chord-player-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+}
+.chord-player-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.chord-player-transpose-value {
+  min-width: 2ch;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.chord-player-capo-hint {
+  white-space: nowrap;
 }
 
 /* Diagram side panel ------------------------------------------------------ */

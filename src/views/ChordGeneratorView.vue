@@ -106,6 +106,7 @@ onMounted(async () => {
       :segments="song.segments"
       :duration="song.duration"
       show-diagrams
+      has-transpose
       :instrument="settingsStore.instrument"
       @update:instrument="selectInstrument"
     />
