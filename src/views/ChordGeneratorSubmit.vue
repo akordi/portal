@@ -1,5 +1,5 @@
 <script setup>
-import { LxButton, LxForm, LxInfoBox, LxRow, LxTextInput } from '@dativa-lv/lx-ui';
+import { LxButton, LxForm, LxInfoBox, LxRow, LxTextInput, lxDateUtils } from '@dativa-lv/lx-ui';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -35,11 +35,17 @@ const v = useVuelidate(rules, item);
 const submitting = ref(false);
 const jobStatus = ref(null);
 const queue = ref(null);
+// Daily submission allowance for the signed-in user, from
+// GET /me/chordgen-songs/limit. Null until loaded (or when the fetch fails) —
+// everything reading it must degrade to "no allowance info".
+const limitStatus = ref(null);
 
 const POLL_INTERVAL_MS = 3000;
 const POLL_TIMEOUT_MS = 20 * 60 * 1000;
 let pollTimer = null;
 let pollDeadline = null;
+
+const limitExhausted = computed(() => limitStatus.value?.remaining === 0);
 
 const formActions = computed(() => [
   {
@@ -48,6 +54,9 @@ const formActions = computed(() => [
     name: $t('pages.chordGenerator.form.submit'),
     kind: 'primary',
     busy: submitting.value,
+    // No point submitting into a guaranteed 429 — the status box explains
+    // when the next slot frees up.
+    disabled: limitExhausted.value,
   },
   { id: 'cancel', icon: 'cancel', name: $t('cancel'), kind: 'secondary' },
 ]);
@@ -78,6 +87,43 @@ const queueMessage = computed(() => {
     return depth;
   }
   return `${depth} · ${$t('pages.chordGenerator.queue.eta', { eta: wait })}`;
+});
+
+// Allowance line for the idle status box: how many submissions are left
+// today, or — when they're used up — when the next slot frees.
+const limitMessage = computed(() => {
+  if (!limitStatus.value) {
+    return '';
+  }
+  if (limitExhausted.value) {
+    const time = limitStatus.value.resetAt
+      ? lxDateUtils.formatDateTime(limitStatus.value.resetAt)
+      : null;
+    return time
+      ? $t('pages.chordGenerator.limit.exhaustedUntil', { time })
+      : $t('pages.chordGenerator.status.rateLimited');
+  }
+  return $t('pages.chordGenerator.limit.remaining', {
+    remaining: limitStatus.value.remaining,
+    limit: limitStatus.value.limit,
+  });
+});
+
+// The idle status box: queue snapshot as the headline with the allowance as
+// detail — flipped (and turned into a warning) when the allowance is used up,
+// since that's the thing actually stopping the user.
+const idleStatusBox = computed(() => {
+  if (limitExhausted.value) {
+    return { label: limitMessage.value, description: queueMessage.value, variant: 'warning' };
+  }
+  if (!queueMessage.value && !limitMessage.value) {
+    return null;
+  }
+  return {
+    label: queueMessage.value || limitMessage.value,
+    description: queueMessage.value ? limitMessage.value : '',
+    variant: 'info',
+  };
 });
 
 // While a job is in flight the same info box switches to live job status —
@@ -118,6 +164,14 @@ async function loadQueue() {
   } catch (err) {
     // Non-critical banner — a failed fetch just means no banner is shown.
   }
+}
+
+async function loadLimit() {
+  // Non-critical: without allowance info the form behaves as before (the
+  // server still enforces the limit on submit). A failed fetch clears the
+  // state so no stale allowance line lingers.
+  const resp = await chordgenSongService.getMyLimit().catch(() => null);
+  limitStatus.value = resp?.data ?? null;
 }
 
 // Best-effort split of a YouTube video title into artist/title, for the
@@ -254,6 +308,9 @@ async function onSubmit() {
     if (data.status === 'pending') {
       jobStatus.value = { status: 'pending' };
       startPolling(data.id);
+      // The accepted submission consumed an allowance slot — keep the
+      // status box honest for when the job finishes.
+      loadLimit();
       return;
     }
     if (data.status === 'exists' || data.status === 'cached') {
@@ -265,7 +322,16 @@ async function onSubmit() {
   } catch (err) {
     submitting.value = false;
     if (err?.response?.status === 429) {
-      notificationStore.pushError($t('pages.chordGenerator.status.rateLimited'));
+      // The 429 body carries the reset time — tell the user when they can
+      // try again, and sync the allowance box so the form disables itself.
+      const resetAt = err.response.data?.resetAt;
+      const time = resetAt ? lxDateUtils.formatDateTime(resetAt) : null;
+      notificationStore.pushError(
+        time
+          ? $t('pages.chordGenerator.limit.exhaustedUntil', { time })
+          : $t('pages.chordGenerator.status.rateLimited')
+      );
+      loadLimit();
       return;
     }
     notificationStore.pushError($t('pages.chordGenerator.errors.submitFailed'));
@@ -294,7 +360,7 @@ onMounted(async () => {
     item.value.title = String(route.query.title);
   }
   if (isAuthorized) {
-    await loadQueue();
+    await Promise.all([loadQueue(), loadLimit()]);
     await guessArtistTitle();
   }
 });
@@ -329,8 +395,12 @@ onUnmounted(() => {
     <LxRow v-if="jobStatus">
       <LxInfoBox :label="progressLabel" :description="progressDescription" variant="info" />
     </LxRow>
-    <LxRow v-else-if="queueMessage">
-      <LxInfoBox :label="queueMessage" variant="info" />
+    <LxRow v-else-if="idleStatusBox">
+      <LxInfoBox
+        :label="idleStatusBox.label"
+        :description="idleStatusBox.description"
+        :variant="idleStatusBox.variant"
+      />
     </LxRow>
     <LxForm
       :action-definitions="formActions"

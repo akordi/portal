@@ -88,13 +88,15 @@ onMounted(async () => {
     </template>
     <template #customItem="{ title, averageRating, ratingsCount }">
       <p class="lx-primary">{{ title }}</p>
-      <div class="lx-secondary" style="display: flex; align-items: center; gap: 0.35rem">
+      <!-- Rating shown only once a song has been rated — empty stars with a
+           "no ratings" note next to every fresh song read as clutter. -->
+      <div
+        v-if="ratingsCount > 0"
+        class="lx-secondary"
+        style="display: flex; align-items: center; gap: 0.35rem"
+      >
         <LxRating :model-value="averageRating" read-only kind="5stars" :focusable="false" />
-        <span>{{
-          ratingsCount > 0
-            ? `${averageRating.toFixed(1)} (${ratingsCount})`
-            : $t('pages.chordGenerator.rating.none')
-        }}</span>
+        <span>{{ `${averageRating.toFixed(1)} (${ratingsCount})` }}</span>
       </div>
     </template>
     <template #empty>

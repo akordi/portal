@@ -218,7 +218,13 @@
             "changesIn": "po",
             "songEnd": "Dainos pabaiga",
             "seconds": "s",
-            "generateOwn": "Nėra akordų laiko juostos šiai dainai? Pabandyk sugeneruoti pats."
+            "generateOwn": "Nėra akordų laiko juostos šiai dainai? Pabandyk sugeneruoti pats.",
+            "speed": "Greitis",
+            "transpose": "Transponuoti",
+            "transposeUp": "Pustoniu aukščiau",
+            "transposeDown": "Pustoniu žemiau",
+            "transposeReset": "Atstatyti tonaciją",
+            "capoHint": "Su capo {fret} skambės originalia tonacija"
         },
         "chordGenerator": {
             "title": "Akordų generatorius",
@@ -241,6 +247,10 @@
                 "eta": "Numatomas laukimo laikas: {eta}",
                 "none": "Eilė šiuo metu tuščia"
             },
+            "limit": {
+                "remaining": "Šiandien liko pateikimų: {remaining} iš {limit}",
+                "exhaustedUntil": "Dienos limitas pasiektas. Kitas pateikimas galimas: {time}"
+            },
             "status": {
                 "pending": "Laukiama eilėje...",
                 "position": "Prieš tave eilėje: {count}",
@@ -256,8 +266,7 @@
             },
             "rating": {
                 "yours": "Tavo įvertinimas",
-                "average": "Vidutinis įvertinimas",
-                "none": "Kol kas nėra įvertinimų"
+                "average": "Vidutinis įvertinimas"
             }
         },
         "akordiSongView": {
@@ -704,5 +713,8 @@
         "themeContrastDescription": "Tema su padidintu spalvų kontrastu, pagerinanti turinio skaitomumą.",
         "transparencyLinkLabel": "Prieinamumo standartai (WCAG Contrast (Minimum))",
         "animationsLinkLabel": "Prieinamumo standartai (WCAG Animation from Interactions)"
+    },
+    "chordDiagram": {
+        "unavailable": "Diagrama nepasiekiama"
     }
 }

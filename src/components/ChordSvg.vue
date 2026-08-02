@@ -1,5 +1,10 @@
 <script setup>
 import { computed, shallowRef, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import { parseChordName, dbSuffix, dbRoot } from '@/utils/chordName';
+
+const { t: $t } = useI18n();
 
 const props = defineProps({
   chord: {
@@ -32,21 +37,6 @@ const actualWidth = computed(() => {
   if (props.width) return props.width;
   return props.instrument === 'ukulele' || props.instrument === 'baritone-ukulele' ? 100 : 120;
 });
-
-const suffixMapping = {
-  '': 'major',
-  m: 'minor',
-  min: 'minor',
-  maj: 'major',
-  dim: 'dim',
-  diminished: 'dim',
-  aug: 'aug',
-  augmented: 'aug',
-  maj7add9: 'maj9',
-  '7add9': '9',
-  m7add9: 'm9',
-  5: '5',
-};
 
 const currentDb = shallowRef(null);
 
@@ -88,6 +78,16 @@ const instrumentSettings = computed(() => {
   };
 });
 
+// Parsed identity of the requested chord — via explicit root/suffix props
+// (chords library) or by parsing the free-form label (play-along timelines).
+// Slash chords parse into root/suffix/bass; garbage parses to null.
+const parsed = computed(() => {
+  if (props.root && props.suffix !== undefined) {
+    return { root: props.root, suffix: props.suffix, bass: null };
+  }
+  return parseChordName(props.chord || '');
+});
+
 const romanMap = {
   3: 'III',
   5: 'V',
@@ -100,66 +100,17 @@ const romanMap = {
   21: 'XXI',
 };
 
-function normalizeRoot(rawRoot, instrument) {
-  let root = rawRoot;
-  // Common mappings (Sharps to Flats where common)
-  const commonMapping = {
-    'A#': 'Bb',
-    'D#': 'Eb',
-    'G#': 'Ab',
-  };
-
-  if (commonMapping[root]) {
-    root = commonMapping[root];
-  }
-
-  if (instrument === 'ukulele') {
-    // Ukulele uses Flats for C# and F#
-    const ukeMapping = {
-      'C#': 'Db',
-      'F#': 'Gb',
-    };
-    if (ukeMapping[root]) {
-      root = ukeMapping[root];
-    }
-  } else {
-    // Guitar uses Csharp and Fsharp spelled out
-    // Maps C#/Db -> Csharp and F#/Gb -> Fsharp
-    const guitarMapping = {
-      Db: 'Csharp',
-      'C#': 'Csharp',
-      Gb: 'Fsharp',
-      'F#': 'Fsharp',
-    };
-    if (guitarMapping[root]) {
-      root = guitarMapping[root];
-    }
-  }
-  return root;
-}
-
+// Fingering positions for the requested chord. Slash chords fall back to the
+// base chord's fingering (D/F# → D shapes) — the displayed name keeps the
+// full label, and any bass-note nuance is a player's choice anyway. Chords
+// the database simply doesn't know resolve to null and render as a name-only
+// tile instead of disappearing.
 const chordData = computed(() => {
-  let root;
-  let suffix;
+  if (!parsed.value || !instrumentSettings.value.db) return null;
 
-  if (props.root && props.suffix !== undefined) {
-    root = props.root;
-    suffix = props.suffix;
-  } else if (props.chord) {
-    const match = props.chord.match(/^([A-G][#b]?)(.*)$/);
-    if (!match) return null;
-    [, root, suffix] = match;
-  } else {
-    return null;
-  }
+  const root = dbRoot(parsed.value.root, props.instrument);
+  const suffix = dbSuffix(parsed.value.suffix);
 
-  root = normalizeRoot(root, props.instrument);
-
-  if (suffixMapping[suffix]) {
-    suffix = suffixMapping[suffix];
-  }
-
-  if (!instrumentSettings.value.db) return null;
   const chordEntry = instrumentSettings.value.db.chords[root];
   if (!chordEntry) return null;
 
@@ -410,12 +361,41 @@ const renderData = computed(() => {
       </text>
     </svg>
   </div>
+  <!-- Name-only tile for chords the database has no fingering for — the
+       chord stays visible in diagram grids instead of silently vanishing.
+       Only shown once the db has loaded, so it can't flash during the async
+       import. -->
+  <div
+    v-else-if="currentDb && displayChordName"
+    class="chord-svg-container chord-svg-fallback"
+    :style="{ width: actualWidth + 'px', height: props.height + 'px' }"
+    :title="$t('chordDiagram.unavailable')"
+  >
+    <span class="chord-svg-fallback-name">{{ displayChordName }}</span>
+  </div>
 </template>
 
 <style scoped>
 .chord-svg-container {
   display: inline-block;
   margin: 4px;
+}
+
+.chord-svg-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 1px dashed var(--color-chrome);
+  border-radius: 4px;
+}
+
+.chord-svg-fallback-name {
+  color: var(--color-data);
+  font-size: 20px;
+  text-align: center;
+  padding: 0 4px;
+  overflow-wrap: anywhere;
 }
 
 .string-line {
