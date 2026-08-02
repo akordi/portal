@@ -5,6 +5,7 @@ import {
   capoForOffset,
   dbSuffix,
   dbRoot,
+  isNoChord,
 } from '@/utils/chordName';
 
 describe('parseChordName', () => {
@@ -121,5 +122,22 @@ describe('dbRoot', () => {
   it('leaves natural roots alone', () => {
     expect(dbRoot('C', 'guitar')).toBe('C');
     expect(dbRoot('G', 'ukulele')).toBe('G');
+  });
+});
+
+describe('isNoChord', () => {
+  it('recognises the common no-chord spellings', () => {
+    expect(isNoChord('N')).toBe(true);
+    expect(isNoChord('NC')).toBe(true);
+    expect(isNoChord('N.C.')).toBe(true);
+    expect(isNoChord('n.c.')).toBe(true);
+    expect(isNoChord(' N ')).toBe(true);
+  });
+
+  it('leaves real chords and garbage alone', () => {
+    expect(isNoChord('Am')).toBe(false);
+    expect(isNoChord('C')).toBe(false);
+    expect(isNoChord('')).toBe(false);
+    expect(isNoChord(null)).toBe(false);
   });
 });
