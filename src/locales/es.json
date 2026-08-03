@@ -684,7 +684,8 @@
         "validation": "Por favor, complete los campos"
     },
     "validations": {
-        "required": "Este campo es obligatorio"
+        "required": "Este campo es obligatorio",
+        "url": "Enlace no válido"
     },
     "accessibilitySettings": {
         "title": "Configuración de accesibilidad",

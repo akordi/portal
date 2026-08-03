@@ -684,7 +684,8 @@
         "validation": "Lūdzu aizpildiet laukus"
     },
     "validations": {
-        "required": "Šis lauks ir obligāts"
+        "required": "Šis lauks ir obligāts",
+        "url": "Nederīga saite"
     },
     "accessibilitySettings": {
         "title": "Piekļūstamības iestatījumi",
