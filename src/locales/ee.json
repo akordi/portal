@@ -684,7 +684,8 @@
         "validation": "Palun täitke väljad"
     },
     "validations": {
-        "required": "See väli on kohustuslik"
+        "required": "See väli on kohustuslik",
+        "url": "Vigane link"
     },
     "accessibilitySettings": {
         "title": "Juurdepääsetavuse seaded",

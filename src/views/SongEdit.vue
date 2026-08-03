@@ -15,6 +15,7 @@ import { useRoute, useRouter } from 'vue-router';
 import akordiService from '@/services/akordiService';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
+import { youtubeId } from '@/utils/chordSync';
 import useVuelidate from '@vuelidate/core';
 import * as validations from '@vuelidate/validators';
 
@@ -36,6 +37,7 @@ const item = ref({
   tagsIds: [],
   composersIds: [],
   poetsIds: [],
+  youtubeLink: '',
 });
 const props = defineProps({
   isNew: {
@@ -56,6 +58,11 @@ const loadCopyFrom = async () => {
     item.value.title = resp.data.title;
     item.value.id = resp.data.id;
     item.value.mainArtistId = String(resp.data.mainArtist.id);
+    // youtubeLink is stored as a bare 11-char video id, so expand it to a
+    // watch URL for editing.
+    item.value.youtubeLink = resp.data.youtubeLink
+      ? `https://www.youtube.com/watch?v=${resp.data.youtubeLink}`
+      : '';
     item.value.composersIds = resp.data.composers?.map((i) => String(i.id)) || [];
     item.value.poetsIds = resp.data.poets?.map((i) => String(i.id)) || [];
     item.value.performersIds = resp.data.performers?.map((i) => String(i.id)) || [];
@@ -107,12 +114,14 @@ const loadCopyFrom = async () => {
 };
 
 const required = withI18nMessage(validations.required);
+const url = withI18nMessage(validations.url);
 const rules = {
   title: { required },
   body: { required },
   mainArtistId: { required },
   composers: {},
   poets: {},
+  youtubeLink: { url },
 };
 
 const v = useVuelidate(rules, item);
@@ -147,6 +156,13 @@ function mapTag(id) {
   return tags.value.find((tag) => tag.id === +id);
 }
 
+// The API stores youtube_link as a bare video id, so strip the pasted URL
+// down before submitting. A value youtubeId() can't parse is sent as typed.
+function toYoutubeId(link) {
+  const trimmed = (link || '').trim();
+  return youtubeId(trimmed) || trimmed;
+}
+
 async function actionClicked(actionName) {
   if (actionName === 'save') {
     const isFormCorrect = await v.value.$validate();
@@ -165,6 +181,7 @@ async function actionClicked(actionName) {
         poets: item.value.poetsIds.map((i) => mapArtistFromId(i)),
         composers: item.value.composersIds.map((i) => mapArtistFromId(i)),
         tags: item.value.tagsIds.map((i) => mapTag(i)),
+        youtubeLink: toYoutubeId(item.value.youtubeLink),
       };
 
       await akordiService.saveEdit(edit);
@@ -319,6 +336,18 @@ onUnmounted(() => {
         variant="dropdown"
         :preloaded-items="preloadedTags"
       />
+    </LxRow>
+    <LxRow :label="$t('song.youtubeLink')">
+      <LxTextInput
+        id="youtubeInput"
+        v-model="item.youtubeLink"
+        :invalid="v.youtubeLink.$error"
+        :invalidation-message="v.youtubeLink.$error ? v.youtubeLink.$errors[0].$message : ''"
+      />
+      <br />
+      <a v-if="item.youtubeLink" :href="item.youtubeLink" target="_blank">
+        {{ item.youtubeLink }}
+      </a>
     </LxRow>
     <LxRow :label="$t('song.body')" :required="true" inputId="bodyInput">
       <template #info>{{ $t('song.bodyTooltip') }}</template>
