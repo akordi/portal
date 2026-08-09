@@ -81,6 +81,11 @@ const nav = computed(() => {
       icon: 'add-item',
       to: { name: 'songNew' },
     },
+    {
+      label: $t('pages.chordGenerator.title'),
+      icon: 'file-audio',
+      to: { name: 'chordGeneratorList' },
+    },
   ];
 
   if (authStore.isAuthorized) {
