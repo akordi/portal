@@ -13,7 +13,7 @@
     "test-watch": "vitest"
   },
   "dependencies": {
-    "@dativa-lv/lx-ui": "2.2.11",
+    "@dativa-lv/lx-ui": "2.2.12",
     "@ory/client": "^1.22.66",
     "@tombatossals/chords-db": "^0.5.1",
     "@vuelidate/core": "^2.0.3",
@@ -25,7 +25,7 @@
     "axios": "1.19.0",
     "chord-transposer": "^3.0.9",
     "pinia": "^3.0.4",
-    "vue": "^3.5.40",
+    "vue": "^3.5.41",
     "vue-gtag": "3.7.1",
     "vue-i18n": "11.4.8",
     "vue-router": "5.2.0"
