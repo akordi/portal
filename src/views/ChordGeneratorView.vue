@@ -1,8 +1,8 @@
 <script setup>
-import { LxLoaderView, LxRating } from '@dativa-lv/lx-ui';
+import { LxButton, LxLoaderView, LxRating } from '@dativa-lv/lx-ui';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import ChordPlayer from '@/components/ChordPlayer.vue';
 import chordgenSongService from '@/services/chordgenSongService';
@@ -14,6 +14,7 @@ import useViewStore from '@/stores/useViewStore';
 
 const $t = useI18n().t;
 const route = useRoute();
+const router = useRouter();
 const viewStore = useViewStore();
 const notificationStore = useNotifyStore();
 const authStore = useAuthStore();
@@ -61,6 +62,14 @@ async function loadMyRating() {
   }
 }
 
+// Catalog songs resolved through this page (song.songUrl set, see
+// getChordgenSong's catalog fallback) can still be rated (song_chord_rating,
+// separate from chordgen_song_rating) — this is just a shortcut back to the
+// lyrics, not a "no rating here" signal.
+function goToSong() {
+  router.push({ name: 'akordiSongView', params: { url: song.value.songUrl } });
+}
+
 // Same behaviour as SongView/ChordsLibraryView: the choice applies immediately
 // for everyone (device-local setting) and is also saved to the account
 // preferences when signed in.
@@ -101,6 +110,10 @@ onMounted(async () => {
   <LxLoaderView :loading="loading">
     <!-- The page header (viewStore.title, set in loadSong) already shows the
          title — no need to repeat it here. -->
+    <div v-if="song.songUrl" style="margin-bottom: 1rem">
+      <LxButton kind="ghost" icon="undo" :label="$t('pages.playAlong.exit')" @click="goToSong" />
+    </div>
+
     <ChordPlayer
       :video-url="song.youtubeUrl"
       :segments="song.segments"

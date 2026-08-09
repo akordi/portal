@@ -20,7 +20,6 @@ import { useRoute, useRouter } from 'vue-router';
 import AbcViewer from '@/components/AbcViewer.vue';
 import { event as gtagEvent, pageview } from 'vue-gtag';
 import ChordSvg from '@/components/ChordSvg.vue';
-import ChordPlayer from '@/components/ChordPlayer.vue';
 import { youtubeId } from '@/utils/chordSync';
 import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
 import useAuthStore from '@/stores/useAuthStore';
@@ -61,16 +60,13 @@ const hasAbc = computed(() => item.value.bodyAbc);
 
 // Play-along: derived from the loaded song. youtubeLink is stored as a bare
 // 11-char video id, so expand it to a watch URL that youtubeId() understands.
-// chordTimeline may be null/absent → segments/duration default to empty.
+// chordTimeline may be null/absent → segments default to empty.
 const videoUrl = computed(() =>
   item.value.youtubeLink ? `https://www.youtube.com/watch?v=${item.value.youtubeLink}` : ''
 );
 const segments = computed(() => item.value.chordTimeline?.segments ?? []);
-const duration = computed(() => item.value.chordTimeline?.duration ?? 0);
 // A song is playable only with a resolvable video AND at least one chord segment.
 const playable = computed(() => !!youtubeId(videoUrl.value) && segments.value.length > 0);
-const playAlongEnabled = true;
-const playAlong = ref(false);
 const fontSize = ref(1);
 const offsetFormatted = computed(() => {
   if (bodyTransposedIndex.value > 0) {
@@ -264,19 +260,16 @@ watch(autoScrollerSpeed, (level) => {
   startAutoScroll();
 });
 
-// Toggle play-along. Entering stops the auto-scroller so the two "motion"
-// features don't fight; the toolbar (and its scroll control) is hidden anyway.
-function togglePlayAlong() {
-  playAlong.value = !playAlong.value;
-  gtagEvent('play_along', { active: playAlong.value, song: songUrlParam.value });
-  if (playAlong.value) {
-    autoScrollerSpeed.value = 0;
-  }
+// "Spēlēt līdzi" navigates to the chordgen page, which resolves this catalog
+// song's own chord_timeline (see getChordgenSong's catalog fallback) — no
+// inline player on this page anymore.
+function goToPlayAlong() {
+  gtagEvent('play_along', { song: songUrlParam.value });
+  router.push({ name: 'chordGeneratorView', params: { id: item.value.id } });
 }
 
 const loadSong = async () => {
   try {
-    playAlong.value = false;
     const songId = akordiService.parseUrl(songUrlParam.value);
 
     // Fire the landing page_view from the route itself, before the song API
@@ -618,25 +611,6 @@ onUnmounted(() => {
 .play-along-cta-hint {
   margin: 0;
 }
-/* Exit button above the player, left-aligned like a back control. */
-.play-along-exit {
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 0.75rem;
-}
-/* The play-along section is a CSS-grid item (LxForm), which defaults to
-   min-width:auto and would refuse to shrink below a wide child (the video).
-   Allow it to shrink to the grid track so nothing overflows on mobile. */
-#song-view-form-playAlong {
-  min-width: 0;
-}
-/* Chord diagrams below the player in play-along mode. */
-.play-along-chords {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  margin-top: 1rem;
-}
 </style>
 <template>
   <LxLoaderView :loading="loading">
@@ -647,7 +621,6 @@ onUnmounted(() => {
       :show-post-header-info="true"
       :show-pre-header-info="true"
       kind="compact"
-      :show-footer="!playAlong"
       :sticky-header="false"
       :sticky-footer="true"
     >
@@ -756,41 +729,20 @@ onUnmounted(() => {
         </LxRow>
       </template>
       <!-- Play-along entry — a prominent CTA at the top of the song content,
-           kept out of the crowded footer toolbar. Shown only for playable
-           songs when not already in play-along. -->
-      <LxSection v-if="playAlongEnabled && playable && !playAlong" id="playAlongEnter">
+           kept out of the crowded footer toolbar. Navigates to the chordgen
+           page, which resolves this song's own chord_timeline. -->
+      <LxSection v-if="playable" id="playAlongEnter">
         <div class="play-along-cta">
           <LxButton
             kind="primary"
             icon="play"
             :label="$t('pages.playAlong.toggle')"
-            @click="togglePlayAlong"
+            @click="goToPlayAlong"
           />
           <p class="lx-description play-along-cta-hint">{{ $t('pages.playAlong.hint') }}</p>
         </div>
       </LxSection>
-      <LxSection v-if="playAlong" id="playAlong">
-        <div class="play-along-exit">
-          <LxButton
-            kind="ghost"
-            icon="undo"
-            :label="$t('pages.playAlong.exit')"
-            @click="togglePlayAlong"
-          />
-        </div>
-        <ChordPlayer :video-url="videoUrl" :segments="segments" :duration="duration" />
-        <!-- Chord fingering diagrams, same as the read view, so the player can
-             see how to finger each chord on the timeline. -->
-        <div v-if="hasChords" class="play-along-chords">
-          <ChordSvg
-            :chord="chord"
-            :instrument="settingsStore.instrument"
-            v-for="chord in chords"
-            :key="chord"
-          ></ChordSvg>
-        </div>
-      </LxSection>
-      <LxSection v-show="!playAlong && hasAbc && settingsStore.showAbc" id="bodyAbc">
+      <LxSection v-show="hasAbc && settingsStore.showAbc" id="bodyAbc">
         <AbcViewer
           :abc="item.bodyAbc"
           @audio-unsupported="
@@ -798,7 +750,7 @@ onUnmounted(() => {
           "
         />
       </LxSection>
-      <LxSection v-show="!playAlong && hasChords && settingsStore.showChords" id="chords">
+      <LxSection v-show="hasChords && settingsStore.showChords" id="chords">
         <div style="display: flex; flex-wrap: wrap; align-items: flex-start">
           <ChordSvg
             :chord="chord"
