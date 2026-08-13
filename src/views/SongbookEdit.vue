@@ -169,11 +169,12 @@ function confirmDelete() {
 
 const formActions = computed(() => [
   { id: 'save', name: $t('save'), icon: 'save', kind: 'primary', busy: savingName.value },
+  { id: 'cancel', name: $t('cancel'), icon: 'cancel', kind: 'secondary' },
   {
     id: 'delete',
     name: $t('delete'),
     icon: 'delete',
-    kind: 'tertiary',
+    kind: 'additional',
     destructive: true,
   },
 ]);
@@ -184,6 +185,9 @@ function formActionClicked(actionName) {
   }
   if (actionName === 'delete') {
     confirmDelete();
+  }
+  if (actionName === 'cancel') {
+    router.push({ name: 'songbook' });
   }
 }
 
@@ -209,7 +213,7 @@ onMounted(async () => {
     <LxForm
       kind="compact"
       :column-count="1"
-      :show-header="false"
+      :show-header="true"
       :action-definitions="formActions"
       @action-click="formActionClicked"
     >
