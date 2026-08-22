@@ -104,6 +104,10 @@ const mountView = async (transposeOffset) => {
 };
 
 const badge = (wrapper) => wrapper.findComponent({ name: 'LxStateDisplay' });
+const badgeSection = (wrapper) =>
+  wrapper
+    .findAllComponents({ name: 'LxSection' })
+    .find((s) => s.props('id') === 'transposedNotice');
 const resetButton = (wrapper) =>
   wrapper.findAllComponents({ name: 'LxButton' }).find((b) => b.props('icon') === 'reset');
 const transposeLabel = (wrapper) => wrapper.find('.toolbar-label');
@@ -125,6 +129,11 @@ describe('SongView transposed indicator', () => {
     );
     expect(resetButton(wrapper)).toBeTruthy();
     expect(transposeLabel(wrapper).classes()).toContain('transpose-active');
+    // The badge belongs in the song content, not the form's #postHeader slot:
+    // LX collapses the header groups into a popover at <=800px, which hid it
+    // on every phone.
+    expect(badgeSection(wrapper)).toBeTruthy();
+    expect(badgeSection(wrapper).findComponent({ name: 'LxStateDisplay' }).exists()).toBe(true);
     // The sheet itself really is in the shifted key.
     expect(wrapper.html()).toContain('Bm');
   });
@@ -141,6 +150,7 @@ describe('SongView transposed indicator', () => {
     const wrapper = await mountView(0);
 
     expect(badge(wrapper).exists()).toBe(false);
+    expect(badgeSection(wrapper)).toBeUndefined();
     expect(resetButton(wrapper)).toBeUndefined();
     expect(transposeLabel(wrapper).classes()).not.toContain('transpose-active');
   });

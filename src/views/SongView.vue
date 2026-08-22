@@ -80,8 +80,8 @@ const offsetFormatted = computed(() => {
 });
 
 // A restored (or manually applied) transposition silently changes the key the
-// sheet is rendered in, so the page has to say so — see the badge in the header
-// and the highlighted toolbar label + reset action in the footer.
+// sheet is rendered in, so the page has to say so — see the badge above the
+// sheet and the highlighted toolbar label + reset action in the footer.
 const isTransposed = computed(() => bodyTransposedIndex.value !== 0);
 const transposedStateDictionary = computed(() => [
   {
@@ -620,15 +620,9 @@ onUnmounted(() => {
   margin-top: 1rem;
 }
 
-/* Transposed-song indicator: state badge next to the song date, and the
-   footer transpose label picked out while the sheet is off its written key. */
-.song-post-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
+/* Transposed-song indicator: the footer transpose label is picked out while
+   the sheet is off its written key. The badge above the sheet needs no rules of
+   its own — LxSection spacing and LxStateDisplay carry it. */
 #songToolbarGroup .toolbar-label.transpose-active {
   color: var(--color-brand);
   font-weight: 600;
@@ -736,15 +730,7 @@ onUnmounted(() => {
         </LxToolbarGroup>
       </template>
       <template #postHeader>
-        <div class="song-post-header">
-          <span>{{ item.createdAt }}</span>
-          <LxStateDisplay
-            v-if="isTransposed"
-            id="transposedState"
-            value="transposed"
-            :dictionary="transposedStateDictionary"
-          />
-        </div>
+        {{ item.createdAt }}
       </template>
       <template #postHeaderInfo>
         <LxRow :label="$t('song.performer')" v-if="item.performers?.length > 0">
@@ -780,6 +766,17 @@ onUnmounted(() => {
           <p class="lx-data">{{ lxDateUtils.formatDateTime(item.updatedDate) }}</p>
         </LxRow>
       </template>
+      <!-- Transposed-song badge. It sits in the content, not in the form's
+           #postHeader slot: LX collapses the header's pre/post groups into the
+           header info popover at <=800px, which would hide the indicator on
+           every phone — where most of this site's traffic is. -->
+      <LxSection v-if="isTransposed" id="transposedNotice">
+        <LxStateDisplay
+          id="transposedState"
+          value="transposed"
+          :dictionary="transposedStateDictionary"
+        />
+      </LxSection>
       <!-- Play-along entry — a prominent CTA at the top of the song content,
            kept out of the crowded footer toolbar. Navigates to the chordgen
            page, which resolves this song's own chord_timeline. -->
