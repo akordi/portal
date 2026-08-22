@@ -321,6 +321,12 @@
             "transposeSaveError": "Nepavyko išsaugoti transponavimo",
             "audioNotSupported": "Jūsų naršyklė nepalaiko garso",
             "transposeHeader": "Transponuoti ({offset})",
+            "transposed": {
+                "badge": "Transponuota {offset}",
+                "tooltip": "Daina rodoma transponuota {offset} pustonių nuo originalios tonacijos. Spustelėk „Originalas“, kad grąžintum užrašytą tonaciją.",
+                "reset": "Originalas",
+                "resetDescription": "Grąžinti originalią dainos tonaciją"
+            },
             "addToList": {
                 "label": "Pridėti į dainų knygą",
                 "description": "Pridėkite šią dainą į vieną iš savo dainų knygų",

@@ -8,6 +8,7 @@ import {
   LxCheckbox,
   LxRow,
   LxSection,
+  LxStateDisplay,
   LxTextInput,
   LxToolbar,
   LxToolbarGroup,
@@ -77,6 +78,20 @@ const offsetFormatted = computed(() => {
   }
   return '+0'; // + is added just to avoid shift of the text
 });
+
+// A restored (or manually applied) transposition silently changes the key the
+// sheet is rendered in, so the page has to say so — see the badge in the header
+// and the highlighted toolbar label + reset action in the footer.
+const isTransposed = computed(() => bodyTransposedIndex.value !== 0);
+const transposedStateDictionary = computed(() => [
+  {
+    value: 'transposed',
+    displayName: $t('pages.akordiSongView.transposed.badge', { offset: offsetFormatted.value }),
+    displayType: 'blue-full',
+    displayShape: 'circle',
+    title: $t('pages.akordiSongView.transposed.tooltip', { offset: offsetFormatted.value }),
+  },
+]);
 
 const autoScrollerSpeed = ref(0);
 const TARGET_FPS = 60;
@@ -512,6 +527,10 @@ async function actionClicked(action) {
     applyTranspose(bodyTransposedIndex.value);
     await persistTranspose();
   }
+  if (actionName === 'transposeReset') {
+    applyTranspose(0);
+    await persistTranspose();
+  }
   if (actionName === 'fontUp') {
     fontSize.value += 0.2;
   }
@@ -601,6 +620,20 @@ onUnmounted(() => {
   margin-top: 1rem;
 }
 
+/* Transposed-song indicator: state badge next to the song date, and the
+   footer transpose label picked out while the sheet is off its written key. */
+.song-post-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+#songToolbarGroup .toolbar-label.transpose-active {
+  color: var(--color-brand);
+  font-weight: 600;
+}
+
 /* Play-along entry CTA — sits at the top of the song content. */
 .play-along-cta {
   display: flex;
@@ -628,7 +661,7 @@ onUnmounted(() => {
         <LxToolbarGroup id="songToolbarGroup">
           <LxToolbar :noBorders="true">
             <template #leftArea>
-              <span class="lx-data toolbar-label">{{
+              <span class="lx-data toolbar-label" :class="{ 'transpose-active': isTransposed }">{{
                 $t('pages.akordiSongView.transposeHeader', {
                   offset: offsetFormatted,
                 })
@@ -646,6 +679,17 @@ onUnmounted(() => {
                 icon="move-down"
                 :label="$t('pages.akordiSongView.transposeDown.label')"
                 @click="actionClicked('transposeDown')"
+              />
+              <!-- Way back to the written key. Keeps its text label on small
+                   screens, where the toolbar labels above are hidden. -->
+              <LxButton
+                v-if="isTransposed"
+                id="transposeReset"
+                kind="ghost"
+                icon="reset"
+                :label="$t('pages.akordiSongView.transposed.reset')"
+                :title="$t('pages.akordiSongView.transposed.resetDescription')"
+                @click="actionClicked('transposeReset')"
               />
               <div class="lx-divider"></div>
               <span class="lx-data toolbar-label">{{
@@ -692,7 +736,15 @@ onUnmounted(() => {
         </LxToolbarGroup>
       </template>
       <template #postHeader>
-        {{ item.createdAt }}
+        <div class="song-post-header">
+          <span>{{ item.createdAt }}</span>
+          <LxStateDisplay
+            v-if="isTransposed"
+            id="transposedState"
+            value="transposed"
+            :dictionary="transposedStateDictionary"
+          />
+        </div>
       </template>
       <template #postHeaderInfo>
         <LxRow :label="$t('song.performer')" v-if="item.performers?.length > 0">

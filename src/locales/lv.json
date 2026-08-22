@@ -321,6 +321,12 @@
             "transposeSaveError": "Neizdevās saglabāt transpozīciju",
             "audioNotSupported": "Jūsu pārlūks neatbalsta audio",
             "transposeHeader": "Transponēt ({offset})",
+            "transposed": {
+                "badge": "Transponēts {offset}",
+                "tooltip": "Dziesma parādīta transponēta par {offset} pustoņiem no oriģinālās toņkārtas. Spied “Oriģināls”, lai atgrieztos pie ierakstītās toņkārtas.",
+                "reset": "Oriģināls",
+                "resetDescription": "Atgriezt dziesmas oriģinālo toņkārtu"
+            },
             "addToList": {
                 "label": "Pievienot dziesmu grāmatai",
                 "description": "Pievienot šo dziesmu vienai no savām dziesmu grāmatām",

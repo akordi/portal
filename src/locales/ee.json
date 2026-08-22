@@ -321,6 +321,12 @@
             "transposeSaveError": "Transponeeringut ei õnnestunud salvestada",
             "audioNotSupported": "Teie brauser ei toeta heli",
             "transposeHeader": "Transponeeri ({offset})",
+            "transposed": {
+                "badge": "Transponeeritud {offset}",
+                "tooltip": "Laulu kuvatakse originaalhelistikust {offset} pooltooni võrra transponeerituna. Vajuta „Originaal“, et algne helistik taastada.",
+                "reset": "Originaal",
+                "resetDescription": "Taasta laulu algne helistik"
+            },
             "addToList": {
                 "label": "Lisa lauluraamatusse",
                 "description": "Lisa see laul ühte oma lauluraamatusse",

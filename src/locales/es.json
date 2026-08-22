@@ -321,6 +321,12 @@
             "transposeSaveError": "No se pudo guardar la transposición",
             "audioNotSupported": "Su navegador no soporta audio",
             "transposeHeader": "Transportar ({offset})",
+            "transposed": {
+                "badge": "Transportada {offset}",
+                "tooltip": "La canción se muestra transportada {offset} semitonos respecto a la tonalidad original. Pulsa «Original» para volver a la tonalidad escrita.",
+                "reset": "Original",
+                "resetDescription": "Volver a la tonalidad original de la canción"
+            },
             "addToList": {
                 "label": "Añadir al cancionero",
                 "description": "Añade esta canción a uno de tus cancioneros",
