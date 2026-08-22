@@ -674,12 +674,15 @@ onUnmounted(() => {
                 :label="$t('pages.akordiSongView.transposeDown.label')"
                 @click="actionClicked('transposeDown')"
               />
-              <!-- Way back to the written key. Keeps its text label on small
-                   screens, where the toolbar labels above are hidden. -->
+              <!-- Way back to the written key. Icon-only like every other
+                   control in this toolbar: a text label cost ~150px of a
+                   390px-wide sticky footer and pushed the autoscroll buttons
+                   off screen. The badge above the sheet carries the wording. -->
               <LxButton
                 v-if="isTransposed"
                 id="transposeReset"
                 kind="ghost"
+                variant="icon-only"
                 icon="reset"
                 :label="$t('pages.akordiSongView.transposed.reset')"
                 :title="$t('pages.akordiSongView.transposed.resetDescription')"

@@ -128,6 +128,9 @@ describe('SongView transposed indicator', () => {
       'pages.akordiSongView.transposed.tooltip +2'
     );
     expect(resetButton(wrapper)).toBeTruthy();
+    // Icon-only: a text label here is ~2.5x the width of an icon button and
+    // pushed the autoscroll controls off a 390px sticky toolbar.
+    expect(resetButton(wrapper).props('variant')).toBe('icon-only');
     expect(transposeLabel(wrapper).classes()).toContain('transpose-active');
     // The badge belongs in the song content, not the form's #postHeader slot:
     // LX collapses the header groups into a popover at <=800px, which hid it
