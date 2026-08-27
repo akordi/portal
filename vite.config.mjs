@@ -3,7 +3,6 @@
 /* eslint-disable import/no-extraneous-dependencies -- vite mostly should use dev dependencies */
 import vue from '@vitejs/plugin-vue';
 import dns from 'dns';
-import path from 'path';
 import { fileURLToPath } from 'url';
 import { defineConfig, loadEnv } from 'vite';
 import { createHtmlPlugin } from 'vite-plugin-html';
@@ -155,7 +154,7 @@ export default defineConfig((command) => {
     server: serving ? devServerSettings(envVariables) : {},
     test: {
       globals: true,
-      setupFiles: [path.resolve(__dirname, './tests/setup.js')],
+      setupFiles: [fileURLToPath(new URL('./tests/setup.js', import.meta.url))],
       environment: 'jsdom',
       isolate: false,
       include: ['tests/unit/**/*.js'],

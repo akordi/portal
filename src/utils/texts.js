@@ -136,9 +136,13 @@ export function shellTexts() {
     idleModalLabel: t.t('lx.shell.idleModalLabel'),
     idleModalPrimaryLabel: t.t('lx.shell.idleModalPrimaryLabel'),
     idleModalSecondaryLabel: t.t('lx.shell.idleModalSecondaryLabel'),
-    descriptionMinutes: t.t('lx.shell.descriptionMinutes'),
-    descriptionMinutesSmall: t.t('lx.shell.descriptionMinutesSmall'),
-    idleDescription: t.t('lx.shell.idleDescription'),
+    // LxShell does its own `{0}` substitution on these three (the remaining
+    // countdown), so the placeholder has to survive vue-i18n first — an
+    // uninterpolated one is stripped, not passed through. Feeding it in as the
+    // interpolation value hands LxShell the literal `{0}` it looks for.
+    descriptionMinutes: t.t('lx.shell.descriptionMinutes', ['{0}']),
+    descriptionMinutesSmall: t.t('lx.shell.descriptionMinutesSmall', ['{0}']),
+    idleDescription: t.t('lx.shell.idleDescription', ['{0}']),
     themeTitle: t.t('lx.shell.themeTitle'),
     themeAuto: t.t('lx.shell.themeAuto'),
     themeLight: t.t('lx.shell.themeLight'),
@@ -175,7 +179,6 @@ export function fileUploaderTexts() {
   return {
     clear: t.t('lx.fileUploader.clear'),
     buttonLabel: t.t('lx.fileUploader.buttonLabel'),
-    uploaderDescription: t.t('lx.fileUploader.uploaderDescription'),
     draggablePlaceholder: t.t('lx.fileUploader.draggablePlaceholder'),
     placeholder: t.t('lx.fileUploader.placeholder'),
     notFoundSearch: t.t('lx.fileUploader.notFoundSearch'),
@@ -254,7 +257,6 @@ export function useFileUploaderTexts() {
   return {
     clear: t.t('lx.fileUploader.clear'),
     buttonLabel: t.t('lx.fileUploader.buttonLabel'),
-    uploaderDescription: t.t('lx.fileUploader.uploaderDescription'),
     draggablePlaceholder: t.t('lx.fileUploader.draggablePlaceholder'),
     placeholder: t.t('lx.fileUploader.placeholder'),
     notFoundSearch: t.t('lx.fileUploader.notFoundSearch'),

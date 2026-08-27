@@ -47,6 +47,13 @@ let pollDeadline = null;
 
 const limitExhausted = computed(() => limitStatus.value?.remaining === 0);
 
+// No live worker means nothing is draining the queue: a job submitted now
+// would sit pending until the poll deadline expires, so the form asks the user
+// to come back later instead of accepting it. The API reports -1 when it
+// couldn't determine the count — treat that (and a failed queue fetch, which
+// leaves `queue` null) as "unknown" and stay out of the way.
+const noWorkersOnline = computed(() => queue.value?.workersOnline === 0);
+
 const formActions = computed(() => [
   {
     id: 'submit',
@@ -54,9 +61,9 @@ const formActions = computed(() => [
     name: $t('pages.chordGenerator.form.submit'),
     kind: 'primary',
     busy: submitting.value,
-    // No point submitting into a guaranteed 429 — the status box explains
-    // when the next slot frees up.
-    disabled: limitExhausted.value,
+    // No point submitting into a guaranteed 429, or into a queue with nobody
+    // to drain it — the status box explains both cases.
+    disabled: limitExhausted.value || noWorkersOnline.value,
   },
   { id: 'cancel', icon: 'cancel', name: $t('cancel'), kind: 'secondary' },
 ]);
@@ -113,6 +120,15 @@ const limitMessage = computed(() => {
 // detail — flipped (and turned into a warning) when the allowance is used up,
 // since that's the thing actually stopping the user.
 const idleStatusBox = computed(() => {
+  // Ranked above the allowance: having slots left doesn't help while there is
+  // no worker to run the job.
+  if (noWorkersOnline.value) {
+    return {
+      label: $t('pages.chordGenerator.workers.offline'),
+      description: $t('pages.chordGenerator.workers.offlineHint'),
+      variant: 'warning',
+    };
+  }
   if (limitExhausted.value) {
     return { label: limitMessage.value, description: queueMessage.value, variant: 'warning' };
   }

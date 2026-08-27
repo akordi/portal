@@ -30,9 +30,9 @@
             "idleModalLabel": "Tuvojas sesijas beigas",
             "idleModalPrimaryLabel": "Turpināt darbu",
             "idleModalSecondaryLabel": "Beigt darbu",
-            "descriptionMinutes": "Līdz sesijas beigām ir palikušas {count} minūtes",
-            "descriptionMinutesSmall": "un {count} sekundes",
-            "idleDescription": "Līdz sesijas beigām ir palikušas {count} sekundes",
+            "descriptionMinutes": "Līdz sesijas beigām ir palikušas {0} minūtes",
+            "descriptionMinutesSmall": "un {0} sekundes",
+            "idleDescription": "Līdz sesijas beigām ir palikušas {0} sekundes",
             "themeTitle": "Noformējuma izvēle",
             "themeAuto": "Automātiskais režīms",
             "themeLight": "Gaišais režīms",
@@ -246,6 +246,10 @@
                 "depth": "Rindā: {pending}, apstrādē: {running}",
                 "eta": "Aptuvenais gaidīšanas laiks: {eta}",
                 "none": "Rinda pašlaik ir tukša"
+            },
+            "workers": {
+                "offline": "Ģenerators pašlaik nav pieejams",
+                "offlineHint": "Neviens akordu ģenerēšanas dators šobrīd nav tiešsaistē, tāpēc jaunus iesniegumus nevar apstrādāt. Lūdzu, atgriezies vēlāk!"
             },
             "limit": {
                 "remaining": "Šodien atlikuši iesniegumi: {remaining} no {limit}",

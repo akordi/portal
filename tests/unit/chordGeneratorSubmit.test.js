@@ -67,6 +67,7 @@ const queueSnapshot = (overrides = {}) => ({
     running: 0,
     avgProcessingSeconds: 60,
     estimatedWaitSeconds: 0,
+    workersOnline: 1,
     ...overrides,
   },
 });
@@ -219,5 +220,73 @@ describe('ChordGeneratorSubmit daily allowance', () => {
     await flushPromises();
 
     expect(pushError).toHaveBeenCalledWith('pages.chordGenerator.status.rateLimited');
+  });
+});
+
+describe('ChordGeneratorSubmit worker fleet', () => {
+  it('warns and blocks submission when no worker is online', async () => {
+    getQueue.mockResolvedValue(queueSnapshot({ workersOnline: 0 }));
+
+    const wrapper = mount(ChordGeneratorSubmit);
+    await flushPromises();
+
+    const box = wrapper.findComponent({ name: 'LxInfoBox' });
+    expect(box.props('variant')).toBe('warning');
+    expect(box.props('label')).toBe('pages.chordGenerator.workers.offline');
+    expect(box.props('description')).toBe('pages.chordGenerator.workers.offlineHint');
+
+    const actions = wrapper.findComponent({ name: 'LxForm' }).props('actionDefinitions');
+    expect(actions.find((a) => a.id === 'submit').disabled).toBe(true);
+  });
+
+  it('outranks the allowance line — a free slot is no use with nobody to run it', async () => {
+    getQueue.mockResolvedValue(queueSnapshot({ workersOnline: 0 }));
+    getMyLimit.mockResolvedValue(
+      limitSnapshot({ used: 5, remaining: 0, resetAt: '2026-08-03T05:00:00Z' })
+    );
+
+    const wrapper = mount(ChordGeneratorSubmit);
+    await flushPromises();
+
+    const box = wrapper.findComponent({ name: 'LxInfoBox' });
+    expect(box.props('label')).toBe('pages.chordGenerator.workers.offline');
+  });
+
+  it('leaves the form alone while workers are online', async () => {
+    getQueue.mockResolvedValue(queueSnapshot({ workersOnline: 2 }));
+
+    const wrapper = mount(ChordGeneratorSubmit);
+    await flushPromises();
+
+    const box = wrapper.findComponent({ name: 'LxInfoBox' });
+    expect(box.props('variant')).toBe('info');
+    const actions = wrapper.findComponent({ name: 'LxForm' }).props('actionDefinitions');
+    expect(actions.find((a) => a.id === 'submit').disabled).toBe(false);
+  });
+
+  it('treats an unknown count (-1) as no reason to warn', async () => {
+    getQueue.mockResolvedValue(queueSnapshot({ workersOnline: -1 }));
+
+    const wrapper = mount(ChordGeneratorSubmit);
+    await flushPromises();
+
+    const box = wrapper.findComponent({ name: 'LxInfoBox' });
+    expect(box.props('label')).toBe('pages.chordGenerator.queue.none');
+    const actions = wrapper.findComponent({ name: 'LxForm' }).props('actionDefinitions');
+    expect(actions.find((a) => a.id === 'submit').disabled).toBe(false);
+  });
+
+  it('does not warn when the queue snapshot could not be loaded at all', async () => {
+    getQueue.mockRejectedValue(new Error('offline'));
+
+    const wrapper = mount(ChordGeneratorSubmit);
+    await flushPromises();
+
+    const box = wrapper.findComponent({ name: 'LxInfoBox' });
+    // Only the allowance line survives; nothing claims the fleet is down.
+    expect(box.props('label')).toBe('pages.chordGenerator.limit.remaining');
+    expect(box.props('variant')).toBe('info');
+    const actions = wrapper.findComponent({ name: 'LxForm' }).props('actionDefinitions');
+    expect(actions.find((a) => a.id === 'submit').disabled).toBe(false);
   });
 });
