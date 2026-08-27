@@ -30,9 +30,9 @@
             "idleModalLabel": "Artėja sesijos pabaiga",
             "idleModalPrimaryLabel": "Tęsti darbą",
             "idleModalSecondaryLabel": "Baigti darbą",
-            "descriptionMinutes": "Iki sesijos pabaigos liko {count} minučių",
-            "descriptionMinutesSmall": "ir {count} sekundžių",
-            "idleDescription": "Iki sesijos pabaigos liko {count} sekundžių",
+            "descriptionMinutes": "Iki sesijos pabaigos liko {0} minučių",
+            "descriptionMinutesSmall": "ir {0} sekundžių",
+            "idleDescription": "Iki sesijos pabaigos liko {0} sekundžių",
             "themeTitle": "Išvaizdos pasirinkimas",
             "themeAuto": "Automatinis režimas",
             "themeLight": "Šviesus režimas",
@@ -246,6 +246,10 @@
                 "depth": "Eilėje: {pending}, apdorojama: {running}",
                 "eta": "Numatomas laukimo laikas: {eta}",
                 "none": "Eilė šiuo metu tuščia"
+            },
+            "workers": {
+                "offline": "Generatorius šiuo metu neprieinamas",
+                "offlineHint": "Šiuo metu neprisijungęs nė vienas akordų generavimo kompiuteris, todėl naujų pateikimų apdoroti negalime. Užsuk vėliau!"
             },
             "limit": {
                 "remaining": "Šiandien liko pateikimų: {remaining} iš {limit}",

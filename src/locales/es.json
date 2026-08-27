@@ -30,9 +30,9 @@
             "idleModalLabel": "La sesión está por terminar",
             "idleModalPrimaryLabel": "Continuar trabajando",
             "idleModalSecondaryLabel": "Terminar trabajo",
-            "descriptionMinutes": "Quedan {count} minutos para que termine la sesión",
-            "descriptionMinutesSmall": "y {count} segundos",
-            "idleDescription": "Quedan {count} segundos para que termine la sesión",
+            "descriptionMinutes": "Quedan {0} minutos para que termine la sesión",
+            "descriptionMinutesSmall": "y {0} segundos",
+            "idleDescription": "Quedan {0} segundos para que termine la sesión",
             "themeTitle": "Selección de diseño",
             "themeAuto": "Modo automático",
             "themeLight": "Modo claro",
@@ -246,6 +246,10 @@
                 "depth": "En cola: {pending}, en proceso: {running}",
                 "eta": "Tiempo de espera estimado: {eta}",
                 "none": "La cola está vacía en este momento"
+            },
+            "workers": {
+                "offline": "El generador no está disponible ahora mismo",
+                "offlineHint": "Ningún equipo de generación de acordes está conectado en este momento, así que no se pueden procesar nuevos envíos. ¡Vuelve más tarde!"
             },
             "limit": {
                 "remaining": "Envíos restantes hoy: {remaining} de {limit}",

@@ -26,6 +26,7 @@ import '@dativa-lv/lx-ui/dist/styles/lx-steps.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-forms.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-notifications.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-info-boxes.css';
+import '@dativa-lv/lx-ui/dist/styles/lx-info-wrappers.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-modals.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-loaders.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-lists.css';
@@ -35,7 +36,7 @@ import '@dativa-lv/lx-ui/dist/styles/lx-date-pickers.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-animations.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-master-detail.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-ratings.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-day-input.css';
+import '@dativa-lv/lx-ui/dist/styles/lx-duration-inputs.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-content-switchers.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-popovers.css';
 
@@ -55,6 +56,7 @@ import '@dativa-lv/lx-ui/dist/styles/lx-forms-grid.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-treelist.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-stack.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-toggles.css';
+import '@dativa-lv/lx-ui/dist/styles/lx-value-pickers.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-toolbars.css';
 
 import '@/assets/styles.css';

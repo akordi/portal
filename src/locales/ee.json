@@ -30,9 +30,9 @@
             "idleModalLabel": "Sessiooni lõpp läheneb",
             "idleModalPrimaryLabel": "Jätka tööd",
             "idleModalSecondaryLabel": "Lõpeta töö",
-            "descriptionMinutes": "Sessiooni lõpuni on jäänud {count} minutit",
-            "descriptionMinutesSmall": "ja {count} sekundit",
-            "idleDescription": "Sessiooni lõpuni on jäänud {count} sekundit",
+            "descriptionMinutes": "Sessiooni lõpuni on jäänud {0} minutit",
+            "descriptionMinutesSmall": "ja {0} sekundit",
+            "idleDescription": "Sessiooni lõpuni on jäänud {0} sekundit",
             "themeTitle": "Välimuse valik",
             "themeAuto": "Automaatne režiim",
             "themeLight": "Hele režiim",
@@ -246,6 +246,10 @@
                 "depth": "Järjekorras: {pending}, töötlemisel: {running}",
                 "eta": "Eeldatav ooteaeg: {eta}",
                 "none": "Järjekord on hetkel tühi"
+            },
+            "workers": {
+                "offline": "Generaator ei ole praegu saadaval",
+                "offlineHint": "Ükski akordide genereerimise arvuti ei ole hetkel võrgus, seega uusi esitusi ei saa töödelda. Palun tule hiljem tagasi!"
             },
             "limit": {
                 "remaining": "Täna alles jäänud esitusi: {remaining} / {limit}",
