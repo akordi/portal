@@ -287,9 +287,6 @@ async function pollJob(jobId) {
       stopPolling();
       submitting.value = false;
       jobStatus.value = null;
-      // The API reports a failed job as status only — the worker's diagnostic
-      // text stays server-side (admin job list + logs), so the message shown
-      // here is always our own translated one.
       notificationStore.pushError($t('pages.chordGenerator.status.error'));
       return;
     }
