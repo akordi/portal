@@ -287,7 +287,7 @@ async function pollJob(jobId) {
       stopPolling();
       submitting.value = false;
       jobStatus.value = null;
-      notificationStore.pushError(data.error || $t('pages.chordGenerator.status.error'));
+      notificationStore.pushError($t('pages.chordGenerator.status.error'));
       return;
     }
     jobStatus.value = data;
