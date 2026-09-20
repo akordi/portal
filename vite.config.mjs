@@ -97,6 +97,11 @@ const getEnvVariables = (mode, serving) => {
 export default defineConfig((command) => {
   const serving = command?.command === 'serve' && command?.mode === 'development';
   const envVariables = getEnvVariables(command.mode, serving);
+  // `vite build --ssr src/entry-server.js` (see package.json's build:server
+  // script) sets isSsrBuild — split output so the client bundle (served as
+  // static files) and the server bundle (run by server.mjs under Node) don't
+  // overwrite each other.
+  const outDir = command?.isSsrBuild ? './dist/server' : './dist/client';
   return {
     base: envVariables.BASE_PATH,
     resolve: {
@@ -132,7 +137,7 @@ export default defineConfig((command) => {
     build: {
       // https://vitejs.dev/config/#build-target
       target: ['es2020'],
-      outDir: './dist',
+      outDir,
       sourcemap: false,
       rollupOptions: {
         output: {
