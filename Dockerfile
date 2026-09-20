@@ -20,34 +20,31 @@ WORKDIR /app
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile --production
 
-FROM nginxinc/nginx-unprivileged:1.29-alpine
-
-# server.mjs (see docker/40-start-ssr-server.sh) renders the SSR-safe routes
-# and passes everything else through as the plain static shell nginx used to
-# serve directly — see docker/default.conf.template's `location /`.
-USER root
-RUN apk add --no-cache nodejs
-
+# No nginx: server.mjs serves static assets (via sirv), proxies /api/v2* (via
+# http-proxy), and server-renders the routes that are actually SSR-safe —
+# nothing here needs a separate process, and Traefik (in front of every
+# service in this infra, per infrastructure/stacks/akordi-country.yml)
+# already handles TLS termination and per-hostname routing, so there was
+# never a reverse proxy left for nginx to be doing that this process can't
+# do itself.
+FROM oven/bun:1.3.14-alpine
 WORKDIR /app
+
 COPY --from=prod-deps /app/node_modules ./node_modules
+COPY --from=build /app/dist/client ./dist/client
 COPY --from=build /app/dist/server ./dist/server
 COPY server.mjs ./
-# server.mjs reads the template itself (to inject the SSR'd app HTML/head
-# tags into it) — point it at nginx's own copy below rather than keeping a
-# second one that 30-envsubst-content.sh wouldn't know to also rewrite.
-ENV SSR_TEMPLATE_PATH=/usr/share/nginx/html/index.html
 
-COPY --from=build /app/dist/client/ /usr/share/nginx/html
-COPY --chmod=755 docker/30-envsubst-content.sh /docker-entrypoint.d/30-envsubst-content.sh
-COPY --chmod=755 docker/40-start-ssr-server.sh /docker-entrypoint.d/40-start-ssr-server.sh
-COPY docker/default.conf.template /etc/nginx/templates/default.conf.template
+RUN chown -R bun:bun /app
+USER bun
 
-# Make the web root and app dir nginx-owned so (a) the entrypoint can rewrite
-# files in place (sed -i writes its temp file in the target dir) and
-# (b) node runs as the same nonroot user as nginx, both as the unprivileged
-# nginx user this image runs as.
-RUN chown -R nginx:nginx /usr/share/nginx/html /app
-USER nginx
+EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --start-interval=2s --retries=3 \
-  CMD curl --fail http://127.0.0.1:8080/healthz || exit 1
+  CMD wget -q -O /dev/null http://127.0.0.1:8080/healthz || exit 1
+
+# --no-env-file: config comes strictly from the environment Swarm/Docker
+# gives this container — bun auto-loads a .env file by default (unlike
+# Node), which would silently shadow real env vars with a local dev file if
+# one were ever accidentally present.
+CMD ["bun", "--no-env-file", "server.mjs"]
