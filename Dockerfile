@@ -43,6 +43,12 @@ COPY src/utils/htmlLang.js ./src/utils/htmlLang.js
 RUN chown -R bun:bun /app
 USER bun
 
+# vue, vue-router and @vue/server-renderer are externals of the SSR bundle
+# and pick their dev or prod build at runtime from NODE_ENV. Without this
+# they run in development mode: dev-only checks, slower renders, and
+# router/Unhead warnings logged on every request.
+ENV NODE_ENV=production
+
 EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --start-interval=2s --retries=3 \

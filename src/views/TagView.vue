@@ -10,6 +10,7 @@ import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
 import { useHead } from '@vueuse/head';
 import { listTexts } from '@/utils/texts';
+import { tagUrlParam as tagRouteParam } from '@/utils/tagUrl';
 
 const router = useRouter();
 const route = useRoute();
@@ -24,6 +25,26 @@ const page = ref(0);
 const hasMore = ref(false);
 const tag = ref({});
 
+// Registered synchronously in setup() so useHead() can inject() the
+// per-request head (calling it after an await inside loadSongs() would fall
+// back to the process-global shared head and lose tags under concurrent SSR).
+const pageTitle = ref('');
+const metaDescription = ref('');
+useHead(
+  computed(() =>
+    pageTitle.value
+      ? {
+          title: pageTitle.value,
+          meta: [
+            { name: 'description', content: metaDescription.value },
+            { property: 'og:title', content: pageTitle.value },
+            { property: 'og:description', content: metaDescription.value },
+          ],
+        }
+      : {}
+  )
+);
+
 const loadSongs = async () => {
   loading.value = true;
   try {
@@ -31,9 +52,8 @@ const loadSongs = async () => {
     const tagId = akordiService.parseUrl(tagUrl);
     const tagResp = await akordiService.getTag(tagId);
     tag.value = tagResp.data;
-    if (tag.value.url !== tagUrl) {
-      const correctUrl = tag.value.url.replace(/^\/tag\//, '');
-      router.push({ name: 'tagView', params: { url: correctUrl } });
+    if (tag.value.url && tag.value.url !== tagUrl) {
+      router.push({ name: 'tagView', params: { url: tagRouteParam(tag.value) } });
     }
 
     const resp = await akordiService.getSongs({
@@ -55,22 +75,13 @@ const loadSongs = async () => {
       }))
     );
 
-    const pageTitle = `Tematiskās dziesmas ${tag.value.title}`;
     viewStore.title = $t('pages.tagView.title', { title: tag.value.title });
     const songTitles = items.value
       .slice(0, 10)
       .map((song) => song.title)
       .join(', ');
-    const metaDescription = $t('pages.tagView.metaDescription', { songTitles });
-
-    useHead({
-      title: pageTitle,
-      meta: [
-        { name: 'description', content: metaDescription },
-        { property: 'og:title', content: pageTitle },
-        { property: 'og:description', content: metaDescription },
-      ],
-    });
+    metaDescription.value = $t('pages.tagView.metaDescription', { songTitles });
+    pageTitle.value = `Tematiskās dziesmas ${tag.value.title}`;
 
     hasMore.value = resp.data.totalElements > items.value.length;
   } catch (err) {

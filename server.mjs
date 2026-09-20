@@ -7,7 +7,7 @@ import httpProxy from 'http-proxy';
 // A build artifact (see package.json's build:server script) — doesn't exist
 // until `bun run build` has run, so eslint can't resolve it.
 // eslint-disable-next-line no-restricted-imports, import/no-unresolved, import/extensions
-import render from './dist/server/entry-server.mjs';
+import render, { isKnownRoute } from './dist/server/entry-server.mjs';
 // eslint-disable-next-line no-restricted-imports
 import htmlLang from './src/utils/htmlLang.js';
 
@@ -147,18 +147,33 @@ function mergeHtmlAttrs(templateAttrs, headAttrs) {
   return [...kept, ...headAttrList].map((attr) => ` ${attr}`).join('');
 }
 
+// Besides the markup, the SSR entry reports the HTTP outcome the rendered
+// view asked for (see src/entry-server.js): `status` to write, or a
+// router path to 301 to instead (a song requested under a wrong slug).
 async function renderPage(url) {
   const template = stripStaticHeadTags(readTemplate());
   const config = readConfig();
-  const { html, head } = await render(url, config);
+  const { html, head, status, redirect } = await render(url, config);
   const { headTags, htmlAttrs, bodyAttrs, bodyTagsOpen, bodyTags } = await renderHeadToString(head);
 
-  return template
+  const page = template
     .replace(/<html([^>]*)>/, (_match, attrs) => `<html${mergeHtmlAttrs(attrs, htmlAttrs)}>`)
     .replace('</head>', `${headTags}</head>`)
     .replace(/<body([^>]*)>/, (_match, attrs) => `<body${attrs} ${bodyAttrs}>${bodyTagsOpen}`)
     .replace('<div id="app"></div>', `<div id="app">${html}</div>`)
     .replace('</body>', `${bodyTags}</body>`);
+  return { page, status: status || 200, redirect };
+}
+
+// Absolute Location for a router path (no base, no query): PUBLIC_URL
+// already carries the scheme, host and any base path, and the request's
+// query string is kept.
+function redirectLocation(routePath, requestUrl) {
+  const publicUrl = process.env.PUBLIC_URL || '/';
+  const base = publicUrl.endsWith('/') ? publicUrl : `${publicUrl}/`;
+  const queryIndex = requestUrl.indexOf('?');
+  const query = queryIndex === -1 ? '' : requestUrl.slice(queryIndex);
+  return `${base}${routePath.replace(/^\//, '')}${query}`;
 }
 
 // Fail open: render its (client-hydrated) shell rather than taking the
@@ -225,11 +240,19 @@ const server = createServer(async (req, res) => {
 
   try {
     if (!isSsrRoute(path)) {
-      respondWithShell(res);
+      // Still the plain SPA shell, but with a real 404 for a URL the router
+      // can only resolve to its catch-all notFound route.
+      const known = path === '/index.html' || isKnownRoute(path, readConfig());
+      respondWithShell(res, known ? 200 : 404);
       return;
     }
-    const page = await renderPage(req.url);
-    res.writeHead(200, { 'Content-Type': 'text/html' });
+    const { page, status, redirect } = await renderPage(req.url);
+    if (redirect && redirect !== path) {
+      res.writeHead(301, { Location: redirectLocation(redirect, req.url) });
+      res.end();
+      return;
+    }
+    res.writeHead(status, { 'Content-Type': 'text/html' });
     res.end(page);
   } catch (err) {
     // eslint-disable-next-line no-console

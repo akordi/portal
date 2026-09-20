@@ -9,6 +9,7 @@ import { useRouter } from 'vue-router';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
 import { listTexts } from '@/utils/texts';
+import { tagUrlParam } from '@/utils/tagUrl';
 
 const router = useRouter();
 const translate = useI18n();
@@ -42,8 +43,7 @@ async function loadTags() {
 function actionClicked(action, id) {
   if (action === 'click') {
     const item = tags.value.find((i) => i.id === +id);
-    item.url = item.url.replace(/^\/tag\//, '');
-    router.push({ name: 'tagView', params: { url: item.url } });
+    router.push({ name: 'tagView', params: { url: tagUrlParam(item) } });
   }
 }
 
