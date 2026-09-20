@@ -15,9 +15,7 @@ import configBool from '@/utils/configBool';
 
 /** Router base path for a publicUrl that may be absolute ('https://host/x/') or a bare path. */
 export function routerBaseFor(config) {
-  return config.publicUrl.indexOf('://') !== -1
-    ? new URL(config.publicUrl).pathname
-    : config.publicUrl;
+  return config.publicUrl.includes('://') ? new URL(config.publicUrl).pathname : config.publicUrl;
 }
 
 /**
