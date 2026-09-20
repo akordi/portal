@@ -1,16 +1,4 @@
-import { createApp } from 'vue';
-import { createPinia } from 'pinia';
-import { createI18n } from 'vue-i18n';
-import App from '@/App.vue';
-import router from '@/router';
-import lv from '@/locales/lv.json';
-import lt from '@/locales/lt.json';
-import ee from '@/locales/ee.json';
-import es from '@/locales/es.json';
-import events from '@/router/events';
-import { createLx } from '@dativa-lv/lx-ui';
-import { createGtag } from 'vue-gtag';
-import { createHead } from '@vueuse/head';
+import createAppInstance from '@/createApp';
 
 import '@dativa-lv/lx-ui/dist/styles/lx-reset.css';
 import '@dativa-lv/lx-ui/dist/styles/lx-fonts-carbon.css';
@@ -61,49 +49,9 @@ import '@dativa-lv/lx-ui/dist/styles/lx-toolbars.css';
 
 import '@/assets/styles.css';
 import '@/assets/lx-pt-akordi.css';
-import configBool from '@/utils/configBool';
 
-const myApp = createApp(App);
-myApp.use(createPinia());
-events(router);
-myApp.use(router);
-const i18n = createI18n({
-  legacy: false,
-  locale: window.config?.defaultLanguage || 'lv',
-  messages: {
-    lv,
-    lt,
-    ee,
-    es,
-  },
+const { app, router } = createAppInstance(window.config, { ssr: false });
+
+router.isReady().then(() => {
+  app.mount('#app');
 });
-const $t = i18n.global.t;
-
-myApp.use(i18n);
-myApp.use(createLx, {
-  systemId: 'akordi',
-  authUrl: window.config.authUrl,
-  publicUrl: window.config.publicUrl,
-  environment: window.config.environment,
-});
-
-if (configBool(window.config.gtagEnabled) && window.config.gtagId) {
-  const gtag = createGtag({
-    initMode: 'manual',
-    tagId: window.config.gtagId,
-    pageTracker: {
-      router,
-      exclude: (route) => route.meta.customPageTracker,
-      template: (route) => ({
-        page_path: route.path,
-        page_title: $t(route.meta.title),
-        page_location: window.location.href,
-      }),
-    },
-  });
-  myApp.use(gtag);
-}
-const head = createHead();
-myApp.use(head);
-
-myApp.mount('#app');

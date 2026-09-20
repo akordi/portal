@@ -1,5 +1,4 @@
 <script setup>
-import router from '@/router';
 import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
 import useAuthStore from '@/stores/useAuthStore';
 import useNotifyStore from '@/stores/useNotifyStore';
@@ -7,7 +6,9 @@ import useViewStore from '@/stores/useViewStore';
 import { LxContentSwitcher, LxForm, LxLoaderView, LxRow } from '@dativa-lv/lx-ui';
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const authStore = useAuthStore();
 const preferencesStore = useAccountPreferencesStore();
 
