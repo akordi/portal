@@ -9,7 +9,7 @@ const { findOne, getSongs, findPublic, getPublicSongs, push } = vi.hoisted(() =>
   push: vi.fn(),
 }));
 
-vi.mock('@dativa-lv/lx-ui', () => ({
+vi.mock('@akordi/lx-ui', () => ({
   LxList: {
     name: 'LxList',
     props: ['items', 'toolbarActionDefinitions', 'actionDefinitions'],

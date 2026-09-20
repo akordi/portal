@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 
-vi.mock('@dativa-lv/lx-ui', () => ({
+vi.mock('@akordi/lx-ui', () => ({
   LxValuePicker: {
     name: 'LxValuePicker',
     props: ['items', 'modelValue', 'variant'],

@@ -11,7 +11,7 @@ const { findOne, getSongs, reorderSongs, removeSong, save, push } = vi.hoisted((
 }));
 
 // Stub the lx-ui pieces the edit page uses; LxList captures the song actions.
-vi.mock('@dativa-lv/lx-ui', () => {
+vi.mock('@akordi/lx-ui', () => {
   const passthrough = (name) => ({ name, template: '<div><slot /></div>' });
   return {
     LxList: {
