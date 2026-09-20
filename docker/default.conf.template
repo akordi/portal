@@ -12,10 +12,20 @@ server {
         return 200 "healthy\n";
     }
 
+    # Document requests go to the local Node SSR process (see server.mjs +
+    # docker/40-start-ssr-server.sh), which server-renders the routes it
+    # knows are SSR-safe and passes the plain static shell through
+    # unmodified for everything else — so this replaces the old
+    # `try_files $uri $uri/ /index.html` SPA fallback rather than sitting
+    # alongside it. Static assets below are unaffected; they're matched and
+    # served directly by nginx before this block is ever reached.
     location / {
-        root   /usr/share/nginx/html;
-        index  index.html;
-        try_files $uri $uri/ /index.html;
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
 
         add_header X-XSS-Protection "1; mode=block" always;
         add_header X-Frame-Options "Deny" always;
