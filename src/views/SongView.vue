@@ -21,6 +21,7 @@ import { useRoute, useRouter } from 'vue-router';
 import AbcViewer from '@/components/AbcViewer.vue';
 import { event as gtagEvent, pageview } from 'vue-gtag';
 import ChordSvg from '@/components/ChordSvg.vue';
+import SongTags from '@/components/SongTags.vue';
 import { youtubeId } from '@/utils/chordSync';
 import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
 import useAuthStore from '@/stores/useAuthStore';
@@ -757,11 +758,6 @@ onUnmounted(() => {
             </template>
           </p>
         </LxRow>
-        <LxRow :label="$t('song.tags')" v-if="item.tags?.length > 0">
-          <p class="lx-data">
-            {{ item.tags.map((tag) => tag.title).join(', ') }}
-          </p>
-        </LxRow>
         <LxRow :label="$t('song.createdAt')">
           <p class="lx-data">{{ lxDateUtils.formatDateTime(item.createdDate) }}</p>
         </LxRow>
@@ -816,6 +812,15 @@ onUnmounted(() => {
            play-along mode so you can still follow the words while playing. -->
       <LxSection id="body">
         <p class="pre" v-html="item.bodyWithMarkup" :style="{ fontSize: fontSize + 'em' }"></p>
+      </LxSection>
+      <!-- Tags live in the content, not in the header's #postHeaderInfo slot:
+           that slot collapses into the header info popover at <=800px, which
+           would hide them on phones. Placed after the sheet like article tags —
+           a "more like this" exit once the song has been read/played. -->
+      <LxSection v-if="item.tags?.length > 0" id="songTags">
+        <LxRow :label="$t('song.tags')">
+          <SongTags :tags="item.tags" />
+        </LxRow>
       </LxSection>
     </LxForm>
     <section class="song-reference" v-if="item.reference">
