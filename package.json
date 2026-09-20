@@ -7,7 +7,7 @@
     "preinstall": "npx only-allow bun",
     "dev": "vite --host",
     "build": "bun run build:client && bun run build:server",
-    "build:client": "vite build",
+    "build:client": "vite build && bun scripts/precompress-assets.mjs",
     "build:server": "vite build --ssr src/entry-server.js",
     "preview": "vite preview",
     "serve:ssr": "bun --no-env-file server.mjs",

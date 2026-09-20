@@ -1,6 +1,7 @@
 import { createServer } from 'node:http';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { brotliCompressSync, constants as zlibConstants, gzipSync } from 'node:zlib';
 import { renderHeadToString } from '@vueuse/head';
 import sirv from 'sirv';
 import httpProxy from 'http-proxy';
@@ -35,9 +36,85 @@ const SECURITY_HEADERS = {
   'Feature-Policy': "autoplay 'none';",
 };
 
-// No gzip/brotli here — the build doesn't emit precompressed files, and
-// isn't worth it at this app's traffic volume.
-const serveStatic = sirv(CLIENT_DIR, { maxAge: 31536000, immutable: true, etag: true });
+// gzip/brotli: serve the .gz/.br siblings scripts/precompress-assets.mjs
+// writes at build time (the old nginx config's `gzip_static on`). sirv picks
+// the sibling from Accept-Encoding and sets Content-Encoding, Content-Length
+// and ETag for that representation plus Vary: Accept-Encoding; a client
+// that accepts neither still gets the raw file.
+const serveStatic = sirv(CLIENT_DIR, {
+  maxAge: 31536000,
+  immutable: true,
+  etag: true,
+  gzip: true,
+  brotli: true,
+});
+
+// On-the-fly compression for the documents this process generates itself
+// (the SSR'd page and the SPA shell) — those can't be precompressed since
+// they're templated per request. Static assets are handled by sirv above,
+// and the API proxy is left alone: portal-api decides its own encoding.
+//
+// Brotli at its default quality (11) is far too slow to run per request;
+// 5 is in the range CDNs use for dynamic content (~gzip speed, smaller).
+const BROTLI_DYNAMIC_QUALITY = 5;
+// Below this, headers dominate and compressing just burns CPU.
+const COMPRESS_MIN_BYTES = 1024;
+
+// The encodings we can produce that Accept-Encoding allows, best first,
+// honouring q-values (`gzip;q=0` means "not gzip") and `*`.
+function acceptedEncodings(req) {
+  const header = req.headers['accept-encoding'];
+  if (!header) return [];
+  const weights = new Map();
+  header.split(',').forEach((part) => {
+    const [name, ...params] = part.trim().toLowerCase().split(';');
+    if (!name) return;
+    const q = params.map((param) => param.trim()).find((param) => param.startsWith('q='));
+    const weight = q ? Number.parseFloat(q.slice(2)) : 1;
+    weights.set(name, Number.isNaN(weight) ? 0 : weight);
+  });
+  const allows = (name) => {
+    if (weights.has(name)) return weights.get(name) > 0;
+    return weights.has('*') && weights.get('*') > 0;
+  };
+  return ['br', 'gzip'].filter(allows);
+}
+
+// Picks 'br', 'gzip' or null for a response we compress ourselves.
+function pickEncoding(req) {
+  return acceptedEncodings(req)[0] || null;
+}
+
+function compress(encoding, body) {
+  if (encoding === 'br') {
+    return brotliCompressSync(body, {
+      params: {
+        [zlibConstants.BROTLI_PARAM_QUALITY]: BROTLI_DYNAMIC_QUALITY,
+        [zlibConstants.BROTLI_PARAM_SIZE_HINT]: body.length,
+      },
+    });
+  }
+  return gzipSync(body);
+}
+
+// Sends an HTML document, compressed when the client accepts it. Always
+// sets Vary so any cache in between keys on Accept-Encoding, even when the
+// response went out uncompressed. Callers' Cache-Control is left as-is.
+function sendHtml(req, res, statusCode, html) {
+  let body = Buffer.from(html, 'utf-8');
+  const headers = {
+    'Content-Type': 'text/html; charset=utf-8',
+    Vary: 'Accept-Encoding',
+  };
+  const encoding = body.length >= COMPRESS_MIN_BYTES ? pickEncoding(req) : null;
+  if (encoding) {
+    body = compress(encoding, body);
+    headers['Content-Encoding'] = encoding;
+  }
+  headers['Content-Length'] = body.length;
+  res.writeHead(statusCode, headers);
+  res.end(body);
+}
 
 // Only these route shapes have actually been made SSR-safe (see the lx-ui
 // and portal SSR-safety commits) — everything else still gets the plain SPA
@@ -138,15 +215,13 @@ async function renderPage(url) {
 // Fail open: render its (client-hydrated) shell rather than taking the
 // route down. Must not itself throw (see the crash note above) or call
 // writeHead a second time if headers were already sent.
-function respondWithShell(res, statusCode = 200) {
+function respondWithShell(req, res, statusCode = 200) {
   if (res.headersSent) {
     res.end();
     return;
   }
   try {
-    const template = readTemplate();
-    res.writeHead(statusCode, { 'Content-Type': 'text/html' });
-    res.end(template);
+    sendHtml(req, res, statusCode, readTemplate());
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error('Failed to read the SPA shell template:', err);
@@ -187,6 +262,9 @@ const server = createServer(async (req, res) => {
   }
 
   if (looksLikeStaticAsset(path)) {
+    // sirv only substring-matches Accept-Encoding (so `gzip;q=0` would still
+    // get gzip) — hand it just the encodings the client actually allows.
+    req.headers['accept-encoding'] = acceptedEncodings(req).join(', ');
     serveStatic(req, res);
     return;
   }
@@ -199,16 +277,15 @@ const server = createServer(async (req, res) => {
 
   try {
     if (!isSsrRoute(path)) {
-      respondWithShell(res);
+      respondWithShell(req, res);
       return;
     }
     const page = await renderPage(req.url);
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.end(page);
+    sendHtml(req, res, 200, page);
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error(`SSR render failed for ${req.url}:`, err);
-    respondWithShell(res);
+    respondWithShell(req, res);
   }
 });
 
