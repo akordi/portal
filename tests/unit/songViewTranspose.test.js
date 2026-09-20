@@ -1,11 +1,17 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
+import { unref } from 'vue';
 
-const { getSong, getSongPreferences, saveSongTransposeOffset } = vi.hoisted(() => ({
-  getSong: vi.fn(),
-  getSongPreferences: vi.fn(),
-  saveSongTransposeOffset: vi.fn(),
-}));
+const { getSong, getSongPreferences, saveSongTransposeOffset, useHead, routerReplace, routeState } =
+  vi.hoisted(() => ({
+    getSong: vi.fn(),
+    getSongPreferences: vi.fn(),
+    saveSongTransposeOffset: vi.fn(),
+    useHead: vi.fn(),
+    routerReplace: vi.fn(),
+    // Mutable so the SSR-outcome tests below can vary the requested route.
+    routeState: { name: 'akordiSongView', params: { url: '42-song' }, fullPath: '/song/42-song' },
+  }));
 
 vi.mock('@akordi/lx-ui', () => {
   // Slot-rendering stubs — the indicator lives in the form's postHeader slot
@@ -50,16 +56,28 @@ vi.mock('@/components/ChordSvg.vue', () => ({
   default: { name: 'ChordSvg', props: ['chord', 'instrument'], template: '<div />' },
 }));
 vi.mock('vue-gtag', () => ({ event: vi.fn(), pageview: vi.fn() }));
-vi.mock('@vueuse/head', () => ({ useHead: vi.fn() }));
+vi.mock('@vueuse/head', () => ({ useHead }));
 // Interpolated params are appended so assertions can see the offset.
 vi.mock('vue-i18n', () => ({
   useI18n: () => ({
     t: (key, params) => (params ? `${key} ${Object.values(params).join(' ')}` : key),
   }),
 }));
+// resolve() mirrors the real route shapes: the list variants keep their prefix.
+const PATH_BY_ROUTE = {
+  akordiSongView: '/song',
+  songListTopSongView: '/top/song',
+  songSearchSongView: '/search/song',
+  songListNewSongView: '/new/song',
+};
 vi.mock('vue-router', () => ({
-  useRoute: () => ({ params: { url: '42-song' }, fullPath: '/song/42-song' }),
-  useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn() }),
+  useRoute: () => routeState,
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: routerReplace,
+    back: vi.fn(),
+    resolve: ({ name, params }) => ({ path: `${PATH_BY_ROUTE[name]}/${params.url}` }),
+  }),
 }));
 vi.mock('@/services/akordiService', () => ({
   default: { parseUrl: (url) => Number.parseInt(url, 10), getSong },
@@ -168,5 +186,138 @@ describe('SongView transposed indicator', () => {
     expect(badge(wrapper).exists()).toBe(false);
     expect(resetButton(wrapper)).toBeUndefined();
     expect(wrapper.html()).toContain('Am');
+  });
+});
+
+describe('SongView head tags', () => {
+  // useHead() must run synchronously in setup() so it can inject() the
+  // per-request head. Calling it after the song fetch resolves falls back to
+  // Unhead's process-global shared head, which under concurrent SSR renders
+  // drops the song's <title>/description/og/canonical tags.
+  it('registers the head entry during setup and fills it once the song loads', async () => {
+    let resolveSong;
+    getSong.mockReturnValue(
+      new Promise((resolve) => {
+        resolveSong = resolve;
+      })
+    );
+    getSongPreferences.mockResolvedValue({ transposeOffset: 0 });
+
+    mount(SongView);
+
+    expect(useHead).toHaveBeenCalledTimes(1);
+    const input = useHead.mock.calls[0][0];
+    expect(unref(input)).toEqual({});
+
+    resolveSong({ data: { ...song, bodyLyrics: 'Bēdu, manu lielu bēdu, kur es tevi nolikšu' } });
+    await flushPromises();
+
+    expect(useHead).toHaveBeenCalledTimes(1);
+    const pageTitle = 'Prāta vētra - Bēdu, manu lielu bēdu';
+    const canonicalUrl = `${window.location.origin}/song/42-song`;
+    const description = 'Bēdu, manu lielu bēdu, kur es tevi nolikšu';
+    expect(unref(input)).toEqual({
+      title: pageTitle,
+      link: [{ rel: 'canonical', href: canonicalUrl }],
+      meta: [
+        { name: 'description', content: description },
+        { property: 'og:title', content: pageTitle },
+        { property: 'og:description', content: description },
+        { property: 'og:url', content: canonicalUrl },
+      ],
+    });
+  });
+});
+
+// The SSR entry provides a per-request `ssrContext` the view reports its
+// HTTP outcome through (see src/entry-server.js and server.mjs).
+describe('SongView SSR outcome', () => {
+  const realSong = { ...song, url: '/song/42-Prata_Vetra-Bedu', performers: [] };
+
+  const mountWithRoute = async ({ ssrContext, name = 'akordiSongView', url = '42-wrong-slug' }) => {
+    routeState.name = name;
+    routeState.params = { url };
+    getSongPreferences.mockResolvedValue({ transposeOffset: 0 });
+    const wrapper = mount(SongView, {
+      global: {
+        provide: ssrContext ? { ssrContext } : {},
+        // loadSong() rethrows after reporting — onMounted's await would
+        // otherwise surface it as an unhandled rejection in the API-failure cases.
+        config: { errorHandler: () => {} },
+      },
+    });
+    await flushPromises();
+    return wrapper;
+  };
+
+  const canonical = () =>
+    unref(useHead.mock.calls.at(-1)[0]).link.find((l) => l.rel === 'canonical').href;
+
+  beforeEach(() => {
+    getSong.mockResolvedValue({ data: { ...realSong } });
+  });
+
+  afterEach(() => {
+    routeState.name = 'akordiSongView';
+    routeState.params = { url: '42-song' };
+  });
+
+  it('asks for a 301 to the real song URL when the slug is wrong', async () => {
+    const ssrContext = { status: 200, redirect: null };
+    await mountWithRoute({ ssrContext });
+
+    expect(ssrContext.redirect).toBe('/song/42-Prata_Vetra-Bedu');
+    expect(ssrContext.status).toBe(200);
+    expect(routerReplace).not.toHaveBeenCalled();
+  });
+
+  it('keeps the list prefix in the redirect target', async () => {
+    const ssrContext = { status: 200, redirect: null };
+    await mountWithRoute({ ssrContext, name: 'songListTopSongView' });
+
+    expect(ssrContext.redirect).toBe('/top/song/42-Prata_Vetra-Bedu');
+  });
+
+  it('does not redirect when the requested URL is already the real one', async () => {
+    const ssrContext = { status: 200, redirect: null };
+    await mountWithRoute({ ssrContext, url: '42-Prata_Vetra-Bedu' });
+
+    expect(ssrContext.redirect).toBeNull();
+    expect(ssrContext.status).toBe(200);
+  });
+
+  it('builds the canonical from the real song URL, not the requested one', async () => {
+    await mountWithRoute({
+      ssrContext: { status: 200, redirect: null },
+      name: 'songListTopSongView',
+    });
+
+    expect(canonical()).toBe(`${window.location.origin}/song/42-Prata_Vetra-Bedu`);
+  });
+
+  it('falls back to router.replace in the browser (no ssrContext)', async () => {
+    await mountWithRoute({ name: 'songSearchSongView' });
+
+    expect(routerReplace).toHaveBeenCalledWith({
+      name: 'songSearchSongView',
+      params: { url: '42-Prata_Vetra-Bedu' },
+    });
+  });
+
+  it('reports 404 when the API says the song does not exist', async () => {
+    getSong.mockRejectedValue({ response: { status: 404 } });
+    const ssrContext = { status: 200, redirect: null };
+    await mountWithRoute({ ssrContext, url: '999999-Nope' });
+
+    expect(ssrContext.status).toBe(404);
+    expect(ssrContext.redirect).toBeNull();
+  });
+
+  it('keeps the fail-open 200 for any other API failure', async () => {
+    getSong.mockRejectedValue({ response: { status: 503 } });
+    const ssrContext = { status: 200, redirect: null };
+    await mountWithRoute({ ssrContext });
+
+    expect(ssrContext.status).toBe(200);
   });
 });
