@@ -13,6 +13,11 @@ import ee from '@/locales/ee.json';
 import es from '@/locales/es.json';
 import configBool from '@/utils/configBool';
 
+/** Router base path for a publicUrl that may be absolute ('https://host/x/') or a bare path. */
+export function routerBaseFor(config) {
+  return config.publicUrl.includes('://') ? new URL(config.publicUrl).pathname : config.publicUrl;
+}
+
 /**
  * Builds one full app instance (app, router, i18n, head), parameterized by
  * config instead of reading window.config directly — the same factory is
@@ -26,9 +31,7 @@ export default function createAppInstance(config, { ssr = false } = {}) {
   // see e.g. SongView.vue's canonical URL / API base URL resolution.
   app.provide('appConfig', config);
 
-  const base =
-    config.publicUrl.indexOf('://') !== -1 ? new URL(config.publicUrl).pathname : config.publicUrl;
-  const router = createAppRouter({ base, ssr });
+  const router = createAppRouter({ base: routerBaseFor(config), ssr });
   events(router);
   app.use(router);
 
