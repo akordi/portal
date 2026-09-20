@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
+import { unref } from 'vue';
 
 const { getSong, getSongPreferences, saveSongTransposeOffset, useHead, routerReplace, routeState } =
   vi.hoisted(() => ({
@@ -188,6 +189,46 @@ describe('SongView transposed indicator', () => {
   });
 });
 
+describe('SongView head tags', () => {
+  // useHead() must run synchronously in setup() so it can inject() the
+  // per-request head. Calling it after the song fetch resolves falls back to
+  // Unhead's process-global shared head, which under concurrent SSR renders
+  // drops the song's <title>/description/og/canonical tags.
+  it('registers the head entry during setup and fills it once the song loads', async () => {
+    let resolveSong;
+    getSong.mockReturnValue(
+      new Promise((resolve) => {
+        resolveSong = resolve;
+      })
+    );
+    getSongPreferences.mockResolvedValue({ transposeOffset: 0 });
+
+    mount(SongView);
+
+    expect(useHead).toHaveBeenCalledTimes(1);
+    const input = useHead.mock.calls[0][0];
+    expect(unref(input)).toEqual({});
+
+    resolveSong({ data: { ...song, bodyLyrics: 'Bēdu, manu lielu bēdu, kur es tevi nolikšu' } });
+    await flushPromises();
+
+    expect(useHead).toHaveBeenCalledTimes(1);
+    const pageTitle = 'Prāta vētra - Bēdu, manu lielu bēdu';
+    const canonicalUrl = `${window.location.origin}/song/42-song`;
+    const description = 'Bēdu, manu lielu bēdu, kur es tevi nolikšu';
+    expect(unref(input)).toEqual({
+      title: pageTitle,
+      link: [{ rel: 'canonical', href: canonicalUrl }],
+      meta: [
+        { name: 'description', content: description },
+        { property: 'og:title', content: pageTitle },
+        { property: 'og:description', content: description },
+        { property: 'og:url', content: canonicalUrl },
+      ],
+    });
+  });
+});
+
 // The SSR entry provides a per-request `ssrContext` the view reports its
 // HTTP outcome through (see src/entry-server.js and server.mjs).
 describe('SongView SSR outcome', () => {
@@ -209,7 +250,8 @@ describe('SongView SSR outcome', () => {
     return wrapper;
   };
 
-  const canonical = () => useHead.mock.calls.at(-1)[0].link.find((l) => l.rel === 'canonical').href;
+  const canonical = () =>
+    unref(useHead.mock.calls.at(-1)[0]).link.find((l) => l.rel === 'canonical').href;
 
   beforeEach(() => {
     getSong.mockResolvedValue({ data: { ...realSong } });
