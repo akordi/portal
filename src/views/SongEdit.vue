@@ -29,7 +29,6 @@ const idParam = computed(() => route.query.id);
 const loading = shallowRef(false);
 const notify = useNotifyStore();
 const preloadedArtists = ref([]);
-const preloadedTags = ref([]);
 const withI18nMessage = validations.createI18nMessage({ t: translate.t });
 const item = ref({
   title: '',
@@ -66,7 +65,9 @@ const loadCopyFrom = async () => {
     item.value.composersIds = resp.data.composers?.map((i) => String(i.id)) || [];
     item.value.poetsIds = resp.data.poets?.map((i) => String(i.id)) || [];
     item.value.performersIds = resp.data.performers?.map((i) => String(i.id)) || [];
-    item.value.tagsIds = resp.data.tags?.map((i) => String(i.id)) || [];
+    // Tag ids must stay numeric: LxValuePicker matches them to the numeric
+    // item ids with strict equality.
+    item.value.tagsIds = resp.data.tags?.map((i) => i.id) || [];
 
     const allArtists = [
       {
@@ -100,11 +101,6 @@ const loadCopyFrom = async () => {
     }
 
     preloadedArtists.value = [...new Map(allArtists.map((i) => [i.id, i])).values()];
-
-    preloadedTags.value = resp.data.tags.map((i) => ({
-      id: String(i.id),
-      title: i.title,
-    }));
   } catch (err) {
     notificationStore.pushError($t('errors.loadSongFailed'));
     throw err;
@@ -153,7 +149,7 @@ function mapArtistFromId(id) {
 }
 
 function mapTag(id) {
-  return tags.value.find((tag) => tag.id === +id);
+  return tags.value.find((tag) => tag.id === id);
 }
 
 // The API stores youtube_link as a bare video id, so strip the pasted URL
@@ -334,7 +330,6 @@ onUnmounted(() => {
         name-attribute="title"
         selection-kind="multiple"
         variant="dropdown"
-        :preloaded-items="preloadedTags"
       />
     </LxRow>
     <LxRow :label="$t('song.youtubeLink')">

@@ -21,6 +21,7 @@ import { useRoute, useRouter } from 'vue-router';
 import AbcViewer from '@/components/AbcViewer.vue';
 import { event as gtagEvent, pageview } from 'vue-gtag';
 import ChordSvg from '@/components/ChordSvg.vue';
+import SongTags from '@/components/SongTags.vue';
 import { youtubeId } from '@/utils/chordSync';
 import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
 import useAuthStore from '@/stores/useAuthStore';
@@ -664,6 +665,7 @@ onUnmounted(() => {
 </style>
 <template>
   <LxLoaderView :loading="loading">
+    <SongTags v-if="item.tags?.length > 0" id="songTags" :tags="item.tags" />
     <LxForm
       id="song-view-form"
       :action-definitions="formActions"
@@ -778,11 +780,6 @@ onUnmounted(() => {
               <router-link :to="artistLink(author)">{{ author.title }}</router-link
               ><template v-if="index < item.poets.length - 1">, </template>
             </template>
-          </p>
-        </LxRow>
-        <LxRow :label="$t('song.tags')" v-if="item.tags?.length > 0">
-          <p class="lx-data">
-            {{ item.tags.map((tag) => tag.title).join(', ') }}
           </p>
         </LxRow>
         <LxRow :label="$t('song.createdAt')">
