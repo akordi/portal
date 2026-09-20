@@ -3,10 +3,15 @@
 # image is reproducible from a clean checkout without needing bun installed
 # on the host first.
 
+# --mount=type=cache persists bun's package-download cache across builds
+# independently of layer hashing (unlike relying on layer caching alone) —
+# .github/workflows/docker.yml's cache-to/from: type=gha exports/imports it
+# the same way it does regular layers.
 FROM oven/bun:1.3.14-alpine AS deps
 WORKDIR /app
 COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+RUN --mount=type=cache,target=/root/.bun/install/cache \
+    bun install --frozen-lockfile
 
 FROM deps AS build
 COPY . .
@@ -18,7 +23,8 @@ RUN bun run build
 FROM oven/bun:1.3.14-alpine AS prod-deps
 WORKDIR /app
 COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile --production
+RUN --mount=type=cache,target=/root/.bun/install/cache \
+    bun install --frozen-lockfile --production
 
 # No nginx: server.mjs serves static assets, proxies /api/v2*, and
 # server-renders SSR-safe routes itself. Traefik (in front of every service
