@@ -18,6 +18,7 @@ import songbookService from '@/services/songbookService';
 import useConfirmStore from '@/stores/useConfirmStore';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
+import { listTexts } from '@/utils/texts';
 
 const router = useRouter();
 const route = useRoute();
@@ -255,10 +256,8 @@ onMounted(async () => {
             :action-definitions="songActions"
             @toolbar-action-click="songToolbarActionClicked"
             @action-click="itemActionClicked"
+            :texts="listTexts()"
           >
-            <template #empty>
-              {{ $t('lx.list.noItems') }}
-            </template>
           </LxList>
         </LxRow>
       </LxSection>
