@@ -1,7 +1,7 @@
 <script setup>
 import akordiAdminListService from '@/services/songbookService';
 import SongbookFormModal from '@/components/SongbookFormModal.vue';
-import { LxButton, LxList } from '@dativa-lv/lx-ui';
+import { LxButton, LxList } from '@akordi/lx-ui';
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';

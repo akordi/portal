@@ -2,7 +2,7 @@ import { createApp, createSSRApp } from 'vue';
 import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';
 import { createHead } from '@vueuse/head';
-import { createLx } from '@dativa-lv/lx-ui';
+import { createLx } from '@akordi/lx-ui';
 import { createGtag } from 'vue-gtag';
 import App from '@/App.vue';
 import createAppRouter from '@/router';

@@ -6,7 +6,7 @@ import { useRoute, useRouter } from 'vue-router';
 // eslint-disable-next-line no-unused-vars
 import CookiesConsent from '@/components/CookiesConsent.vue';
 import { invoke, until, useIdle, useIntervalFn } from '@vueuse/core';
-import { LxShell } from '@dativa-lv/lx-ui';
+import { LxShell } from '@akordi/lx-ui';
 import { shellTexts } from '@/utils/texts';
 import useErrors from '@/hooks/useErrors';
 import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';

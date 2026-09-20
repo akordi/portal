@@ -1,5 +1,5 @@
 <script setup>
-import { LxButton, LxModal, LxRow, LxTextInput, LxToggle } from '@dativa-lv/lx-ui';
+import { LxButton, LxModal, LxRow, LxTextInput, LxToggle } from '@akordi/lx-ui';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useVuelidate from '@vuelidate/core';

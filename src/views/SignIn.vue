@@ -1,6 +1,6 @@
 <script setup>
 import { computed, nextTick, onMounted, ref } from 'vue';
-import { LxList, LxLoader, LxForm, LxTextInput, LxRow } from '@dativa-lv/lx-ui';
+import { LxList, LxLoader, LxForm, LxTextInput, LxRow } from '@akordi/lx-ui';
 import { useRouter, useRoute } from 'vue-router';
 import { Configuration, FrontendApi } from '@ory/client';
 import { useI18n } from 'vue-i18n';

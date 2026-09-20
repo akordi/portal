@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref, shallowRef, watchEffect } from 'vue';
-import { LxContentSwitcher, LxRow, LxLoaderView } from '@dativa-lv/lx-ui';
+import { LxContentSwitcher, LxRow, LxLoaderView } from '@akordi/lx-ui';
 import ChordSvg from '@/components/ChordSvg.vue';
 import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
 import useAuthStore from '@/stores/useAuthStore';

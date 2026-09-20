@@ -105,7 +105,7 @@ export default defineConfig((command) => {
         {
           find: '/lx-fonts',
           replacement: fileURLToPath(
-            new URL('./node_modules/@dativa-lv/lx-ui/dist/lx-fonts', import.meta.url)
+            new URL('./node_modules/@akordi/lx-ui/dist/lx-fonts', import.meta.url)
           ),
         },
       ],

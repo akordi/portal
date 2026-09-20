@@ -2,7 +2,7 @@
 import useAuthStore from '@/stores/useAuthStore';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
-import { LxDateTimePicker, LxForm, LxLoaderView, LxRow, LxTextInput } from '@dativa-lv/lx-ui';
+import { LxDateTimePicker, LxForm, LxLoaderView, LxRow, LxTextInput } from '@akordi/lx-ui';
 import { Configuration, FrontendApi } from '@ory/client';
 import { computed, nextTick, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

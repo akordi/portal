@@ -1,5 +1,5 @@
 <script setup>
-import { LxButton, LxForm, LxInfoBox, LxRow, LxTextInput, lxDateUtils } from '@dativa-lv/lx-ui';
+import { LxButton, LxForm, LxInfoBox, LxRow, LxTextInput, lxDateUtils } from '@akordi/lx-ui';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';

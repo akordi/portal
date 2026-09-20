@@ -12,7 +12,7 @@ import {
   LxTextInput,
   LxToolbar,
   LxToolbarGroup,
-} from '@dativa-lv/lx-ui';
+} from '@akordi/lx-ui';
 import { computed, inject, onMounted, onServerPrefetch, onUnmounted, ref, watch } from 'vue';
 import { useHead } from '@vueuse/head';
 import { useI18n } from 'vue-i18n';

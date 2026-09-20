@@ -1,4 +1,4 @@
 import { defineStore } from 'pinia';
-import { LxAppStore } from '@dativa-lv/lx-ui';
+import { LxAppStore } from '@akordi/lx-ui';
 
 export default defineStore('appStore', LxAppStore);

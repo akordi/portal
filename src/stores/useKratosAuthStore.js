@@ -1,5 +1,5 @@
 import { useStorage } from '@vueuse/core';
-import { lxPermissionUtils } from '@dativa-lv/lx-ui';
+import { lxPermissionUtils } from '@akordi/lx-ui';
 import { computed, ref } from 'vue';
 
 export default (authService, authUrl, publicUrl, clientId, scope, authSessionKey) => () => {

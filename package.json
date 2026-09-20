@@ -13,7 +13,7 @@
     "test-watch": "vitest"
   },
   "dependencies": {
-    "@dativa-lv/lx-ui": "2.3.0",
+    "@akordi/lx-ui": "canary",
     "@ory/client": "^1.22.66",
     "@tombatossals/chords-db": "^0.5.1",
     "@vue/server-renderer": "^3.5.42",

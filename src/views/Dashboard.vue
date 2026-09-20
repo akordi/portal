@@ -1,5 +1,5 @@
 <script setup>
-import { LxTile } from '@dativa-lv/lx-ui';
+import { LxTile } from '@akordi/lx-ui';
 import { onMounted, ref } from 'vue';
 
 import akordiService from '@/services/akordiService';

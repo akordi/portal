@@ -1,6 +1,6 @@
 <script setup>
 import chordgenSongService from '@/services/chordgenSongService';
-import { LxButton, LxList, LxRating } from '@dativa-lv/lx-ui';
+import { LxButton, LxList, LxRating } from '@akordi/lx-ui';
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
