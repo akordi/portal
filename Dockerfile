@@ -20,13 +20,9 @@ WORKDIR /app
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile --production
 
-# No nginx: server.mjs serves static assets (via sirv), proxies /api/v2* (via
-# http-proxy), and server-renders the routes that are actually SSR-safe —
-# nothing here needs a separate process, and Traefik (in front of every
-# service in this infra, per infrastructure/stacks/akordi-country.yml)
-# already handles TLS termination and per-hostname routing, so there was
-# never a reverse proxy left for nginx to be doing that this process can't
-# do itself.
+# No nginx: server.mjs serves static assets, proxies /api/v2*, and
+# server-renders SSR-safe routes itself. Traefik (in front of every service
+# in this infra) already handles TLS and per-hostname routing.
 FROM oven/bun:1.3.14-alpine
 WORKDIR /app
 
@@ -43,8 +39,6 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --start-interval=2s --retries=3 \
   CMD wget -q -O /dev/null http://127.0.0.1:8080/healthz || exit 1
 
-# --no-env-file: config comes strictly from the environment Swarm/Docker
-# gives this container — bun auto-loads a .env file by default (unlike
-# Node), which would silently shadow real env vars with a local dev file if
-# one were ever accidentally present.
+# --no-env-file: bun auto-loads a .env file by default (unlike Node), which
+# would silently shadow the real env vars this container is given.
 CMD ["bun", "--no-env-file", "server.mjs"]

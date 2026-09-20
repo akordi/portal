@@ -79,11 +79,10 @@ const getEnvVariables = (mode, serving) => {
     envVariables.VUE_APP_AUTH_URL = '{{AUTH_URL}}';
     envVariables.VUE_APP_GTAG_ENABLED = '{{GTAG_ENABLED}}';
     envVariables.VUE_APP_GTAG_ID = '{{GTAG_ID}}';
-    // Vite's `base` bakes straight into every built JS/CSS chunk's asset
-    // URLs, unlike the {{...}} tokens below (index.html-only, substituted at
-    // request time by server.mjs) — it has to be a real value at build time.
-    // No real deployment overrides it (portal-api has its own unrelated
-    // BASE_PATH), so this is always '/'.
+    // Vite's `base` bakes into every built JS/CSS chunk's asset URLs, so it
+    // needs a real value at build time (unlike the {{...}} tokens below,
+    // index.html-only, substituted at request time by server.mjs). No real
+    // deployment overrides it (portal-api's own BASE_PATH is unrelated).
     envVariables.BASE_PATH = envVariables.BASE_PATH || '/';
     envVariables.BASE_URL = '{{PUBLIC_URL}}';
     envVariables.VUE_APP_DEFAULT_LANGUAGE = '{{DEFAULT_LANGUAGE}}';

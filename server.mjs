@@ -4,22 +4,16 @@ import { fileURLToPath } from 'node:url';
 import { renderHeadToString } from '@vueuse/head';
 import sirv from 'sirv';
 import httpProxy from 'http-proxy';
-// A build artifact (see package.json's build:server script), not a source
-// file — doesn't exist, and can't be resolved by eslint, until `bun run
-// build` has run. Node needs the real extension for a relative ESM import.
+// A build artifact (see package.json's build:server script) — doesn't exist
+// until `bun run build` has run, so eslint can't resolve it.
 // eslint-disable-next-line no-restricted-imports, import/no-unresolved, import/extensions
 import render from './dist/server/entry-server.mjs';
 
-// Without a supervisor process (no nginx/PID-1 wrapper here — see the
-// Dockerfile), an uncaught error anywhere takes down the *entire* server,
-// not just the request that triggered it — including static assets and the
-// API proxy, not only SSR. Some of these can originate outside this file's
-// own try/catch blocks (e.g. a router afterEach hook that a dependency
-// schedules on its own microtask, as lx-ui's flowUtils.afterEach did before
-// being fixed for SSR — see that commit) despite renderPage() being awaited
-// inside one. Node's default since v15 is to crash on an unhandled
-// rejection; log and keep serving instead, matching how a real reverse
-// proxy in front of this would isolate one bad request from everyone else's.
+// No supervisor process here (no nginx/PID-1 wrapper — see Dockerfile), so
+// an uncaught error anywhere takes down the entire server, not just the
+// request that caused it — some errors (a dependency scheduling work on its
+// own microtask) can escape this file's own try/catch even when it awaits
+// the call. Log and keep serving instead of crashing.
 process.on('unhandledRejection', (reason) => {
   // eslint-disable-next-line no-console
   console.error('Unhandled promise rejection (server stays up):', reason);
@@ -41,10 +35,8 @@ const SECURITY_HEADERS = {
   'Feature-Policy': "autoplay 'none';",
 };
 
-// Hashed filenames under /assets/* are safe to cache forever; sirv also
-// handles ETags and range requests for us. No on-the-fly gzip/brotli here —
-// the build doesn't emit precompressed files, and at this app's traffic
-// volume it isn't worth adding; revisit if that changes.
+// No gzip/brotli here — the build doesn't emit precompressed files, and
+// isn't worth it at this app's traffic volume.
 const serveStatic = sirv(CLIENT_DIR, { maxAge: 31536000, immutable: true, etag: true });
 
 // Only these route shapes have actually been made SSR-safe (see the lx-ui
@@ -63,17 +55,14 @@ function isSsrRoute(path) {
   return SSR_ROUTE_PATTERNS.some((pattern) => pattern.test(path));
 }
 
-// A request "looks like" a static asset if its last path segment has a file
-// extension and it isn't index.html (which is templated per-request below,
-// never served as a plain file) — everything else is a document route.
+// index.html is templated per-request below, never served as a plain file.
 function looksLikeStaticAsset(path) {
   return path !== '/' && path !== '/index.html' && /\.[a-zA-Z0-9]+$/.test(path);
 }
 
-// config mirrors window.config from index.html — read directly from the same
-// env vars rather than parsing the template, since this is what actually
-// drives the Vue app's own logic (createLx options, router base, canonical
-// URLs), not just what gets displayed.
+// Mirrors window.config from index.html — read from env directly since this
+// drives the Vue app's own logic (createLx, router base, canonical URLs),
+// not just what gets displayed.
 function readConfig() {
   return {
     publicUrl: process.env.PUBLIC_URL || '/',
@@ -83,21 +72,16 @@ function readConfig() {
     defaultLanguage: process.env.DEFAULT_LANGUAGE || 'lv',
     gtagEnabled: false, // SSR never fires analytics — see SongView's loadSong()
     gtagId: null,
-    // Reuses the exact env var the API proxy below already uses — the
-    // internal portal-api URL is the same whether this request came in as a
-    // browser API call or this process rendering a page server-side. Falls
-    // back to SERVICE_URL/'/api' only for local/manual runs where
-    // API_V2_URL isn't set, which won't resolve from inside Node the way it
-    // does from a browser, but keeps this from crashing outright.
+    // Same internal portal-api URL the API proxy below uses — falls back to
+    // SERVICE_URL/'/api' for local runs where API_V2_URL isn't set.
     serviceUrl: process.env.API_V2_URL || process.env.SERVICE_URL || '/api',
   };
 }
 
-// index.html ships with the same {{TOKEN}} placeholders it always has (see
-// vite.config.mjs's getEnvVariables) — this replaces docker/30-envsubst-
-// content.sh's job of substituting them, just per-request in JS instead of
-// once via sed at container startup, since this process now owns every
-// document response instead of nginx serving a pre-rewritten static file.
+// index.html ships with {{TOKEN}} placeholders (see vite.config.mjs's
+// getEnvVariables) — substituted here per-request instead of once via sed
+// at container startup, since this process now owns every document
+// response.
 function injectRuntimeConfig(template) {
   const substitutions = {
     '{{PUBLIC_URL}}': process.env.PUBLIC_URL || '',
@@ -119,9 +103,8 @@ function injectRuntimeConfig(template) {
 }
 
 function readTemplate() {
-  // Re-read per request — the cost is negligible at this traffic volume and
-  // it avoids ever serving a stale template after a deploy that replaces
-  // files without restarting this process.
+  // Re-read per request to avoid ever serving a stale template after a
+  // deploy replaces files without restarting this process.
   return injectRuntimeConfig(readFileSync(TEMPLATE_PATH, 'utf-8'));
 }
 
@@ -152,12 +135,9 @@ async function renderPage(url) {
     .replace('</body>', `${bodyTags}</body>`);
 }
 
-// Fail open: a content page should still render its (client-hydrated) shell
-// if SSR breaks, rather than taking the whole route down. This must not
-// itself throw — an unhandled rejection here would crash the whole process
-// (Node's default since v15), taking down every other in-flight and future
-// request, not just this one — and must not call writeHead a second time if
-// the failure happened after headers were already sent.
+// Fail open: render its (client-hydrated) shell rather than taking the
+// route down. Must not itself throw (see the crash note above) or call
+// writeHead a second time if headers were already sent.
 function respondWithShell(res, statusCode = 200) {
   if (res.headersSent) {
     res.end();
@@ -211,9 +191,7 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  // Everything below is a document request: match nginx's old
-  // no-store Cache-Control for `location /` (never cache the shell/app
-  // shell itself, only the hashed assets above).
+  // Document request: never cache the shell itself, only the hashed assets.
   res.setHeader(
     'Cache-Control',
     'no-store, no-transform, must-revalidate, no-cache, max-age=0, private'
