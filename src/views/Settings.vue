@@ -28,7 +28,7 @@ const familyName = ref({});
 const personalId = ref({});
 const birthDate = ref({});
 const passwordNode = ref(null);
-const { authUrl } = window.config;
+const { authUrl } = typeof window !== 'undefined' ? window.config : {};
 const ory = new FrontendApi(
   new Configuration({
     basePath: authUrl,

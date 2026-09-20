@@ -22,7 +22,7 @@ const emailNode = ref(null);
 const codeForm = ref(null);
 const resendCodeForm = ref(null);
 const csrfToken = ref(null);
-const { authUrl } = window.config;
+const { authUrl } = typeof window !== 'undefined' ? window.config : {};
 const ory = new FrontendApi(
   new Configuration({
     basePath: authUrl,

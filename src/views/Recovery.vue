@@ -24,7 +24,7 @@ const submitCodeForm = ref(null);
 const resendForm = ref(null);
 const csrfToken = ref(null);
 
-const { authUrl } = window.config;
+const { authUrl } = typeof window !== 'undefined' ? window.config : {};
 const ory = new FrontendApi(
   new Configuration({
     basePath: authUrl,

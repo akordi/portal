@@ -25,7 +25,7 @@ const csrfToken = ref(null);
 const selectedProvider = ref(null);
 const identifierNode = ref(null);
 const passwordNode = ref({});
-const { authUrl } = window.config;
+const { authUrl } = typeof window !== 'undefined' ? window.config : {};
 const ory = new FrontendApi(
   new Configuration({
     basePath: authUrl,
