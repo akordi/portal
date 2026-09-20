@@ -11,7 +11,7 @@ FROM oven/bun:1.3.14-alpine AS deps
 WORKDIR /app
 COPY package.json bun.lock ./
 RUN --mount=type=cache,target=/root/.bun/install/cache \
-    bun install --frozen-lockfile
+    bun install --frozen-lockfile --ignore-scripts
 
 FROM deps AS build
 COPY . .
@@ -24,7 +24,7 @@ FROM oven/bun:1.3.14-alpine AS prod-deps
 WORKDIR /app
 COPY package.json bun.lock ./
 RUN --mount=type=cache,target=/root/.bun/install/cache \
-    bun install --frozen-lockfile --production
+    bun install --frozen-lockfile --production --ignore-scripts
 
 # No nginx: server.mjs serves static assets, proxies /api/v2*, and
 # server-renders SSR-safe routes itself. Traefik (in front of every service
