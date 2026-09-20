@@ -24,9 +24,7 @@ export default function createAppInstance(config, { ssr = false } = {}) {
   app.use(createPinia());
 
   const base =
-    config.publicUrl.indexOf('://') !== -1
-      ? new URL(config.publicUrl).pathname
-      : config.publicUrl;
+    config.publicUrl.indexOf('://') !== -1 ? new URL(config.publicUrl).pathname : config.publicUrl;
   const router = createAppRouter({ base, ssr });
   events(router);
   app.use(router);
