@@ -65,6 +65,8 @@ const loadCopyFrom = async () => {
     item.value.composersIds = resp.data.composers?.map((i) => String(i.id)) || [];
     item.value.poetsIds = resp.data.poets?.map((i) => String(i.id)) || [];
     item.value.performersIds = resp.data.performers?.map((i) => String(i.id)) || [];
+    // Tag ids must stay numeric: LxValuePicker matches them to the numeric
+    // item ids with strict equality.
     item.value.tagsIds = resp.data.tags?.map((i) => i.id) || [];
 
     const allArtists = [
@@ -147,19 +149,7 @@ function mapArtistFromId(id) {
 }
 
 function mapTag(id) {
-  return tags.value.find((tag) => tag.id === +id);
-}
-
-// LxValuePicker compares selected ids to item ids with strict equality and,
-// when the first selected item is clicked, re-adds it instead of removing it.
-// Both leave duplicates in the model, so normalise to unique numeric ids and
-// treat a duplicated id as the deselect the user intended.
-function onTagsChange(value) {
-  const next = Array.isArray(value) ? value.map(Number) : [];
-  const seen = new Set();
-  const duplicated = new Set();
-  next.forEach((id) => (seen.has(id) ? duplicated.add(id) : seen.add(id)));
-  item.value.tagsIds = [...seen].filter((id) => !duplicated.has(id));
+  return tags.value.find((tag) => tag.id === id);
 }
 
 // The API stores youtube_link as a bare video id, so strip the pasted URL
@@ -186,7 +176,7 @@ async function actionClicked(actionName) {
         performers: item.value.performersIds.map((i) => mapArtistFromId(i)),
         poets: item.value.poetsIds.map((i) => mapArtistFromId(i)),
         composers: item.value.composersIds.map((i) => mapArtistFromId(i)),
-        tags: item.value.tagsIds.map((i) => mapTag(i)).filter(Boolean),
+        tags: item.value.tagsIds.map((i) => mapTag(i)),
         youtubeLink: toYoutubeId(item.value.youtubeLink),
       };
 
@@ -334,13 +324,12 @@ onUnmounted(() => {
     <LxRow :label="$t('song.tags')">
       <LxValuePicker
         id="tagInput"
-        :model-value="item.tagsIds"
+        v-model="item.tagsIds"
         :items="tags"
         id-attribute="id"
         name-attribute="title"
         selection-kind="multiple"
         variant="dropdown"
-        @update:model-value="onTagsChange"
       />
     </LxRow>
     <LxRow :label="$t('song.youtubeLink')">
