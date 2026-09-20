@@ -13,7 +13,7 @@ import {
   LxToolbar,
   LxToolbarGroup,
 } from '@dativa-lv/lx-ui';
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, onServerPrefetch, onUnmounted, ref, watch } from 'vue';
 import { useHead } from '@vueuse/head';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -39,6 +39,7 @@ const settingsStore = useSettingsStore();
 const accountPreferencesStore = useAccountPreferencesStore();
 const router = useRouter();
 const route = useRoute();
+const appConfig = inject('appConfig', null);
 const authStore = useAuthStore();
 const isAuthorized = authStore.isAuthenticated();
 const addToListModal = ref();
@@ -297,8 +298,14 @@ const loadSong = async () => {
     // "(not set)" landing page with ~0% engagement instead of a real bounce
     // on this song's URL.
     const pagePath = `/song/${songUrlParam.value}`;
-    const canonicalUrl = `${window.location.origin}${pagePath}`;
-    pageview({ page_path: pagePath, page_location: canonicalUrl });
+    const origin =
+      typeof window !== 'undefined'
+        ? window.location.origin
+        : (appConfig?.publicUrl || '').replace(/\/$/, '');
+    const canonicalUrl = `${origin}${pagePath}`;
+    if (typeof window !== 'undefined') {
+      pageview({ page_path: pagePath, page_location: canonicalUrl });
+    }
 
     const resp = await akordiService.getSong(songId);
     item.value = resp.data;
@@ -315,7 +322,10 @@ const loadSong = async () => {
     applyTranspose(transposeOffset);
 
     const pageTitle = `${item.value.mainArtist.title} - ${item.value.title}`;
-    if (pagePath !== item.value.url) {
+    // TODO(SSR): a mismatched slug should become a real HTTP redirect when
+    // rendered server-side, not a client-side router.replace after the fact —
+    // needs the SSR entry to inspect the final route and redirect there.
+    if (typeof window !== 'undefined' && pagePath !== item.value.url) {
       const songUrl = item.value.url.replace(/^\/song\//, '');
       router.replace({
         name: 'akordiSongView',
@@ -572,6 +582,19 @@ async function toggleListSelection(listId, value) {
 onMounted(async () => {
   addEventListeners();
   await loadSong();
+});
+
+// Runs only during SSR (renderToString awaits it; the client never calls
+// this hook at all, so onMounted above still does the real client-side
+// fetch as before). Swallow failures here — a content page should still
+// render its shell/loading state if the API is briefly unreachable during
+// SSR, rather than failing the whole page render.
+onServerPrefetch(async () => {
+  try {
+    await loadSong();
+  } catch (err) {
+    // already reported via notificationStore inside loadSong()
+  }
 });
 
 onUnmounted(() => {
