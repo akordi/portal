@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
+import { unref } from 'vue';
+import { useHead } from '@vueuse/head';
 
 const { getSong, getSongPreferences, saveSongTransposeOffset } = vi.hoisted(() => ({
   getSong: vi.fn(),
@@ -168,5 +170,45 @@ describe('SongView transposed indicator', () => {
     expect(badge(wrapper).exists()).toBe(false);
     expect(resetButton(wrapper)).toBeUndefined();
     expect(wrapper.html()).toContain('Am');
+  });
+});
+
+describe('SongView head tags', () => {
+  // useHead() must run synchronously in setup() so it can inject() the
+  // per-request head. Calling it after the song fetch resolves falls back to
+  // Unhead's process-global shared head, which under concurrent SSR renders
+  // drops the song's <title>/description/og/canonical tags.
+  it('registers the head entry during setup and fills it once the song loads', async () => {
+    let resolveSong;
+    getSong.mockReturnValue(
+      new Promise((resolve) => {
+        resolveSong = resolve;
+      })
+    );
+    getSongPreferences.mockResolvedValue({ transposeOffset: 0 });
+
+    mount(SongView);
+
+    expect(useHead).toHaveBeenCalledTimes(1);
+    const input = useHead.mock.calls[0][0];
+    expect(unref(input)).toEqual({});
+
+    resolveSong({ data: { ...song, bodyLyrics: 'Bēdu, manu lielu bēdu, kur es tevi nolikšu' } });
+    await flushPromises();
+
+    expect(useHead).toHaveBeenCalledTimes(1);
+    const pageTitle = 'Prāta vētra - Bēdu, manu lielu bēdu';
+    const canonicalUrl = `${window.location.origin}/song/42-song`;
+    const description = 'Bēdu, manu lielu bēdu, kur es tevi nolikšu';
+    expect(unref(input)).toEqual({
+      title: pageTitle,
+      link: [{ rel: 'canonical', href: canonicalUrl }],
+      meta: [
+        { name: 'description', content: description },
+        { property: 'og:title', content: pageTitle },
+        { property: 'og:description', content: description },
+        { property: 'og:url', content: canonicalUrl },
+      ],
+    });
   });
 });

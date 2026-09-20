@@ -57,6 +57,34 @@ const songUrlParam = computed(() => route.params.url);
 const bodyTransposedIndex = ref(0);
 const item = ref({});
 const loading = ref(true);
+
+// Head tags must be registered synchronously in setup(): useHead() relies on
+// inject() to find the per-request head instance created in createApp.js.
+// Calling it after an await inside loadSong() has no active component
+// instance, so Unhead falls back to a process-global shared head — on the
+// server, concurrent requests then write into the wrong head and the song
+// <title>/description/og/canonical tags are lost. loadSong() only fills
+// these refs; the computed input stays empty (contributing no tags, so the
+// App-level generic title applies) until the song has loaded.
+const pageTitle = ref('');
+const metaDescription = ref('');
+const canonicalUrl = ref('');
+useHead(
+  computed(() =>
+    pageTitle.value
+      ? {
+          title: pageTitle.value,
+          link: [{ rel: 'canonical', href: canonicalUrl.value }],
+          meta: [
+            { name: 'description', content: metaDescription.value },
+            { property: 'og:title', content: pageTitle.value },
+            { property: 'og:description', content: metaDescription.value },
+            { property: 'og:url', content: canonicalUrl.value },
+          ],
+        }
+      : {}
+  )
+);
 const hasChords = ref(false);
 const chords = ref([]);
 const hasAbc = computed(() => item.value.bodyAbc);
@@ -303,9 +331,9 @@ const loadSong = async () => {
       typeof window !== 'undefined'
         ? window.location.origin
         : (appConfig?.publicUrl || '').replace(/\/$/, '');
-    const canonicalUrl = `${origin}${pagePath}`;
+    canonicalUrl.value = `${origin}${pagePath}`;
     if (typeof window !== 'undefined') {
-      pageview({ page_path: pagePath, page_location: canonicalUrl });
+      pageview({ page_path: pagePath, page_location: canonicalUrl.value });
     }
 
     const resp = await akordiService.getSong(songId);
@@ -322,7 +350,6 @@ const loadSong = async () => {
     }
     applyTranspose(transposeOffset);
 
-    const pageTitle = `${item.value.mainArtist.title} - ${item.value.title}`;
     // TODO(SSR): a mismatched slug should become a real HTTP redirect when
     // rendered server-side, not a client-side router.replace after the fact —
     // needs the SSR entry to inspect the final route and redirect there.
@@ -334,18 +361,8 @@ const loadSong = async () => {
       });
     }
 
-    const metaDescription = item.value.bodyLyrics?.slice(0, 150) || '';
-
-    useHead({
-      title: pageTitle,
-      link: [{ rel: 'canonical', href: canonicalUrl }],
-      meta: [
-        { name: 'description', content: metaDescription },
-        { property: 'og:title', content: pageTitle },
-        { property: 'og:description', content: metaDescription },
-        { property: 'og:url', content: canonicalUrl },
-      ],
-    });
+    metaDescription.value = item.value.bodyLyrics?.slice(0, 150) || '';
+    pageTitle.value = `${item.value.mainArtist.title} - ${item.value.title}`;
 
     viewStore.title = item.value.title;
     viewStore.description =

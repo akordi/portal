@@ -21,6 +21,26 @@ const loading = ref(true);
 const translate = useI18n();
 const $t = translate.t;
 
+// Registered synchronously in setup() so useHead() can inject() the
+// per-request head (calling it after an await inside loadArtist() would fall
+// back to the process-global shared head and lose tags under concurrent SSR).
+const pageTitle = ref('');
+const metaDescription = ref('');
+useHead(
+  computed(() =>
+    pageTitle.value
+      ? {
+          title: pageTitle.value,
+          meta: [
+            { name: 'description', content: metaDescription.value },
+            { property: 'og:title', content: pageTitle.value },
+            { property: 'og:description', content: metaDescription.value },
+          ],
+        }
+      : {}
+  )
+);
+
 const loadArtist = async () => {
   loading.value = true;
   try {
@@ -49,21 +69,12 @@ const loadArtist = async () => {
     }));
 
     viewStore.title = artistResp.data.title;
-    const pageTitle = $t('pages.artistView.pageTitle', { artist: artistResp.data.title });
     const songTitles = items.value
       .slice(0, 10)
       .map((song) => song.title)
       .join(', ');
-    const metaDescription = $t('pages.artistView.metaDescription', { songTitles });
-
-    useHead({
-      title: pageTitle,
-      meta: [
-        { name: 'description', content: metaDescription },
-        { property: 'og:title', content: pageTitle },
-        { property: 'og:description', content: metaDescription },
-      ],
-    });
+    metaDescription.value = $t('pages.artistView.metaDescription', { songTitles });
+    pageTitle.value = $t('pages.artistView.pageTitle', { artist: artistResp.data.title });
   } catch (err) {
     notificationStore.pushError('Failed to load songs');
     throw err;
