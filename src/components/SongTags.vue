@@ -1,5 +1,6 @@
 <script setup>
 import { LxButton } from '@akordi/lx-ui';
+import { tagUrlParam } from '@/utils/tagUrl';
 
 defineProps({
   tags: {
@@ -11,7 +12,7 @@ defineProps({
 function tagLink(tag) {
   return {
     name: 'tagView',
-    params: { url: tag.url.replace(/^\/tag\//, '') },
+    params: { url: tagUrlParam(tag) },
   };
 }
 </script>
