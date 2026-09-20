@@ -41,6 +41,9 @@ const accountPreferencesStore = useAccountPreferencesStore();
 const router = useRouter();
 const route = useRoute();
 const appConfig = inject('appConfig', null);
+// Per-request HTTP outcome channel, provided only by the SSR entry (see
+// src/entry-server.js) — null in the browser.
+const ssrContext = inject('ssrContext', null);
 const authStore = useAuthStore();
 const isAuthorized = authStore.isAuthenticated();
 const addToListModal = ref();
@@ -331,9 +334,8 @@ const loadSong = async () => {
       typeof window !== 'undefined'
         ? window.location.origin
         : (appConfig?.publicUrl || '').replace(/\/$/, '');
-    canonicalUrl.value = `${origin}${pagePath}`;
     if (typeof window !== 'undefined') {
-      pageview({ page_path: pagePath, page_location: canonicalUrl.value });
+      pageview({ page_path: pagePath, page_location: `${origin}${pagePath}` });
     }
 
     const resp = await akordiService.getSong(songId);
@@ -350,15 +352,22 @@ const loadSong = async () => {
     }
     applyTranspose(transposeOffset);
 
-    // TODO(SSR): a mismatched slug should become a real HTTP redirect when
-    // rendered server-side, not a client-side router.replace after the fact —
-    // needs the SSR entry to inspect the final route and redirect there.
-    if (typeof window !== 'undefined' && pagePath !== item.value.url) {
-      const songUrl = item.value.url.replace(/^\/song\//, '');
-      router.replace({
-        name: 'akordiSongView',
-        params: { url: songUrl },
-      });
+    // Any slug with the right id resolves to the song, so the canonical is
+    // always the song's own URL, never the one requested.
+    canonicalUrl.value = `${origin}${item.value.url}`;
+    // A mismatched slug: server-side it becomes a real 301 (the SSR entry
+    // reads ssrContext.redirect), client-side a router.replace. Both keep
+    // the current route (a /search/, /top/ or /new/ list prefix stays).
+    if (pagePath !== item.value.url) {
+      const target = {
+        name: route.name,
+        params: { url: item.value.url.replace(/^\/song\//, '') },
+      };
+      if (ssrContext) {
+        ssrContext.redirect = router.resolve(target).path;
+      } else {
+        router.replace(target);
+      }
     }
 
     metaDescription.value = item.value.bodyLyrics?.slice(0, 150) || '';
@@ -370,6 +379,11 @@ const loadSong = async () => {
       item.value.performers.map((artist) => artist.title).join(', ');
     viewStore.goBack = true;
   } catch (err) {
+    // Only a definite "no such song" becomes a 404 — any other failure keeps
+    // the fail-open 200 shell (see the onServerPrefetch note below).
+    if (ssrContext && err?.response?.status === 404) {
+      ssrContext.status = 404;
+    }
     notificationStore.pushError('Failed to load song');
     throw err;
   } finally {
