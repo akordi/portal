@@ -16,6 +16,7 @@
     "@dativa-lv/lx-ui": "2.3.0",
     "@ory/client": "^1.22.66",
     "@tombatossals/chords-db": "^0.5.1",
+    "@vue/server-renderer": "^3.5.42",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "@vueuse/core": "^14.4.0",
