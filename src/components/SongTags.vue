@@ -1,5 +1,5 @@
 <script setup>
-import { LxButton } from '@dativa-lv/lx-ui';
+import { LxButton } from '@akordi/lx-ui';
 
 defineProps({
   tags: {
