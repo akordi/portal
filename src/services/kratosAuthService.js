@@ -1,24 +1,27 @@
 import http from '@/services/http';
 
-const { publicUrl, authUrl } = window.config;
 const serviceUrl = '/api/v2/';
 
-export default () => ({
-  authorize() {
-    window.location.href = `${authUrl}/self-service/login/browser?return_to=${publicUrl}auth-done`;
-  },
+export default () => {
+  const { publicUrl, authUrl } = typeof window !== 'undefined' ? window.config : {};
 
-  session() {
-    return http(authUrl).get('/sessions/whoami');
-  },
+  return {
+    authorize() {
+      window.location.href = `${authUrl}/self-service/login/browser?return_to=${publicUrl}auth-done`;
+    },
 
-  extendSession() {
-    return http(serviceUrl).post('/session/extend');
-  },
+    session() {
+      return http(authUrl).get('/sessions/whoami');
+    },
 
-  logout(routePath) {
-    return http(authUrl).get(
-      `self-service/logout/browser?return_to=${publicUrl}${routePath ?? ''}`
-    );
-  },
-});
+    extendSession() {
+      return http(serviceUrl).post('/session/extend');
+    },
+
+    logout(routePath) {
+      return http(authUrl).get(
+        `self-service/logout/browser?return_to=${publicUrl}${routePath ?? ''}`
+      );
+    },
+  };
+};
