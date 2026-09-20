@@ -9,6 +9,7 @@ import akordiService from '@/services/akordiService';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
 import { useHead } from '@vueuse/head';
+import { listTexts } from '@/utils/texts';
 
 const router = useRouter();
 const route = useRoute();
@@ -111,6 +112,7 @@ onUnmounted(() => {
     :show-load-more="hasMore"
     @load-more="loadMore"
     :loading="loading"
+    :texts="listTexts()"
   >
   </LxList>
 </template>

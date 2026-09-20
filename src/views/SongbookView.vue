@@ -8,6 +8,7 @@ import songbookService from '@/services/songbookService';
 
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
+import { listTexts } from '@/utils/texts';
 
 const router = useRouter();
 const route = useRoute();
@@ -123,9 +124,7 @@ em {
     :toolbar-action-definitions="toolbarActions"
     @toolbar-action-click="toolbarActionClicked"
     @action-click="itemActionClicked"
+    :texts="listTexts()"
   >
-    <template #empty>
-      {{ $t('lx.list.noItems') }}
-    </template>
   </LxList>
 </template>

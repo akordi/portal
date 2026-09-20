@@ -7,6 +7,7 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
+import { listTexts } from '@/utils/texts';
 
 const router = useRouter();
 const $t = useI18n().t;
@@ -60,12 +61,10 @@ onMounted(async () => {
     primary-attribute="title"
     :loading="loading"
     @action-click="actionClicked"
+    :texts="{ ...listTexts(), noItems: $t('pages.songbook.empty'), noItemsDescription: ' ' }"
   >
     <template #toolbar>
       <LxButton icon="add" :label="$t('add')" @click="formModal.open()" />
-    </template>
-    <template #empty>
-      {{ $t('pages.songbook.empty') }}
     </template>
   </LxList>
 

@@ -9,6 +9,7 @@ import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
 import { useHead } from '@vueuse/head';
 import { useI18n } from 'vue-i18n';
+import { listTexts } from '@/utils/texts';
 
 const router = useRouter();
 const route = useRoute();
@@ -92,6 +93,7 @@ onMounted(async () => {
     name-attribute="title"
     description-attribute="description"
     @action-click="actionClicked"
+    :texts="listTexts()"
   >
   </LxList>
 </template>

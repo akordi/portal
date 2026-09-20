@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
+import { listTexts } from '@/utils/texts';
 
 const router = useRouter();
 const $t = useI18n().t;
@@ -76,6 +77,7 @@ onMounted(async () => {
     id-attribute="id"
     :loading="loading"
     :show-load-more="hasMore"
+    :texts="{ ...listTexts(), noItems: $t('pages.chordGenerator.empty'), noItemsDescription: ' ' }"
     @load-more="loadMore"
     @action-click="actionClicked"
   >
@@ -98,9 +100,6 @@ onMounted(async () => {
         <LxRating :model-value="averageRating" read-only kind="5stars" :focusable="false" />
         <span>{{ `${averageRating.toFixed(1)} (${ratingsCount})` }}</span>
       </div>
-    </template>
-    <template #empty>
-      {{ $t('pages.chordGenerator.empty') }}
     </template>
   </LxList>
 </template>

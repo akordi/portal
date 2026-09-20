@@ -11,6 +11,7 @@ import akordiService from '@/services/akordiService';
 
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
+import { listTexts } from '@/utils/texts';
 
 const route = useRoute();
 const $t = useI18n().t;
@@ -99,10 +100,8 @@ em {
     @action-click="searchActionClicked"
     @update:search-string="searchSongs"
     v-model:search-string="searchString"
+    :texts="listTexts()"
   >
-    <template #empty>
-      {{ $t('lx.list.noItems') }}
-    </template>
     <template #customItem="{ title, description }">
       <p class="lx-primary" v-html="title"></p>
       <p class="lx-secondary pre" v-html="description"></p>

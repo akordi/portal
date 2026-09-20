@@ -8,6 +8,7 @@ import { useRouter } from 'vue-router';
 
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
+import { listTexts } from '@/utils/texts';
 
 const router = useRouter();
 const translate = useI18n();
@@ -98,6 +99,7 @@ watch(currentSection, (newVal) => {
     @action-click="actionClicked"
     :show-load-more="hasMore"
     @load-more="loadMore"
+    :texts="listTexts()"
   >
   </LxList>
 </template>
