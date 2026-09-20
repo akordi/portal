@@ -45,6 +45,32 @@
   </head>
 
   <body class="lx">
+    <!--
+      Mirrors lx-ui's theme resolution (vueuse useColorMode on `.lx`, storage
+      key `<systemId>-theme`, default `auto`) before first paint. Without this
+      the server-rendered page paints with the light theme and only switches
+      to dark once the JS bundle has run. Must stay inline, blocking and first
+      in <body> — the body element has to exist, and nothing may render before.
+    -->
+    <script>
+      (function () {
+        try {
+          var mode = localStorage.getItem("akordi-theme") || "auto";
+          if (mode === "auto") {
+            mode =
+              window.matchMedia &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
+          }
+          if (mode === "dark" || mode === "light" || mode === "contrast") {
+            document.body.classList.add("lx-theme-" + mode);
+          }
+        } catch (e) {
+          /* storage blocked (private mode, etc.) — fall back to JS-applied theme */
+        }
+      })();
+    </script>
     <noscript>
       <strong
         >We're sorry but <%= VUE_APP_NAME %> doesn't work properly without
