@@ -129,18 +129,22 @@ function stripStaticHeadTags(template) {
 // client keeps document.documentElement.lang in sync. Appending head's attrs
 // verbatim would therefore emit two lang attributes — drop the template's
 // copy for any attribute head also renders, so head's value wins once.
+// One attribute per match: a name, optionally followed by a quoted or bare
+// value. The value alternatives start with distinct characters (no
+// overlap, so no backtracking) — Sonar flags anything more permissive.
+const ATTR_PATTERN = /[^\s=]+(?:="[^"]*"|='[^']*'|=[^\s"']*)?/g;
+
+function attrName(attr) {
+  return attr.split('=')[0].toLowerCase();
+}
+
 function mergeHtmlAttrs(templateAttrs, headAttrs) {
-  const headNames = new Set(
-    Array.from(headAttrs.matchAll(/(?:^|\s)([^\s=]+)(?:=|\s|$)/g), (m) => m[1].toLowerCase())
+  const headAttrList = headAttrs.match(ATTR_PATTERN) || [];
+  const headNames = new Set(headAttrList.map(attrName));
+  const kept = (templateAttrs.match(ATTR_PATTERN) || []).filter(
+    (attr) => !headNames.has(attrName(attr))
   );
-  const kept = templateAttrs.replace(
-    /\s+([^\s=]+)(?:=(?:"[^"]*"|'[^']*'|[^\s"']+))?/g,
-    (attr, name) => (headNames.has(name.toLowerCase()) ? '' : attr)
-  );
-  return [kept.trim(), headAttrs.trim()]
-    .filter(Boolean)
-    .map((attrs) => ` ${attrs}`)
-    .join('');
+  return [...kept, ...headAttrList].map((attr) => ` ${attr}`).join('');
 }
 
 async function renderPage(url) {
