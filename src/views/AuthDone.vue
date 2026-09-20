@@ -39,7 +39,11 @@ const errCodeMessage = {
 
 onMounted(async () => {
   if (route.query?.error) {
-    const err = (errCodeMessage[route.query.error.toString()] || errCodeMessage.unknown)();
+    const errCode = route.query.error.toString();
+    const buildErr = Object.hasOwn(errCodeMessage, errCode)
+      ? errCodeMessage[errCode]
+      : errCodeMessage.unknown;
+    const err = buildErr();
     appStore.setError(err.title); // ToDo: use description too when error page is ready
     return;
   }
