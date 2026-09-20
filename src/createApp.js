@@ -22,6 +22,9 @@ import configBool from '@/utils/configBool';
 export default function createAppInstance(config, { ssr = false } = {}) {
   const app = ssr ? createSSRApp(App) : createApp(App);
   app.use(createPinia());
+  // SSR-safe access to config (window.config isn't available on the server) —
+  // see e.g. SongView.vue's canonical URL / API base URL resolution.
+  app.provide('appConfig', config);
 
   const base =
     config.publicUrl.indexOf('://') !== -1 ? new URL(config.publicUrl).pathname : config.publicUrl;
