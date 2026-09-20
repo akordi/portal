@@ -45,6 +45,16 @@
   </head>
 
   <body class="lx">
+    <!-- Same theme resolution as lx-ui, applied before first paint to avoid a light flash. -->
+    <script>
+      try {
+        var theme = localStorage.getItem("akordi-theme") || "auto";
+        if (theme === "auto") {
+          theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        document.body.classList.add("lx-theme-" + theme);
+      } catch {}
+    </script>
     <noscript>
       <strong
         >We're sorry but <%= VUE_APP_NAME %> doesn't work properly without
