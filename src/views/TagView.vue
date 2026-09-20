@@ -10,6 +10,7 @@ import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
 import { useHead } from '@vueuse/head';
 import { listTexts } from '@/utils/texts';
+import { tagUrlParam as tagRouteParam } from '@/utils/tagUrl';
 
 const router = useRouter();
 const route = useRoute();
@@ -31,9 +32,8 @@ const loadSongs = async () => {
     const tagId = akordiService.parseUrl(tagUrl);
     const tagResp = await akordiService.getTag(tagId);
     tag.value = tagResp.data;
-    if (tag.value.url !== tagUrl) {
-      const correctUrl = tag.value.url.replace(/^\/tag\//, '');
-      router.push({ name: 'tagView', params: { url: correctUrl } });
+    if (tag.value.url && tag.value.url !== tagUrl) {
+      router.push({ name: 'tagView', params: { url: tagRouteParam(tag.value) } });
     }
 
     const resp = await akordiService.getSongs({
