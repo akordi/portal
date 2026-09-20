@@ -765,6 +765,15 @@ onUnmounted(() => {
           <p class="lx-data">{{ lxDateUtils.formatDateTime(item.updatedDate) }}</p>
         </LxRow>
       </template>
+      <!-- Tags live in the content, not in the header's #postHeaderInfo slot:
+           that slot collapses into the header info popover at <=800px, which
+           would hide them on phones. First thing under the title, with the
+           label visually hidden — chips with a tag icon are self-explanatory. -->
+      <LxSection v-if="item.tags?.length > 0" id="songTags">
+        <LxRow :label="$t('song.tags')" hide-label>
+          <SongTags :tags="item.tags" />
+        </LxRow>
+      </LxSection>
       <!-- Transposed-song badge. It sits in the content, not in the form's
            #postHeader slot: LX collapses the header's pre/post groups into the
            header info popover at <=800px, which would hide the indicator on
@@ -812,15 +821,6 @@ onUnmounted(() => {
            play-along mode so you can still follow the words while playing. -->
       <LxSection id="body">
         <p class="pre" v-html="item.bodyWithMarkup" :style="{ fontSize: fontSize + 'em' }"></p>
-      </LxSection>
-      <!-- Tags live in the content, not in the header's #postHeaderInfo slot:
-           that slot collapses into the header info popover at <=800px, which
-           would hide them on phones. Placed after the sheet like article tags —
-           a "more like this" exit once the song has been read/played. -->
-      <LxSection v-if="item.tags?.length > 0" id="songTags">
-        <LxRow :label="$t('song.tags')">
-          <SongTags :tags="item.tags" />
-        </LxRow>
       </LxSection>
     </LxForm>
     <section class="song-reference" v-if="item.reference">
