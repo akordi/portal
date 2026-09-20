@@ -8,6 +8,8 @@ import httpProxy from 'http-proxy';
 // until `bun run build` has run, so eslint can't resolve it.
 // eslint-disable-next-line no-restricted-imports, import/no-unresolved, import/extensions
 import render from './dist/server/entry-server.mjs';
+// eslint-disable-next-line no-restricted-imports
+import htmlLang from './src/utils/htmlLang.js';
 
 // No supervisor process here (no nginx/PID-1 wrapper — see Dockerfile), so
 // an uncaught error anywhere takes down the entire server, not just the
@@ -91,6 +93,7 @@ function injectRuntimeConfig(template) {
     '{{AUTH_URL}}': process.env.AUTH_URL || '',
     '{{AUTH_ENABLED}}': process.env.AUTH_ENABLED || 'false',
     '{{DEFAULT_LANGUAGE}}': process.env.DEFAULT_LANGUAGE || 'lv',
+    '{{HTML_LANG}}': htmlLang(process.env.DEFAULT_LANGUAGE),
     '{{ENVIRONMENT}}': process.env.ENVIRONMENT || 'production',
     '{{GTAG_ENABLED}}': process.env.GTAG_ENABLED || 'false',
     '{{GTAG_ID}}': process.env.GTAG_ID || '',
@@ -121,6 +124,25 @@ function stripStaticHeadTags(template) {
     .replace(/<meta\s+property="og:[^>]*>/gi, '');
 }
 
+// The template's <html> already carries lang="..." (the {{HTML_LANG}} token
+// above), and App.vue's useHead() sets the same lang via htmlAttrs so the
+// client keeps document.documentElement.lang in sync. Appending head's attrs
+// verbatim would therefore emit two lang attributes — drop the template's
+// copy for any attribute head also renders, so head's value wins once.
+function mergeHtmlAttrs(templateAttrs, headAttrs) {
+  const headNames = new Set(
+    Array.from(headAttrs.matchAll(/(?:^|\s)([^\s=]+)(?:=|\s|$)/g), (m) => m[1].toLowerCase())
+  );
+  const kept = templateAttrs.replace(
+    /\s+([^\s=]+)(?:=(?:"[^"]*"|'[^']*'|[^\s"']+))?/g,
+    (attr, name) => (headNames.has(name.toLowerCase()) ? '' : attr)
+  );
+  return [kept.trim(), headAttrs.trim()]
+    .filter(Boolean)
+    .map((attrs) => ` ${attrs}`)
+    .join('');
+}
+
 async function renderPage(url) {
   const template = stripStaticHeadTags(readTemplate());
   const config = readConfig();
@@ -128,7 +150,7 @@ async function renderPage(url) {
   const { headTags, htmlAttrs, bodyAttrs, bodyTagsOpen, bodyTags } = await renderHeadToString(head);
 
   return template
-    .replace(/<html([^>]*)>/, (_match, attrs) => `<html${attrs} ${htmlAttrs}>`)
+    .replace(/<html([^>]*)>/, (_match, attrs) => `<html${mergeHtmlAttrs(attrs, htmlAttrs)}>`)
     .replace('</head>', `${headTags}</head>`)
     .replace(/<body([^>]*)>/, (_match, attrs) => `<body${attrs} ${bodyAttrs}>${bodyTagsOpen}`)
     .replace('<div id="app"></div>', `<div id="app">${html}</div>`)

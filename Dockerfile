@@ -36,6 +36,9 @@ COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=build /app/dist/client ./dist/client
 COPY --from=build /app/dist/server ./dist/server
 COPY server.mjs ./
+# server.mjs shares the DEFAULT_LANGUAGE -> <html lang> mapping with the Vue
+# app (and vite.config.mjs) instead of duplicating it.
+COPY src/utils/htmlLang.js ./src/utils/htmlLang.js
 
 RUN chown -R bun:bun /app
 USER bun
