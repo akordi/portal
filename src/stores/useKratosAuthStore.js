@@ -22,10 +22,13 @@ export default (authService, authUrl, publicUrl, clientId, scope, authSessionKey
     role: null,
     permissions: [],
   };
+  // Guarding on `window`, not `sessionStorage` directly — Node 22+ ships a
+  // real (in-memory, per-process) global `sessionStorage` by default, so
+  // checking it alone no longer reliably detects "is this a real browser".
   const returnPath = useStorage(
     'returnPath',
     null,
-    typeof sessionStorage !== 'undefined' ? sessionStorage : undefined
+    typeof window !== 'undefined' ? sessionStorage : undefined
   );
   const session = ref({ ...initState });
 
