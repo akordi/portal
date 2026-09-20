@@ -22,7 +22,11 @@ export default (authService, authUrl, publicUrl, clientId, scope, authSessionKey
     role: null,
     permissions: [],
   };
-  const returnPath = useStorage('returnPath', null, sessionStorage);
+  const returnPath = useStorage(
+    'returnPath',
+    null,
+    typeof sessionStorage !== 'undefined' ? sessionStorage : undefined
+  );
   const session = ref({ ...initState });
 
   const isAuthorized = computed(() => Boolean(session.value.st !== 'none' && session.value.st));
