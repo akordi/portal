@@ -16,6 +16,7 @@ import useConfirmStore from '@/stores/useConfirmStore';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
 import configBool from '@/utils/configBool';
+import useAppConfig from '@/hooks/useAppConfig';
 
 const authStore = useAuthStore();
 const accountPreferencesStore = useAccountPreferencesStore();
@@ -25,6 +26,11 @@ const errors = useErrors();
 const router = useRouter();
 const confirmStore = useConfirmStore();
 const appStore = useAppStore();
+// Read via inject (see useAppConfig) rather than window.config so the header
+// renders the same on the server and the client: authEnabled arrives as the
+// string "true" from index.html and as a boolean from server.mjs's
+// readConfig(), and configBool normalizes both.
+const appConfig = useAppConfig();
 
 const secondsToIdle = 10;
 const secondsCheckApiInterval = 30;
@@ -43,14 +49,12 @@ const shellMode = computed(() => {
   return ret;
 });
 
-const hasLoginButton = computed(
-  () => typeof window !== 'undefined' && configBool(window.config.authEnabled)
-);
+const hasLoginButton = computed(() => configBool(appConfig.authEnabled));
 
 // LxShell expects an object; it maps the canonical value (staging → "test",
 // development → "dev", etc.) to the header badge shown outside production.
 const shellEnvironment = computed(() => ({
-  environment: typeof window !== 'undefined' ? window.config.environment : undefined,
+  environment: appConfig.environment,
 }));
 
 const nav = computed(() => {
