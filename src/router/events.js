@@ -1,7 +1,7 @@
 import useRights from '@/hooks/useRights';
 import useAppStore from '@/stores/useAppStore';
 import useAuthStore from '@/stores/useAuthStore';
-import { lxFlowUtils } from '@dativa-lv/lx-ui';
+import { lxFlowUtils } from '@akordi/lx-ui';
 
 export default (router) => {
   // Return-based guard: since lx-ui 2.3 the flow utils no longer take or call

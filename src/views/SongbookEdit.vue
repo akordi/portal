@@ -8,7 +8,7 @@ import {
   LxSection,
   LxTextInput,
   LxToggle,
-} from '@dativa-lv/lx-ui';
+} from '@akordi/lx-ui';
 import { computed, onMounted, ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';

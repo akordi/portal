@@ -79,7 +79,11 @@ const getEnvVariables = (mode, serving) => {
     envVariables.VUE_APP_AUTH_URL = '{{AUTH_URL}}';
     envVariables.VUE_APP_GTAG_ENABLED = '{{GTAG_ENABLED}}';
     envVariables.VUE_APP_GTAG_ID = '{{GTAG_ID}}';
-    envVariables.BASE_PATH = envVariables.BASE_PATH || '//BASE_PATH//';
+    // Vite's `base` bakes into every built JS/CSS chunk's asset URLs, so it
+    // needs a real value at build time (unlike the {{...}} tokens below,
+    // index.html-only, substituted at request time by server.mjs). No real
+    // deployment overrides it (portal-api's own BASE_PATH is unrelated).
+    envVariables.BASE_PATH = envVariables.BASE_PATH || '/';
     envVariables.BASE_URL = '{{PUBLIC_URL}}';
     envVariables.VUE_APP_DEFAULT_LANGUAGE = '{{DEFAULT_LANGUAGE}}';
     envVariables.VUE_APP_NAME = '{{APP_NAME}}';
@@ -97,6 +101,11 @@ const getEnvVariables = (mode, serving) => {
 export default defineConfig((command) => {
   const serving = command?.command === 'serve' && command?.mode === 'development';
   const envVariables = getEnvVariables(command.mode, serving);
+  // `vite build --ssr src/entry-server.js` (see package.json's build:server
+  // script) sets isSsrBuild — split output so the client bundle (served as
+  // static files) and the server bundle (run by server.mjs under Node) don't
+  // overwrite each other.
+  const outDir = command?.isSsrBuild ? './dist/server' : './dist/client';
   return {
     base: envVariables.BASE_PATH,
     resolve: {
@@ -105,7 +114,7 @@ export default defineConfig((command) => {
         {
           find: '/lx-fonts',
           replacement: fileURLToPath(
-            new URL('./node_modules/@dativa-lv/lx-ui/dist/lx-fonts', import.meta.url)
+            new URL('./node_modules/@akordi/lx-ui/dist/lx-fonts', import.meta.url)
           ),
         },
       ],
@@ -132,7 +141,7 @@ export default defineConfig((command) => {
     build: {
       // https://vitejs.dev/config/#build-target
       target: ['es2020'],
-      outDir: './dist',
+      outDir,
       sourcemap: false,
       rollupOptions: {
         output: {

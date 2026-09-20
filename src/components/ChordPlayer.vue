@@ -10,7 +10,7 @@
  */
 import { computed, onBeforeUnmount, ref, shallowRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { LxButton, LxValuePicker } from '@dativa-lv/lx-ui';
+import { LxButton, LxValuePicker } from '@akordi/lx-ui';
 
 import ChordSvg from '@/components/ChordSvg.vue';
 import { activeSegmentIndex, youtubeId } from '@/utils/chordSync';

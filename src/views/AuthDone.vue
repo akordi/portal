@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { LxLoader } from '@dativa-lv/lx-ui';
+import { LxLoader } from '@akordi/lx-ui';
 import useAuthStore from '@/stores/useAuthStore';
 import useNotifyStore from '@/stores/useNotifyStore';
 import { useI18n } from 'vue-i18n';
@@ -39,7 +39,11 @@ const errCodeMessage = {
 
 onMounted(async () => {
   if (route.query?.error) {
-    const err = (errCodeMessage[route.query.error.toString()] || errCodeMessage.unknown)();
+    const errCode = route.query.error.toString();
+    const buildErr = Object.hasOwn(errCodeMessage, errCode)
+      ? errCodeMessage[errCode]
+      : errCodeMessage.unknown;
+    const err = buildErr();
     appStore.setError(err.title); // ToDo: use description too when error page is ready
     return;
   }

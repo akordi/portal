@@ -6,7 +6,7 @@ import { useRoute, useRouter } from 'vue-router';
 // eslint-disable-next-line no-unused-vars
 import CookiesConsent from '@/components/CookiesConsent.vue';
 import { invoke, until, useIdle, useIntervalFn } from '@vueuse/core';
-import { LxShell } from '@dativa-lv/lx-ui';
+import { LxShell } from '@akordi/lx-ui';
 import { shellTexts } from '@/utils/texts';
 import useErrors from '@/hooks/useErrors';
 import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
@@ -43,11 +43,15 @@ const shellMode = computed(() => {
   return ret;
 });
 
-const hasLoginButton = computed(() => configBool(window.config.authEnabled));
+const hasLoginButton = computed(
+  () => typeof window !== 'undefined' && configBool(window.config.authEnabled)
+);
 
 // LxShell expects an object; it maps the canonical value (staging → "test",
 // development → "dev", etc.) to the header badge shown outside production.
-const shellEnvironment = computed(() => ({ environment: window.config.environment }));
+const shellEnvironment = computed(() => ({
+  environment: typeof window !== 'undefined' ? window.config.environment : undefined,
+}));
 
 const nav = computed(() => {
   const ret = [
@@ -108,23 +112,26 @@ const nav = computed(() => {
 
 const coverLogo = ref('/imgs/logo-50.svg');
 
-const bodyObserver = new MutationObserver((mutationsList) => {
-  const classMutation = mutationsList.find(
-    (mutation) => mutation.type === 'attributes' && mutation.attributeName === 'class'
-  );
+const bodyObserver =
+  typeof MutationObserver !== 'undefined'
+    ? new MutationObserver((mutationsList) => {
+        const classMutation = mutationsList.find(
+          (mutation) => mutation.type === 'attributes' && mutation.attributeName === 'class'
+        );
 
-  if (classMutation) {
-    const newClass = document.body.className;
+        if (classMutation) {
+          const newClass = document.body.className;
 
-    if (newClass.includes('theme-dark')) {
-      coverLogo.value = '/imgs/logo-50.svg';
-    } else if (newClass.includes('theme-contrast')) {
-      coverLogo.value = '/imgs/logo-50.svg';
-    } else {
-      coverLogo.value = '/imgs/logo-50-dark.svg';
-    }
-  }
-});
+          if (newClass.includes('theme-dark')) {
+            coverLogo.value = '/imgs/logo-50.svg';
+          } else if (newClass.includes('theme-contrast')) {
+            coverLogo.value = '/imgs/logo-50.svg';
+          } else {
+            coverLogo.value = '/imgs/logo-50-dark.svg';
+          }
+        }
+      })
+    : null;
 onMounted(() => {
   bodyObserver?.observe(document.body, { attributes: true });
 });

@@ -10,7 +10,7 @@ const { submit, getMyJob, getQueue, getMyLimit, pushError } = vi.hoisted(() => (
   pushError: vi.fn(),
 }));
 
-vi.mock('@dativa-lv/lx-ui', () => ({
+vi.mock('@akordi/lx-ui', () => ({
   LxButton: { name: 'LxButton', props: ['label'], template: '<button />' },
   LxForm: {
     name: 'LxForm',

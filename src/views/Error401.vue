@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import { LxErrorPage } from '@dativa-lv/lx-ui';
+import { LxErrorPage } from '@akordi/lx-ui';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import useAuthStore from '@/stores/useAuthStore';

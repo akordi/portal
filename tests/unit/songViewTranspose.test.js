@@ -7,7 +7,7 @@ const { getSong, getSongPreferences, saveSongTransposeOffset } = vi.hoisted(() =
   saveSongTransposeOffset: vi.fn(),
 }));
 
-vi.mock('@dativa-lv/lx-ui', () => {
+vi.mock('@akordi/lx-ui', () => {
   // Slot-rendering stubs — the indicator lives in the form's postHeader slot
   // and the reset action in the footer toolbar, so both slots have to render.
   const slotStub = (name, props = []) => ({

@@ -30,19 +30,30 @@ jobs:
       - name: Set up Bun
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
-          bun-version: 1.2.0
+          bun-version: 1.3.14
       - name: Install dependencies
         run: bun install --frozen-lockfile --ignore-scripts
       - name: Lint
         run: bun run lint
       - name: Test
         run: bun run test
-      - name: Build
-        run: bun run build
-      # Install the cosign tool except on PR
-      # https://github.com/sigstore/cosign-installer
+      # No build step here — the Dockerfile now builds the client and SSR
+      # bundles itself (see its `deps`/`build` stages), so this image is
+      # reproducible from a clean checkout without needing a pre-built dist/
+      # from the runner. Lint/test still run here first for fast feedback
+      # before the slower Docker build.
+      # PRs from a fork don't get write access to GITHUB_TOKEN, so pushing
+      # would just fail there — restrict to same-repo PRs plus non-PR events.
+      - name: Determine whether this run can push
+        id: can-push
+        run: |
+          if [ "${{ github.event_name }}" != "pull_request" ] || [ "${{ github.event.pull_request.head.repo.full_name }}" = "${{ github.repository }}" ]; then
+            echo "value=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Install cosign
-        if: github.event_name != 'pull_request'
+        if: steps.can-push.outputs.value == 'true' && github.event_name != 'pull_request'
         uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20 #v3.5.0
         with:
           cosign-release: "v2.2.4"
@@ -53,10 +64,8 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
 
-        # Login against a Docker registry except on PR
-        # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+        if: steps.can-push.outputs.value == 'true'
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
         with:
           registry: ${{ env.REGISTRY }}
@@ -70,15 +79,17 @@ jobs:
         uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          # Default rules already tag PR builds as pr-<number> — pushing
+          # those too (see can-push above) makes `docker pull
+          # ghcr.io/akordi/portal:pr-<number>` an rc build to verify before
+          # merging, not just a build-only validation.
 
-        # Build and push Docker image with Buildx (don't push on PR)
-        # https://github.com/docker/build-push-action
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ steps.can-push.outputs.value == 'true' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
@@ -90,7 +101,7 @@ jobs:
         # transparency data even for private images, pass --force to cosign below.
         # https://github.com/sigstore/cosign
       - name: Sign the published Docker image
-        if: ${{ github.event_name != 'pull_request' }}
+        if: steps.can-push.outputs.value == 'true' && github.event_name != 'pull_request'
         env:
           # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
           TAGS: ${{ steps.meta.outputs.tags }}

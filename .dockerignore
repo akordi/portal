@@ -1,0 +1,14 @@
+node_modules
+dist
+.git
+.github
+tests
+coverage
+*.log
+.DS_Store
+# Never let a local dev .env into the build context — bun auto-loads it
+# (unlike Node), which would silently override the real env vars the
+# container is given (see server.mjs's CMD --no-env-file for the runtime
+# side of this same guard).
+.env
+.env.*

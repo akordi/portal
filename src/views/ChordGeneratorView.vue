@@ -1,5 +1,5 @@
 <script setup>
-import { LxButton, LxLoaderView, LxRating } from '@dativa-lv/lx-ui';
+import { LxButton, LxLoaderView, LxRating } from '@akordi/lx-ui';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';

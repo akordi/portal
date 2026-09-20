@@ -1,5 +1,5 @@
 import { useStorage } from '@vueuse/core';
-import { lxPermissionUtils } from '@dativa-lv/lx-ui';
+import { lxPermissionUtils } from '@akordi/lx-ui';
 import { computed, ref } from 'vue';
 
 export default (authService, authUrl, publicUrl, clientId, scope, authSessionKey) => () => {
@@ -22,7 +22,14 @@ export default (authService, authUrl, publicUrl, clientId, scope, authSessionKey
     role: null,
     permissions: [],
   };
-  const returnPath = useStorage('returnPath', null, sessionStorage);
+  // Guarding on `window`, not `sessionStorage` directly — Node 22+ ships a
+  // real (in-memory, per-process) global `sessionStorage` by default, so
+  // checking it alone no longer reliably detects "is this a real browser".
+  const returnPath = useStorage(
+    'returnPath',
+    null,
+    typeof window !== 'undefined' ? sessionStorage : undefined
+  );
   const session = ref({ ...initState });
 
   const isAuthorized = computed(() => Boolean(session.value.st !== 'none' && session.value.st));

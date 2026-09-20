@@ -6,7 +6,7 @@ import {
   LxTextArea,
   LxTextInput,
   LxValuePicker,
-} from '@dativa-lv/lx-ui';
+} from '@akordi/lx-ui';
 import { computed, onMounted, onUnmounted, ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 

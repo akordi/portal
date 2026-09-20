@@ -1,6 +1,6 @@
 <script setup>
 import akordiService from '@/services/akordiService';
-import { LxList, LxLoaderView, LxValuePicker } from '@dativa-lv/lx-ui';
+import { LxList, LxLoaderView, LxValuePicker } from '@akordi/lx-ui';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { listTexts } from '@/utils/texts';

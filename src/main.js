@@ -1,109 +1,57 @@
-import { createApp } from 'vue';
-import { createPinia } from 'pinia';
-import { createI18n } from 'vue-i18n';
-import App from '@/App.vue';
-import router from '@/router';
-import lv from '@/locales/lv.json';
-import lt from '@/locales/lt.json';
-import ee from '@/locales/ee.json';
-import es from '@/locales/es.json';
-import events from '@/router/events';
-import { createLx } from '@dativa-lv/lx-ui';
-import { createGtag } from 'vue-gtag';
-import { createHead } from '@vueuse/head';
+import createAppInstance from '@/createApp';
 
-import '@dativa-lv/lx-ui/dist/styles/lx-reset.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-fonts-carbon.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-pt-carbon.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-ut-carbon-light.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-ut-carbon-dark.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-ut-carbon-contrast.css';
+import '@akordi/lx-ui/dist/styles/lx-reset.css';
+import '@akordi/lx-ui/dist/styles/lx-fonts-carbon.css';
+import '@akordi/lx-ui/dist/styles/lx-pt-carbon.css';
+import '@akordi/lx-ui/dist/styles/lx-ut-carbon-light.css';
+import '@akordi/lx-ui/dist/styles/lx-ut-carbon-dark.css';
+import '@akordi/lx-ui/dist/styles/lx-ut-carbon-contrast.css';
 
-import '@dativa-lv/lx-ui/dist/styles/lx-buttons.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-data-grid.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-inputs.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-steps.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-forms.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-notifications.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-info-boxes.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-info-wrappers.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-modals.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-loaders.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-lists.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-expanders.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-tabs.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-date-pickers.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-animations.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-master-detail.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-ratings.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-duration-inputs.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-content-switchers.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-popovers.css';
+import '@akordi/lx-ui/dist/styles/lx-buttons.css';
+import '@akordi/lx-ui/dist/styles/lx-data-grid.css';
+import '@akordi/lx-ui/dist/styles/lx-inputs.css';
+import '@akordi/lx-ui/dist/styles/lx-steps.css';
+import '@akordi/lx-ui/dist/styles/lx-forms.css';
+import '@akordi/lx-ui/dist/styles/lx-notifications.css';
+import '@akordi/lx-ui/dist/styles/lx-info-boxes.css';
+import '@akordi/lx-ui/dist/styles/lx-info-wrappers.css';
+import '@akordi/lx-ui/dist/styles/lx-modals.css';
+import '@akordi/lx-ui/dist/styles/lx-loaders.css';
+import '@akordi/lx-ui/dist/styles/lx-lists.css';
+import '@akordi/lx-ui/dist/styles/lx-expanders.css';
+import '@akordi/lx-ui/dist/styles/lx-tabs.css';
+import '@akordi/lx-ui/dist/styles/lx-date-pickers.css';
+import '@akordi/lx-ui/dist/styles/lx-animations.css';
+import '@akordi/lx-ui/dist/styles/lx-master-detail.css';
+import '@akordi/lx-ui/dist/styles/lx-ratings.css';
+import '@akordi/lx-ui/dist/styles/lx-duration-inputs.css';
+import '@akordi/lx-ui/dist/styles/lx-content-switchers.css';
+import '@akordi/lx-ui/dist/styles/lx-popovers.css';
 
 // Need only to hide console errors when running lx-ui locally
-// import '@dativa-lv/lx-ui/dist/lx-fonts/IBMPlexMono-SemiBold.woff';
-// import '@dativa-lv/lx-ui/dist/lx-fonts/IBMPlexSans-Light.woff';
-// import '@dativa-lv/lx-ui/dist/lx-fonts/IBMPlexSans-Regular.woff';
-// import '@dativa-lv/lx-ui/dist/lx-fonts/IBMPlexSans-SemiBold.woff';
-// import '@dativa-lv/lx-ui/dist/lx-fonts/IBMPlexMono-Regular.woff';
-// import '@dativa-lv/lx-ui/dist/lx-fonts/IBMPlexSans-Italic.woff';
+// import '@akordi/lx-ui/dist/lx-fonts/IBMPlexMono-SemiBold.woff';
+// import '@akordi/lx-ui/dist/lx-fonts/IBMPlexSans-Light.woff';
+// import '@akordi/lx-ui/dist/lx-fonts/IBMPlexSans-Regular.woff';
+// import '@akordi/lx-ui/dist/lx-fonts/IBMPlexSans-SemiBold.woff';
+// import '@akordi/lx-ui/dist/lx-fonts/IBMPlexMono-Regular.woff';
+// import '@akordi/lx-ui/dist/lx-fonts/IBMPlexSans-Italic.woff';
 //
 
-import '@dativa-lv/lx-ui/dist/styles/lx-map.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-shell-grid.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-shell-grid-public.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-forms-grid.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-treelist.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-stack.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-toggles.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-value-pickers.css';
-import '@dativa-lv/lx-ui/dist/styles/lx-toolbars.css';
+import '@akordi/lx-ui/dist/styles/lx-map.css';
+import '@akordi/lx-ui/dist/styles/lx-shell-grid.css';
+import '@akordi/lx-ui/dist/styles/lx-shell-grid-public.css';
+import '@akordi/lx-ui/dist/styles/lx-forms-grid.css';
+import '@akordi/lx-ui/dist/styles/lx-treelist.css';
+import '@akordi/lx-ui/dist/styles/lx-stack.css';
+import '@akordi/lx-ui/dist/styles/lx-toggles.css';
+import '@akordi/lx-ui/dist/styles/lx-value-pickers.css';
+import '@akordi/lx-ui/dist/styles/lx-toolbars.css';
 
 import '@/assets/styles.css';
 import '@/assets/lx-pt-akordi.css';
-import configBool from '@/utils/configBool';
 
-const myApp = createApp(App);
-myApp.use(createPinia());
-events(router);
-myApp.use(router);
-const i18n = createI18n({
-  legacy: false,
-  locale: window.config?.defaultLanguage || 'lv',
-  messages: {
-    lv,
-    lt,
-    ee,
-    es,
-  },
+const { app, router } = createAppInstance(window.config, { ssr: false });
+
+router.isReady().then(() => {
+  app.mount('#app');
 });
-const $t = i18n.global.t;
-
-myApp.use(i18n);
-myApp.use(createLx, {
-  systemId: 'akordi',
-  authUrl: window.config.authUrl,
-  publicUrl: window.config.publicUrl,
-  environment: window.config.environment,
-});
-
-if (configBool(window.config.gtagEnabled) && window.config.gtagId) {
-  const gtag = createGtag({
-    initMode: 'manual',
-    tagId: window.config.gtagId,
-    pageTracker: {
-      router,
-      exclude: (route) => route.meta.customPageTracker,
-      template: (route) => ({
-        page_path: route.path,
-        page_title: $t(route.meta.title),
-        page_location: window.location.href,
-      }),
-    },
-  });
-  myApp.use(gtag);
-}
-const head = createHead();
-myApp.use(head);
-
-myApp.mount('#app');

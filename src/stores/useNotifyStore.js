@@ -1,4 +1,4 @@
 import { defineStore } from 'pinia';
-import { LxNotifyStore } from '@dativa-lv/lx-ui';
+import { LxNotifyStore } from '@akordi/lx-ui';
 
 export default defineStore('notifyStore', LxNotifyStore);

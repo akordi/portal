@@ -1,5 +1,5 @@
 <script setup>
-import { LxList, LxLoader } from '@dativa-lv/lx-ui';
+import { LxList, LxLoader } from '@akordi/lx-ui';
 import { computed, onMounted, ref, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
