@@ -642,6 +642,7 @@ onUnmounted(() => {
 </style>
 <template>
   <LxLoaderView :loading="loading">
+    <SongTags v-if="item.tags?.length > 0" id="songTags" :tags="item.tags" />
     <LxForm
       id="song-view-form"
       :action-definitions="formActions"
@@ -769,11 +770,6 @@ onUnmounted(() => {
            that slot collapses into the header info popover at <=800px, which
            would hide them on phones. First thing under the title, with the
            label visually hidden — chips with a tag icon are self-explanatory. -->
-      <LxSection v-if="item.tags?.length > 0" id="songTags">
-        <LxRow :label="$t('song.tags')" hide-label>
-          <SongTags :tags="item.tags" />
-        </LxRow>
-      </LxSection>
       <!-- Transposed-song badge. It sits in the content, not in the form's
            #postHeader slot: LX collapses the header's pre/post groups into the
            header info popover at <=800px, which would hide the indicator on

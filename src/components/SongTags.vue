@@ -27,6 +27,7 @@ function tagLink(tag) {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-0500, 0.5rem);
+  margin-bottom: var(--space-1000, 1rem);
 }
 </style>
 <template>
