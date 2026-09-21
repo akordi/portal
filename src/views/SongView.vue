@@ -13,7 +13,7 @@ import {
   LxToolbar,
   LxToolbarGroup,
 } from '@akordi/lx-ui';
-import { computed, inject, onMounted, onServerPrefetch, onUnmounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useHead } from '@vueuse/head';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -26,24 +26,23 @@ import { youtubeId } from '@/utils/chordSync';
 import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
 import useAuthStore from '@/stores/useAuthStore';
 import akordiAdminListService from '@/services/songbookService';
-import akordiService from '@/services/akordiService';
 import chordsService from '@/services/chordsService';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useSettingsStore from '@/stores/useSettingsStore';
+import useSongStore from '@/stores/useSongStore';
 import useViewStore from '@/stores/useViewStore';
+import { songHeader, songUrlParam as songUrlParamOf } from '@/ssr/prefetch';
 
 const translate = useI18n();
 const $t = translate.t;
 const viewStore = useViewStore();
 const notificationStore = useNotifyStore();
 const settingsStore = useSettingsStore();
+const songStore = useSongStore();
 const accountPreferencesStore = useAccountPreferencesStore();
 const router = useRouter();
 const route = useRoute();
 const appConfig = inject('appConfig', null);
-// Per-request HTTP outcome channel, provided only by the SSR entry (see
-// src/entry-server.js) — null in the browser.
-const ssrContext = inject('ssrContext', null);
 const authStore = useAuthStore();
 const isAuthorized = authStore.isAuthenticated();
 const addToListModal = ref();
@@ -57,16 +56,23 @@ const loadingStates = ref({}); // To track per-list loading
 const newSongbookName = ref('');
 const creatingSongbook = ref(false);
 const songUrlParam = computed(() => route.params.url);
+// The song this page is for, when it was already fetched: during SSR the
+// route prefetch (src/ssr/prefetch.js) filled the store before rendering, and
+// in the browser that state arrives via window.__INITIAL_STATE__ (main.js).
+// Rendering from it synchronously in setup is what lets the client's first
+// render match the server HTML, so hydration keeps the lyrics on screen
+// instead of wiping them for a loader while the song is fetched again.
+const prefetchedSong = songStore.songFor(songUrlParam.value);
 const bodyTransposedIndex = ref(0);
 const item = ref({});
-const loading = ref(true);
+const loading = ref(!prefetchedSong);
 
 // Head tags must be registered synchronously in setup(): useHead() relies on
 // inject() to find the per-request head instance created in createApp.js.
 // Calling it after an await inside loadSong() has no active component
 // instance, so Unhead falls back to a process-global shared head — on the
 // server, concurrent requests then write into the wrong head and the song
-// <title>/description/og/canonical tags are lost. loadSong() only fills
+// <title>/description/og/canonical tags are lost. applySong() only fills
 // these refs; the computed input stays empty (contributing no tags, so the
 // App-level generic title applies) until the song has loaded.
 const pageTitle = ref('');
@@ -316,74 +322,82 @@ function goToPlayAlong() {
   router.push({ name: 'chordGeneratorView', params: { id: item.value.id } });
 }
 
+const pagePath = computed(() => `/song/${songUrlParam.value}`);
+const origin =
+  typeof window !== 'undefined'
+    ? window.location.origin
+    : (appConfig?.publicUrl || '').replace(/\/$/, '');
+
+// Fire the landing page_view from the route itself, before the song API
+// call, not after it. Song routes are excluded from vue-gtag's automatic
+// router pageTracker (so the real song title can be sent instead of a
+// generic one), but that meant this was the only page_view for the
+// highest-traffic entry point (SEO song landings) — and it was gated
+// behind a full network round trip. A visitor who bounces before that
+// response arrives left with no page_view at all, showing up in GA as a
+// "(not set)" landing page with ~0% engagement instead of a real bounce
+// on this song's URL. Client-only: SSR never fires analytics.
+function trackPageview() {
+  if (typeof window !== 'undefined') {
+    pageview({ page_path: pagePath.value, page_location: `${origin}${pagePath.value}` });
+  }
+}
+
+// Puts a fetched song on the page: the sheet, the document head and the
+// layout header. Synchronous so it can run in setup for a prefetched song
+// (both on the server and when hydrating) as well as after a client fetch.
+function applySong(song) {
+  item.value = { ...song, createdAt: lxDateUtils.formatDate(song.createdDate) };
+  applyTranspose(0);
+
+  // Any slug with the right id resolves to the song, so the canonical is
+  // always the song's own URL, never the one requested.
+  canonicalUrl.value = `${origin}${song.url}`;
+  metaDescription.value = song.bodyLyrics?.slice(0, 150) || '';
+  pageTitle.value = `${song.mainArtist.title} - ${song.title}`;
+
+  const header = songHeader(song);
+  viewStore.title = header.title;
+  viewStore.description = header.description;
+  viewStore.goBack = true;
+  loading.value = false;
+}
+
+// A mismatched slug, client-side: replace it with the song's own URL,
+// keeping the current route (a /search/, /top/ or /new/ list prefix stays).
+// Server-side the same case is a real 301 — see src/ssr/prefetch.js.
+function redirectToCanonicalSlug(song) {
+  if (pagePath.value !== song.url) {
+    router.replace({ name: route.name, params: { url: songUrlParamOf(song) } });
+  }
+}
+
+// A signed-in visitor's saved transposition for this song — a personal
+// preference, so it is applied only in the browser, on top of the sheet
+// already rendered in its written key.
+async function restoreTransposePreference() {
+  if (!isAuthorized || !item.value.id) {
+    return;
+  }
+  let transposeOffset = 0;
+  try {
+    const preferences = await accountPreferencesStore.getSongPreferences(item.value.id);
+    transposeOffset = preferences.transposeOffset || 0;
+  } catch (err) {
+    notificationStore.pushError($t('pages.akordiSongView.transposeLoadError'));
+  }
+  applyTranspose(transposeOffset);
+}
+
+// Browser-only fetch, for a song the SSR render didn't hand over (client-side
+// navigation, or a page whose SSR prefetch failed and rendered the shell).
 const loadSong = async () => {
   try {
-    const songId = akordiService.parseUrl(songUrlParam.value);
-
-    // Fire the landing page_view from the route itself, before the song API
-    // call, not after it. Song routes are excluded from vue-gtag's automatic
-    // router pageTracker (so the real song title can be sent instead of a
-    // generic one), but that meant this was the only page_view for the
-    // highest-traffic entry point (SEO song landings) — and it was gated
-    // behind a full network round trip. A visitor who bounces before that
-    // response arrives left with no page_view at all, showing up in GA as a
-    // "(not set)" landing page with ~0% engagement instead of a real bounce
-    // on this song's URL.
-    const pagePath = `/song/${songUrlParam.value}`;
-    const origin =
-      typeof window !== 'undefined'
-        ? window.location.origin
-        : (appConfig?.publicUrl || '').replace(/\/$/, '');
-    if (typeof window !== 'undefined') {
-      pageview({ page_path: pagePath, page_location: `${origin}${pagePath}` });
-    }
-
-    const resp = await akordiService.getSong(songId);
-    item.value = resp.data;
-    item.value.createdAt = lxDateUtils.formatDate(item.value.createdDate);
-    let transposeOffset = 0;
-    if (isAuthorized) {
-      try {
-        const preferences = await accountPreferencesStore.getSongPreferences(item.value.id);
-        transposeOffset = preferences.transposeOffset || 0;
-      } catch (err) {
-        notificationStore.pushError($t('pages.akordiSongView.transposeLoadError'));
-      }
-    }
-    applyTranspose(transposeOffset);
-
-    // Any slug with the right id resolves to the song, so the canonical is
-    // always the song's own URL, never the one requested.
-    canonicalUrl.value = `${origin}${item.value.url}`;
-    // A mismatched slug: server-side it becomes a real 301 (the SSR entry
-    // reads ssrContext.redirect), client-side a router.replace. Both keep
-    // the current route (a /search/, /top/ or /new/ list prefix stays).
-    if (pagePath !== item.value.url) {
-      const target = {
-        name: route.name,
-        params: { url: item.value.url.replace(/^\/song\//, '') },
-      };
-      if (ssrContext) {
-        ssrContext.redirect = router.resolve(target).path;
-      } else {
-        router.replace(target);
-      }
-    }
-
-    metaDescription.value = item.value.bodyLyrics?.slice(0, 150) || '';
-    pageTitle.value = `${item.value.mainArtist.title} - ${item.value.title}`;
-
-    viewStore.title = item.value.title;
-    viewStore.description =
-      item.value.mainArtist?.title ||
-      item.value.performers.map((artist) => artist.title).join(', ');
-    viewStore.goBack = true;
+    const song = await songStore.load(songUrlParam.value);
+    applySong(song);
+    redirectToCanonicalSlug(song);
+    await restoreTransposePreference();
   } catch (err) {
-    // Only a definite "no such song" becomes a 404 — any other failure keeps
-    // the fail-open 200 shell (see the onServerPrefetch note below).
-    if (ssrContext && err?.response?.status === 404) {
-      ssrContext.status = 404;
-    }
     notificationStore.pushError('Failed to load song');
     throw err;
   } finally {
@@ -611,22 +625,21 @@ async function toggleListSelection(listId, value) {
   }
 }
 
+if (prefetchedSong) {
+  applySong(prefetchedSong);
+}
+
 onMounted(async () => {
   addEventListeners();
-  await loadSong();
-});
-
-// Runs only during SSR (renderToString awaits it; the client never calls
-// this hook at all, so onMounted above still does the real client-side
-// fetch as before). Swallow failures here — a content page should still
-// render its shell/loading state if the API is briefly unreachable during
-// SSR, rather than failing the whole page render.
-onServerPrefetch(async () => {
-  try {
-    await loadSong();
-  } catch (err) {
-    // already reported via notificationStore inside loadSong()
+  trackPageview();
+  if (prefetchedSong) {
+    // Already rendered (and hydrated) from the transferred state — no
+    // refetch; only the browser-side extras remain.
+    redirectToCanonicalSlug(prefetchedSong);
+    await restoreTransposePreference();
+    return;
   }
+  await loadSong();
 });
 
 onUnmounted(() => {

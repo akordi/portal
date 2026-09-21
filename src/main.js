@@ -50,7 +50,24 @@ import '@akordi/lx-ui/dist/styles/lx-toolbars.css';
 import '@/assets/styles.css';
 import '@/assets/lx-pt-akordi.css';
 
-const { app, router } = createAppInstance(window.config, { ssr: false });
+// Pinia state serialized by the SSR render (see entry-server.js /
+// server.mjs). Present only on server-rendered pages that prefetched data,
+// in which case the existing markup is hydrated instead of replaced.
+// eslint-disable-next-line no-underscore-dangle -- conventional SSR state global
+const initialState = window.__INITIAL_STATE__;
+
+const { app, router, pinia } = createAppInstance(window.config, {
+  ssr: false,
+  hydrate: Boolean(initialState),
+});
+
+if (initialState) {
+  // Must happen before any store is instantiated (stores are created lazily
+  // on first use, picking up whatever is in pinia.state.value for their id).
+  Object.entries(initialState).forEach(([id, state]) => {
+    pinia.state.value[id] = state;
+  });
+}
 
 router.isReady().then(() => {
   app.mount('#app');

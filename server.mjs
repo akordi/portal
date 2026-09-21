@@ -153,14 +153,18 @@ function mergeHtmlAttrs(templateAttrs, headAttrs) {
 async function renderPage(url) {
   const template = stripStaticHeadTags(readTemplate());
   const config = readConfig();
-  const { html, head, status, redirect } = await render(url, config);
+  const { html, head, state, status, redirect } = await render(url, config);
   const { headTags, htmlAttrs, bodyAttrs, bodyTagsOpen, bodyTags } = await renderHeadToString(head);
+  // `state` is already escaped for an inline script by entry-server (a "<"
+  // in a song's text can't close this element early). A classic script runs
+  // during parsing, so it is set before the deferred module entry executes.
+  const stateScript = state ? `<script>window.__INITIAL_STATE__=${state}</script>` : '';
 
   const page = template
     .replace(/<html([^>]*)>/, (_match, attrs) => `<html${mergeHtmlAttrs(attrs, htmlAttrs)}>`)
     .replace('</head>', `${headTags}</head>`)
     .replace(/<body([^>]*)>/, (_match, attrs) => `<body${attrs} ${bodyAttrs}>${bodyTagsOpen}`)
-    .replace('<div id="app"></div>', `<div id="app">${html}</div>`)
+    .replace('<div id="app"></div>', `<div id="app">${html}</div>${stateScript}`)
     .replace('</body>', `${bodyTags}</body>`);
   return { page, status: status || 200, redirect };
 }

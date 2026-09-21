@@ -1,6 +1,14 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
 import { unref } from 'vue';
+import { createPinia, setActivePinia } from 'pinia';
+
+// vitest runs with isolate: false (vite.config.mjs), so modules another test
+// file already imported stay cached in this worker — including the mocks
+// they were bound to. This file and ssrPrefetch.test.js both import
+// src/stores/useSongStore with their own akordiService/viewStore mocks, so
+// each starts from an empty module registry to get modules bound to its own.
+vi.hoisted(() => vi.resetModules());
 
 const { getSong, getSongPreferences, saveSongTransposeOffset, useHead, routerReplace, routeState } =
   vi.hoisted(() => ({
@@ -97,11 +105,15 @@ vi.mock('@/stores/useNotifyStore', () => ({
 vi.mock('@/stores/useSettingsStore', () => ({
   default: () => ({ showChords: true, showAbc: false, instrument: 'guitar' }),
 }));
+const viewStore = { title: '', description: '', goBack: false, $reset: vi.fn() };
 vi.mock('@/stores/useViewStore', () => ({
-  default: () => ({ title: '', description: '', goBack: false, $reset: vi.fn() }),
+  default: () => viewStore,
 }));
 
 import SongView from '@/views/SongView.vue';
+// Real store (backed by the mocked akordiService above): the view's
+// prefetched-song path reads it, so the tests seed it through Pinia.
+import useSongStore from '@/stores/useSongStore';
 
 const song = {
   id: 42,
@@ -132,6 +144,10 @@ const transposeLabel = (wrapper) => wrapper.find('.toolbar-label');
 
 beforeEach(() => {
   vi.clearAllMocks();
+  setActivePinia(createPinia());
+  viewStore.title = '';
+  viewStore.description = '';
+  viewStore.goBack = false;
 });
 
 describe('SongView transposed indicator', () => {
@@ -229,23 +245,16 @@ describe('SongView head tags', () => {
   });
 });
 
-// The SSR entry provides a per-request `ssrContext` the view reports its
-// HTTP outcome through (see src/entry-server.js and server.mjs).
-describe('SongView SSR outcome', () => {
+// The song's own URL wins over the slug requested: server-side that is a 301
+// (src/ssr/prefetch.js); in the browser the view replaces the route.
+describe('SongView canonical slug', () => {
   const realSong = { ...song, url: '/song/42-Prata_Vetra-Bedu', performers: [] };
 
-  const mountWithRoute = async ({ ssrContext, name = 'akordiSongView', url = '42-wrong-slug' }) => {
+  const mountWithRoute = async ({ name = 'akordiSongView', url = '42-wrong-slug' }) => {
     routeState.name = name;
     routeState.params = { url };
     getSongPreferences.mockResolvedValue({ transposeOffset: 0 });
-    const wrapper = mount(SongView, {
-      global: {
-        provide: ssrContext ? { ssrContext } : {},
-        // loadSong() rethrows after reporting — onMounted's await would
-        // otherwise surface it as an unhandled rejection in the API-failure cases.
-        config: { errorHandler: () => {} },
-      },
-    });
+    const wrapper = mount(SongView);
     await flushPromises();
     return wrapper;
   };
@@ -262,40 +271,13 @@ describe('SongView SSR outcome', () => {
     routeState.params = { url: '42-song' };
   });
 
-  it('asks for a 301 to the real song URL when the slug is wrong', async () => {
-    const ssrContext = { status: 200, redirect: null };
-    await mountWithRoute({ ssrContext });
-
-    expect(ssrContext.redirect).toBe('/song/42-Prata_Vetra-Bedu');
-    expect(ssrContext.status).toBe(200);
-    expect(routerReplace).not.toHaveBeenCalled();
-  });
-
-  it('keeps the list prefix in the redirect target', async () => {
-    const ssrContext = { status: 200, redirect: null };
-    await mountWithRoute({ ssrContext, name: 'songListTopSongView' });
-
-    expect(ssrContext.redirect).toBe('/top/song/42-Prata_Vetra-Bedu');
-  });
-
-  it('does not redirect when the requested URL is already the real one', async () => {
-    const ssrContext = { status: 200, redirect: null };
-    await mountWithRoute({ ssrContext, url: '42-Prata_Vetra-Bedu' });
-
-    expect(ssrContext.redirect).toBeNull();
-    expect(ssrContext.status).toBe(200);
-  });
-
   it('builds the canonical from the real song URL, not the requested one', async () => {
-    await mountWithRoute({
-      ssrContext: { status: 200, redirect: null },
-      name: 'songListTopSongView',
-    });
+    await mountWithRoute({ name: 'songListTopSongView' });
 
     expect(canonical()).toBe(`${window.location.origin}/song/42-Prata_Vetra-Bedu`);
   });
 
-  it('falls back to router.replace in the browser (no ssrContext)', async () => {
+  it('replaces a wrong slug with the real one, keeping the list prefix', async () => {
     await mountWithRoute({ name: 'songSearchSongView' });
 
     expect(routerReplace).toHaveBeenCalledWith({
@@ -304,20 +286,63 @@ describe('SongView SSR outcome', () => {
     });
   });
 
-  it('reports 404 when the API says the song does not exist', async () => {
-    getSong.mockRejectedValue({ response: { status: 404 } });
-    const ssrContext = { status: 200, redirect: null };
-    await mountWithRoute({ ssrContext, url: '999999-Nope' });
+  it('does not replace the route when the requested URL is already the real one', async () => {
+    await mountWithRoute({ url: '42-Prata_Vetra-Bedu' });
 
-    expect(ssrContext.status).toBe(404);
-    expect(ssrContext.redirect).toBeNull();
+    expect(routerReplace).not.toHaveBeenCalled();
+  });
+});
+
+// A song the SSR render already fetched arrives in the song store (hydrated
+// from window.__INITIAL_STATE__ by main.js). The view must render it during
+// setup — so the hydrated DOM matches and the lyrics never disappear — and
+// must not fetch it again.
+describe('SongView with a prefetched song', () => {
+  const lyrics = 'Bēdu, manu lielu bēdu, kur es tevi nolikšu';
+  const seedStore = (data = {}) => {
+    useSongStore().song = { ...song, bodyLyrics: lyrics, performers: [], ...data };
+  };
+
+  it('renders the song synchronously without calling the API', async () => {
+    seedStore();
+    getSongPreferences.mockResolvedValue({ transposeOffset: 0 });
+
+    const wrapper = mount(SongView);
+
+    // Before any promise resolves: the sheet is already there, no loader.
+    expect(wrapper.find('p.pre').text()).toContain('Bēdu, manu lielu bēdu');
+    expect(wrapper.findComponent({ name: 'LxLoaderView' }).props('loading')).toBe(false);
+    expect(viewStore.title).toBe(song.title);
+    expect(viewStore.description).toBe('Prāta vētra');
+    expect(unref(useHead.mock.calls[0][0]).title).toBe('Prāta vētra - Bēdu, manu lielu bēdu');
+
+    await flushPromises();
+    expect(getSong).not.toHaveBeenCalled();
+    expect(wrapper.find('p.pre').text()).toContain('Bēdu, manu lielu bēdu');
   });
 
-  it('keeps the fail-open 200 for any other API failure', async () => {
-    getSong.mockRejectedValue({ response: { status: 503 } });
-    const ssrContext = { status: 200, redirect: null };
-    await mountWithRoute({ ssrContext });
+  it('still restores the saved transposition for a signed-in visitor', async () => {
+    seedStore();
+    getSongPreferences.mockResolvedValue({ transposeOffset: 2 });
 
-    expect(ssrContext.status).toBe(200);
+    const wrapper = mount(SongView);
+    await flushPromises();
+
+    expect(getSongPreferences).toHaveBeenCalledWith(42);
+    expect(getSong).not.toHaveBeenCalled();
+    expect(transposeLabel(wrapper).text()).toContain('+2');
+  });
+
+  it('ignores a stored song that belongs to another URL and fetches instead', async () => {
+    seedStore({ id: 7, url: '/song/7-other' });
+    getSong.mockResolvedValue({ data: { ...song } });
+    getSongPreferences.mockResolvedValue({ transposeOffset: 0 });
+
+    const wrapper = mount(SongView);
+    expect(wrapper.findComponent({ name: 'LxLoaderView' }).props('loading')).toBe(true);
+
+    await flushPromises();
+    expect(getSong).toHaveBeenCalledWith(42);
+    expect(wrapper.find('p.pre').text()).toContain('Bēdu, manu lielu bēdu');
   });
 });

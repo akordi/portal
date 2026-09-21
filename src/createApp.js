@@ -22,11 +22,16 @@ export function routerBaseFor(config) {
  * Builds one full app instance (app, router, i18n, head), parameterized by
  * config instead of reading window.config directly — the same factory is
  * used by the browser entry (main.js) and, with ssr: true, by a Node SSR
- * entry, where window/document don't exist.
+ * entry, where window/document don't exist. hydrate: true (client only)
+ * hydrates existing server-rendered markup instead of replacing it.
  */
-export default function createAppInstance(config, { ssr = false } = {}) {
-  const app = ssr ? createSSRApp(App) : createApp(App);
-  app.use(createPinia());
+export default function createAppInstance(config, { ssr = false, hydrate = false } = {}) {
+  // createSSRApp on the client too when hydrating server-rendered HTML — a
+  // plain createApp().mount() wipes the container and re-renders from
+  // scratch (the lyrics-disappear-then-reappear flash this avoids).
+  const app = ssr || hydrate ? createSSRApp(App) : createApp(App);
+  const pinia = createPinia();
+  app.use(pinia);
   // SSR-safe access to config (window.config isn't available on the server) —
   // see e.g. SongView.vue's canonical URL / API base URL resolution.
   app.provide('appConfig', config);
@@ -70,5 +75,5 @@ export default function createAppInstance(config, { ssr = false } = {}) {
   const head = createHead();
   app.use(head);
 
-  return { app, router, i18n, head };
+  return { app, router, i18n, head, pinia };
 }
