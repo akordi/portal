@@ -17,6 +17,7 @@ import '@akordi/lx-ui/dist/styles/lx-info-boxes.css';
 import '@akordi/lx-ui/dist/styles/lx-info-wrappers.css';
 import '@akordi/lx-ui/dist/styles/lx-modals.css';
 import '@akordi/lx-ui/dist/styles/lx-loaders.css';
+import '@akordi/lx-ui/dist/styles/lx-state-displays.css';
 import '@akordi/lx-ui/dist/styles/lx-lists.css';
 import '@akordi/lx-ui/dist/styles/lx-expanders.css';
 import '@akordi/lx-ui/dist/styles/lx-tabs.css';
