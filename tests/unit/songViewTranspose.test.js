@@ -3,6 +3,13 @@ import { mount, flushPromises } from '@vue/test-utils';
 import { unref } from 'vue';
 import { createPinia, setActivePinia } from 'pinia';
 
+// vitest runs with isolate: false (vite.config.mjs), so modules another test
+// file already imported stay cached in this worker — including the mocks
+// they were bound to. This file and ssrPrefetch.test.js both import
+// src/stores/useSongStore with their own akordiService/viewStore mocks, so
+// each starts from an empty module registry to get modules bound to its own.
+vi.hoisted(() => vi.resetModules());
+
 const { getSong, getSongPreferences, saveSongTransposeOffset, useHead, routerReplace, routeState } =
   vi.hoisted(() => ({
     getSong: vi.fn(),
