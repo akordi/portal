@@ -8,6 +8,7 @@ import { defineConfig, loadEnv } from 'vite';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import mkcert from 'vite-plugin-mkcert';
 import packageJson from './package.json';
+import htmlLang from './src/utils/htmlLang.js';
 
 // set ip4 as default dns lookup in order to support localhost
 // https://vitejs.dev/config/server-options.html#server-host
@@ -56,6 +57,7 @@ const getEnvVariables = (mode, serving) => {
     VUE_APP_GTAG_ENABLED: env.GTAG_ENABLED,
     VUE_APP_GTAG_ID: env.GTAG_ID,
     VUE_APP_DEFAULT_LANGUAGE: env.DEFAULT_LANGUAGE,
+    HTML_LANG: htmlLang(env.DEFAULT_LANGUAGE),
     BASE_PATH: env.BASE_PATH,
     BASE_URL: env.PUBLIC_URL,
     // dev only
@@ -86,6 +88,7 @@ const getEnvVariables = (mode, serving) => {
     envVariables.BASE_PATH = envVariables.BASE_PATH || '/';
     envVariables.BASE_URL = '{{PUBLIC_URL}}';
     envVariables.VUE_APP_DEFAULT_LANGUAGE = '{{DEFAULT_LANGUAGE}}';
+    envVariables.HTML_LANG = '{{HTML_LANG}}';
     envVariables.VUE_APP_NAME = '{{APP_NAME}}';
     envVariables.VUE_APP_TITLE = '{{APP_TITLE}}';
     envVariables.VUE_APP_DESCRIPTION = '{{APP_DESCRIPTION}}';

@@ -8,6 +8,8 @@ import httpProxy from 'http-proxy';
 // until `bun run build` has run, so eslint can't resolve it.
 // eslint-disable-next-line no-restricted-imports, import/no-unresolved, import/extensions
 import render, { isKnownRoute } from './dist/server/entry-server.mjs';
+// eslint-disable-next-line no-restricted-imports
+import htmlLang from './src/utils/htmlLang.js';
 
 // No supervisor process here (no nginx/PID-1 wrapper — see Dockerfile), so
 // an uncaught error anywhere takes down the entire server, not just the
@@ -91,6 +93,7 @@ function injectRuntimeConfig(template) {
     '{{AUTH_URL}}': process.env.AUTH_URL || '',
     '{{AUTH_ENABLED}}': process.env.AUTH_ENABLED || 'false',
     '{{DEFAULT_LANGUAGE}}': process.env.DEFAULT_LANGUAGE || 'lv',
+    '{{HTML_LANG}}': htmlLang(process.env.DEFAULT_LANGUAGE),
     '{{ENVIRONMENT}}': process.env.ENVIRONMENT || 'production',
     '{{GTAG_ENABLED}}': process.env.GTAG_ENABLED || 'false',
     '{{GTAG_ID}}': process.env.GTAG_ID || '',
@@ -121,6 +124,29 @@ function stripStaticHeadTags(template) {
     .replace(/<meta\s+property="og:[^>]*>/gi, '');
 }
 
+// The template's <html> already carries lang="..." (the {{HTML_LANG}} token
+// above), and App.vue's useHead() sets the same lang via htmlAttrs so the
+// client keeps document.documentElement.lang in sync. Appending head's attrs
+// verbatim would therefore emit two lang attributes — drop the template's
+// copy for any attribute head also renders, so head's value wins once.
+// One attribute per match: a name, optionally followed by a quoted or bare
+// value. The value alternatives start with distinct characters (no
+// overlap, so no backtracking) — Sonar flags anything more permissive.
+const ATTR_PATTERN = /[^\s=]+(?:="[^"]*"|='[^']*'|=[^\s"']*)?/g;
+
+function attrName(attr) {
+  return attr.split('=')[0].toLowerCase();
+}
+
+function mergeHtmlAttrs(templateAttrs, headAttrs) {
+  const headAttrList = headAttrs.match(ATTR_PATTERN) || [];
+  const headNames = new Set(headAttrList.map(attrName));
+  const kept = (templateAttrs.match(ATTR_PATTERN) || []).filter(
+    (attr) => !headNames.has(attrName(attr))
+  );
+  return [...kept, ...headAttrList].map((attr) => ` ${attr}`).join('');
+}
+
 // Besides the markup, the SSR entry reports the HTTP outcome the rendered
 // view asked for (see src/entry-server.js): `status` to write, or a
 // router path to 301 to instead (a song requested under a wrong slug).
@@ -131,7 +157,7 @@ async function renderPage(url) {
   const { headTags, htmlAttrs, bodyAttrs, bodyTagsOpen, bodyTags } = await renderHeadToString(head);
 
   const page = template
-    .replace(/<html([^>]*)>/, (_match, attrs) => `<html${attrs} ${htmlAttrs}>`)
+    .replace(/<html([^>]*)>/, (_match, attrs) => `<html${mergeHtmlAttrs(attrs, htmlAttrs)}>`)
     .replace('</head>', `${headTags}</head>`)
     .replace(/<body([^>]*)>/, (_match, attrs) => `<body${attrs} ${bodyAttrs}>${bodyTagsOpen}`)
     .replace('<div id="app"></div>', `<div id="app">${html}</div>`)
