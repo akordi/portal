@@ -3,12 +3,22 @@
 // plus failing Lighthouse audits that cost meaningful time.
 // Usage: node scripts/pagespeed.mjs <url> [mobile|desktop]
 // Needs PAGESPEED_API_KEY: anonymous quota is often 0/day.
+import { safeText, targetUrl } from './target-url.mjs';
 
-const [url, strategy = 'mobile'] = process.argv.slice(2);
-if (!url) {
+const [input, strategyArg = 'mobile'] = process.argv.slice(2);
+if (!input) {
   console.error('Usage: node scripts/pagespeed.mjs <url> [mobile|desktop]');
   process.exit(1);
 }
+
+let url;
+try {
+  url = targetUrl(input).href;
+} catch (err) {
+  console.error(`Refusing URL: ${safeText(err.message)}`);
+  process.exit(1);
+}
+const strategy = strategyArg === 'desktop' ? 'desktop' : 'mobile';
 
 const api = new URL('https://www.googleapis.com/pagespeedonline/v5/runPagespeed');
 api.searchParams.set('url', url);
@@ -20,7 +30,7 @@ if (process.env.PAGESPEED_API_KEY) api.searchParams.set('key', process.env.PAGES
 const res = await fetch(api);
 const data = await res.json();
 if (!res.ok) {
-  console.error(JSON.stringify(data.error ?? data, null, 2));
+  console.error(`PageSpeed API error ${res.status}: ${safeText(data.error?.message ?? 'unknown')}`);
   process.exit(1);
 }
 
@@ -43,7 +53,8 @@ const failing = Object.values(lh.audits)
 console.log(
   JSON.stringify(
     {
-      url: lh.finalDisplayedUrl ?? url,
+      url,
+      finalUrl: safeText(lh.finalDisplayedUrl ?? url),
       strategy,
       fetchedAt: lh.fetchTime,
       scores: {

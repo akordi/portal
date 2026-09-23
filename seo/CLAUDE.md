@@ -59,6 +59,9 @@ You are the SEO agent for akordi.lv. This folder is your whole memory.
 
 ## Local helpers
 
+Both only accept https URLs on akordi.lv (add hosts via `SEO_ALLOWED_HOSTS`).
+Use Firecrawl for competitor pages.
+
 - `node scripts/check-page.mjs <url>` — status, robots, title, description,
   canonical, h1, indexable text length from the **raw** HTML.
 - `node scripts/pagespeed.mjs <url> [mobile|desktop]` — PageSpeed Insights
