@@ -120,3 +120,40 @@ describe('SongSearch — search / search_no_results reporting', () => {
     expect(gtagEvent.mock.calls.filter((c) => c[0] === 'search_no_results')).toHaveLength(0);
   });
 });
+
+describe('SongSearch — results', () => {
+  it('clears previous results when a new query has none', async () => {
+    search.mockResolvedValueOnce(withResults());
+    search.mockResolvedValue(noResults());
+    const wrapper = mount(SongSearch);
+
+    await type(wrapper, 'A song');
+    expect(list(wrapper).props('items')).toHaveLength(1);
+
+    await type(wrapper, 'zzzz');
+    expect(list(wrapper).props('items')).toEqual([]);
+    expect(list(wrapper).props('showLoadMore')).toBe(false);
+  });
+
+  it('escapes raw fields and sanitizes highlights for v-html', async () => {
+    search.mockResolvedValue({
+      data: {
+        value: [
+          {
+            id: 1,
+            title: '<img src=x onerror=alert(1)>',
+            mainArtistTitle: 'A & B',
+            '@search.highlights': { bodyLyrics: ['<em>la</em><script>x</script>'] },
+          },
+        ],
+        '@odata.count': 1,
+      },
+    });
+    const wrapper = mount(SongSearch);
+
+    await type(wrapper, 'la');
+    const [item] = list(wrapper).props('items');
+    expect(item.titleHtml).toBe('A &amp; B - &lt;img src=x onerror=alert(1)&gt;');
+    expect(item.descriptionHtml).toBe('<em>la</em>&lt;script&gt;x&lt;/script&gt;');
+  });
+});

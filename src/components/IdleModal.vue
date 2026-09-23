@@ -4,7 +4,7 @@ import useAuthStore from '@/stores/useAuthStore';
 import useNotifyStore from '@/stores/useNotifyStore';
 import { invoke, until, useIdle, useIntervalFn } from '@vueuse/core';
 import { LxModal } from '@akordi/lx-ui';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
@@ -127,11 +127,34 @@ async function continueSession() {
     notification.pushSuccess(t.t('shell.notifications.sessionContinued'));
   } catch (err) {
     notification.pushError(t.t('shell.notifications.sessionContinuedFailed'));
-    if (err.response.status === 401) {
+    if (err?.response?.status === 401) {
       logout();
     }
   } finally {
     closeModal();
+  }
+}
+
+const idleModalActions = computed(() => [
+  { id: 'continue', kind: 'primary', name: t.t('shell.sessionExpiring.primaryLabel') },
+  { id: 'logout', kind: 'secondary', name: t.t('shell.sessionExpiring.secondaryLabel') },
+]);
+
+function idleModalActionClicked(actionId) {
+  if (actionId === 'continue') {
+    continueSession();
+  } else if (actionId === 'logout') {
+    logout();
+  }
+}
+
+// Closing is disabled, but if the modal is dismissed anyway (e.g. an older
+// LxModal letting Escape through) treat it as "continue" so the idle state
+// doesn't stay stuck on "open". closeModal() resets the flag before closing,
+// so our own closes don't land here.
+function idleModalClosed() {
+  if (idleModalOpened.value) {
+    continueSession();
   }
 }
 
@@ -146,14 +169,12 @@ invoke(async () => {
     <LxModal
       ref="idleModal"
       :label="t.t('shell.sessionExpiring.label')"
-      :button-primary-label="t.t('shell.sessionExpiring.primaryLabel')"
-      :button-primary-visible="true"
-      :button-secondary-label="t.t('shell.sessionExpiring.secondaryLabel')"
-      :button-secondary-visible="true"
+      :action-definitions="idleModalActions"
       :button-secondary-is-cancel="false"
       :disable-closing="true"
-      @primary-action="continueSession"
-      @secondary-action="logout()"
+      :esc-enabled="false"
+      @action-click="idleModalActionClicked"
+      @close="idleModalClosed"
     >
       <p v-if="authStore.session.secondsToLive > 60">
         {{

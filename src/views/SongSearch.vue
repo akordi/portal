@@ -4,6 +4,7 @@ import { LxContentSwitcher, LxList, LxLoader } from '@akordi/lx-ui';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { listTexts } from '@/utils/texts';
+import { searchResultDescriptionHtml, searchResultTitleHtml } from '@/utils/html';
 
 import { useRoute, useRouter } from 'vue-router';
 
@@ -49,18 +50,6 @@ function reportSearchEvent(name, term) {
   }, SEARCH_EVENT_SETTLE_DELAY);
 }
 
-function titleOrHighlight(song) {
-  return song['@search.highlights'].title?.length
-    ? song['@search.highlights'].title[0]
-    : song.title;
-}
-
-function mainArtistTitleOrHighlight(song) {
-  return song['@search.highlights'].mainArtistTitle?.length
-    ? song['@search.highlights'].mainArtistTitle[0]
-    : song.mainArtistTitle;
-}
-
 async function search(q, more = false) {
   searchString.value = q;
   if (!more) {
@@ -88,7 +77,11 @@ async function search(q, more = false) {
     // !more = a fresh query, not a "load more" page; only fresh queries are
     // reported, and only after SEARCH_EVENT_SETTLE_DELAY of no follow-up query.
     if (resp.data.value.length === 0) {
-      if (!more) reportSearchEvent('search_no_results', q);
+      if (!more) {
+        // Don't leave the previous query's results on screen.
+        items.value = [];
+        reportSearchEvent('search_no_results', q);
+      }
       return;
     }
     if (!more) reportSearchEvent('search', q);
@@ -97,10 +90,9 @@ async function search(q, more = false) {
       ...song,
       id: song.id,
       name: song.title,
-      title: `${mainArtistTitleOrHighlight(song)} - ${titleOrHighlight(song)}`,
-      description: song['@search.highlights'].bodyLyrics?.length
-        ? song['@search.highlights'].bodyLyrics[0]
-        : '',
+      title: `${song.mainArtistTitle} - ${song.title}`,
+      titleHtml: searchResultTitleHtml(song),
+      descriptionHtml: searchResultDescriptionHtml(song),
       clickable: true,
     }));
     if (more) {
@@ -211,9 +203,9 @@ em {
     @load-more="loadMore"
     :texts="listTexts()"
   >
-    <template #customItem="{ title, description }">
-      <p class="lx-primary" v-html="title"></p>
-      <p class="lx-secondary pre" v-html="description"></p>
+    <template #customItem="{ titleHtml, descriptionHtml }">
+      <p class="lx-primary" v-html="titleHtml"></p>
+      <p class="lx-secondary pre" v-html="descriptionHtml"></p>
     </template>
   </LxList>
 </template>

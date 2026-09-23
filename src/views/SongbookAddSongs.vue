@@ -12,6 +12,7 @@ import akordiService from '@/services/akordiService';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
 import { listTexts } from '@/utils/texts';
+import { searchResultDescriptionHtml, searchResultTitleHtml } from '@/utils/html';
 
 const route = useRoute();
 const $t = useI18n().t;
@@ -20,21 +21,6 @@ const notificationStore = useNotifyStore();
 const listId = computed(() => route.params.id);
 const searchItems = ref([]);
 const searchString = ref('');
-
-const HIGHLIGHTS_KEY = '@search.highlights';
-
-function firstHighlight(song, field) {
-  const highlights = song[HIGHLIGHTS_KEY]?.[field];
-  return highlights?.length ? highlights[0] : null;
-}
-
-function titleOrHighlight(song) {
-  return firstHighlight(song, 'title') ?? song.title;
-}
-
-function mainArtistTitleOrHighlight(song) {
-  return firstHighlight(song, 'mainArtistTitle') ?? song.mainArtistTitle;
-}
 
 async function searchSongs(query) {
   searchString.value = query;
@@ -50,8 +36,9 @@ async function searchSongs(query) {
       ...song,
       id: String(song.id),
       name: song.title,
-      title: `${mainArtistTitleOrHighlight(song)} - ${titleOrHighlight(song)}`,
-      description: firstHighlight(song, 'bodyLyrics') ?? '',
+      title: `${song.mainArtistTitle} - ${song.title}`,
+      titleHtml: searchResultTitleHtml(song),
+      descriptionHtml: searchResultDescriptionHtml(song),
       icon: 'add',
       clickable: true,
     }));
@@ -102,9 +89,9 @@ em {
     v-model:search-string="searchString"
     :texts="listTexts()"
   >
-    <template #customItem="{ title, description }">
-      <p class="lx-primary" v-html="title"></p>
-      <p class="lx-secondary pre" v-html="description"></p>
+    <template #customItem="{ titleHtml, descriptionHtml }">
+      <p class="lx-primary" v-html="titleHtml"></p>
+      <p class="lx-secondary pre" v-html="descriptionHtml"></p>
     </template>
   </LxList>
 </template>
