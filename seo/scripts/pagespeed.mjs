@@ -53,7 +53,7 @@ const failing = Object.values(lh.audits)
 console.log(
   JSON.stringify(
     {
-      url,
+      url: safeText(url),
       finalUrl: safeText(lh.finalDisplayedUrl ?? url),
       strategy,
       fetchedAt: lh.fetchTime,

@@ -73,7 +73,7 @@ function stripTags(html) {
 
 // Single-line attribute lookups on a bounded string (one tag): safe regexes.
 const attr = (tagAttrs, name) =>
-  (tagAttrs.match(new RegExp(`\\b${name}="([^"]*)"`, 'i')) || [])[1] ?? null;
+  (tagAttrs.match(new RegExp(String.raw`\b${name}="([^"]*)"`, 'i')) || [])[1] ?? null;
 
 function metaContent(head, key, value) {
   const tag = elementsOpenOnly(head, 'meta').find((a) => attr(a, key) === value);
@@ -153,8 +153,11 @@ for (let i = 0; i < 10; i += 1) {
 const html = await res.text();
 const head = elements(html, 'head')[0]?.inner ?? '';
 const bodyEl = elements(html, 'body')[0]?.inner ?? '';
-const withoutCode = ['script', 'style', 'noscript'].reduce(removeElements, bodyEl);
-const text = stripTags(withoutCode).split(/\s+/).join(' ').trim();
+const withoutCode = ['script', 'style', 'noscript'].reduce(
+  (acc, tag) => removeElements(acc, tag),
+  bodyEl
+);
+const text = stripTags(withoutCode).replaceAll(/\s+/g, ' ').trim();
 const htmlOpen = elementsOpenOnly(html, 'html')[0] ?? '';
 const canonicalTag = elementsOpenOnly(head, 'link').find((a) => attr(a, 'rel') === 'canonical');
 
@@ -171,7 +174,7 @@ const report = {
   metaRobots: metaContent(head, 'name', 'robots'),
   canonical: canonicalTag ? attr(canonicalTag, 'href') : null,
   ogTitle: decode(metaContent(head, 'property', 'og:title')),
-  h1: elements(html, 'h1').map((h) => decode(stripTags(h.inner).split(/\s+/).join(' '))),
+  h1: elements(html, 'h1').map((h) => decode(stripTags(h.inner).replaceAll(/\s+/g, ' '))),
   jsonLdBlocks: elements(html, 'script').filter((s) => attr(s.attrs, 'type') === 'application/ld+json')
     .length,
   indexableTextChars: text.length,
