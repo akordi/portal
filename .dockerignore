@@ -4,6 +4,7 @@ dist
 .github
 tests
 coverage
+seo
 *.log
 .DS_Store
 # Never let a local dev .env into the build context — bun auto-loads it

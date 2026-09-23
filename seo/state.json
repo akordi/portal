@@ -1,0 +1,18 @@
+{
+  "site": "https://www.akordi.lv",
+  "updatedAt": null,
+  "baselineWindowDays": 28,
+  "currentBet": {
+    "page": null,
+    "mainQuery": null,
+    "reason": null,
+    "sources": []
+  },
+  "changeUnderTest": {
+    "description": null,
+    "page": null,
+    "liveSince": null,
+    "baseline": null
+  },
+  "pages": {}
+}

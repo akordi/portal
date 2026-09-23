@@ -1,0 +1,32 @@
+{
+  "mcpServers": {
+    "gsc": {
+      "command": "npx",
+      "args": ["-y", "mcp-server-gsc"],
+      "env": { "GOOGLE_APPLICATION_CREDENTIALS": "${GSC_CREDENTIALS_JSON}" }
+    },
+    "ga4": {
+      "command": "pipx",
+      "args": ["run", "analytics-mcp"],
+      "env": { "GOOGLE_CLOUD_PROJECT": "${GOOGLE_CLOUD_PROJECT}" }
+    },
+    "dataforseo": {
+      "command": "npx",
+      "args": ["-y", "dataforseo-mcp-server@latest"],
+      "env": {
+        "DATAFORSEO_LOGIN": "${DATAFORSEO_LOGIN}",
+        "DATAFORSEO_PASSWORD": "${DATAFORSEO_PASSWORD}"
+      }
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": { "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}" }
+    },
+    "parallel": {
+      "type": "http",
+      "url": "https://search-mcp.parallel.ai/mcp",
+      "headers": { "Authorization": "Bearer ${PARALLEL_API_KEY}" }
+    }
+  }
+}

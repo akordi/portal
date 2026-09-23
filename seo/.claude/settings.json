@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "WebFetch",
+      "Bash(node scripts/check-page.mjs:*)",
+      "Bash(node scripts/pagespeed.mjs:*)",
+      "mcp__gsc",
+      "mcp__ga4",
+      "mcp__firecrawl",
+      "mcp__parallel"
+    ],
+    "ask": [
+      "mcp__dataforseo",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(gh:*)"
+    ],
+    "deny": [
+      "Bash(git push --force:*)",
+      "Bash(git reset --hard:*)",
+      "Read(./.env)",
+      "Read(**/credentials*.json)"
+    ]
+  },
+  "enableAllProjectMcpServers": false,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Edit|Write|MultiEdit|NotebookEdit|mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/require-approval.mjs\""
+          }
+        ]
+      }
+    ]
+  }
+}
