@@ -95,13 +95,14 @@ function elementsOpenOnly(html, tag) {
   return found;
 }
 
+// &amp; last, so "&amp;lt;" becomes the literal "&lt;" rather than "<".
 const decode = (s) =>
   s
-    ?.replaceAll('&amp;', '&')
-    .replaceAll('&quot;', '"')
+    ?.replaceAll('&quot;', '"')
     .replaceAll('&#39;', "'")
     .replaceAll('&lt;', '<')
     .replaceAll('&gt;', '>')
+    .replaceAll('&amp;', '&')
     .trim() ?? null;
 
 async function robotsAllows(target) {
