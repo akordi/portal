@@ -50,30 +50,27 @@ const failing = Object.values(lh.audits)
   .filter((a) => a.savingsMs === null || a.savingsMs >= 300 || a.score < 0.5)
   .sort((a, b) => (b.savingsMs ?? 0) - (a.savingsMs ?? 0));
 
-console.log(
-  JSON.stringify(
-    {
-      url: safeText(url),
-      finalUrl: safeText(lh.finalDisplayedUrl ?? url),
-      strategy,
-      fetchedAt: lh.fetchTime,
-      scores: {
-        performance: lh.categories.performance?.score,
-        seo: lh.categories.seo?.score,
-      },
-      fieldData: {
-        LCP_ms: fieldMetric('LARGEST_CONTENTFUL_PAINT_MS'),
-        INP_ms: fieldMetric('INTERACTION_TO_NEXT_PAINT'),
-        CLS_x100: fieldMetric('CUMULATIVE_LAYOUT_SHIFT_SCORE'),
-      },
-      lab: {
-        LCP: lh.audits['largest-contentful-paint']?.displayValue,
-        TBT: lh.audits['total-blocking-time']?.displayValue,
-        CLS: lh.audits['cumulative-layout-shift']?.displayValue,
-      },
-      failingAudits: failing,
-    },
-    null,
-    2
-  )
-);
+const summary = {
+  url,
+  finalUrl: lh.finalDisplayedUrl ?? url,
+  strategy,
+  fetchedAt: lh.fetchTime,
+  scores: {
+    performance: lh.categories.performance?.score,
+    seo: lh.categories.seo?.score,
+  },
+  fieldData: {
+    LCP_ms: fieldMetric('LARGEST_CONTENTFUL_PAINT_MS'),
+    INP_ms: fieldMetric('INTERACTION_TO_NEXT_PAINT'),
+    CLS_x100: fieldMetric('CUMULATIVE_LAYOUT_SHIFT_SCORE'),
+  },
+  lab: {
+    LCP: lh.audits['largest-contentful-paint']?.displayValue,
+    TBT: lh.audits['total-blocking-time']?.displayValue,
+    CLS: lh.audits['cumulative-layout-shift']?.displayValue,
+  },
+  failingAudits: failing,
+};
+
+// Everything above comes from the API response: sanitize the whole output.
+console.log(safeText(JSON.stringify(summary)));
