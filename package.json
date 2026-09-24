@@ -16,7 +16,7 @@
     "test-watch": "vitest"
   },
   "dependencies": {
-    "@akordi/lx-ui": "canary",
+    "@akordi/lx-ui": "2.3.5-akordi.1",
     "@ory/client": "^1.22.66",
     "@tombatossals/chords-db": "^0.5.1",
     "@vue/server-renderer": "^3.5.42",
