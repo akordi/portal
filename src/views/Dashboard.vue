@@ -1,6 +1,6 @@
 <script setup>
 import { LxTile } from '@akordi/lx-ui';
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 import useAuthStore from '@/stores/useAuthStore';
 import useDashboardStore from '@/stores/useDashboardStore';
@@ -18,26 +18,24 @@ async function loadTotalSongCount() {
   }
   songCountTotal.value = dashboardStore.songCountTotal;
 }
-function incrementToCount() {
-  if (songCount.value < songCountTotal.value) {
-    songCount.value += 1;
-  }
+let frame = 0;
+function animateCount() {
+  frame = 0;
+  const remaining = songCountTotal.value - songCount.value;
+  if (remaining <= 0) return;
+  songCount.value += Math.max(1, Math.ceil(remaining / 12));
+  frame = requestAnimationFrame(animateCount);
 }
-
-async function startCounter() {
-  setInterval(incrementToCount, 1);
-  setInterval(incrementToCount, 1);
-  setInterval(incrementToCount, 1);
-  setInterval(incrementToCount, 1);
-  setInterval(incrementToCount, 1);
-  setInterval(incrementToCount, 1);
-  setInterval(incrementToCount, 1);
+function startCounter() {
+  if (!frame) animateCount();
 }
 
 onMounted(async () => {
   startCounter();
   await loadTotalSongCount();
+  startCounter();
 });
+onUnmounted(() => cancelAnimationFrame(frame));
 </script>
 
 <template>
