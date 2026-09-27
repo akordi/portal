@@ -4,7 +4,7 @@
  * hydrating it with the server's defaults would overwrite the visitor's own
  * saved settings.
  */
-export const TRANSFERRED_STORES = ['songStore', 'viewStore'];
+export const TRANSFERRED_STORES = ['songStore', 'viewStore', 'dashboardStore'];
 
 export function pickTransferredState(piniaState) {
   return TRANSFERRED_STORES.reduce((state, id) => {
