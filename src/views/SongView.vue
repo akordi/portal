@@ -32,8 +32,6 @@ import useSongStore from '@/stores/useSongStore';
 import useViewStore from '@/stores/useViewStore';
 import { songHeader, songUrlParam as songUrlParamOf } from '@/ssr/prefetch';
 
-// Async: AbcViewer pulls in abcjs (~500 KB), which only songs with ABC
-// notation need — most don't, so it must not be part of the song-page bundle.
 const AbcViewer = defineAsyncComponent(() => import('@/components/AbcViewer.vue'));
 
 const translate = useI18n();
@@ -862,8 +860,6 @@ onUnmounted(() => {
         </div>
       </LxSection>
       <LxSection v-show="hasAbc && settingsStore.showAbc" id="bodyAbc">
-        <!-- v-if (not the section's v-show): the async component chunk is
-             only requested when there is notation to render. -->
         <AbcViewer
           v-if="hasAbc"
           :abc="item.bodyAbc"

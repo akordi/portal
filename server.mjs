@@ -37,9 +37,7 @@ const SECURITY_HEADERS = {
   'Feature-Policy': "autoplay 'none';",
 };
 
-// No gzip/brotli here: Traefik's `compress` middleware (see
-// akordi/infrastructure stacks/akordi-country.yml) compresses every response
-// on the way out, so this process only ever serves the raw files.
+// No gzip/brotli here — the reverse proxy compresses responses.
 const serveStatic = sirv(CLIENT_DIR, { maxAge: 31536000, immutable: true, etag: true });
 
 // Only these route shapes have actually been made SSR-safe (see the lx-ui
