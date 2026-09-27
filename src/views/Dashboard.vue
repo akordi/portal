@@ -1,9 +1,10 @@
 <script setup>
 import { LxTile } from '@akordi/lx-ui';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { nextTick, onMounted, onUnmounted, ref } from 'vue';
 
 import useAuthStore from '@/stores/useAuthStore';
 import useDashboardStore from '@/stores/useDashboardStore';
+import whenLoaded from '@/utils/asyncComponent';
 import { useI18n } from 'vue-i18n';
 
 const authStore = useAuthStore();
@@ -26,17 +27,15 @@ function animateCount() {
   songCount.value += Math.max(1, Math.ceil(remaining / 12));
   frame = requestAnimationFrame(animateCount);
 }
-let tileReady = false;
 function startCounter() {
-  if (tileReady && !frame) animateCount();
-}
-// Hydration must see the same count the server rendered; animate once the tile is live
-function onTileMounted() {
-  tileReady = true;
-  startCounter();
+  if (!frame) animateCount();
 }
 
 onMounted(async () => {
+  // Hydration must see the same count the server rendered: wait for the async tile
+  await whenLoaded(LxTile);
+  await nextTick();
+  startCounter();
   await loadTotalSongCount();
   startCounter();
 });
@@ -55,7 +54,6 @@ onUnmounted(() => cancelAnimationFrame(frame));
         :label="$t('pages.songSearch.title')"
         :description="$t('pages.songSearch.description', { songCount: songCount })"
         :to="{ name: 'songSearch' }"
-        @vue:mounted="onTileMounted"
       />
       <LxTile
         icon="time"

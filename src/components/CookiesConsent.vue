@@ -3,6 +3,7 @@ import { LxButton } from '@akordi/lx-ui';
 import { onMounted, ref } from 'vue';
 import { addGtag, consentGrantedAll, useConsent } from 'vue-gtag';
 import { useI18n } from 'vue-i18n';
+import whenLoaded from '@/utils/asyncComponent';
 
 const { t: $t } = useI18n();
 const { hasConsent } = useConsent();
@@ -19,8 +20,10 @@ async function accept() {
 async function reject() {
   showConsent.value = false;
 }
-onMounted(() => {
-  showConsent.value = !hasConsent.value;
+onMounted(async () => {
+  if (hasConsent.value) return;
+  await whenLoaded(LxButton);
+  showConsent.value = true;
 });
 </script>
 <style>

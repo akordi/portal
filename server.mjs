@@ -1,5 +1,5 @@
 import { createServer } from 'node:http';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { renderHeadToString } from '@vueuse/head';
 import sirv from 'sirv';
@@ -105,10 +105,22 @@ function injectRuntimeConfig(template) {
   );
 }
 
+// The body font is referenced from the CSS, so the browser only discovers it
+// after the stylesheet arrives; a preload starts it with the HTML instead.
+const FONT_FILE = readdirSync(`${CLIENT_DIR}/assets`).find((f) =>
+  /^IBMPlexSansVar-[\w-]+\.woff2$/.test(f)
+);
+const FONT_PRELOAD = FONT_FILE
+  ? `<link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/${FONT_FILE}">`
+  : '';
+
 function readTemplate() {
   // Re-read per request to avoid ever serving a stale template after a
   // deploy replaces files without restarting this process.
-  return injectRuntimeConfig(readFileSync(TEMPLATE_PATH, 'utf-8'));
+  return injectRuntimeConfig(readFileSync(TEMPLATE_PATH, 'utf-8')).replace(
+    '</head>',
+    `${FONT_PRELOAD}</head>`
+  );
 }
 
 // The static template's own <title>/description/og: tags exist for routes
