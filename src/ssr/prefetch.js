@@ -1,3 +1,4 @@
+import useDashboardStore from '@/stores/useDashboardStore';
 import useSongStore from '@/stores/useSongStore';
 import useViewStore from '@/stores/useViewStore';
 
@@ -56,9 +57,14 @@ async function prefetchSong({ route, router, pinia, ssrContext }) {
   viewStore.goBack = true;
 }
 
+async function prefetchDashboard({ pinia }) {
+  await useDashboardStore(pinia).load();
+}
+
 // Every route that renders SongView (see router/routes.js) — the list
 // prefixed ones (/search/, /new/, /top/) are server-rendered too.
 const prefetchers = {
+  dashboard: prefetchDashboard,
   akordiSongView: prefetchSong,
   songSearchSongView: prefetchSong,
   songListNewSongView: prefetchSong,

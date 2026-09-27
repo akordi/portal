@@ -2,23 +2,21 @@
 import { LxTile } from '@akordi/lx-ui';
 import { onMounted, ref } from 'vue';
 
-import akordiService from '@/services/akordiService';
 import useAuthStore from '@/stores/useAuthStore';
+import useDashboardStore from '@/stores/useDashboardStore';
 import { useI18n } from 'vue-i18n';
 
 const authStore = useAuthStore();
+const dashboardStore = useDashboardStore();
 const songCount = ref(1);
-const songCountTotal = ref(1000);
-const loadingSongsTotal = ref(true);
+const songCountTotal = ref(dashboardStore.songCountTotal ?? 1000);
 const $t = useI18n().t;
 
 async function loadTotalSongCount() {
-  try {
-    const resp = await akordiService.getSongsCount();
-    songCountTotal.value = resp.data.totalElements;
-  } finally {
-    loadingSongsTotal.value = false;
+  if (dashboardStore.songCountTotal === null) {
+    await dashboardStore.load();
   }
+  songCountTotal.value = dashboardStore.songCountTotal;
 }
 function incrementToCount() {
   if (songCount.value < songCountTotal.value) {

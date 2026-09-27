@@ -8,15 +8,16 @@ import { createPinia } from 'pinia';
 // each starts from an empty module registry to get modules bound to its own.
 vi.hoisted(() => vi.resetModules());
 
-const { getSong } = vi.hoisted(() => ({ getSong: vi.fn() }));
+const { getSong, getSongsCount } = vi.hoisted(() => ({ getSong: vi.fn(), getSongsCount: vi.fn() }));
 
 vi.mock('@/services/akordiService', () => ({
-  default: { parseUrl: (url) => Number.parseInt(url, 10), getSong },
+  default: { parseUrl: (url) => Number.parseInt(url, 10), getSong, getSongsCount },
 }));
 const viewStore = { title: null, description: null, goBack: null };
 vi.mock('@/stores/useViewStore', () => ({ default: () => viewStore }));
 
 import prefetchRoute from '@/ssr/prefetch';
+import useDashboardStore from '@/stores/useDashboardStore';
 import useSongStore from '@/stores/useSongStore';
 
 // resolve() mirrors the real route shapes: the list variants keep their prefix.
@@ -97,7 +98,7 @@ describe('prefetchRoute for a song page', () => {
 
   it('has nothing to prefetch for other routes', async () => {
     const prefetched = await prefetchRoute({
-      route: { name: 'dashboard', params: {} },
+      route: { name: 'songSearch', params: {} },
       router,
       pinia,
       ssrContext,
@@ -105,5 +106,23 @@ describe('prefetchRoute for a song page', () => {
 
     expect(prefetched).toBe(false);
     expect(getSong).not.toHaveBeenCalled();
+  });
+});
+
+describe('prefetchRoute for the dashboard', () => {
+  it('loads the song count into the dashboard store', async () => {
+    const pinia = createPinia();
+    getSongsCount.mockResolvedValue({ data: { totalElements: 12345 } });
+
+    const prefetched = await prefetchRoute({
+      route: { name: 'dashboard', params: {} },
+      router,
+      pinia,
+      ssrContext: { status: 200, redirect: null },
+    });
+
+    expect(prefetched).toBe(true);
+    expect(useDashboardStore(pinia).songCountTotal).toBe(12345);
+    expect(pinia.state.value.dashboardStore.songCountTotal).toBe(12345);
   });
 });

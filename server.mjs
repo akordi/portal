@@ -45,6 +45,7 @@ const serveStatic = sirv(CLIENT_DIR, { maxAge: 31536000, immutable: true, etag: 
 // shell, exactly as before SSR existed, so an unaudited route (settings,
 // auth, songbook management, ...) can't silently misbehave under SSR.
 const SSR_ROUTE_PATTERNS = [
+  /^\/$/,
   /^\/song\/[^/]+\/?$/,
   /^\/search\/song\/[^/]+\/?$/,
   /^\/new\/song\/[^/]+\/?$/,
