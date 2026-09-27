@@ -108,7 +108,7 @@ function injectRuntimeConfig(template) {
 // The body font is referenced from the CSS, so the browser only discovers it
 // after the stylesheet arrives; a preload starts it with the HTML instead.
 const FONT_FILE = readdirSync(`${CLIENT_DIR}/assets`).find((f) =>
-  /^IBMPlexSansVar-[\w-]+\.woff2$/.test(f)
+  /^IBMPlexSansVar-(?!Italic)[\w-]+\.woff2$/.test(f)
 );
 const FONT_PRELOAD = FONT_FILE
   ? `<link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/${FONT_FILE}">`

@@ -47,6 +47,7 @@ export default function createAppInstance(config, { ssr = false, hydrate = false
   });
   app.use(i18n);
 
+  app.config.idPrefix = 'LX';
   app.use(createLx, {
     systemId: 'akordi',
     authUrl: config.authUrl,
