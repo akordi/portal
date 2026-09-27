@@ -9,7 +9,7 @@ const { t: $t } = useI18n();
 const { hasConsent } = useConsent();
 
 const windowSize = useWindowSize();
-const showConsent = ref(true);
+const showConsent = ref(false);
 
 const isBigScreen = computed(() => windowSize.width.value < 950);
 const stackOrientation = computed(() => (isBigScreen.value ? 'vertical' : 'horizontal'));
@@ -25,9 +25,7 @@ async function reject() {
   showConsent.value = false;
 }
 onMounted(() => {
-  if (hasConsent.value) {
-    showConsent.value = false;
-  }
+  showConsent.value = !hasConsent.value;
 });
 </script>
 <style>

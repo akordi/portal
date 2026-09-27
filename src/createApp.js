@@ -52,6 +52,7 @@ export default function createAppInstance(config, { ssr = false, hydrate = false
     authUrl: config.authUrl,
     publicUrl: config.publicUrl,
     environment: config.environment,
+    preload: { shellModes: ['public'] },
   });
 
   if (!ssr && configBool(config.gtagEnabled) && config.gtagId) {
