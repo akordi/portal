@@ -9,6 +9,11 @@
 
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" sizes="48x48" />
     <link rel="icon" href="<%= BASE_URL %>favicon.svg" sizes="any"  type="image/svg+xml" />
+    <!-- The session check (Kratos /sessions/whoami) fires on every load as a
+         credentialed cross-origin request; warming that connection during
+         HTML parse saves ~300 ms on mobile. crossorigin is required so the
+         preconnected socket is the one a CORS fetch can reuse. -->
+    <link rel="preconnect" href="<%- VUE_APP_AUTH_URL %>" crossorigin />
 
     <meta
       name="theme-color"

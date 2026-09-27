@@ -265,12 +265,16 @@ const renderData = computed(() => {
 </script>
 
 <template>
+  <!-- The container is rendered (at its final size) before the chord db has
+       loaded — including during SSR, where the import never resolves — so
+       the diagrams popping in after the async import don't push the lyrics
+       below them down (this was a 0.25 CLS on every song page). -->
   <div
+    v-if="renderData || !currentDb"
     class="chord-svg-container"
     :style="{ width: actualWidth + 'px', height: props.height + 'px' }"
-    v-if="renderData"
   >
-    <svg :width="actualWidth" :height="props.height">
+    <svg v-if="renderData" :width="actualWidth" :height="props.height">
       <!-- Grid -->
       <line
         v-for="(line, i) in grid.stringLines"
@@ -366,7 +370,7 @@ const renderData = computed(() => {
        Only shown once the db has loaded, so it can't flash during the async
        import. -->
   <div
-    v-else-if="currentDb && displayChordName"
+    v-else-if="displayChordName"
     class="chord-svg-container chord-svg-fallback"
     :style="{ width: actualWidth + 'px', height: props.height + 'px' }"
     :title="$t('chordDiagram.unavailable')"
