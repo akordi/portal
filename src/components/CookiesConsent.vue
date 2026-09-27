@@ -1,18 +1,13 @@
 <script setup>
-import { useWindowSize } from '@vueuse/core';
-import { LxButton, LxStack } from '@akordi/lx-ui';
-import { computed, onMounted, ref } from 'vue';
+import { LxButton } from '@akordi/lx-ui';
+import { onMounted, ref } from 'vue';
 import { addGtag, consentGrantedAll, useConsent } from 'vue-gtag';
 import { useI18n } from 'vue-i18n';
 
 const { t: $t } = useI18n();
 const { hasConsent } = useConsent();
 
-const windowSize = useWindowSize();
 const showConsent = ref(false);
-
-const isBigScreen = computed(() => windowSize.width.value < 950);
-const stackOrientation = computed(() => (isBigScreen.value ? 'vertical' : 'horizontal'));
 
 async function accept() {
   showConsent.value = false;
@@ -45,18 +40,26 @@ onMounted(() => {
   width: 100%;
   margin: 0 auto;
   display: flex;
-  gap: var(--stack-gap);
+  align-items: center;
+  gap: var(--stack-gap, 1rem);
 }
 .cookies-wrapper .cookies-buttons {
   max-width: fit-content;
+  display: flex;
+  gap: var(--stack-gap, 1rem);
+}
+@media (max-width: 950px) {
+  .cookies-wrapper .cookies-content {
+    flex-direction: column;
+  }
 }
 </style>
 
 <template>
   <div class="cookies-wrapper" v-if="showConsent">
-    <LxStack class="cookies-content" :orientation="stackOrientation" vertical-alignment="center">
+    <div class="cookies-content">
       <p v-html="$t('cookieConsent.description')"></p>
-      <LxStack class="cookies-buttons" orientation="horizontal">
+      <div class="cookies-buttons">
         <LxButton
           :icon="null"
           kind="primary"
@@ -71,7 +74,7 @@ onMounted(() => {
           :title="$t('cookieConsent.reject')"
           @click="reject"
         ></LxButton>
-      </LxStack>
-    </LxStack>
+      </div>
+    </div>
   </div>
 </template>
