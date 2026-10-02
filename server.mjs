@@ -306,3 +306,13 @@ server.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Server listening on :${PORT}`);
 });
+
+// Swarm sends SIGTERM to the old task during a rolling update; let in-flight
+// requests finish instead of dropping them.
+const shutdown = () => {
+  server.close(() => process.exit(0));
+  server.closeIdleConnections?.();
+  setTimeout(() => process.exit(0), 10_000).unref();
+};
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
