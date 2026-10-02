@@ -130,7 +130,9 @@ onMounted(async () => {
     />
   </LxLoaderView>
   <br />
+  <!-- After the letters: the picker's height varies by site and would push the list down -->
   <LxList
+    v-if="!loadingLetters"
     id="id"
     :loading="loading"
     list-type="2"

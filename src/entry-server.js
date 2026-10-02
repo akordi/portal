@@ -15,6 +15,8 @@ import { pickTransferredState, serializeState } from '@/ssr/serializeState';
  * works because nginx proxies it; there's no such resolution in Node.
  *
  * Besides the markup, the result carries:
+ *   - `modules`: the source modules the render used (Set of ids), which
+ *     server.mjs maps through the SSR manifest to the CSS to link up front;
  *   - `state`: the serialized Pinia state the client hydrates from (see
  *     main.js), already escaped for an inline <script>, or null when the
  *     route had nothing to prefetch — then the client mounts from scratch
@@ -59,9 +61,18 @@ export default async function render(url, config) {
     }
   }
 
-  const html = await renderToString(app);
+  // renderToString fills ctx.modules with the source modules it rendered.
+  const renderContext = {};
+  const html = await renderToString(app, renderContext);
   const state = prefetched ? serializeState(pickTransferredState(pinia.state.value)) : null;
-  return { html, head, state, status: ssrContext.status, redirect: ssrContext.redirect };
+  return {
+    html,
+    head,
+    state,
+    modules: renderContext.modules,
+    status: ssrContext.status,
+    redirect: ssrContext.redirect,
+  };
 }
 
 /**

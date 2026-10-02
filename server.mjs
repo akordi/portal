@@ -114,6 +114,19 @@ const FONT_PRELOAD = FONT_FILE
   ? `<link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/${FONT_FILE}">`
   : '';
 
+// Route views are lazy chunks whose CSS Vite injects only once their JS has
+// run, after first paint — the late styles then shift the server-rendered
+// layout. Linking that CSS in the head styles the first paint instead (the
+// client loader skips stylesheets already linked).
+const ssrManifest = JSON.parse(readFileSync(`${CLIENT_DIR}/.vite/ssr-manifest.json`, 'utf-8'));
+
+function stylesheetLinks(modules = []) {
+  const files = new Set(
+    [...modules].flatMap((id) => ssrManifest[id] || []).filter((f) => f.endsWith('.css'))
+  );
+  return [...files].map((file) => `<link rel="stylesheet" href="${file}">`).join('');
+}
+
 function readTemplate() {
   // Re-read per request to avoid ever serving a stale template after a
   // deploy replaces files without restarting this process.
@@ -165,7 +178,7 @@ function mergeHtmlAttrs(templateAttrs, headAttrs) {
 async function renderPage(url) {
   const template = stripStaticHeadTags(readTemplate());
   const config = readConfig();
-  const { html, head, state, status, redirect } = await render(url, config);
+  const { html, head, state, modules, status, redirect } = await render(url, config);
   const { headTags, htmlAttrs, bodyAttrs, bodyTagsOpen, bodyTags } = await renderHeadToString(head);
   // `state` is already escaped for an inline script by entry-server (a "<"
   // in a song's text can't close this element early). A classic script runs
@@ -174,7 +187,7 @@ async function renderPage(url) {
 
   const page = template
     .replace(/<html([^>]*)>/, (_match, attrs) => `<html${mergeHtmlAttrs(attrs, htmlAttrs)}>`)
-    .replace('</head>', `${headTags}</head>`)
+    .replace('</head>', `${stylesheetLinks(modules)}${headTags}</head>`)
     .replace(/<body([^>]*)>/, (_match, attrs) => `<body${attrs} ${bodyAttrs}>${bodyTagsOpen}`)
     .replace('<div id="app"></div>', `<div id="app">${html}</div>${stateScript}`)
     .replace('</body>', `${bodyTags}</body>`);
