@@ -146,6 +146,8 @@ export default defineConfig((command) => {
       target: ['es2020'],
       outDir,
       sourcemap: false,
+      // Lets server.mjs link the CSS of the lazy route chunks a render used.
+      ssrManifest: !command?.isSsrBuild,
       rollupOptions: {
         output: {
           // Rolldown (Vite 8+) accepts only a function for manualChunks, not an object map.

@@ -168,6 +168,12 @@ onUnmounted(() => {
   display: none;
 }
 
+/* To fix CLS: the list's items arrive in lazy chunks after its load-more
+   button, which would otherwise be pushed down past them */
+.lx-list-wrapper:not(:has(.lx-list-item)) .lx-load-more-button {
+  display: none;
+}
+
 /* To fix CLS */
 .lx-loader-wrapper {
   display: block;
