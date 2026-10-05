@@ -37,6 +37,11 @@ const devServerSettings = (env) => {
         target: 'http://localhost:8080',
         changeOrigin: true,
       },
+      '/sitemap.xml': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        rewrite: () => '/api/v2/sitemap.xml',
+      },
     },
   };
 };

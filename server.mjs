@@ -239,6 +239,14 @@ function proxyTargetFor(path) {
   return null;
 }
 
+// Sitemap: needs an absolute URL, and one image serves every country's domain.
+function respondWithRobots(req, res) {
+  const proto = req.headers['x-forwarded-proto']?.split(',')[0].trim() || 'http';
+  const host = req.headers['x-forwarded-host']?.split(',')[0].trim() || req.headers.host;
+  res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
+  res.end(`User-agent: *\nAllow: /\n\nSitemap: ${proto}://${host}/sitemap.xml\n`);
+}
+
 const server = createServer(async (req, res) => {
   Object.entries(SECURITY_HEADERS).forEach(([key, value]) => res.setHeader(key, value));
 
@@ -250,7 +258,17 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  const target = proxyTargetFor(path);
+  if (path === '/robots.txt') {
+    respondWithRobots(req, res);
+    return;
+  }
+
+  if (path === '/sitemap.xml') {
+    // eslint-disable-next-line no-param-reassign -- http-proxy forwards req.url as-is
+    req.url = '/api/v2/sitemap.xml';
+  }
+
+  const target = proxyTargetFor(req.url.split('?')[0]);
   if (target) {
     apiProxy.web(req, res, { target });
     return;
