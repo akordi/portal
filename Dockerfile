@@ -15,16 +15,10 @@ RUN --mount=type=cache,target=/root/.bun/install/cache \
 
 FROM deps AS build
 COPY . .
-RUN bun run build
-
-# A separate, production-only install for the runtime image — the full
-# `deps` install above (needed to build) pulls in devDependencies (vite,
-# vitest, eslint, ...) that server.mjs never touches at runtime.
-FROM oven/bun:1.3.14-alpine AS prod-deps
-WORKDIR /app
-COPY package.json bun.lock ./
-RUN --mount=type=cache,target=/root/.bun/install/cache \
-    bun install --frozen-lockfile --production --ignore-scripts
+# The trace keeps only the node_modules files the server actually loads —
+# a full production install would also ship the many lx-ui dependencies
+# (editor, maps, PDF, ...) that it never touches.
+RUN bun run build && bun scripts/trace-server.mjs
 
 # No nginx: server.mjs serves static assets, proxies /api/v2*, and
 # server-renders SSR-safe routes itself. Traefik (in front of every service
@@ -32,7 +26,7 @@ RUN --mount=type=cache,target=/root/.bun/install/cache \
 FROM oven/bun:1.3.14-alpine
 WORKDIR /app
 
-COPY --from=prod-deps /app/node_modules ./node_modules
+COPY --from=build /app/dist/runtime/node_modules ./node_modules
 COPY --from=build /app/dist/client ./dist/client
 COPY --from=build /app/dist/server ./dist/server
 COPY server.mjs ./
@@ -40,7 +34,12 @@ COPY server.mjs ./
 # app (and vite.config.mjs) instead of duplicating it.
 COPY src/utils/htmlLang.js ./src/utils/htmlLang.js
 
-RUN chown -R bun:bun /app
+# Fails the build if the trace missed a package the server bundle imports,
+# rather than the container crashing on start.
+RUN bun -e "await import('./dist/server/entry-server.mjs')"
+
+# Left root-owned: the server only reads these files, and re-owning them
+# would copy them all into another layer.
 USER bun
 
 # vue, vue-router and @vue/server-renderer are externals of the SSR bundle

@@ -37,6 +37,7 @@
     "vue-router": "5.3.0"
   },
   "devDependencies": {
+    "@vercel/nft": "^1.11.0",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vue/eslint-config-airbnb": "^8.0.0",
     "@vue/eslint-config-prettier": "^9.0.0",
