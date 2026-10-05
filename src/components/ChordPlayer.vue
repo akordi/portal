@@ -531,7 +531,9 @@ onBeforeUnmount(() => {
   justify-content: center;
   /* left transitions so the strip scrolls smoothly between the 150 ms time
      samples instead of stepping; background-color for the active highlight. */
-  transition: left 0.15s linear, background-color 0.15s ease;
+  transition:
+    left 0.15s linear,
+    background-color 0.15s ease;
 }
 .chord-block:focus-visible {
   outline: 2px solid var(--color-brand, #18bc9c);
