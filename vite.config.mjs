@@ -125,6 +125,12 @@ export default defineConfig((command) => {
             new URL('./node_modules/@akordi/lx-ui/dist/lx-fonts', import.meta.url)
           ),
         },
+        // chord-transposer require()s xregexp, whose "module" entry would
+        // hand it the ES namespace instead of the function once inlined
+        // into the SSR bundle (ssr.noExternal below).
+        ...(command?.isSsrBuild
+          ? [{ find: /^xregexp$/, replacement: 'xregexp/lib/index.js' }]
+          : []),
       ],
     },
     plugins: [
@@ -170,6 +176,9 @@ export default defineConfig((command) => {
         },
       },
     },
+    // Inline every dependency into the SSR bundle so the runtime image needs
+    // no node_modules (see Dockerfile).
+    ssr: { noExternal: true },
     server: serving ? devServerSettings(envVariables) : {},
     test: {
       globals: true,
