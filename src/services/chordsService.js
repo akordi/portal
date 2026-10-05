@@ -22,7 +22,7 @@ export default {
             .join('')
         )
         .join('\n');
-    } catch (err) {
+    } catch {
       return body;
     }
   },

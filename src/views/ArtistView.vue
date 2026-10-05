@@ -128,7 +128,7 @@ onMounted(async () => {
 onServerPrefetch(async () => {
   try {
     await loadArtist();
-  } catch (err) {
+  } catch {
     // already reported via notificationStore inside loadArtist()
   }
 });

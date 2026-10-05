@@ -69,7 +69,7 @@ async function searchActionClicked(actionName, itemId) {
       await songbookService.addSong(listId.value, itemId);
       searchItems.value = searchItems.value.filter((song) => song.id !== itemId);
       notificationStore.pushSuccess($t('pages.songbook.addSong.success'));
-    } catch (err) {
+    } catch {
       notificationStore.pushError($t('pages.songbook.addSong.error'));
     }
   }

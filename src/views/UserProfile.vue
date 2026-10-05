@@ -57,7 +57,7 @@ async function selectInstrument(instrument) {
   try {
     await preferencesStore.saveInstrument(instrument);
     notification.pushSuccess(t.t('pages.userProfile.preferences.saveSuccess'));
-  } catch (err) {
+  } catch {
     notification.pushError(t.t('pages.userProfile.preferences.saveError'));
   }
 }

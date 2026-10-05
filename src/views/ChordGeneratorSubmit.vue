@@ -177,7 +177,7 @@ async function loadQueue() {
   try {
     const resp = await chordgenSongService.getQueue();
     queue.value = resp.data;
-  } catch (err) {
+  } catch {
     // Non-critical banner — a failed fetch just means no banner is shown.
   }
 }
@@ -215,7 +215,7 @@ async function fetchOembedTitle(youtubeUrl) {
     }
     const data = await resp.json();
     return data?.title || null;
-  } catch (err) {
+  } catch {
     return null;
   }
 }
@@ -291,7 +291,7 @@ async function pollJob(jobId) {
       return;
     }
     jobStatus.value = data;
-  } catch (err) {
+  } catch {
     // Transient poll failure — keep trying until the deadline.
   }
 }

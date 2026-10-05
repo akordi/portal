@@ -64,7 +64,7 @@ async function load() {
     const songsResp = await songbookService.getSongs(listId.value);
     item.value.songs = songsResp.data.content.map(decorateSong);
     viewStore.title = item.value.name;
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('errors.loadFailed'));
     goBackToSongbook();
   } finally {
@@ -83,7 +83,7 @@ async function saveName() {
     await songbookService.save({ id: item.value.id, name: item.value.name });
     viewStore.title = item.value.name;
     notificationStore.pushSuccess($t('pages.songbook.save.success'));
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('pages.songbook.save.error'));
   } finally {
     savingName.value = false;
@@ -122,7 +122,7 @@ async function onSongsReordered(songs) {
       item.value.id,
       songs.map((song) => Number(song.id))
     );
-  } catch (err) {
+  } catch {
     item.value.songs = previous;
     notificationStore.pushError($t('pages.songbook.reorderSong.error'));
   }
@@ -133,7 +133,7 @@ async function removeSong(itemId) {
     await songbookService.removeSong(item.value.id, itemId);
     item.value.songs = item.value.songs.filter((song) => String(song.id) !== String(itemId));
     notificationStore.pushSuccess($t('pages.songbook.removeSong.success'));
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('pages.songbook.removeSong.error'));
   }
 }
@@ -150,7 +150,7 @@ async function removeSongbook() {
     await songbookService.delete(item.value.id);
     notificationStore.pushSuccess($t('pages.songbook.delete.success'));
     router.push({ name: 'songbook' });
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('pages.songbook.delete.error'));
   }
 }

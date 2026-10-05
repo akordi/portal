@@ -46,7 +46,7 @@ async function loadSong() {
     viewStore.title = displayTitle.value;
     viewStore.description = '';
     viewStore.goBack = true;
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('pages.chordGenerator.errors.loadFailed'));
   } finally {
     loading.value = false;
@@ -57,7 +57,7 @@ async function loadMyRating() {
   try {
     const resp = await chordgenSongService.getMyRating(route.params.id);
     myRating.value = resp.data.rating ?? null;
-  } catch (err) {
+  } catch {
     // Own-rating fetch is a nice-to-have — leave the control unset on failure.
   }
 }
@@ -80,7 +80,7 @@ async function selectInstrument(instrument) {
   }
   try {
     await accountPreferencesStore.saveInstrument(instrument);
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('pages.userProfile.preferences.saveError'));
   }
 }
@@ -92,7 +92,7 @@ async function onRate(value) {
     const resp = await chordgenSongService.submitRating(route.params.id, value);
     song.value.averageRating = resp.data.averageRating;
     song.value.ratingsCount = resp.data.ratingsCount;
-  } catch (err) {
+  } catch {
     myRating.value = previous;
     notificationStore.pushError($t('pages.chordGenerator.errors.submitFailed'));
   }

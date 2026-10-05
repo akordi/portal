@@ -43,7 +43,7 @@ async function loadItems() {
       items.value.push(...mapped);
     }
     hasMore.value = items.value.length < resp.data.totalElements;
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('pages.chordGenerator.errors.loadFailed'));
   } finally {
     loading.value = false;

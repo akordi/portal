@@ -205,7 +205,7 @@ async function persistTranspose() {
   }
   try {
     await accountPreferencesStore.saveSongTransposeOffset(item.value.id, bodyTransposedIndex.value);
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('pages.akordiSongView.transposeSaveError'));
   }
 }
@@ -218,7 +218,7 @@ async function saveInstrument(instrument) {
   }
   try {
     await accountPreferencesStore.saveInstrument(instrument);
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('pages.userProfile.preferences.saveError'));
   }
 }
@@ -384,7 +384,7 @@ async function restoreTransposePreference() {
   try {
     const preferences = await accountPreferencesStore.getSongPreferences(item.value.id);
     transposeOffset = preferences.transposeOffset || 0;
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('pages.akordiSongView.transposeLoadError'));
   }
   applyTranspose(transposeOffset);
@@ -487,7 +487,7 @@ async function createSongbookAndAddSong() {
     newSongbookName.value = '';
     notificationStore.pushSuccess($t('pages.akordiSongView.createSongbook.success'));
     createSongbookModal.value?.close();
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('pages.akordiSongView.createSongbook.error'));
   } finally {
     creatingSongbook.value = false;
@@ -529,7 +529,7 @@ async function actionClicked(action) {
       selectedLists.value = userListSelected.value?.map((id) => String(id));
 
       addToListModal.value.open();
-    } catch (err) {
+    } catch {
       notificationStore.pushError($t('errors.loadFailed'));
     } finally {
       loadingLists.value = false;
@@ -609,7 +609,7 @@ async function toggleListSelection(listId, value) {
       notificationStore.pushSuccess($t('pages.akordiSongView.removeFromList.success'));
     }
     selectedLists.value = userListSelected.value.map((id) => String(id));
-  } catch (err) {
+  } catch {
     if (value) {
       notificationStore.pushError($t('pages.akordiSongView.addToList.error'));
       // Revert checkbox state

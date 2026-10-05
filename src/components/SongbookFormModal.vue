@@ -79,7 +79,7 @@ async function save() {
     } else {
       emit('updated', { ...item.value, ...resp.data });
     }
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('pages.songbook.save.error'));
   } finally {
     saving.value = false;
@@ -93,7 +93,7 @@ async function remove() {
     notificationStore.pushSuccess($t('pages.songbook.delete.success'));
     close();
     emit('deleted', item.value.id);
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('pages.songbook.delete.error'));
   } finally {
     deleting.value = false;

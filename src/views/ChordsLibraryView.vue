@@ -122,7 +122,7 @@ async function selectInstrument(instrument) {
   if (authStore.isAuthorized) {
     try {
       await accountPreferencesStore.saveInstrument(instrument);
-    } catch (err) {
+    } catch {
       notificationStore.pushError($t('pages.userProfile.preferences.saveError'));
     }
   }

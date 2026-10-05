@@ -61,7 +61,7 @@ async function loadList() {
     const pubSongs = await songbookService.getPublicSongs(listId.value);
     item.value.songs = pubSongs.data.content.map(decorateSong);
     viewStore.title = item.value.name;
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('errors.loadFailed'));
   } finally {
     loading.value = false;

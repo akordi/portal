@@ -98,7 +98,7 @@ async function initFlow() {
     flow.value = data;
     parseFlow();
     loading.value = false;
-  } catch (err) {
+  } catch {
     router.push('/error');
   }
 }

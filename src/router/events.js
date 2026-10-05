@@ -20,7 +20,7 @@ export default (router) => {
       if (authStore.session.st === null) {
         await authStore.fetchSession();
       }
-    } catch (err) {
+    } catch {
       // proceed as unauthorized
     }
 

@@ -47,7 +47,7 @@ async function renderAbc() {
       await synthControl.setTune(visualObj, true);
       const el = audioRef.value?.querySelector('.abcjs-inline-audio');
       el?.classList.remove('disabled');
-    } catch (e) {
+    } catch {
       // skip
     }
   } else {

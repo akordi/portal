@@ -28,7 +28,7 @@ async function loadLists() {
       clickable: true,
       icon: 'next',
     }));
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('errors.loadFailed'));
   } finally {
     loading.value = false;

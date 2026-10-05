@@ -40,7 +40,7 @@ async function loadLetters() {
         clickable: true,
       })),
     ];
-  } catch (err) {
+  } catch {
     // skip
   } finally {
     loadingLetters.value = false;
