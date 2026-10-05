@@ -56,6 +56,36 @@
         document.body.classList.add("lx-theme-" + theme);
       } catch {}
     </script>
+    <!-- A menu-button tap before hydration does nothing; click again once the app handles it. -->
+    <script>
+      (() => {
+        let pending = false;
+        let wantCollapsed;
+        const reconcile = (toggle, layout, deadline) => {
+          setTimeout(() => {
+            const collapsed = layout.classList.contains("lx-collapsed");
+            pending = collapsed !== wantCollapsed && Date.now() < deadline;
+            if (!pending) return;
+            toggle.click();
+            requestAnimationFrame(() => reconcile(toggle, layout, deadline));
+          });
+        };
+        document.addEventListener(
+          "click",
+          (event) => {
+            const toggle = event.isTrusted && event.target.closest("#nav-toggle");
+            const layout = toggle && toggle.closest(".lx-layout");
+            if (!layout) return;
+            wantCollapsed = !(pending ? wantCollapsed : layout.classList.contains("lx-collapsed"));
+            if (!pending) {
+              pending = true;
+              reconcile(toggle, layout, Date.now() + 10000);
+            }
+          },
+          true
+        );
+      })();
+    </script>
     <noscript>
       <strong
         >We're sorry but <%= VUE_APP_NAME %> doesn't work properly without
