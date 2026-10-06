@@ -2,7 +2,7 @@ import { createApp, createSSRApp } from 'vue';
 import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';
 import { createHead } from '@vueuse/head';
-import { createLx, LxShell } from '@akordi/lx-ui';
+import { createLx, LxShell, LxSection } from '@akordi/lx-ui';
 import { createGtag } from 'vue-gtag';
 import App from '@/App.vue';
 import createAppRouter from '@/router';
@@ -53,7 +53,7 @@ export default function createAppInstance(config, { ssr = false, hydrate = false
     authUrl: config.authUrl,
     publicUrl: config.publicUrl,
     environment: config.environment,
-    preload: { components: [LxShell], shellModes: ['public'] },
+    preload: { components: [LxShell, LxSection], shellModes: ['public'] },
   });
 
   if (!ssr && configBool(config.gtagEnabled) && config.gtagId) {
