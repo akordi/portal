@@ -46,14 +46,9 @@ onMounted(async () => {
   align-items: center;
   gap: var(--stack-gap, 1rem);
 }
-/* A capped text width keeps the line count independent of the button widths. */
-.cookies-wrapper .cookies-content p {
-  max-width: 52rem;
-}
 .cookies-wrapper .cookies-buttons {
   max-width: fit-content;
   display: flex;
-  flex: none;
   gap: var(--stack-gap, 1rem);
 }
 @media (max-width: 950px) {
