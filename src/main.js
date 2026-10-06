@@ -71,6 +71,7 @@ if (initialState) {
   });
 }
 
-Promise.all([router.isReady(), lxPreloaded()]).then(() => {
-  app.mount('#app');
-});
+Promise.all([router.isReady(), lxPreloaded()])
+  .then(() => app.mount('#app'))
+  // eslint-disable-next-line no-console
+  .catch((err) => console.error('Initial navigation failed:', err));
