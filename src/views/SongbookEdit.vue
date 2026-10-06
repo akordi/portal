@@ -110,6 +110,15 @@ async function copyShareLink() {
   }
 }
 
+// Chrome places the native drag image relative to the form instead of the
+// grabbed item; anchor it to the item under the cursor.
+function anchorDragImage(event) {
+  const itemEl = event.target.closest?.('li');
+  if (!itemEl || !event.dataTransfer) return;
+  const rect = itemEl.getBoundingClientRect();
+  event.dataTransfer.setDragImage(itemEl, event.clientX - rect.left, event.clientY - rect.top);
+}
+
 async function onSongsReordered(songs) {
   const previous = item.value.songs;
   if (songs.map((song) => song.id).join() === previous.map((song) => song.id).join()) {
@@ -246,19 +255,21 @@ onMounted(async () => {
 
       <LxSection id="songbook-songs" :label="$t('pages.songbook.songs')">
         <LxRow :label="$t('pages.songbook.songs')" hide-label>
-          <LxList
-            id="edit-songs-list"
-            list-type="1"
-            kind="draggable"
-            :items="item.songs"
-            @update:items="onSongsReordered"
-            :toolbar-action-definitions="songToolbarActions"
-            :action-definitions="songActions"
-            @toolbar-action-click="songToolbarActionClicked"
-            @action-click="itemActionClicked"
-            :texts="listTexts()"
-          >
-          </LxList>
+          <div @dragstart.capture="anchorDragImage">
+            <LxList
+              id="edit-songs-list"
+              list-type="1"
+              kind="draggable"
+              :items="item.songs"
+              @update:items="onSongsReordered"
+              :toolbar-action-definitions="songToolbarActions"
+              :action-definitions="songActions"
+              @toolbar-action-click="songToolbarActionClicked"
+              @action-click="itemActionClicked"
+              :texts="listTexts()"
+            >
+            </LxList>
+          </div>
         </LxRow>
       </LxSection>
     </LxForm>
