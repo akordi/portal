@@ -713,6 +713,7 @@ onUnmounted(() => {
     <SongTags v-if="item.tags?.length > 0" id="songTags" :tags="item.tags" />
     <LxForm
       id="song-view-form"
+      :role="null"
       :action-definitions="formActions"
       @action-click="actionClicked"
       :show-post-header-info="true"
