@@ -1,4 +1,5 @@
 import createAppInstance from '@/createApp';
+import { lxPreloaded } from '@akordi/lx-ui';
 
 import '@akordi/lx-ui/dist/styles/lx-reset.css';
 import '@akordi/lx-ui/dist/styles/lx-fonts-carbon.css';
@@ -70,6 +71,7 @@ if (initialState) {
   });
 }
 
-router.isReady().then(() => {
-  app.mount('#app');
-});
+Promise.all([router.isReady(), lxPreloaded()])
+  .then(() => app.mount('#app'))
+  // eslint-disable-next-line no-console
+  .catch((err) => console.error('Initial navigation failed:', err));
