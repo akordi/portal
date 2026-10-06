@@ -1,3 +1,8 @@
+/* Reserve the scrollbar so a momentarily short page can't shift the layout sideways. */
+html {
+  scrollbar-gutter: stable;
+}
+
 .lx-main-button .lx-logo img {
   height: 42px;
   display: none;
