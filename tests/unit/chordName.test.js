@@ -22,13 +22,18 @@ describe('parseChordName', () => {
     expect(parseChordName('C/Bb')).toEqual({ root: 'C', suffix: '', bass: 'Bb' });
   });
 
+  it('parses H as B natural', () => {
+    expect(parseChordName('Hm7')).toEqual({ root: 'H', suffix: 'm7', bass: null });
+    expect(parseChordName('G/H')).toEqual({ root: 'G', suffix: '', bass: 'H' });
+  });
+
   it('tolerates surrounding whitespace', () => {
     expect(parseChordName(' G7 ')).toEqual({ root: 'G', suffix: '7', bass: null });
   });
 
   it('rejects garbage', () => {
     expect(parseChordName('')).toBeNull();
-    expect(parseChordName('H')).toBeNull();
+    expect(parseChordName('X')).toBeNull();
     expect(parseChordName('X13')).toBeNull();
     expect(parseChordName('C/QQ')).toBeNull();
     expect(parseChordName(null)).toBeNull();
@@ -109,6 +114,10 @@ describe('dbRoot', () => {
     expect(dbRoot('A#', 'guitar')).toBe('Bb');
     expect(dbRoot('D#', 'ukulele')).toBe('Eb');
     expect(dbRoot('G#', 'baritone-ukulele')).toBe('Ab');
+  });
+
+  it('maps H to B', () => {
+    expect(dbRoot('H', 'guitar')).toBe('B');
   });
 
   it('spells C#/F# per instrument database', () => {

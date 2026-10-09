@@ -1,8 +1,55 @@
-import { Transposer } from 'chord-transposer';
+import { Chord, Transposer } from 'chord-transposer';
+
+function hToB(token) {
+  return token.replace(/^H/, 'B').replace(/\/H$/, '/B');
+}
+
+function isChord(token) {
+  try {
+    Chord.parse(token);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function normalizeH(body) {
+  let usesH = false;
+  const normalized = body
+    .split('\n')
+    .map((line) =>
+      line
+        .split(/(\s+|-|]|\[)/g)
+        .map((token) => {
+          if (!/^H|\/H$/.test(token)) {
+            return token;
+          }
+          const candidate = hToB(token);
+          if (!isChord(candidate)) {
+            return token;
+          }
+          usesH = true;
+          return candidate;
+        })
+        .join('')
+    )
+    .join('\n');
+  return { normalized, usesH };
+}
+
+function chordToString(chord, usesH) {
+  if (!usesH) {
+    return chord.toString();
+  }
+  const note = (n) => (n === 'B' || n === 'Cb' ? 'H' : n);
+  const root = note(chord.root);
+  return chord.bass ? `${root}${chord.suffix}/${note(chord.bass)}` : `${root}${chord.suffix}`;
+}
 
 export default {
   transpose(body, i) {
-    let transposer = Transposer.transpose(body);
+    const { normalized, usesH } = normalizeH(body);
+    let transposer = Transposer.transpose(normalized);
     try {
       if (i >= 0) {
         transposer = transposer.up(i);
@@ -14,8 +61,7 @@ export default {
           line
             .map((token) => {
               if (typeof token === 'object') {
-                return `<b>${token.toString()}</b>`;
-                // return token.toString();
+                return `<b>${chordToString(token, usesH)}</b>`;
               }
               return token.toString();
             })
