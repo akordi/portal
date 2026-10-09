@@ -1,6 +1,6 @@
 import { Transposer } from 'chord-transposer';
 
-const escapeTags = (text) => String(text).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const escapeTags = (text) => String(text).replaceAll('<', '&lt;').replaceAll('>', '&gt;');
 
 export default {
   transpose(body, i) {
