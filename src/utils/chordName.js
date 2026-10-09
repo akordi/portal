@@ -22,6 +22,7 @@ const NOTE_INDEX = {
   'A#': 10,
   Bb: 10,
   B: 11,
+  H: 11,
 };
 
 const SHARP_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -51,7 +52,7 @@ export function parseChordName(label) {
   if (typeof label !== 'string') {
     return null;
   }
-  const match = /^([A-G][#b]?)([^/]*)(?:\/([A-G][#b]?))?$/.exec(label.trim());
+  const match = /^([A-H][#b]?)([^/]*)(?:\/([A-H][#b]?))?$/.exec(label.trim());
   if (!match) {
     return null;
   }
@@ -150,6 +151,7 @@ export function dbSuffix(suffix) {
 export function dbRoot(rawRoot, instrument) {
   let root = rawRoot;
   const commonMapping = {
+    H: 'B',
     'A#': 'Bb',
     'D#': 'Eb',
     'G#': 'Ab',
