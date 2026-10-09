@@ -1,9 +1,14 @@
 import { Transposer } from 'chord-transposer';
 
+const escapeTags = (text) => String(text).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
 export default {
   transpose(body, i) {
-    let transposer = Transposer.transpose(body);
+    if (body == null) {
+      return body;
+    }
     try {
+      let transposer = Transposer.transpose(body);
       if (i >= 0) {
         transposer = transposer.up(i);
       } else {
@@ -14,16 +19,15 @@ export default {
           line
             .map((token) => {
               if (typeof token === 'object') {
-                return `<b>${token.toString()}</b>`;
-                // return token.toString();
+                return `<b>${escapeTags(token.toString())}</b>`;
               }
-              return token.toString();
+              return escapeTags(token.toString());
             })
             .join('')
         )
         .join('\n');
     } catch (err) {
-      return body;
+      return escapeTags(body);
     }
   },
 
