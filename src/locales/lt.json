@@ -106,7 +106,15 @@
                 "secondaryLabel": "Baigti darbą"
             },
             "loginButtonLabel": "Prisijungti",
-            "loginButtonTitle": "Prisijungti prie sistemos"
+            "loginButtonTitle": "Prisijungti prie sistemos",
+            "globalSearch": {
+                "open": "Ieškoti",
+                "close": "Uždaryti paiešką",
+                "placeholder": "Ieškokite dainos, atlikėjo ar žodžių",
+                "hint": "Įveskite dainos pavadinimą, atlikėją ar teksto fragmentą",
+                "notFound": "Nieko nerasta pagal",
+                "details": "Visi rezultatai"
+            }
         },
         "list": {
             "clear": "Išvalyti",

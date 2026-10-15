@@ -106,7 +106,15 @@
                 "secondaryLabel": "Lõpeta töö"
             },
             "loginButtonLabel": "Logi sisse",
-            "loginButtonTitle": "Logi sisse süsteemi"
+            "loginButtonTitle": "Logi sisse süsteemi",
+            "globalSearch": {
+                "open": "Otsi",
+                "close": "Sulge otsing",
+                "placeholder": "Otsi laulu, esitajat või sõnu",
+                "hint": "Sisesta laulu pealkiri, esitaja või tekstikatke",
+                "notFound": "Midagi ei leitud päringule",
+                "details": "Kõik tulemused"
+            }
         },
         "list": {
             "clear": "Tühjenda",

@@ -106,7 +106,15 @@
                 "secondaryLabel": "Terminar trabajo"
             },
             "loginButtonLabel": "Entrar",
-            "loginButtonTitle": "Iniciar sesión en el sistema"
+            "loginButtonTitle": "Iniciar sesión en el sistema",
+            "globalSearch": {
+                "open": "Buscar",
+                "close": "Cerrar búsqueda",
+                "placeholder": "Busca una canción, artista o letra",
+                "hint": "Escribe el título de una canción, un artista o un fragmento de la letra",
+                "notFound": "No se encontraron resultados para",
+                "details": "Todos los resultados"
+            }
         },
         "list": {
             "clear": "Limpiar",

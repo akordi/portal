@@ -79,6 +79,10 @@ export default {
     return http(serviceUrl).get('/api/v2/artists', { params: { titleStartsWith: query } });
   },
 
+  quickSearch(q, params, signal) {
+    return http(serviceUrl).get('/api/v2/search', { params: { ...params, q }, signal });
+  },
+
   search(q, params) {
     if (abortController) {
       abortController.abort();

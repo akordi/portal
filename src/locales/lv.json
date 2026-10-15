@@ -106,7 +106,15 @@
                 "secondaryLabel": "Beigt darbu"
             },
             "loginButtonLabel": "Ienākt",
-            "loginButtonTitle": "Pieslēgties sistēmā"
+            "loginButtonTitle": "Pieslēgties sistēmā",
+            "globalSearch": {
+                "open": "Meklēt",
+                "close": "Aizvērt meklēšanu",
+                "placeholder": "Meklējiet dziesmu, izpildītāju vai vārdus",
+                "hint": "Ievadiet dziesmas nosaukumu, izpildītāju vai teksta fragmentu",
+                "notFound": "Nekas netika atrasts pēc",
+                "details": "Visi rezultāti"
+            }
         },
         "list": {
             "clear": "Notīrīt",
