@@ -120,6 +120,14 @@ export function shellTexts() {
   const t = useI18n();
   return {
     defaultBack: t.t('lx.shell.defaultBack'),
+    globalSearch: {
+      open: t.t('lx.shell.globalSearch.open'),
+      close: t.t('lx.shell.globalSearch.close'),
+      placeholder: t.t('lx.shell.globalSearch.placeholder'),
+      hint: t.t('lx.shell.globalSearch.hint'),
+      notFound: t.t('lx.shell.globalSearch.notFound'),
+      details: t.t('lx.shell.globalSearch.details'),
+    },
     logOut: t.t('lx.shell.logOut'),
     openAlerts: t.t('lx.shell.openAlerts'),
     openNavbar: t.t('lx.shell.openNavbar'),

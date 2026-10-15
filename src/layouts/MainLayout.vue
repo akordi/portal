@@ -16,6 +16,7 @@ import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
 import configBool from '@/utils/configBool';
 import useAppConfig from '@/hooks/useAppConfig';
+import useGlobalSearch from '@/hooks/useGlobalSearch';
 
 const authStore = useAuthStore();
 const accountPreferencesStore = useAccountPreferencesStore();
@@ -30,6 +31,7 @@ const appStore = useAppStore();
 // string "true" from index.html and as a boolean from server.mjs's
 // readConfig(), and configBool normalizes both.
 const appConfig = useAppConfig();
+const globalSearch = useGlobalSearch();
 
 const secondsToIdle = 10;
 const secondsCheckApiInterval = 30;
@@ -205,6 +207,10 @@ function goBack(path) {
     router.back();
   }
 }
+function openSearchPage(q) {
+  router.push({ name: 'songSearch', query: { q } });
+}
+
 function goHome() {
   router.push({ name: 'dashboard' });
 }
@@ -386,6 +392,11 @@ function idleModalSecondary() {
         :has-alerts="false"
         :has-help="false"
         :has-theme-picker="true"
+        :has-global-search="true"
+        :global-search-items="globalSearch.items.value"
+        :global-search-loading="globalSearch.loading.value"
+        @global-search="globalSearch.search"
+        @global-search-details-click="openSearchPage"
         :has-login-button="hasLoginButton"
         :hideHeaderText="!viewStore?.isHeaderShown"
         :navigating="appStore.$state.isNavigating"
