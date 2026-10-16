@@ -44,7 +44,7 @@ export default function useGlobalSearch() {
         ...songs.map((s) => ({
           id: `song-${s.id}`,
           name: `${s.mainArtistTitle} – ${s.title}`,
-          icon: 'file-audio',
+          icon: 'file-rich-text',
           href: s.url,
         })),
       ];
