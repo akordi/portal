@@ -1,45 +1,24 @@
 <script setup>
 import { LxTile } from '@akordi/lx-ui';
-import { nextTick, onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import useAuthStore from '@/stores/useAuthStore';
 import useDashboardStore from '@/stores/useDashboardStore';
-import whenLoaded from '@/utils/asyncComponent';
 import { useI18n } from 'vue-i18n';
 
 const authStore = useAuthStore();
 const dashboardStore = useDashboardStore();
-const songCount = ref(1);
-const songCountTotal = ref(dashboardStore.songCountTotal ?? 1000);
+// The server already knows the real total (see ssr/prefetch.js) and renders it directly, so the
+// client only needs to fetch it itself as a fallback for the rare case prefetch didn't run.
+const songCount = ref(dashboardStore.songCountTotal ?? 0);
 const $t = useI18n().t;
 
-async function loadTotalSongCount() {
+onMounted(async () => {
   if (dashboardStore.songCountTotal === null) {
     await dashboardStore.load();
   }
-  songCountTotal.value = dashboardStore.songCountTotal;
-}
-let frame = 0;
-function animateCount() {
-  frame = 0;
-  const remaining = songCountTotal.value - songCount.value;
-  if (remaining <= 0) return;
-  songCount.value += Math.max(1, Math.ceil(remaining / 12));
-  frame = requestAnimationFrame(animateCount);
-}
-function startCounter() {
-  if (!frame) animateCount();
-}
-
-onMounted(async () => {
-  // Hydration must see the same count the server rendered: wait for the async tile
-  await whenLoaded(LxTile);
-  await nextTick();
-  startCounter();
-  await loadTotalSongCount();
-  startCounter();
+  songCount.value = dashboardStore.songCountTotal;
 });
-onUnmounted(() => cancelAnimationFrame(frame));
 </script>
 
 <template>
