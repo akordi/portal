@@ -7,7 +7,7 @@
 # independently of layer hashing (unlike relying on layer caching alone) —
 # .github/workflows/docker.yml's cache-to/from: type=gha exports/imports it
 # the same way it does regular layers.
-FROM oven/bun:1.3.14-alpine AS deps
+FROM oven/bun:1.4.4-alpine AS deps
 WORKDIR /app
 COPY package.json bun.lock ./
 RUN --mount=type=cache,target=/root/.bun/install/cache \
@@ -20,7 +20,7 @@ RUN bun run build && bun scripts/trace-server.mjs
 # No nginx: server.mjs serves static assets, proxies /api/v2*, and
 # server-renders SSR-safe routes itself. Traefik (in front of every service
 # in this infra) already handles TLS and per-hostname routing.
-FROM oven/bun:1.3.14-alpine
+FROM oven/bun:1.4.4-alpine
 WORKDIR /app
 
 COPY --from=build /app/dist/runtime/node_modules ./node_modules
