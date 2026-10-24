@@ -25,6 +25,7 @@ import { youtubeId } from '@/utils/chordSync';
 import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
 import useAuthStore from '@/stores/useAuthStore';
 import akordiAdminListService from '@/services/songbookService';
+import akordiService from '@/services/akordiService';
 import chordsService from '@/services/chordsService';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useSettingsStore from '@/stores/useSettingsStore';
@@ -642,6 +643,21 @@ onMounted(async () => {
   }
   await loadSong();
 });
+
+// The view stays mounted when navigating straight to another song (header
+// search, related links), so load it here. flush: 'post' skips the run when
+// the navigation leaves this view and it unmounts instead.
+watch(
+  () => akordiService.parseUrl(songUrlParam.value),
+  (id, previousId) => {
+    if (id === previousId) return;
+    stopAutoScroll();
+    loading.value = true;
+    trackPageview();
+    loadSong();
+  },
+  { flush: 'post' }
+);
 
 onUnmounted(() => {
   removeEventListeners();
