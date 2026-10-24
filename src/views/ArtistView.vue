@@ -1,6 +1,6 @@
 <script setup>
 import { LxList, LxLoader } from '@akordi/lx-ui';
-import { computed, inject, onMounted, onServerPrefetch, ref } from 'vue';
+import { computed, inject, onMounted, onServerPrefetch, ref, watch } from 'vue';
 
 import { useRoute, useRouter } from 'vue-router';
 
@@ -119,6 +119,15 @@ onMounted(async () => {
   viewStore.goBack = true;
   await loadArtist();
 });
+
+// Same view, different artist (e.g. picked from the header search).
+watch(
+  () => akordiService.parseUrl(artistUrlParam.value),
+  (id, previousId) => {
+    if (id !== previousId) loadArtist();
+  },
+  { flush: 'post' }
+);
 
 // Runs only during SSR (renderToString awaits it; the client never calls
 // this hook, so onMounted above still does the client-side fetch as

@@ -151,6 +151,15 @@ watch(currentSection, (newVal) => {
     router.push({ name: 'songListTop' });
   }
 });
+// "All results" in the header search changes ?q= while this view is open.
+watch(
+  () => route.query.q,
+  (q) => {
+    if (q && q !== searchString.value) search(q);
+  },
+  { flush: 'post' }
+);
+
 onMounted(async () => {
   if (route.query.q) {
     searchString.value = route.query.q;
