@@ -367,7 +367,9 @@
                 "description": "Išimkite šią dainą iš vienos iš savo dainų knygų",
                 "success": "Daina sėkmingai išimta",
                 "error": "Klaida išimant dainą"
-            }
+            },
+            "otherActions": "Kiti veiksmai",
+            "overflowMenu": "Atidaryti papildomas parinktis"
         },
         "songbook": {
             "title": "Mano dainų knygos",

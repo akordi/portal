@@ -367,7 +367,9 @@
                 "description": "Izņemt šo dziesmu no vienas no savām dziesmu grāmatām",
                 "success": "Dziesma veiksmīgi izņemta",
                 "error": "Kļūda izņemot dziesmu"
-            }
+            },
+            "otherActions": "Citas darbības",
+            "overflowMenu": "Atvērt papildu iespējas"
         },
         "songbook": {
             "title": "Manas dziesmu grāmatas",

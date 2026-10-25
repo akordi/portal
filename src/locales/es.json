@@ -367,7 +367,9 @@
                 "description": "Elimina esta canción de uno de tus cancioneros",
                 "success": "Canción eliminada con éxito",
                 "error": "Error al eliminar la canción"
-            }
+            },
+            "otherActions": "Otras acciones",
+            "overflowMenu": "Abrir opciones adicionales"
         },
         "songbook": {
             "title": "Mis cancioneros",

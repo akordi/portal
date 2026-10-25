@@ -737,6 +737,10 @@ onUnmounted(() => {
       kind="compact"
       :sticky-header="false"
       :sticky-footer="true"
+      :texts="{
+        otherActions: $t('pages.akordiSongView.otherActions'),
+        overflowMenu: $t('pages.akordiSongView.overflowMenu'),
+      }"
     >
       <template #footer>
         <LxToolbarGroup id="songToolbarGroup">
