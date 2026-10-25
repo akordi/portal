@@ -367,7 +367,9 @@
                 "description": "Eemalda see laul ühest oma lauluraamatust",
                 "success": "Laul edukalt eemaldatud",
                 "error": "Viga laulu eemaldamisel"
-            }
+            },
+            "otherActions": "Muud toimingud",
+            "overflowMenu": "Ava rohkem valikuid"
         },
         "songbook": {
             "title": "Minu lauluraamatud",
