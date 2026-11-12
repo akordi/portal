@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 // ToDo: develop login & get session
 import CookiesConsent from '@/components/CookiesConsent.vue';
+import SiteMapFooter from '@/components/SiteMapFooter.vue';
 import { invoke, until, useIdle, useIntervalFn } from '@vueuse/core';
 import { LxShell } from '@akordi/lx-ui';
 import { shellTexts } from '@/utils/texts';
@@ -424,6 +425,7 @@ function idleModalSecondary() {
         </template>
 
         <template #footer>
+          <SiteMapFooter />
           <CookiesConsent />
         </template>
         <router-view />
