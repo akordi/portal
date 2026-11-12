@@ -37,8 +37,22 @@ const SECURITY_HEADERS = {
   'Feature-Policy': "autoplay 'none';",
 };
 
+// Vite content-hashes every file under /assets/, so a changed file always gets
+// a new URL and can be cached for good. The rest of dist/client keeps its URL
+// across deploys: version.json must never be served stale (the lx-ui version
+// check compares it with the running build), and the favicons and images get a
+// short cache so a replaced one shows up soon.
+function cacheControlFor(pathname) {
+  if (pathname.startsWith('/assets/')) return 'public, max-age=31536000, immutable';
+  if (pathname === '/version.json') return 'no-cache';
+  return 'public, max-age=3600';
+}
+
 // No gzip/brotli here — the reverse proxy compresses responses.
-const serveStatic = sirv(CLIENT_DIR, { maxAge: 31536000, immutable: true, etag: true });
+const serveStatic = sirv(CLIENT_DIR, {
+  etag: true,
+  setHeaders: (res, pathname) => res.setHeader('Cache-Control', cacheControlFor(pathname)),
+});
 
 // Only these route shapes have actually been made SSR-safe (see the lx-ui
 // and portal SSR-safety commits) — everything else still gets the plain SPA

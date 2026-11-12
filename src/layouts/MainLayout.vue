@@ -17,6 +17,7 @@ import useViewStore from '@/stores/useViewStore';
 import configBool from '@/utils/configBool';
 import useAppConfig from '@/hooks/useAppConfig';
 import useGlobalSearch from '@/hooks/useGlobalSearch';
+import useVersionCheck from '@/hooks/useVersionCheck';
 
 const authStore = useAuthStore();
 const accountPreferencesStore = useAccountPreferencesStore();
@@ -32,6 +33,7 @@ const appStore = useAppStore();
 // readConfig(), and configBool normalizes both.
 const appConfig = useAppConfig();
 const globalSearch = useGlobalSearch();
+useVersionCheck();
 
 const secondsToIdle = 10;
 const secondsCheckApiInterval = 30;
