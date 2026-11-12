@@ -38,30 +38,17 @@ describe('countryCode', () => {
 });
 
 describe('lxLocaleOptions', () => {
-  it('maps each country to its locale and date formats', () => {
-    expect(lxLocaleOptions('lv')).toEqual({
-      dateFormat: 'dd.MM.yyyy.',
-      dateTimeFormat: 'dd.MM.yyyy. HH:mm',
-      dateTimeFullFormat: 'dd.MM.yyyy. HH:mm:ss',
-      locale: { locale: 'lv-LV', firstDayOfTheWeek: 2 },
-    });
-    expect(lxLocaleOptions('lt')).toEqual({
-      dateFormat: 'yyyy-MM-dd',
-      dateTimeFormat: 'yyyy-MM-dd HH:mm',
-      dateTimeFullFormat: 'yyyy-MM-dd HH:mm:ss',
-      locale: { locale: 'lt-LT', firstDayOfTheWeek: 2 },
-    });
-    expect(lxLocaleOptions('ee')).toEqual({
-      dateFormat: 'dd.MM.yyyy',
-      dateTimeFormat: 'dd.MM.yyyy HH:mm',
-      dateTimeFullFormat: 'dd.MM.yyyy HH:mm:ss',
-      locale: { locale: 'et-EE', firstDayOfTheWeek: 2 },
-    });
-    expect(lxLocaleOptions('es')).toEqual({
-      dateFormat: 'dd/MM/yyyy',
-      dateTimeFormat: 'dd/MM/yyyy HH:mm',
-      dateTimeFullFormat: 'dd/MM/yyyy HH:mm:ss',
-      locale: { locale: 'es-ES', firstDayOfTheWeek: 2 },
+  it.each([
+    ['lv', 'lv-LV', 'dd.MM.yyyy.'],
+    ['lt', 'lt-LT', 'yyyy-MM-dd'],
+    ['ee', 'et-EE', 'dd.MM.yyyy'],
+    ['es', 'es-ES', 'dd/MM/yyyy'],
+  ])('maps %s to %s with %s dates', (country, locale, dateFormat) => {
+    expect(lxLocaleOptions(country)).toEqual({
+      dateFormat,
+      dateTimeFormat: `${dateFormat} HH:mm`,
+      dateTimeFullFormat: `${dateFormat} HH:mm:ss`,
+      locale: { locale, firstDayOfTheWeek: 2 },
     });
   });
 
