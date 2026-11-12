@@ -7,12 +7,14 @@ const { search, gtagEvent, push } = vi.hoisted(() => ({
   push: vi.fn(),
 }));
 
-vi.mock('@akordi/lx-ui', () => ({
+vi.mock('@akordi/lx-ui', async () => ({
+  LxSearchableText: (await vi.importActual('@akordi/lx-ui')).LxSearchableText,
   LxList: {
     name: 'LxList',
     props: ['items', 'searchString', 'showLoadMore'],
     emits: ['action-click', 'update:items', 'update:search-string', 'load-more'],
-    template: '<div />',
+    template:
+      '<div><header v-for="item in items" :key="item.id"><slot name="customItem" v-bind="item" /></header></div>',
   },
   LxContentSwitcher: { name: 'LxContentSwitcher', props: ['modelValue'], template: '<div />' },
   LxLoader: { name: 'LxLoader', props: ['loading'], template: '<div />' },
@@ -118,5 +120,72 @@ describe('SongSearch — search / search_no_results reporting', () => {
     await vi.advanceTimersByTimeAsync(2000);
 
     expect(gtagEvent.mock.calls.filter((c) => c[0] === 'search_no_results')).toHaveLength(0);
+  });
+});
+
+describe('SongSearch — result highlighting', () => {
+  const XSS = '<img src=x onerror="window.__xss=1">';
+  const XSS_ESCAPED = '&lt;img src=x onerror=&#34;window.__xss=1&#34;&gt;';
+  const results = (...songs) => ({ data: { value: songs, '@odata.count': songs.length } });
+  const rows = (wrapper) =>
+    wrapper.findAll('header').map((row) => ({
+      primary: row.find('.lx-primary').text(),
+      secondary: row.find('.lx-secondary').text(),
+      marks: row.findAll('mark, .lx-highlight').map((mark) => mark.text()),
+    }));
+
+  it('renders the API highlights for artist, title and lyrics', async () => {
+    search.mockResolvedValue(
+      results({
+        id: 1,
+        title: 'Saule, Pērkons, Daugava',
+        mainArtistTitle: 'Mārtiņš Brauns',
+        '@search.highlights': {
+          mainArtistTitle: ['Mārtiņš Brauns'],
+          title: ['<mark>Saule</mark>, <mark>Pērkons</mark>, Daugava'],
+          bodyLyrics: ['…zibeņu <mark>pērkons</mark> spēra,\n<mark>Saule</mark> Latvi…'],
+        },
+      })
+    );
+    const wrapper = mount(SongSearch);
+    await type(wrapper, 'perkons saule');
+
+    expect(rows(wrapper)).toEqual([
+      {
+        primary: 'Mārtiņš Brauns - Saule, Pērkons, Daugava',
+        secondary: '…zibeņu pērkons spēra,\nSaule Latvi…',
+        marks: ['Saule', 'Pērkons', 'pērkons', 'Saule'],
+      },
+    ]);
+    expect(wrapper.find('.lx-secondary.pre').exists()).toBe(true);
+  });
+
+  it('renders markup in titles, artists and lyrics as text', async () => {
+    search.mockResolvedValue(
+      results(
+        // No highlights: the raw fields are shown
+        { id: 1, title: `${XSS}T`, mainArtistTitle: `${XSS}A`, '@search.highlights': {} },
+        {
+          id: 2,
+          title: 'T',
+          mainArtistTitle: 'A',
+          '@search.highlights': {
+            mainArtistTitle: [`${XSS_ESCAPED}A`],
+            title: [`<mark>${XSS_ESCAPED}</mark>`],
+            bodyLyrics: [`x\n${XSS_ESCAPED} <mark>pērkons</mark>`],
+          },
+        }
+      )
+    );
+    const wrapper = mount(SongSearch);
+    await type(wrapper, 'pērkons');
+    // The raw fields render through lx-ui's async LxSearchableText
+    await vi.waitFor(() => expect(rows(wrapper)[0].primary).not.toBe('-'));
+
+    expect(wrapper.find('img').exists()).toBe(false);
+    expect(rows(wrapper)).toEqual([
+      { primary: `${XSS}A - ${XSS}T`, secondary: '', marks: [] },
+      { primary: `${XSS}A - ${XSS}`, secondary: `x\n${XSS} pērkons`, marks: [XSS, 'pērkons'] },
+    ]);
   });
 });

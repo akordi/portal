@@ -4,6 +4,8 @@ import { LxContentSwitcher, LxList, LxLoader } from '@akordi/lx-ui';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { listTexts } from '@/utils/texts';
+import { firstHighlight } from '@/utils/searchHighlight';
+import SearchHighlight from '@/components/SearchHighlight.vue';
 
 import { useRoute, useRouter } from 'vue-router';
 
@@ -49,18 +51,6 @@ function reportSearchEvent(name, term) {
   }, SEARCH_EVENT_SETTLE_DELAY);
 }
 
-function titleOrHighlight(song) {
-  return song['@search.highlights'].title?.length
-    ? song['@search.highlights'].title[0]
-    : song.title;
-}
-
-function mainArtistTitleOrHighlight(song) {
-  return song['@search.highlights'].mainArtistTitle?.length
-    ? song['@search.highlights'].mainArtistTitle[0]
-    : song.mainArtistTitle;
-}
-
 async function search(q, more = false) {
   searchString.value = q;
   if (!more) {
@@ -97,10 +87,9 @@ async function search(q, more = false) {
       ...song,
       id: song.id,
       name: song.title,
-      title: `${mainArtistTitleOrHighlight(song)} - ${titleOrHighlight(song)}`,
-      description: song['@search.highlights'].bodyLyrics?.length
-        ? song['@search.highlights'].bodyLyrics[0]
-        : '',
+      artistHighlight: firstHighlight(song, 'mainArtistTitle'),
+      titleHighlight: firstHighlight(song, 'title'),
+      lyricsHighlight: firstHighlight(song, 'bodyLyrics'),
       clickable: true,
     }));
     if (more) {
@@ -226,9 +215,21 @@ em {
     @load-more="loadMore"
     :texts="listTexts()"
   >
-    <template #customItem="{ title, description }">
-      <p class="lx-primary" v-html="title"></p>
-      <p class="lx-secondary pre" v-html="description"></p>
+    <template
+      #customItem="{ mainArtistTitle, title, artistHighlight, titleHighlight, lyricsHighlight }"
+    >
+      <p class="lx-primary">
+        <SearchHighlight
+          :highlight="artistHighlight"
+          :value="mainArtistTitle"
+          :search-string="searchString"
+        />
+        -
+        <SearchHighlight :highlight="titleHighlight" :value="title" :search-string="searchString" />
+      </p>
+      <p class="lx-secondary pre">
+        <SearchHighlight v-if="lyricsHighlight" :highlight="lyricsHighlight" />
+      </p>
     </template>
   </LxList>
 </template>
