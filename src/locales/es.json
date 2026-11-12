@@ -114,7 +114,10 @@
                 "hint": "Escribe el título de una canción, un artista o un fragmento de la letra",
                 "notFound": "No se encontraron resultados para",
                 "details": "Todos los resultados"
-            }
+            },
+            "themeLabel": "Menú de accesibilidad",
+            "defaultBackTooltip": "Volver a",
+            "breadcrumbsTooltip": "Secciones adicionales"
         },
         "list": {
             "clear": "Limpiar",
@@ -156,6 +159,90 @@
             "skipLinkLabel": "Omitir lista",
             "skipLinkTitle": "Omitir lista",
             "overflowMenu": "Abrir opciones adicionales"
+        },
+        "common": {
+            "emptyValue": "No especificado",
+            "helperTextLabel": "Información adicional",
+            "notSelected": "No seleccionado",
+            "clearChosen": "Borrar todos los valores seleccionados",
+            "clearSearch": "Borrar búsqueda",
+            "close": "Cerrar",
+            "previous": "Anterior",
+            "next": "Siguiente",
+            "loadingStart": "Cargando",
+            "loadingEnd": "Carga completada",
+            "moreItemsSingle": "más",
+            "moreItemsMulti": "más",
+            "iconLabel": "Icono"
+        },
+        "dynamicImport": {
+            "offline": "No hay conexión a Internet. Compruebe la conexión e inténtelo de nuevo.",
+            "loadFailed": "No se pudo cargar el contenido de la página. Inténtelo de nuevo."
+        },
+        "forms": {
+            "required": "(obligatorio)",
+            "optional": "(opcional)",
+            "otherActions": "Otras acciones",
+            "skipLink": "Omitir formulario",
+            "additionalActions": "Acciones adicionales",
+            "tableOfContents": "Índice",
+            "tabSelected": "Pestaña seleccionada"
+        },
+        "textInput": {
+            "showPassword": "Mostrar contraseña",
+            "hidePassword": "Ocultar contraseña"
+        },
+        "valuePicker": {
+            "searchPlaceholder": "Ingrese parte del nombre para buscar valores",
+            "noItems": "No hay valores disponibles"
+        },
+        "autoComplete": {
+            "clear": "Borrar selección",
+            "empty": "No se encontraron resultados que contengan el texto",
+            "additionalText": "Intente buscar con otra palabra o frase",
+            "searchFor": "Buscar \"{query}\""
+        },
+        "toggle": {
+            "valueYes": "Sí",
+            "valueNo": "No"
+        },
+        "rating": {
+            "label": "Valoración",
+            "star1": "Muy mal",
+            "star2": "Mal",
+            "star3": "Regular",
+            "star4": "Bien",
+            "star5": "Excelente"
+        },
+        "errorPage": {
+            "error401": {
+                "title": "Página disponible solo para usuarios autenticados",
+                "description": "Acceso denegado. Para acceder a esta página, inicie sesión."
+            },
+            "error403": {
+                "title": "No tiene permisos para acceder a esta página",
+                "description": "Acceso denegado. Para acceder a esta página se necesitan permisos adicionales."
+            },
+            "error404": {
+                "title": "Página no encontrada",
+                "description": "No se encontró la página que busca. Compruebe la información introducida e inténtelo de nuevo."
+            },
+            "error500": {
+                "title": "Se produjo un error inesperado del servidor",
+                "description": "Espere un momento e inténtelo de nuevo."
+            }
+        },
+        "dateTimePicker": {
+            "placeholder": "dd/mm/aaaa",
+            "clear": "Borrar",
+            "todayButton": "Volver a hoy",
+            "clearButton": "Borrar valor",
+            "nextMonth": "Mes siguiente",
+            "previousMonth": "Mes anterior",
+            "nextYear": "Año siguiente",
+            "previousYear": "Año anterior",
+            "nextDecade": "Década siguiente",
+            "previousDecade": "Década anterior"
         }
     },
     "greeting": {

@@ -114,7 +114,10 @@
                 "hint": "Įveskite dainos pavadinimą, atlikėją ar teksto fragmentą",
                 "notFound": "Nieko nerasta pagal",
                 "details": "Visi rezultatai"
-            }
+            },
+            "themeLabel": "Prieinamumo meniu",
+            "defaultBackTooltip": "Grįžti į",
+            "breadcrumbsTooltip": "Papildomi skyriai"
         },
         "list": {
             "clear": "Išvalyti",
@@ -156,6 +159,90 @@
             "skipLinkLabel": "Praleisti sąrašą",
             "skipLinkTitle": "Praleisti sąrašą",
             "overflowMenu": "Atidaryti papildomas parinktis"
+        },
+        "common": {
+            "emptyValue": "Nenurodyta",
+            "helperTextLabel": "Papildoma informacija",
+            "notSelected": "Nepasirinkta",
+            "clearChosen": "Išvalyti visas pasirinktas reikšmes",
+            "clearSearch": "Išvalyti paiešką",
+            "close": "Uždaryti",
+            "previous": "Ankstesnis",
+            "next": "Kitas",
+            "loadingStart": "Įkeliama",
+            "loadingEnd": "Įkėlimas baigtas",
+            "moreItemsSingle": "kitas",
+            "moreItemsMulti": "kiti",
+            "iconLabel": "Piktograma"
+        },
+        "dynamicImport": {
+            "offline": "Nėra interneto ryšio. Patikrinkite ryšį ir bandykite dar kartą.",
+            "loadFailed": "Nepavyko įkelti puslapio turinio. Bandykite dar kartą."
+        },
+        "forms": {
+            "required": "(privaloma)",
+            "optional": "(neprivaloma)",
+            "otherActions": "Kiti veiksmai",
+            "skipLink": "Praleisti formą",
+            "additionalActions": "Papildomi veiksmai",
+            "tableOfContents": "Turinys",
+            "tabSelected": "Pasirinktas skirtukas"
+        },
+        "textInput": {
+            "showPassword": "Rodyti slaptažodį",
+            "hidePassword": "Slėpti slaptažodį"
+        },
+        "valuePicker": {
+            "searchPlaceholder": "Įveskite pavadinimo dalį, kad rastumėte reikšmes",
+            "noItems": "Nėra galimų reikšmių"
+        },
+        "autoComplete": {
+            "clear": "Išvalyti pasirinkimą",
+            "empty": "Nerasta rezultatų, kuriuose būtų tekstas",
+            "additionalText": "Pabandykite ieškoti naudodami kitą žodį ar frazę",
+            "searchFor": "Ieškoti \"{query}\""
+        },
+        "toggle": {
+            "valueYes": "Taip",
+            "valueNo": "Ne"
+        },
+        "rating": {
+            "label": "Įvertinimas",
+            "star1": "Labai blogai",
+            "star2": "Blogai",
+            "star3": "Patenkinamai",
+            "star4": "Gerai",
+            "star5": "Puikiai"
+        },
+        "errorPage": {
+            "error401": {
+                "title": "Puslapis pasiekiamas tik prisijungusiems naudotojams",
+                "description": "Prieiga uždrausta. Norėdami pasiekti šį puslapį, prisijunkite."
+            },
+            "error403": {
+                "title": "Neturite teisių pasiekti šį puslapį",
+                "description": "Prieiga uždrausta. Šiam puslapiui pasiekti reikia papildomų teisių."
+            },
+            "error404": {
+                "title": "Puslapis nerastas",
+                "description": "Ieškomas puslapis nerastas. Patikrinkite įvestą informaciją ir bandykite dar kartą."
+            },
+            "error500": {
+                "title": "Įvyko netikėta serverio klaida",
+                "description": "Šiek tiek palaukite ir bandykite dar kartą."
+            }
+        },
+        "dateTimePicker": {
+            "placeholder": "mmmm-mm-dd",
+            "clear": "Išvalyti",
+            "todayButton": "Grįžti į šiandieną",
+            "clearButton": "Išvalyti reikšmę",
+            "nextMonth": "Kitas mėnuo",
+            "previousMonth": "Ankstesnis mėnuo",
+            "nextYear": "Kiti metai",
+            "previousYear": "Ankstesni metai",
+            "nextDecade": "Kitas dešimtmetis",
+            "previousDecade": "Ankstesnis dešimtmetis"
         }
     },
     "greeting": {

@@ -12,6 +12,8 @@ import lt from '@/locales/lt.json';
 import ee from '@/locales/ee.json';
 import es from '@/locales/es.json';
 import configBool from '@/utils/configBool';
+import { countryCode } from '@/utils/htmlLang';
+import lxLocaleOptions, { lxGlobalTexts } from '@/utils/lxLocale';
 
 /** Router base path for a publicUrl that may be absolute ('https://host/x/') or a bare path. */
 export function routerBaseFor(config) {
@@ -40,9 +42,14 @@ export default function createAppInstance(config, { ssr = false, hydrate = false
   events(router);
   app.use(router);
 
+  // config.defaultLanguage comes from server.mjs's readConfig() on the server
+  // and from window.config (index.html) in the browser. Both carry the same
+  // raw DEFAULT_LANGUAGE, and countryCode normalizes it, so the server render
+  // and hydration agree on the locale and on lx-ui's date formats below.
+  const country = countryCode(config.defaultLanguage);
   const i18n = createI18n({
     legacy: false,
-    locale: config.defaultLanguage || 'lv',
+    locale: country,
     messages: { lv, lt, ee, es },
   });
   app.use(i18n);
@@ -53,6 +60,8 @@ export default function createAppInstance(config, { ssr = false, hydrate = false
     authUrl: config.authUrl,
     publicUrl: config.publicUrl,
     environment: config.environment,
+    ...lxLocaleOptions(country),
+    texts: lxGlobalTexts(i18n.global.t),
     preload: { components: [LxShell, LxSection], shellModes: ['public'] },
   });
 

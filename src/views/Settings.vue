@@ -235,6 +235,7 @@ const passwordChangeFormActions = computed(() => {
         <LxDateTimePicker
           id="birthDate"
           kind="date"
+          :placeholder="$t('lx.dateTimePicker.placeholder')"
           @keyup.enter="formSubmit()"
           v-model="birthDate.attributes.value"
           :invalid="birthDate.messages.length > 0"

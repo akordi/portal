@@ -114,7 +114,10 @@
                 "hint": "Sisesta laulu pealkiri, esitaja või tekstikatke",
                 "notFound": "Midagi ei leitud päringule",
                 "details": "Kõik tulemused"
-            }
+            },
+            "themeLabel": "Ligipääsetavuse menüü",
+            "defaultBackTooltip": "Tagasi",
+            "breadcrumbsTooltip": "Lisajaotised"
         },
         "list": {
             "clear": "Tühjenda",
@@ -156,6 +159,90 @@
             "skipLinkLabel": "Jäta loend vahele",
             "skipLinkTitle": "Jäta loend vahele",
             "overflowMenu": "Ava lisavalikud"
+        },
+        "common": {
+            "emptyValue": "Määramata",
+            "helperTextLabel": "Lisateave",
+            "notSelected": "Valimata",
+            "clearChosen": "Tühjenda kõik valitud väärtused",
+            "clearSearch": "Tühjenda otsing",
+            "close": "Sulge",
+            "previous": "Eelmine",
+            "next": "Järgmine",
+            "loadingStart": "Laadimine",
+            "loadingEnd": "Laadimine on lõpetatud",
+            "moreItemsSingle": "veel",
+            "moreItemsMulti": "veel",
+            "iconLabel": "Ikoon"
+        },
+        "dynamicImport": {
+            "offline": "Internetiühendus puudub. Kontrollige ühendust ja proovige uuesti.",
+            "loadFailed": "Lehe sisu laadimine ebaõnnestus. Proovige uuesti."
+        },
+        "forms": {
+            "required": "(kohustuslik)",
+            "optional": "(valikuline)",
+            "otherActions": "Muud toimingud",
+            "skipLink": "Jäta vorm vahele",
+            "additionalActions": "Lisatoimingud",
+            "tableOfContents": "Sisukord",
+            "tabSelected": "Valiti vaheleht"
+        },
+        "textInput": {
+            "showPassword": "Näita parooli",
+            "hidePassword": "Peida parool"
+        },
+        "valuePicker": {
+            "searchPlaceholder": "Sisestage nime osa, et leida väärtusi",
+            "noItems": "Saadaolevaid väärtusi pole"
+        },
+        "autoComplete": {
+            "clear": "Tühjenda valik",
+            "empty": "Ei leitud tulemusi, mis sisaldaksid teksti",
+            "additionalText": "Proovige otsida mõne teise sõna või fraasiga",
+            "searchFor": "Otsi \"{query}\""
+        },
+        "toggle": {
+            "valueYes": "Jah",
+            "valueNo": "Ei"
+        },
+        "rating": {
+            "label": "Hinnang",
+            "star1": "Väga halb",
+            "star2": "Halb",
+            "star3": "Rahuldav",
+            "star4": "Hea",
+            "star5": "Suurepärane"
+        },
+        "errorPage": {
+            "error401": {
+                "title": "Leht on saadaval ainult sisselogitud kasutajatele",
+                "description": "Juurdepääs keelatud. Sellele lehele pääsemiseks logige sisse."
+            },
+            "error403": {
+                "title": "Teil puuduvad õigused sellele lehele pääsemiseks",
+                "description": "Juurdepääs keelatud. Sellele lehele pääsemiseks on vaja lisaõigusi."
+            },
+            "error404": {
+                "title": "Lehte ei leitud",
+                "description": "Otsitud lehte ei leitud. Kontrollige sisestatud teavet ja proovige uuesti."
+            },
+            "error500": {
+                "title": "Tekkis ootamatu serveriviga",
+                "description": "Oodake veidi ja proovige uuesti."
+            }
+        },
+        "dateTimePicker": {
+            "placeholder": "pp.kk.aaaa",
+            "clear": "Tühjenda",
+            "todayButton": "Tagasi tänasele päevale",
+            "clearButton": "Tühjenda väärtus",
+            "nextMonth": "Järgmine kuu",
+            "previousMonth": "Eelmine kuu",
+            "nextYear": "Järgmine aasta",
+            "previousYear": "Eelmine aasta",
+            "nextDecade": "Järgmine kümnend",
+            "previousDecade": "Eelmine kümnend"
         }
     },
     "greeting": {
