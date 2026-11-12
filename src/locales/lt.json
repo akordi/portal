@@ -828,5 +828,11 @@
     },
     "chordDiagram": {
         "unavailable": "Diagrama nepasiekiama"
+    },
+    "siteMap": {
+        "label": "Svetainės žemėlapis",
+        "songs": "Dainos",
+        "chords": "Akordai ir įrankiai",
+        "site": "Svetainė"
     }
 }

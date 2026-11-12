@@ -828,5 +828,11 @@
     },
     "chordDiagram": {
         "unavailable": "Diagrama no disponible"
+    },
+    "siteMap": {
+        "label": "Mapa del sitio",
+        "songs": "Canciones",
+        "chords": "Acordes y herramientas",
+        "site": "Sitio"
     }
 }

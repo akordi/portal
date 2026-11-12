@@ -828,5 +828,11 @@
     },
     "chordDiagram": {
         "unavailable": "Diagramm pole saadaval"
+    },
+    "siteMap": {
+        "label": "Saidikaart",
+        "songs": "Laulud",
+        "chords": "Akordid ja tööriistad",
+        "site": "Sait"
     }
 }

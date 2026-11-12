@@ -828,5 +828,11 @@
     },
     "chordDiagram": {
         "unavailable": "Diagramma nav pieejama"
+    },
+    "siteMap": {
+        "label": "Vietnes karte",
+        "songs": "Dziesmas",
+        "chords": "Akordi un rīki",
+        "site": "Vietne"
     }
 }
