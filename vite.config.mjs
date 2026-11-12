@@ -1,6 +1,7 @@
 /* eslint-disable no-console -- for debugging */
 /* eslint-disable no-restricted-imports -- vite doesn`t use aliases in imports */
 /* eslint-disable import/no-extraneous-dependencies -- vite mostly should use dev dependencies */
+import { lxVitePortalVersionPlugin } from '@akordi/lx-ui/vite';
 import vue from '@vitejs/plugin-vue';
 import dns from 'dns';
 import { fileURLToPath } from 'url';
@@ -20,6 +21,16 @@ const CONFIG = {
   appDescription:
     'Meklējiet akordus un dziesmu vārdus latviešu dziesmām un atrodiet tūkstošiem populāru dziesmu datubāzē.',
 };
+
+// package.json's version never changes between deploys, so every build gets its
+// own id. lxVitePortalVersionPlugin writes CUSTOM_VERSION (read from the env)
+// into version.json, index.html's window.config.version gets the same value,
+// and lx-ui's version check compares the two. A CUSTOM_VERSION set by the
+// caller wins.
+function buildVersion() {
+  process.env.CUSTOM_VERSION ||= `${packageJson.version}+${Date.now()}`;
+  return process.env.CUSTOM_VERSION;
+}
 
 /**
  * @param { ReturnType<getEnvVariables> } env
@@ -81,6 +92,7 @@ const getEnvVariables = (mode, serving) => {
     envVariables.VUE_APP_GTAG_ENABLED = false;
     envVariables.VUE_APP_DEFAULT_LANGUAGE = env.DEFAULT_LANGUAGE || 'lv';
   } else {
+    envVariables.VUE_APP_VERSION = buildVersion();
     envVariables.VUE_APP_ENVIRONMENT = '{{ENVIRONMENT}}';
     envVariables.VUE_APP_SERVICE_URL = '{{SERVICE_URL}}';
     envVariables.VUE_APP_AUTH_URL = '{{AUTH_URL}}';
@@ -135,6 +147,8 @@ export default defineConfig((command) => {
           data: envVariables,
         },
       }),
+      // Client build only: the SSR bundle has no index.html to compare against.
+      !command?.isSsrBuild && lxVitePortalVersionPlugin(),
       serving &&
         mkcert({
           hosts: [

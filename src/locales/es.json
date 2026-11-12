@@ -625,6 +625,10 @@
         "accept": "Acepto",
         "reject": "Cerrar"
     },
+    "versionCheck": {
+        "updated": "Hay una nueva versión del sitio. Por favor, recargue la página.",
+        "reloaded": "La página se ha recargado para abrir la versión más reciente del sitio."
+    },
     "confirm": {
         "yes": "Sí",
         "no": "No",

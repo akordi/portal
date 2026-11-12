@@ -625,6 +625,10 @@
         "accept": "Sutinku",
         "reject": "Uždaryti"
     },
+    "versionCheck": {
+        "updated": "Yra nauja svetainės versija. Perkraukite puslapį.",
+        "reloaded": "Puslapis buvo perkrautas, kad būtų atidaryta naujausia svetainės versija."
+    },
     "confirm": {
         "yes": "Taip",
         "no": "Ne",

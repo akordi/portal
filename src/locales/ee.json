@@ -625,6 +625,10 @@
         "accept": "Nõustun",
         "reject": "Sulge"
     },
+    "versionCheck": {
+        "updated": "Saadaval on saidi uus versioon. Palun laadige leht uuesti.",
+        "reloaded": "Leht laaditi uuesti, et avada saidi uusim versioon."
+    },
     "confirm": {
         "yes": "Jah",
         "no": "Ei",

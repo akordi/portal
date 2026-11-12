@@ -625,6 +625,10 @@
         "accept": "Piekrītu",
         "reject": "Aizvērt"
     },
+    "versionCheck": {
+        "updated": "Ir pieejama jauna vietnes versija. Lūdzu, pārlādējiet lapu.",
+        "reloaded": "Lapa tika pārlādēta, lai atvērtu jaunāko vietnes versiju."
+    },
     "confirm": {
         "yes": "Jā",
         "no": "Nē",

@@ -1,4 +1,5 @@
 import useRights from '@/hooks/useRights';
+import { isReloadingForNewVersion } from '@/hooks/useVersionCheck';
 import useAppStore from '@/stores/useAppStore';
 import useAuthStore from '@/stores/useAuthStore';
 import { lxFlowUtils } from '@akordi/lx-ui';
@@ -7,7 +8,9 @@ export default (router) => {
   // Return-based guard: since lx-ui 2.3 the flow utils no longer take or call
   // a `next` callback — the guard's return value resolves the navigation
   // (true to continue, a route location to redirect).
-  router.beforeEach(async (to) => {
+  router.beforeEach(async (to, from) => {
+    if (await isReloadingForNewVersion(to, from)) return false;
+
     const appStore = useAppStore();
     const rights = useRights();
 
