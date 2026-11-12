@@ -179,6 +179,14 @@ export function shellTexts() {
     skipLinkTitle: t.t('lx.shell.skipLinkTitle'),
     loginButtonLabel: t.t('lx.shell.loginButtonLabel'),
     loginButtonTitle: t.t('lx.shell.loginButtonTitle'),
+    noAlerts: t.t('lx.shell.noAlerts'),
+    overflowNavItems: t.t('lx.shell.overflowNavItems'),
+    scrollUp: t.t('lx.shell.scrollUp'),
+    themeLabel: t.t('lx.shell.themeLabel'),
+    defaultBackTooltip: t.t('lx.shell.defaultBackTooltip'),
+    breadcrumbsTooltip: t.t('lx.shell.breadcrumbsTooltip'),
+    loadingInProgress: t.t('lx.common.loadingStart'),
+    loadingComplete: t.t('lx.common.loadingEnd'),
   };
 }
 

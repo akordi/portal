@@ -114,7 +114,10 @@
                 "hint": "Ievadiet dziesmas nosaukumu, izpildītāju vai teksta fragmentu",
                 "notFound": "Nekas netika atrasts pēc",
                 "details": "Visi rezultāti"
-            }
+            },
+            "themeLabel": "Piekļūstamības izvēlne",
+            "defaultBackTooltip": "Atgriezties uz",
+            "breadcrumbsTooltip": "Papildu sadaļas"
         },
         "list": {
             "clear": "Notīrīt",
@@ -156,6 +159,90 @@
             "skipLinkLabel": "Izlaist sarakstu",
             "skipLinkTitle": "Izlaist sarakstu",
             "overflowMenu": "Atvērt papildu iespējas"
+        },
+        "common": {
+            "emptyValue": "Nav norādīts",
+            "helperTextLabel": "Papildinformācija",
+            "notSelected": "Nav izvēlēts",
+            "clearChosen": "Notīrīt visas izvēlētās vērtības",
+            "clearSearch": "Notīrīt meklēšanu",
+            "close": "Aizvērt",
+            "previous": "Iepriekšējais",
+            "next": "Nākamais",
+            "loadingStart": "Notiek ielāde",
+            "loadingEnd": "Ielāde ir pabeigta",
+            "moreItemsSingle": "cits",
+            "moreItemsMulti": "citi",
+            "iconLabel": "Piktogramma"
+        },
+        "dynamicImport": {
+            "offline": "Nav interneta savienojuma. Pārbaudiet savienojumu un mēģiniet vēlreiz!",
+            "loadFailed": "Neizdevās ielādēt lapas saturu. Mēģiniet vēlreiz!"
+        },
+        "forms": {
+            "required": "(obligāts)",
+            "optional": "(neobligāts)",
+            "otherActions": "Citas darbības",
+            "skipLink": "Izlaist formu",
+            "additionalActions": "Papildu darbības",
+            "tableOfContents": "Satura rādītājs",
+            "tabSelected": "Tika izvēlēta cilne"
+        },
+        "textInput": {
+            "showPassword": "Rādīt paroli",
+            "hidePassword": "Paslēpt paroli"
+        },
+        "valuePicker": {
+            "searchPlaceholder": "Ievadiet nosaukuma daļu, lai sameklētu vērtības",
+            "noItems": "Nav pieejamu vērtību"
+        },
+        "autoComplete": {
+            "clear": "Notīrīt izvēli",
+            "empty": "Nav atrasti rezultāti, kas saturētu tekstu",
+            "additionalText": "Mēģiniet meklēt, izmantojot citu vārdu vai frāzi",
+            "searchFor": "Meklēt \"{query}\""
+        },
+        "toggle": {
+            "valueYes": "Jā",
+            "valueNo": "Nē"
+        },
+        "rating": {
+            "label": "Vērtējums",
+            "star1": "Ļoti slikti",
+            "star2": "Slikti",
+            "star3": "Gandrīz labi",
+            "star4": "Labi",
+            "star5": "Izcili"
+        },
+        "errorPage": {
+            "error401": {
+                "title": "Lapa pieejama tikai autorizētiem lietotājiem",
+                "description": "Pieeja liegta! Lai piekļūtu šai lapai, jāautorizējas."
+            },
+            "error403": {
+                "title": "Pietrūkst tiesību, lai piekļūtu šai lapai",
+                "description": "Pieeja liegta! Lai piekļūtu šai lapai, nepieciešamas papildu tiesības."
+            },
+            "error404": {
+                "title": "Lapa nav atrasta",
+                "description": "Jūsu meklētā lapa nav atrasta. Lūdzu, pārbaudiet ievadīto informāciju un mēģiniet vēlreiz!"
+            },
+            "error500": {
+                "title": "Notika negaidīta servera kļūda",
+                "description": "Nedaudz uzgaidiet un mēģiniet vēlreiz!"
+            }
+        },
+        "dateTimePicker": {
+            "placeholder": "dd.mm.gggg.",
+            "clear": "Attīrīt",
+            "todayButton": "Atgriezties uz šodienu",
+            "clearButton": "Attīrīt vērtību",
+            "nextMonth": "Nākamais mēnesis",
+            "previousMonth": "Iepriekšējais mēnesis",
+            "nextYear": "Nākamais gads",
+            "previousYear": "Iepriekšējais gads",
+            "nextDecade": "Nākamā dekāde",
+            "previousDecade": "Iepriekšējā dekāde"
         }
     },
     "greeting": {
