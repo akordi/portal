@@ -4,6 +4,7 @@ import { onMounted, ref } from 'vue';
 
 import useAuthStore from '@/stores/useAuthStore';
 import useDashboardStore from '@/stores/useDashboardStore';
+import songLink from '@/utils/songLink';
 import { tagUrlParam } from '@/utils/tagUrl';
 import { useI18n } from 'vue-i18n';
 
@@ -13,10 +14,6 @@ const dashboardStore = useDashboardStore();
 // client only needs to fetch it itself as a fallback for the rare case prefetch didn't run.
 const songCount = ref(dashboardStore.songCountTotal ?? 0);
 const $t = useI18n().t;
-
-function songLink(song) {
-  return { name: 'akordiSongView', params: { url: song.url.replace(/^\/song\//, '') } };
-}
 
 function featuredHeading(tag) {
   return tag.pageTitle || tag.title.charAt(0).toUpperCase() + tag.title.slice(1);
@@ -38,13 +35,11 @@ onMounted(async () => {
       class="featured-tag"
       :aria-labelledby="`featured-tag-${tag.id}`"
     >
-      <router-link
-        :id="`featured-tag-${tag.id}`"
-        class="featured-tag-heading"
-        :to="{ name: 'tagView', params: { url: tagUrlParam(tag) } }"
-      >
-        {{ featuredHeading(tag) }}
-      </router-link>
+      <h2 :id="`featured-tag-${tag.id}`" class="featured-tag-heading">
+        <router-link :to="{ name: 'tagView', params: { url: tagUrlParam(tag) } }">
+          {{ featuredHeading(tag) }}
+        </router-link>
+      </h2>
       <span v-if="tag.featuredText">{{ tag.featuredText }}</span>
       <p v-if="tag.topSongs?.length" class="featured-tag-songs">
         <span class="lx-secondary">{{ $t('pages.dashboard.featuredSongs') }}</span>
@@ -59,7 +54,7 @@ onMounted(async () => {
         class="featured-tag-link"
         :to="{ name: 'tagView', params: { url: tagUrlParam(tag) } }"
       >
-        {{ $t('pages.dashboard.featuredLink') }} →
+        {{ $t('pages.dashboard.featuredLink') }} <span aria-hidden="true">→</span>
       </router-link>
     </section>
     <p>
@@ -126,13 +121,16 @@ onMounted(async () => {
   background: var(--color-region, transparent);
 }
 .featured-tag-heading {
+  margin: 0;
   font-size: 1.125rem;
   font-weight: 600;
+}
+.featured-tag-heading a {
   color: inherit;
   text-decoration: none;
 }
-.featured-tag-heading:hover,
-.featured-tag-heading:focus-visible {
+.featured-tag-heading a:hover,
+.featured-tag-heading a:focus-visible {
   text-decoration: underline;
 }
 .featured-tag-songs {

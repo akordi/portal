@@ -529,16 +529,12 @@
             "pageTitle": "Teemalaulud: {title}",
             "popular": "Populaarseimad",
             "all": "Kõik laulud ({count})",
-            "loadMore": "Näita rohkem",
             "rank": "{rank}. koht selle nädala vaatamiste järgi",
-            "noChordsTag": "",
             "badges": {
                 "popular": "Populaarne",
                 "popularTooltip": "Üks selle nädala enimvaadatud lugudest",
                 "playAlong": "Mängi kaasa",
-                "playAlongTooltip": "Akordid on salvestisega sünkroonis – mängi video järgi kaasa",
-                "noChords": "Ainult sõnad",
-                "noChordsTooltip": "Sellel laulul pole veel akorde"
+                "playAlongTooltip": "Akordid on salvestisega sünkroonis – mängi video järgi kaasa"
             }
         },
         "login": {

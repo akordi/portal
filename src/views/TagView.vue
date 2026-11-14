@@ -1,18 +1,21 @@
 <script setup>
-import { LxBadge, LxList, LxLoader } from '@akordi/lx-ui';
-import { listTexts } from '@/utils/texts';
-import { computed, inject, onMounted, onUnmounted, ref, watch } from 'vue';
+import { LxList, LxLoader } from '@akordi/lx-ui';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useHead } from '@vueuse/head';
 import { useRoute, useRouter } from 'vue-router';
 
+import SongBadges from '@/components/SongBadges.vue';
 import akordiService from '@/services/akordiService';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useTagStore from '@/stores/useTagStore';
 import useViewStore from '@/stores/useViewStore';
 import { serializeState as inlineJson } from '@/ssr/serializeState';
-import { tagUrlParam as tagRouteParam } from '@/utils/tagUrl';
+import popularSections, { TOP_CARDS } from '@/utils/popularSongs';
+import siteOrigin from '@/utils/siteOrigin';
 import songBadges from '@/utils/songBadges';
+import songLink from '@/utils/songLink';
+import { tagUrlParam } from '@/utils/tagUrl';
 import {
   introParagraphs,
   tagDocumentTitle,
@@ -20,31 +23,25 @@ import {
   tagJsonLd,
   tagMetaDescription,
 } from '@/utils/tagPage';
+import { listTexts } from '@/utils/texts';
 
 const router = useRouter();
 const route = useRoute();
 const $t = useI18n().t;
-const appConfig = inject('appConfig', null);
 const viewStore = useViewStore();
 const notificationStore = useNotifyStore();
 const tagStore = useTagStore();
+const origin = siteOrigin(inject('appConfig', null));
 
 const urlParam = computed(() => route.params.url);
-// Filled by the SSR prefetch (and transferred to the browser) when this is
-// the landing page; otherwise loaded on mount.
+// Set when the server prefetched this tag; otherwise loaded on mount.
 const tag = computed(() => tagStore.tagFor(urlParam.value));
 const loading = ref(!tag.value);
 const loadingMore = ref(false);
 const hasMore = computed(() => tagStore.songs.length < tagStore.total);
 const intro = computed(() => introParagraphs(tag.value?.intro));
 
-const origin =
-  typeof window !== 'undefined'
-    ? window.location.origin
-    : (appConfig?.publicUrl || '').replace(/\/$/, '');
-
 // Registered synchronously in setup so the head stays per-request under SSR.
-// Undefined values are skipped, leaving App.vue's generic head in place.
 const documentTitle = computed(() => (tag.value ? tagDocumentTitle(tag.value, $t) : undefined));
 const description = computed(() =>
   tag.value ? tagMetaDescription(tag.value, tagStore.songs, $t) : undefined
@@ -69,9 +66,9 @@ useHead({
           {
             type: 'application/ld+json',
             key: 'tag-jsonld',
-            // Escaped for an inline <script>: song titles are user content.
+            // Song titles are user content; escaped for an inline <script>.
             innerHTML: inlineJson(
-              tagJsonLd(tag.value, tagStore.songs, origin, documentTitle.value)
+              tagJsonLd(tag.value, tagStore.songs, tagStore.total, origin, documentTitle.value)
             ),
           },
         ]
@@ -89,10 +86,10 @@ async function loadTag() {
   try {
     const loaded = await tagStore.load(urlParam.value);
     if (loaded.url && loaded.url !== `/tag/${urlParam.value}`) {
-      router.replace({ name: 'tagView', params: { url: tagRouteParam(loaded) } });
+      router.replace({ name: 'tagView', params: { url: tagUrlParam(loaded) } });
     }
     showHeader();
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('pages.tagView.list.error'));
   } finally {
     loading.value = false;
@@ -103,91 +100,58 @@ async function loadMore() {
   loadingMore.value = true;
   try {
     await tagStore.loadMore();
-  } catch (err) {
+  } catch {
     notificationStore.pushError($t('pages.tagView.list.error'));
   } finally {
     loadingMore.value = false;
   }
 }
 
-function songLink(song) {
-  return { name: 'akordiSongView', params: { url: song.url.replace(/^\/song\//, '') } };
-}
-
-// The three most visited songs open the page as cards; a tag with more than
-// ten songs also lists the next ones, up to nine in all, in an even number
-// so the two-column list has no empty slot.
-const TOP_CARDS = 3;
-const POPULAR_TOTAL = 9;
-const POPULAR_LIST_MIN_SONGS = 10;
-const noChordsTag = computed(() => $t('pages.tagView.noChordsTag'));
-const BADGE_ICONS = { popular: 'star-filled', playAlong: 'play', noChords: 'text' };
-
-function badgesOf(song, rank = null) {
-  return songBadges(song, { rank, noChordsTag: noChordsTag.value }).map((key) => ({
-    key,
-    icon: BADGE_ICONS[key],
-    label: $t(`pages.tagView.badges.${key}`),
-    tooltip: $t(`pages.tagView.badges.${key}Tooltip`),
-  }));
-}
-
 function youtubeThumb(song) {
-  const id = (song.youtubeLink || '').trim();
-  return /^[\w-]{11}$/.test(id) ? `https://i.ytimg.com/vi/${id}/mqdefault.jpg` : null;
+  return /^[\w-]{11}$/.test(song.youtubeLink)
+    ? `https://i.ytimg.com/vi/${song.youtubeLink}/mqdefault.jpg`
+    : null;
 }
 
-// A deleted video's thumbnail is a 404 that still loads as YouTube's 120x90
-// grey placeholder; show our own placeholder instead.
+// A deleted video's thumbnail still loads, as YouTube's 120x90 grey image.
 const brokenThumbs = ref(new Set());
-function checkThumb(event, songId) {
-  if (event.target.naturalWidth < 320) {
-    brokenThumbs.value = new Set(brokenThumbs.value).add(songId);
-  }
+function markBroken(songId) {
+  brokenThumbs.value = new Set(brokenThumbs.value).add(songId);
+}
+function checkThumb(img, songId) {
+  if (img.complete && img.naturalWidth > 0 && img.naturalWidth < 320) markBroken(songId);
+}
+// The image may have loaded before hydration attached @load.
+function thumbRef(songId) {
+  return (img) => img && checkThumb(img, songId);
 }
 
+const sections = computed(() => popularSections(tagStore.popular, tagStore.total));
 const topCards = computed(() =>
-  tagStore.total > TOP_CARDS
-    ? tagStore.popular.slice(0, TOP_CARDS).map((song, i) => ({
-        song,
-        rank: i + 1,
-        link: songLink(song),
-        thumb: brokenThumbs.value.has(song.id) ? null : youtubeThumb(song),
-        badges: badgesOf(song, i + 1),
-      }))
-    : []
+  sections.value.cards.map((song, i) => ({
+    song,
+    rank: i + 1,
+    thumb: brokenThumbs.value.has(song.id) ? null : youtubeThumb(song),
+    badges: songBadges(song, i + 1),
+  }))
 );
 
-// LxList renders items with an href as router-links, also under SSR, so the
-// songs are real, crawlable links.
 function listItem(song, rank = null) {
   return {
     id: String(song.id),
     title: song.title,
-    description: song.mainArtist?.title,
+    description: song.artist,
     href: songLink(song),
     rank,
-    badges: badgesOf(song, rank),
+    badges: songBadges(song, rank),
   };
 }
-const popularItems = computed(() => {
-  if (tagStore.total <= POPULAR_LIST_MIN_SONGS) return [];
-  const rest = tagStore.popular.slice(TOP_CARDS, POPULAR_TOTAL);
-  return rest
-    .slice(0, rest.length - (rest.length % 2))
-    .map((song, i) => listItem(song, TOP_CARDS + i + 1));
-});
+const rankedItems = computed(() =>
+  sections.value.ranked.map((song, i) => listItem(song, TOP_CARDS + i + 1))
+);
 const songItems = computed(() => tagStore.songs.map((song) => listItem(song)));
 
-// Thumbnails can finish loading before hydration attaches @load.
-function checkLoadedThumbs() {
-  document.querySelectorAll('img.tag-top-thumb[data-song-id]').forEach((img) => {
-    if (img.complete) checkThumb({ target: img }, Number(img.dataset.songId));
-  });
-}
-
 onMounted(() => {
-  checkLoadedThumbs();
   if (tag.value) {
     showHeader();
   } else {
@@ -203,10 +167,6 @@ watch(
   },
   { flush: 'post' }
 );
-
-onUnmounted(() => {
-  viewStore.$reset();
-});
 </script>
 
 <template>
@@ -216,14 +176,14 @@ onUnmounted(() => {
       <p v-for="(paragraph, i) in intro" :key="i">{{ paragraph }}</p>
     </div>
 
-    <!-- The top three cards and the ranks after them are one "most popular" section. -->
     <section v-if="topCards.length" class="tag-section">
       <h2>{{ $t('pages.tagView.popular') }}</h2>
       <ol class="tag-top">
         <li v-for="card in topCards" :key="card.song.id">
-          <router-link :to="card.link" class="tag-top-card lx-region-component">
+          <router-link :to="songLink(card.song)" class="tag-top-card">
             <img
               v-if="card.thumb"
+              :ref="thumbRef(card.song.id)"
               class="tag-top-thumb"
               :src="card.thumb"
               alt=""
@@ -231,59 +191,43 @@ onUnmounted(() => {
               height="180"
               :loading="card.rank === 1 ? 'eager' : 'lazy'"
               decoding="async"
-              :data-song-id="card.song.id"
-              @load="checkThumb($event, card.song.id)"
+              @load="checkThumb($event.target, card.song.id)"
+              @error="markBroken(card.song.id)"
             />
             <span v-else class="tag-top-thumb tag-top-placeholder" aria-hidden="true">♪</span>
             <span class="tag-top-body">
               <span class="tag-top-title">
-                <span class="tag-rank" :aria-label="$t('pages.tagView.rank', { rank: card.rank })">
-                  {{ card.rank }}
+                <span class="tag-rank" aria-hidden="true">{{ card.rank }}</span>
+                <span class="visually-hidden">
+                  {{ $t('pages.tagView.rank', { rank: card.rank }) }}
                 </span>
                 <span class="lx-primary">{{ card.song.title }}</span>
               </span>
-              <span class="lx-secondary">{{ card.song.mainArtist?.title }}</span>
-              <span v-if="card.badges.length" class="tag-badges">
-                <LxBadge
-                  v-for="badge in card.badges"
-                  :key="badge.key"
-                  :icon="badge.icon"
-                  :value="badge.label"
-                  :tooltip="badge.tooltip"
-                />
-              </span>
+              <span class="lx-secondary">{{ card.song.artist }}</span>
+              <SongBadges :badges="card.badges" />
             </span>
           </router-link>
         </li>
       </ol>
       <LxList
-        v-if="popularItems.length"
-        id="tagPopularSongs"
-        class="tag-popular-rest"
+        v-if="rankedItems.length"
+        id="tagRankedSongs"
+        class="tag-ranked"
         list-type="2"
         icon="next"
-        :items="popularItems"
+        :items="rankedItems"
         name-attribute="title"
         description-attribute="description"
         :texts="listTexts()"
       >
         <template #customItem="item">
           <p class="lx-primary">
-            <span class="tag-rank" :aria-label="$t('pages.tagView.rank', { rank: item.rank })">
-              {{ item.rank }}
-            </span>
+            <span class="tag-rank" aria-hidden="true">{{ item.rank }}</span>
+            <span class="visually-hidden">{{ $t('pages.tagView.rank', { rank: item.rank }) }}</span>
             {{ item.title }}
           </p>
           <p class="lx-secondary">{{ item.description }}</p>
-          <span v-if="item.badges.length" class="tag-badges">
-            <LxBadge
-              v-for="badge in item.badges"
-              :key="badge.key"
-              :icon="badge.icon"
-              :value="badge.label"
-              :tooltip="badge.tooltip"
-            />
-          </span>
+          <SongBadges :badges="item.badges" />
         </template>
       </LxList>
     </section>
@@ -307,15 +251,7 @@ onUnmounted(() => {
         <template #customItem="item">
           <p class="lx-primary">{{ item.title }}</p>
           <p class="lx-secondary">{{ item.description }}</p>
-          <span v-if="item.badges.length" class="tag-badges">
-            <LxBadge
-              v-for="badge in item.badges"
-              :key="badge.key"
-              :icon="badge.icon"
-              :value="badge.label"
-              :tooltip="badge.tooltip"
-            />
-          </span>
+          <SongBadges :badges="item.badges" />
         </template>
       </LxList>
     </section>
@@ -335,7 +271,7 @@ onUnmounted(() => {
 .tag-section h2 {
   margin-bottom: 0.5rem;
 }
-.tag-popular-rest {
+.tag-ranked {
   margin-top: 1rem;
 }
 .tag-top {
@@ -402,7 +338,15 @@ onUnmounted(() => {
   color: var(--color-region, #fff);
   background: var(--color-brand, currentColor);
 }
-/* Phones: compact rows, so the cards don't push the song list off screen. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+/* Compact rows on phones, so the cards don't push the song list off screen. */
 @media (max-width: 600px) {
   .tag-top {
     grid-template-columns: 1fr;
@@ -421,11 +365,5 @@ onUnmounted(() => {
   .tag-top-body {
     padding: 0.5rem 0.75rem;
   }
-}
-.tag-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.375rem;
-  margin-top: 0.375rem;
 }
 </style>

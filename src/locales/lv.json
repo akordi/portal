@@ -529,16 +529,12 @@
             "pageTitle": "Tematiskās dziesmas {title}",
             "popular": "Populārākās",
             "all": "Visas dziesmas ({count})",
-            "loadMore": "Rādīt vairāk",
             "rank": "{rank}. vieta pēc skatījumiem šonedēļ",
-            "noChordsTag": "bez akordiem",
             "badges": {
                 "popular": "Populāra",
                 "popularTooltip": "Viena no visvairāk skatītajām šonedēļ",
                 "playAlong": "Spēlē līdzi",
-                "playAlongTooltip": "Akordi sinhronizēti ar ierakstu – spēlē līdzi video",
-                "noChords": "Tikai vārdi",
-                "noChordsTooltip": "Šai dziesmai vēl nav akordu"
+                "playAlongTooltip": "Akordi sinhronizēti ar ierakstu – spēlē līdzi video"
             }
         },
         "login": {

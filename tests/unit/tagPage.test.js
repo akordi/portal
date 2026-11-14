@@ -15,7 +15,7 @@ const songs = [
     id: 1,
     title: 'Klusa nakts',
     url: '/song/1-Klusa_Nakts',
-    mainArtist: { title: 'Tautasdziesma' },
+    artist: 'Tautasdziesma',
   },
   { id: 2, title: 'Eglīte', url: '/song/2-Eglite' },
 ];
@@ -45,12 +45,12 @@ describe('tag page texts', () => {
   });
 
   it('describes the page as a schema.org collection of its songs', () => {
-    const ld = tagJsonLd(tag, songs, 'https://www.akordi.lv', 'Ziemassvētku dziesmas');
+    const ld = tagJsonLd(tag, songs, 74, 'https://www.akordi.lv', 'Ziemassvētku dziesmas');
     expect(ld).toMatchObject({
       '@type': 'CollectionPage',
       name: 'Ziemassvētku dziesmas',
       url: 'https://www.akordi.lv/tag/4-Ziemassvetku',
-      mainEntity: { '@type': 'ItemList', numberOfItems: 2 },
+      mainEntity: { '@type': 'ItemList', numberOfItems: 74 },
     });
     expect(ld.mainEntity.itemListElement).toEqual([
       {
@@ -70,7 +70,7 @@ describe('tag page texts', () => {
 
   it('cannot close the inline script it is embedded in', () => {
     const hostile = [{ id: 3, title: '</script><img src=x onerror=alert(1)>', url: '/song/3-X' }];
-    const json = serializeState(tagJsonLd(tag, hostile, 'https://x', 'n'));
+    const json = serializeState(tagJsonLd(tag, hostile, 1, 'https://x', 'n'));
     expect(json).not.toContain('</script>');
     expect(JSON.parse(json).mainEntity.itemListElement[0].name).toBe(hostile[0].title);
   });

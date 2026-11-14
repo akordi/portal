@@ -529,16 +529,12 @@
             "pageTitle": "Teminės dainos: {title}",
             "popular": "Populiariausios",
             "all": "Visos dainos ({count})",
-            "loadMore": "Rodyti daugiau",
             "rank": "{rank} vieta pagal peržiūras šią savaitę",
-            "noChordsTag": "be akordų",
             "badges": {
                 "popular": "Populiari",
                 "popularTooltip": "Viena labiausiai žiūrimų šią savaitę",
                 "playAlong": "Grok kartu",
-                "playAlongTooltip": "Akordai sinchronizuoti su įrašu – grok kartu su vaizdo įrašu",
-                "noChords": "Tik žodžiai",
-                "noChordsTooltip": "Ši daina dar neturi akordų"
+                "playAlongTooltip": "Akordai sinchronizuoti su įrašu – grok kartu su vaizdo įrašu"
             }
         },
         "login": {

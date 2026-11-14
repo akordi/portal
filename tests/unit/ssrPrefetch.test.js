@@ -34,7 +34,6 @@ vi.mock('@/stores/useViewStore', () => ({ default: () => viewStore }));
 import prefetchRoute from '@/ssr/prefetch';
 import useDashboardStore from '@/stores/useDashboardStore';
 import useSongStore from '@/stores/useSongStore';
-import useTagStore from '@/stores/useTagStore';
 
 // resolve() mirrors the real route shapes: the list variants keep their prefix.
 const PATH_BY_ROUTE = {
@@ -162,25 +161,19 @@ describe('prefetchRoute for the dashboard featured tags', () => {
 
   it('transfers the featured tags with the dashboard state', async () => {
     const pinia = createPinia();
-    const featured = [{ id: 4, title: 'ziemassvētku', url: '/tag/4-Ziemassvetku' }];
-    getFeaturedTags.mockResolvedValue({ data: { content: featured } });
-    getSongs.mockResolvedValue({
-      data: {
-        content: [
-          { id: 7, title: 'Klusa nakts', url: '/song/7-K', body: 'long', chordTimeline: {} },
-        ],
+    const featured = [
+      {
+        id: 4,
+        title: 'ziemassvētku',
+        url: '/tag/4-Ziemassvetku',
+        topSongs: [{ id: 7, title: 'Klusa nakts', url: '/song/7-K' }],
       },
-    });
+    ];
+    getFeaturedTags.mockResolvedValue({ data: { content: featured } });
 
     await run(pinia);
 
-    expect(getSongs).toHaveBeenCalledWith(
-      expect.objectContaining({ 'tag.id': 4, size: 3, sort: 'songTop.visitsWeekly,desc' })
-    );
-    // Only the fields the banner links use travel with the page.
-    expect(pinia.state.value.dashboardStore.featuredTags).toEqual([
-      { ...featured[0], topSongs: [{ id: 7, title: 'Klusa nakts', url: '/song/7-K' }] },
-    ]);
+    expect(pinia.state.value.dashboardStore.featuredTags).toEqual(featured);
   });
 
   it('renders the home page without banners when the featured call fails', async () => {
@@ -219,9 +212,7 @@ describe('prefetchRoute for a tag page', () => {
     viewStore.title = null;
     viewStore.goBack = null;
     getTag.mockResolvedValue({ data: { ...tag } });
-    getSongs.mockImplementation((params) =>
-      Promise.resolve(params.sort === 'title,asc' ? songsPage(3) : songsPage(3))
-    );
+    getSongs.mockResolvedValue(songsPage(3));
   });
 
   it('loads tag and songs into the transferred store, header from the tag', async () => {
@@ -232,11 +223,19 @@ describe('prefetchRoute for a tag page', () => {
       expect.objectContaining({ 'tag.id': 4, sort: 'title,asc' })
     );
     expect(getSongs).toHaveBeenCalledWith(
-      expect.objectContaining({ 'tag.id': 4, sort: 'songTop.visitsWeekly,desc', size: 10 })
+      expect.objectContaining({ 'tag.id': 4, sort: 'songTop.visitsWeekly,desc', size: 9 })
     );
     expect(pinia.state.value.tagStore.tag).toEqual(tag);
-    expect(pinia.state.value.tagStore.songs).toHaveLength(3);
-    // The most visited songs are kept; TagView decides how many to show.
+    // Songs travel with the page as summaries, without bodies or timelines.
+    expect(pinia.state.value.tagStore.songs[0]).toEqual({
+      id: 1,
+      title: 'S1',
+      url: '/song/1-S',
+      artist: '',
+      youtubeLink: '',
+      weeklyVisits: 0,
+      playAlong: false,
+    });
     expect(pinia.state.value.tagStore.popular).toHaveLength(3);
     expect(viewStore.title).toBe('pages.tagView.title:{"title":"ziemassvētku"}');
     expect(viewStore.goBack).toBe(true);
@@ -249,17 +248,6 @@ describe('prefetchRoute for a tag page', () => {
     await run();
 
     expect(viewStore.title).toBe('Ziemassvētku dziesmas');
-  });
-
-  it('keeps a popular section for large tags', async () => {
-    getSongs.mockImplementation((params) =>
-      Promise.resolve(params.sort === 'title,asc' ? songsPage(40) : songsPage(10))
-    );
-
-    await run();
-
-    expect(useTagStore(pinia).popular).toHaveLength(10);
-    expect(useTagStore(pinia).total).toBe(40);
   });
 
   it('asks for a 301 to the real tag URL when the slug is wrong', async () => {
@@ -294,12 +282,19 @@ describe('prefetchRoute for an artist page', () => {
     ssrContext = { status: 200, redirect: null };
     viewStore.title = null;
     getArtist.mockResolvedValue({ data: { ...artist } });
+    getSongs.mockResolvedValue({
+      data: { content: [{ id: 9, title: 'Dziesma', url: '/song/9-D', body: 'long' }] },
+    });
   });
 
-  it('server-renders the artist name as the page heading, without state to hydrate', async () => {
-    // ArtistView holds its songs in component state, so the client mounts fresh.
-    expect(await run()).toBe(false);
+  it('loads the artist and songs into the transferred store, heading from the artist', async () => {
+    expect(await run()).toBe(true);
     expect(getArtist).toHaveBeenCalledWith(4);
+    expect(getSongs).toHaveBeenCalledWith(expect.objectContaining({ 'artist.id': 4 }));
+    expect(pinia.state.value.artistStore.artist).toEqual(artist);
+    expect(pinia.state.value.artistStore.songs).toEqual([
+      expect.objectContaining({ id: 9, title: 'Dziesma', url: '/song/9-D' }),
+    ]);
     expect(viewStore.title).toBe('Raimonds Pauls');
     expect(ssrContext).toEqual({ status: 200, redirect: null });
   });

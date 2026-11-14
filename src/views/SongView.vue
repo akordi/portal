@@ -20,6 +20,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 import { event as gtagEvent, pageview } from 'vue-gtag';
 import ChordSvg from '@/components/ChordSvg.vue';
+import siteOrigin from '@/utils/siteOrigin';
 import SongTags from '@/components/SongTags.vue';
 import { youtubeId } from '@/utils/chordSync';
 import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
@@ -325,10 +326,7 @@ function goToPlayAlong() {
 }
 
 const pagePath = computed(() => `/song/${songUrlParam.value}`);
-const origin =
-  typeof window !== 'undefined'
-    ? window.location.origin
-    : (appConfig?.publicUrl || '').replace(/\/$/, '');
+const origin = siteOrigin(appConfig);
 
 // Fire the landing page_view from the route itself, before the song API
 // call, not after it. Song routes are excluded from vue-gtag's automatic

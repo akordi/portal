@@ -1,14 +1,14 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import akordiService from '@/services/akordiService';
+import { POPULAR_COUNT } from '@/utils/popularSongs';
+import songSummary from '@/utils/songSummary';
 
 const PAGE_SIZE = 100;
-const POPULAR_SIZE = 10;
 
 /**
  * The tag page's data: the tag, its most visited songs and its song list.
- * Filled before SSR (src/ssr/prefetch.js) and transferred to the browser like
- * songStore, so TagView hydrates without refetching.
+ * Filled before SSR and transferred to the browser like songStore.
  */
 export default defineStore('tagStore', () => {
   const tag = ref(null);
@@ -26,14 +26,13 @@ export default defineStore('tagStore', () => {
     const [tagResp, songsResp, popularResp] = await Promise.all([
       akordiService.getTag(id),
       songsQuery(id, { size: PAGE_SIZE, sort: 'title,asc', page: 0 }),
-      songsQuery(id, { size: POPULAR_SIZE, sort: 'songTop.visitsWeekly,desc', page: 0 }),
+      songsQuery(id, { size: POPULAR_COUNT, sort: 'songTop.visitsWeekly,desc', page: 0 }),
     ]);
     tag.value = tagResp.data;
-    songs.value = songsResp.data.content;
+    songs.value = songsResp.data.content.map(songSummary);
     total.value = songsResp.data.totalElements;
     page.value = 0;
-    // Most visited first; TagView decides how much of it to show.
-    popular.value = popularResp.data.content;
+    popular.value = popularResp.data.content.map(songSummary);
     return tag.value;
   }
 
@@ -44,10 +43,9 @@ export default defineStore('tagStore', () => {
       page: page.value + 1,
     });
     page.value += 1;
-    songs.value = [...songs.value, ...resp.data.content];
+    songs.value = [...songs.value, ...resp.data.content.map(songSummary)];
   }
 
-  /** The held tag, only if it is the one the /tag/:url param refers to. */
   function tagFor(urlParam) {
     const id = akordiService.parseUrl(urlParam);
     return id !== null && tag.value?.id === id ? tag.value : null;

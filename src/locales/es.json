@@ -529,16 +529,12 @@
             "pageTitle": "Canciones temáticas: {title}",
             "popular": "Más populares",
             "all": "Todas las canciones ({count})",
-            "loadMore": "Mostrar más",
             "rank": "Puesto {rank} por visitas esta semana",
-            "noChordsTag": "",
             "badges": {
                 "popular": "Popular",
                 "popularTooltip": "Una de las más vistas esta semana",
                 "playAlong": "Toca a la vez",
-                "playAlongTooltip": "Acordes sincronizados con la grabación: toca junto al vídeo",
-                "noChords": "Solo letra",
-                "noChordsTooltip": "Esta canción aún no tiene acordes"
+                "playAlongTooltip": "Acordes sincronizados con la grabación: toca junto al vídeo"
             }
         },
         "login": {
