@@ -169,21 +169,21 @@ function blockStyle(seg) {
   };
 }
 
-// Where a chord's name sits along its block, as a fraction of the block's
-// duration: at the playhead for the current chord, otherwise in the middle of
-// the block's visible part, so a long chord's name never scrolls out of view.
-// Shifting the label back by the same fraction of its own width keeps it
-// inside the block at both ends.
+// The current chord's name starts at the playhead, so it stays beside the
+// line however long the chord lasts, and the block's end clips it as the chord
+// ends. Other names centre in the visible part of their block, shifted back by
+// the same fraction of their own width so they stay inside it.
 function labelStyle(seg, active) {
   const length = seg.end - seg.start;
   if (length <= 0) {
     return {};
   }
-  const at = active
-    ? currentTime.value
-    : (Math.max(seg.start, viewStart.value) + Math.min(seg.end, viewStart.value + VIEW_SPAN_SEC)) /
-      2;
-  const pct = Math.min(100, Math.max(0, ((at - seg.start) / length) * 100));
+  const fraction = (at) => Math.min(100, Math.max(0, ((at - seg.start) / length) * 100));
+  if (active) {
+    return { left: `${fraction(currentTime.value)}%` };
+  }
+  const visibleEnd = Math.min(seg.end, viewStart.value + VIEW_SPAN_SEC);
+  const pct = fraction((Math.max(seg.start, viewStart.value) + visibleEnd) / 2);
   return { left: `${pct}%`, transform: `translateX(-${pct}%)` };
 }
 

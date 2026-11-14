@@ -248,17 +248,26 @@ describe('ChordPlayer long chords', () => {
       .find('.chord-block-label');
   }
 
-  it('keeps the current chord name at the playhead while the chord lasts', async () => {
-    // 16 s into a 2-30 s chord: half way through it, long after its start
-    // has scrolled off the left edge.
-    const wrapper = await playAt(16);
-    const style = labelOf(wrapper, 'D').attributes('style');
-    expect(style).toContain('left: 50%');
-    expect(style).toContain('translateX(-50%)');
-  });
+  const pct = (style, prop) => Number(style.match(new RegExp(`${prop}: ([\\d.-]+)%`))[1]);
 
-  it('keeps the name inside the block at its end', async () => {
-    const wrapper = await playAt(29.99);
-    expect(labelOf(wrapper, 'D').attributes('style')).toMatch(/left: 99\.9\d*%/);
+  it.each([3, 9, 16, 25, 29.5])(
+    'keeps the current chord name at the playhead line at %ss',
+    async (seconds) => {
+      const wrapper = await playAt(seconds);
+      const block = wrapper.findAll('.chord-block').find((b) => b.text() === 'D');
+      const label = block.find('.chord-block-label').attributes('style');
+      const blockStyle = block.attributes('style');
+      // Track coordinates of the name's left edge: block left + offset within the block.
+      const nameAt =
+        pct(blockStyle, 'left') + (pct(label, 'left') * pct(blockStyle, 'width')) / 100;
+      const playhead = pct(wrapper.find('.chord-player-playhead').attributes('style'), 'left');
+      expect(nameAt).toBeCloseTo(playhead, 3);
+      expect(label).not.toContain('transform');
+    }
+  );
+
+  it('centres other chord names in the visible part of their block', async () => {
+    const wrapper = await playAt(16);
+    expect(labelOf(wrapper, 'E').attributes('style')).toContain('translateX(-');
   });
 });
