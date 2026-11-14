@@ -258,6 +258,18 @@ describe('ChordPlayer timeline', () => {
     }
   );
 
+  it("lets a short chord's name scroll past the playhead with its block", async () => {
+    const wrapper = await pausedAt(1);
+    const block = wrapper.find('.chord-block.is-active');
+    expect(block.text()).toBe('A');
+    expect(block.classes()).not.toContain('is-sticky');
+  });
+
+  it("sticks only a long chord's name to the playhead", async () => {
+    const wrapper = await pausedAt(16);
+    expect(wrapper.find('.chord-block.is-active').classes()).toContain('is-sticky');
+  });
+
   it('dims the chords already played', async () => {
     const wrapper = await pausedAt(16);
     const [first, , last] = wrapper.findAll('.chord-block');

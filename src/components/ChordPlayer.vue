@@ -3,7 +3,7 @@
  * Plays a YouTube video and shows which chord to play now and what comes next
  * on a timeline: the song's chords are laid out once, in proportion to their
  * length, on a strip that scrolls under a fixed playhead every animation
- * frame. The current chord's name sticks to the playhead until its block ends.
+ * frame. A long chord's name sticks to the playhead while it plays.
  * Custom markup (iframe + timeline) lives here in a component, per LX UI
  * conventions.
  */
@@ -52,10 +52,16 @@ const CAPO_MAX_FRET = 7;
 //                    the left, the rest is look-ahead)
 const VIEW_SPAN_SEC = 20;
 const LEAD_FRACTION = 0.15;
+// A chord longer than the track left of the playhead would scroll its name
+// out of view while still playing, so its name sticks to the playhead.
+const STICKY_MIN_SEC = LEAD_FRACTION * VIEW_SPAN_SEC;
 
 const mount = ref(null);
 const track = ref(null);
 const activeIndex = ref(-1);
+function isSticky(seg, index) {
+  return index === activeIndex.value && seg.end - seg.start > STICKY_MIN_SEC;
+}
 const ready = shallowRef(false);
 let player = null;
 let animationFrame = null;
@@ -321,7 +327,11 @@ onBeforeUnmount(() => {
             class="chord-block"
             role="button"
             tabindex="0"
-            :class="{ 'is-active': index === activeIndex, 'is-past': index < activeIndex }"
+            :class="{
+              'is-active': index === activeIndex,
+              'is-past': index < activeIndex,
+              'is-sticky': isSticky(seg, index),
+            }"
             :style="blockStyle(seg)"
             :title="`${seg.label} · ${fmt(seg.end - seg.start)}`"
             @click="seek(seg)"
@@ -540,7 +550,7 @@ onBeforeUnmount(() => {
   padding: 0 0.35rem;
 }
 /* Sticks to the playhead until the block's end clips it. */
-.chord-block.is-active .chord-block-label {
+.chord-block.is-sticky .chord-block-label {
   left: calc(var(--active-progress, 0) * 100%);
 }
 .chord-block.is-past {
