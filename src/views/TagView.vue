@@ -1,5 +1,5 @@
 <script setup>
-import { LxList, LxLoader } from '@akordi/lx-ui';
+import { LxBadge, LxList, LxLoader } from '@akordi/lx-ui';
 import { listTexts } from '@/utils/texts';
 import { computed, inject, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -12,6 +12,7 @@ import useTagStore from '@/stores/useTagStore';
 import useViewStore from '@/stores/useViewStore';
 import { serializeState as inlineJson } from '@/ssr/serializeState';
 import { tagUrlParam as tagRouteParam } from '@/utils/tagUrl';
+import songBadges from '@/utils/songBadges';
 import {
   introParagraphs,
   tagDocumentTitle,
@@ -113,18 +114,57 @@ function songLink(song) {
   return { name: 'akordiSongView', params: { url: song.url.replace(/^\/song\//, '') } };
 }
 
+// The three most visited songs open the page as cards; a tag with more than
+// ten songs also lists ranks 4-10 before the full list.
+const TOP_CARDS = 3;
+const POPULAR_LIST_MIN_SONGS = 10;
+const noChordsTag = computed(() => $t('pages.tagView.noChordsTag'));
+const BADGE_ICONS = { popular: 'star-filled', playAlong: 'play', noChords: 'text' };
+
+function badgesOf(song, rank = null) {
+  return songBadges(song, { rank, noChordsTag: noChordsTag.value }).map((key) => ({
+    key,
+    icon: BADGE_ICONS[key],
+    label: $t(`pages.tagView.badges.${key}`),
+    tooltip: $t(`pages.tagView.badges.${key}Tooltip`),
+  }));
+}
+
+function youtubeThumb(song) {
+  const id = (song.youtubeLink || '').trim();
+  return /^[\w-]{11}$/.test(id) ? `https://i.ytimg.com/vi/${id}/mqdefault.jpg` : null;
+}
+
+const topCards = computed(() =>
+  tagStore.total > TOP_CARDS
+    ? tagStore.popular.slice(0, TOP_CARDS).map((song, i) => ({
+        song,
+        rank: i + 1,
+        link: songLink(song),
+        thumb: youtubeThumb(song),
+        badges: badgesOf(song, i + 1),
+      }))
+    : []
+);
+
 // LxList renders items with an href as router-links, also under SSR, so the
 // songs are real, crawlable links.
-function listItems(songs) {
-  return songs.map((song) => ({
+function listItem(song, rank = null) {
+  return {
     id: String(song.id),
     title: song.title,
     description: song.mainArtist?.title,
     href: songLink(song),
-  }));
+    rank,
+    badges: badgesOf(song, rank),
+  };
 }
-const popularItems = computed(() => listItems(tagStore.popular));
-const songItems = computed(() => listItems(tagStore.songs));
+const popularItems = computed(() =>
+  tagStore.total > POPULAR_LIST_MIN_SONGS
+    ? tagStore.popular.slice(TOP_CARDS).map((song, i) => listItem(song, TOP_CARDS + i + 1))
+    : []
+);
+const songItems = computed(() => tagStore.songs.map((song) => listItem(song)));
 
 onMounted(() => {
   if (tag.value) {
@@ -155,6 +195,42 @@ onUnmounted(() => {
       <p v-for="(paragraph, i) in intro" :key="i">{{ paragraph }}</p>
     </div>
 
+    <ol v-if="topCards.length" class="tag-top" :aria-label="$t('pages.tagView.popular')">
+      <li v-for="card in topCards" :key="card.song.id">
+        <router-link :to="card.link" class="tag-top-card lx-region-component">
+          <img
+            v-if="card.thumb"
+            class="tag-top-thumb"
+            :src="card.thumb"
+            alt=""
+            width="320"
+            height="180"
+            :loading="card.rank === 1 ? 'eager' : 'lazy'"
+            decoding="async"
+          />
+          <span v-else class="tag-top-thumb tag-top-placeholder" aria-hidden="true">♪</span>
+          <span class="tag-top-body">
+            <span class="tag-top-title">
+              <span class="tag-rank" :aria-label="$t('pages.tagView.rank', { rank: card.rank })">
+                {{ card.rank }}
+              </span>
+              <span class="lx-primary">{{ card.song.title }}</span>
+            </span>
+            <span class="lx-secondary">{{ card.song.mainArtist?.title }}</span>
+            <span v-if="card.badges.length" class="tag-badges">
+              <LxBadge
+                v-for="badge in card.badges"
+                :key="badge.key"
+                :icon="badge.icon"
+                :value="badge.label"
+                :tooltip="badge.tooltip"
+              />
+            </span>
+          </span>
+        </router-link>
+      </li>
+    </ol>
+
     <section v-if="popularItems.length" class="tag-section">
       <h2>{{ $t('pages.tagView.popular') }}</h2>
       <LxList
@@ -165,11 +241,30 @@ onUnmounted(() => {
         name-attribute="title"
         description-attribute="description"
         :texts="listTexts()"
-      />
+      >
+        <template #customItem="item">
+          <p class="lx-primary">
+            <span class="tag-rank" :aria-label="$t('pages.tagView.rank', { rank: item.rank })">
+              {{ item.rank }}
+            </span>
+            {{ item.title }}
+          </p>
+          <p class="lx-secondary">{{ item.description }}</p>
+          <span v-if="item.badges.length" class="tag-badges">
+            <LxBadge
+              v-for="badge in item.badges"
+              :key="badge.key"
+              :icon="badge.icon"
+              :value="badge.label"
+              :tooltip="badge.tooltip"
+            />
+          </span>
+        </template>
+      </LxList>
     </section>
 
     <section class="tag-section">
-      <h2 v-if="popularItems.length">
+      <h2 v-if="topCards.length">
         {{ $t('pages.tagView.all', { count: tagStore.total }) }}
       </h2>
       <LxList
@@ -183,7 +278,21 @@ onUnmounted(() => {
         :loading="loadingMore"
         :texts="listTexts()"
         @load-more="loadMore"
-      />
+      >
+        <template #customItem="item">
+          <p class="lx-primary">{{ item.title }}</p>
+          <p class="lx-secondary">{{ item.description }}</p>
+          <span v-if="item.badges.length" class="tag-badges">
+            <LxBadge
+              v-for="badge in item.badges"
+              :key="badge.key"
+              :icon="badge.icon"
+              :value="badge.label"
+              :tooltip="badge.tooltip"
+            />
+          </span>
+        </template>
+      </LxList>
     </section>
   </div>
 </template>
@@ -200,5 +309,95 @@ onUnmounted(() => {
 }
 .tag-section h2 {
   margin-bottom: 0.5rem;
+}
+.tag-top {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.tag-top-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+  background: var(--color-region, transparent);
+}
+.tag-top-card:hover,
+.tag-top-card:focus-visible {
+  background: var(--color-region-hover, var(--color-region, transparent));
+}
+.tag-top-card:hover .lx-primary,
+.tag-top-card:focus-visible .lx-primary {
+  text-decoration: underline;
+}
+.tag-top-thumb {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.tag-top-placeholder {
+  display: grid;
+  place-items: center;
+  font-size: 3rem;
+  color: var(--color-label, inherit);
+  background: var(--color-layout-background, transparent);
+}
+.tag-top-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem 1rem;
+}
+.tag-top-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.tag-top-title .lx-primary {
+  font-weight: 600;
+}
+.tag-rank {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.25rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-region, #fff);
+  background: var(--color-brand, currentColor);
+}
+/* Phones: compact rows, so the cards don't push the song list off screen. */
+@media (max-width: 600px) {
+  .tag-top {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .tag-top-card {
+    flex-direction: row;
+  }
+  .tag-top-thumb {
+    flex: 0 0 7.5rem;
+    width: 7.5rem;
+  }
+  .tag-top-placeholder {
+    font-size: 2rem;
+  }
+  .tag-top-body {
+    padding: 0.5rem 0.75rem;
+  }
+}
+.tag-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-top: 0.375rem;
 }
 </style>

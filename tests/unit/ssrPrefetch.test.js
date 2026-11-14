@@ -161,10 +161,23 @@ describe('prefetchRoute for the dashboard featured tags', () => {
     const pinia = createPinia();
     const featured = [{ id: 4, title: 'ziemassvētku', url: '/tag/4-Ziemassvetku' }];
     getFeaturedTags.mockResolvedValue({ data: { content: featured } });
+    getSongs.mockResolvedValue({
+      data: {
+        content: [
+          { id: 7, title: 'Klusa nakts', url: '/song/7-K', body: 'long', chordTimeline: {} },
+        ],
+      },
+    });
 
     await run(pinia);
 
-    expect(pinia.state.value.dashboardStore.featuredTags).toEqual(featured);
+    expect(getSongs).toHaveBeenCalledWith(
+      expect.objectContaining({ 'tag.id': 4, size: 3, sort: 'songTop.visitsWeekly,desc' })
+    );
+    // Only the fields the banner links use travel with the page.
+    expect(pinia.state.value.dashboardStore.featuredTags).toEqual([
+      { ...featured[0], topSongs: [{ id: 7, title: 'Klusa nakts', url: '/song/7-K' }] },
+    ]);
   });
 
   it('renders the home page without banners when the featured call fails', async () => {
@@ -220,8 +233,8 @@ describe('prefetchRoute for a tag page', () => {
     );
     expect(pinia.state.value.tagStore.tag).toEqual(tag);
     expect(pinia.state.value.tagStore.songs).toHaveLength(3);
-    // Popular is only a separate section when it isn't the whole list.
-    expect(pinia.state.value.tagStore.popular).toEqual([]);
+    // The most visited songs are kept; TagView decides how many to show.
+    expect(pinia.state.value.tagStore.popular).toHaveLength(3);
     expect(viewStore.title).toBe('pages.tagView.title:{"title":"ziemassvētku"}');
     expect(viewStore.goBack).toBe(true);
     expect(ssrContext).toEqual({ status: 200, redirect: null });

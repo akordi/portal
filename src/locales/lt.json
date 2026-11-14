@@ -271,7 +271,8 @@
         "dashboard": {
             "title": "Pradinis puslapis",
             "disclaimer": "Visas čia esančios medžiagos yra skirtos tik mokymosi tikslams. Daugelis čia esančių dainų yra vartotojų interpretacijos ir gali tiksliai neatitikti originalo. Jei čia yra tavo daina ir nenori, kad ją mokytųsi kiti, arba turi klausimų ar komentarų, rašyk į info[at]akordi.lv.",
-            "featuredLink": "Žiūrėti dainas"
+            "featuredLink": "Žiūrėti dainas",
+            "featuredSongs": "Populiariausios:"
         },
         "songs": {
             "title": "Dainų katalogas"
@@ -528,7 +529,17 @@
             "pageTitle": "Teminės dainos: {title}",
             "popular": "Populiariausios",
             "all": "Visos dainos ({count})",
-            "loadMore": "Rodyti daugiau"
+            "loadMore": "Rodyti daugiau",
+            "rank": "{rank} vieta pagal peržiūras šią savaitę",
+            "noChordsTag": "be akordų",
+            "badges": {
+                "popular": "Populiari",
+                "popularTooltip": "Viena labiausiai žiūrimų šią savaitę",
+                "playAlong": "Grok kartu",
+                "playAlongTooltip": "Akordai sinchronizuoti su įrašu – grok kartu su vaizdo įrašu",
+                "noChords": "Tik žodžiai",
+                "noChordsTooltip": "Ši daina dar neturi akordų"
+            }
         },
         "login": {
             "title": "Pasirinkite autentifikavimo būdą",

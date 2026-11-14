@@ -271,7 +271,8 @@
         "dashboard": {
             "title": "Avaleht",
             "disclaimer": "Kogu siin leiduva sisu on mõeldud ainult õppeotstarbeks. Paljud siin leiduvaid laule on kasutajate interpretatsioonid ja võivad täpselt ei vasta originaalile. Kui siin on sinu laul ja sa ei taha, et teised seda õpiksid, või on tekkinud küsimusi või kommentaare, kirjuta info[at]akordi.lv.",
-            "featuredLink": "Vaata laule"
+            "featuredLink": "Vaata laule",
+            "featuredSongs": "Populaarseimad:"
         },
         "songs": {
             "title": "Laulude kataloog"
@@ -528,7 +529,17 @@
             "pageTitle": "Teemalaulud: {title}",
             "popular": "Populaarseimad",
             "all": "Kõik laulud ({count})",
-            "loadMore": "Näita rohkem"
+            "loadMore": "Näita rohkem",
+            "rank": "{rank}. koht selle nädala vaatamiste järgi",
+            "noChordsTag": "",
+            "badges": {
+                "popular": "Populaarne",
+                "popularTooltip": "Üks selle nädala enimvaadatud lugudest",
+                "playAlong": "Mängi kaasa",
+                "playAlongTooltip": "Akordid on salvestisega sünkroonis – mängi video järgi kaasa",
+                "noChords": "Ainult sõnad",
+                "noChordsTooltip": "Sellel laulul pole veel akorde"
+            }
         },
         "login": {
             "title": "Valige autentimise meetod",

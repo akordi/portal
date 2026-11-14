@@ -32,8 +32,8 @@ export default defineStore('tagStore', () => {
     songs.value = songsResp.data.content;
     total.value = songsResp.data.totalElements;
     page.value = 0;
-    // Only worth a separate section when it isn't simply the whole list.
-    popular.value = total.value > POPULAR_SIZE ? popularResp.data.content : [];
+    // Most visited first; TagView decides how much of it to show.
+    popular.value = popularResp.data.content;
     return tag.value;
   }
 

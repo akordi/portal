@@ -271,7 +271,8 @@
         "dashboard": {
             "title": "Sākumlapa",
             "disclaimer": "Viss šeit atrodamais saturs izvietots tikai izglītošanās nolūkā. Liela daļa lapā atrodamo dziesmu ir lietotāju interpretācijas un var precīzi nesakrist ar oriģinālu. Ja te ir kāda Tava dziesma, un negribi, lai to mācās citi, vai arī ir radušies kādi jautājumi vai komentāri, tad raksti uz info[at]akordi.lv.",
-            "featuredLink": "Skatīt dziesmas"
+            "featuredLink": "Skatīt dziesmas",
+            "featuredSongs": "Populārākās:"
         },
         "songs": {
             "title": "Dziesmu katalogs"
@@ -528,7 +529,17 @@
             "pageTitle": "Tematiskās dziesmas {title}",
             "popular": "Populārākās",
             "all": "Visas dziesmas ({count})",
-            "loadMore": "Rādīt vairāk"
+            "loadMore": "Rādīt vairāk",
+            "rank": "{rank}. vieta pēc skatījumiem šonedēļ",
+            "noChordsTag": "bez akordiem",
+            "badges": {
+                "popular": "Populāra",
+                "popularTooltip": "Viena no visvairāk skatītajām šonedēļ",
+                "playAlong": "Spēlē līdzi",
+                "playAlongTooltip": "Akordi sinhronizēti ar ierakstu – spēlē līdzi video",
+                "noChords": "Tikai vārdi",
+                "noChordsTooltip": "Šai dziesmai vēl nav akordu"
+            }
         },
         "login": {
             "title": "Izvēlieties autentifikācijas veidu",

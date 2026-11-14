@@ -14,6 +14,10 @@ const dashboardStore = useDashboardStore();
 const songCount = ref(dashboardStore.songCountTotal ?? 0);
 const $t = useI18n().t;
 
+function songLink(song) {
+  return { name: 'akordiSongView', params: { url: song.url.replace(/^\/song\//, '') } };
+}
+
 function featuredHeading(tag) {
   return tag.pageTitle || tag.title.charAt(0).toUpperCase() + tag.title.slice(1);
 }
@@ -28,16 +32,36 @@ onMounted(async () => {
 
 <template>
   <div>
-    <router-link
+    <section
       v-for="tag in dashboardStore.featuredTags"
       :key="tag.id"
       class="featured-tag"
-      :to="{ name: 'tagView', params: { url: tagUrlParam(tag) } }"
+      :aria-labelledby="`featured-tag-${tag.id}`"
     >
-      <strong class="featured-tag-heading">{{ featuredHeading(tag) }}</strong>
+      <router-link
+        :id="`featured-tag-${tag.id}`"
+        class="featured-tag-heading"
+        :to="{ name: 'tagView', params: { url: tagUrlParam(tag) } }"
+      >
+        {{ featuredHeading(tag) }}
+      </router-link>
       <span v-if="tag.featuredText">{{ tag.featuredText }}</span>
-      <span class="featured-tag-link">{{ $t('pages.dashboard.featuredLink') }} →</span>
-    </router-link>
+      <p v-if="tag.topSongs?.length" class="featured-tag-songs">
+        <span class="lx-secondary">{{ $t('pages.dashboard.featuredSongs') }}</span>
+        <template v-for="(song, i) in tag.topSongs" :key="song.id">
+          <router-link :to="songLink(song)">{{ song.title }}</router-link><template
+            v-if="i < tag.topSongs.length - 1"
+            >,
+          </template>
+        </template>
+      </p>
+      <router-link
+        class="featured-tag-link"
+        :to="{ name: 'tagView', params: { url: tagUrlParam(tag) } }"
+      >
+        {{ $t('pages.dashboard.featuredLink') }} →
+      </router-link>
+    </section>
     <p>
       {{ $t('pages.dashboard.disclaimer') }}
     </p>
@@ -94,23 +118,28 @@ onMounted(async () => {
 .featured-tag {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  align-items: flex-start;
+  gap: 0.375rem;
   margin-bottom: 1rem;
   padding: 1rem 1.25rem;
   border-left: 4px solid var(--color-brand, currentColor);
   background: var(--color-region, transparent);
-  color: inherit;
-  text-decoration: none;
-}
-.featured-tag:hover {
-  background: var(--color-region-hover, var(--color-region, transparent));
-}
-.featured-tag:hover .featured-tag-link,
-.featured-tag:focus-visible .featured-tag-link {
-  text-decoration: underline;
 }
 .featured-tag-heading {
   font-size: 1.125rem;
+  font-weight: 600;
+  color: inherit;
+  text-decoration: none;
+}
+.featured-tag-heading:hover,
+.featured-tag-heading:focus-visible {
+  text-decoration: underline;
+}
+.featured-tag-songs {
+  margin: 0;
+}
+.featured-tag-songs .lx-secondary {
+  margin-right: 0.25rem;
 }
 .featured-tag-link {
   color: var(--color-interactive-background, inherit);

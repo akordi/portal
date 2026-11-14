@@ -1,5 +1,5 @@
 import createAppInstance from '@/createApp';
-import { LxList, lxPreloaded } from '@akordi/lx-ui';
+import { LxBadge, LxList, lxPreloaded } from '@akordi/lx-ui';
 import whenLoaded from '@/utils/asyncComponent';
 
 import '@akordi/lx-ui/dist/styles/lx-reset.css';
@@ -21,6 +21,7 @@ import '@akordi/lx-ui/dist/styles/lx-modals.css';
 import '@akordi/lx-ui/dist/styles/lx-loaders.css';
 import '@akordi/lx-ui/dist/styles/lx-state-displays.css';
 import '@akordi/lx-ui/dist/styles/lx-lists.css';
+import '@akordi/lx-ui/dist/styles/lx-badges.css';
 import '@akordi/lx-ui/dist/styles/lx-expanders.css';
 import '@akordi/lx-ui/dist/styles/lx-tabs.css';
 import '@akordi/lx-ui/dist/styles/lx-date-pickers.css';
@@ -76,7 +77,7 @@ if (initialState) {
 // server-rendered page hydrates is re-created by Vue, shifting the layout.
 // Routes list the ones they render in meta.hydrationPreload, so only those
 // pages wait for them.
-const HYDRATION_PRELOAD = { LxList };
+const HYDRATION_PRELOAD = { LxBadge, LxList };
 
 Promise.all([router.isReady(), lxPreloaded()])
   .then(() =>
