@@ -115,8 +115,10 @@ function songLink(song) {
 }
 
 // The three most visited songs open the page as cards; a tag with more than
-// ten songs also lists ranks 4-10 before the full list.
+// ten songs also lists the next ones, up to nine in all, in an even number
+// so the two-column list has no empty slot.
 const TOP_CARDS = 3;
+const POPULAR_TOTAL = 9;
 const POPULAR_LIST_MIN_SONGS = 10;
 const noChordsTag = computed(() => $t('pages.tagView.noChordsTag'));
 const BADGE_ICONS = { popular: 'star-filled', playAlong: 'play', noChords: 'text' };
@@ -159,11 +161,13 @@ function listItem(song, rank = null) {
     badges: badgesOf(song, rank),
   };
 }
-const popularItems = computed(() =>
-  tagStore.total > POPULAR_LIST_MIN_SONGS
-    ? tagStore.popular.slice(TOP_CARDS).map((song, i) => listItem(song, TOP_CARDS + i + 1))
-    : []
-);
+const popularItems = computed(() => {
+  if (tagStore.total <= POPULAR_LIST_MIN_SONGS) return [];
+  const rest = tagStore.popular.slice(TOP_CARDS, POPULAR_TOTAL);
+  return rest
+    .slice(0, rest.length - (rest.length % 2))
+    .map((song, i) => listItem(song, TOP_CARDS + i + 1));
+});
 const songItems = computed(() => tagStore.songs.map((song) => listItem(song)));
 
 onMounted(() => {
@@ -195,7 +199,7 @@ onUnmounted(() => {
       <p v-for="(paragraph, i) in intro" :key="i">{{ paragraph }}</p>
     </div>
 
-    <!-- The top three cards and ranks 4-10 are one "most popular" section. -->
+    <!-- The top three cards and the ranks after them are one "most popular" section. -->
     <section v-if="topCards.length" class="tag-section">
       <h2>{{ $t('pages.tagView.popular') }}</h2>
       <ol class="tag-top">
