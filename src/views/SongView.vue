@@ -18,7 +18,7 @@ import { useHead } from '@vueuse/head';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
-import { event as gtagEvent, pageview } from 'vue-gtag';
+import { event as gtagEvent } from 'vue-gtag';
 import ChordSvg from '@/components/ChordSvg.vue';
 import SongTags from '@/components/SongTags.vue';
 import { youtubeId } from '@/utils/chordSync';
@@ -330,21 +330,6 @@ const origin =
     ? window.location.origin
     : (appConfig?.publicUrl || '').replace(/\/$/, '');
 
-// Fire the landing page_view from the route itself, before the song API
-// call, not after it. Song routes are excluded from vue-gtag's automatic
-// router pageTracker (so the real song title can be sent instead of a
-// generic one), but that meant this was the only page_view for the
-// highest-traffic entry point (SEO song landings) — and it was gated
-// behind a full network round trip. A visitor who bounces before that
-// response arrives left with no page_view at all, showing up in GA as a
-// "(not set)" landing page with ~0% engagement instead of a real bounce
-// on this song's URL. Client-only: SSR never fires analytics.
-function trackPageview() {
-  if (typeof window !== 'undefined') {
-    pageview({ page_path: pagePath.value, page_location: `${origin}${pagePath.value}` });
-  }
-}
-
 // Puts a fetched song on the page: the sheet, the document head and the
 // layout header. Synchronous so it can run in setup for a prefetched song
 // (both on the server and when hydrating) as well as after a client fetch.
@@ -633,7 +618,6 @@ if (prefetchedSong) {
 
 onMounted(async () => {
   addEventListeners();
-  trackPageview();
   if (prefetchedSong) {
     // Already rendered (and hydrated) from the transferred state — no
     // refetch; only the browser-side extras remain.
@@ -653,7 +637,6 @@ watch(
     if (id === previousId) return;
     stopAutoScroll();
     loading.value = true;
-    trackPageview();
     loadSong();
   },
   { flush: 'post' }
