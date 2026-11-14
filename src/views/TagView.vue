@@ -177,6 +177,9 @@ onUnmounted(() => {
 .tag-intro {
   max-width: 48rem;
 }
+.tag-intro p + p {
+  margin-top: 0.75rem;
+}
 .tag-section {
   margin-top: 1.5rem;
 }
