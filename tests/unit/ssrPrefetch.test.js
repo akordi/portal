@@ -8,7 +8,8 @@ import { createPinia } from 'pinia';
 // each starts from an empty module registry to get modules bound to its own.
 vi.hoisted(() => vi.resetModules());
 
-const { getSong, getSongsCount, getTag, getSongs, getFeaturedTags } = vi.hoisted(() => ({
+const { getSong, getSongsCount, getTag, getSongs, getFeaturedTags, getArtist } = vi.hoisted(() => ({
+  getArtist: vi.fn(),
   getSong: vi.fn(),
   getSongsCount: vi.fn(),
   getTag: vi.fn(),
@@ -24,6 +25,7 @@ vi.mock('@/services/akordiService', () => ({
     getTag,
     getSongs,
     getFeaturedTags,
+    getArtist,
   },
 }));
 const viewStore = { title: null, description: null, goBack: null };
@@ -39,6 +41,7 @@ const PATH_BY_ROUTE = {
   akordiSongView: '/song',
   songListTopSongView: '/top/song',
   tagView: '/tag',
+  akordiArtistView: '/band',
 };
 const router = {
   resolve: ({ name, params }) => ({ path: `${PATH_BY_ROUTE[name]}/${params.url}` }),
@@ -269,6 +272,46 @@ describe('prefetchRoute for a tag page', () => {
     getTag.mockRejectedValue({ response: { status: 404 } });
 
     await expect(run('999-Nope')).rejects.toBeDefined();
+    expect(ssrContext.status).toBe(404);
+  });
+});
+
+describe('prefetchRoute for an artist page', () => {
+  const artist = { id: 4, title: 'Raimonds Pauls', url: '/band/4-Raimonds_Pauls' };
+  let pinia;
+  let ssrContext;
+  const run = (url = '4-Raimonds_Pauls') =>
+    prefetchRoute({
+      route: { name: 'akordiArtistView', params: { url } },
+      router,
+      pinia,
+      ssrContext,
+    });
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    pinia = createPinia();
+    ssrContext = { status: 200, redirect: null };
+    viewStore.title = null;
+    getArtist.mockResolvedValue({ data: { ...artist } });
+  });
+
+  it('server-renders the artist name as the page heading, without state to hydrate', async () => {
+    // ArtistView holds its songs in component state, so the client mounts fresh.
+    expect(await run()).toBe(false);
+    expect(getArtist).toHaveBeenCalledWith(4);
+    expect(viewStore.title).toBe('Raimonds Pauls');
+    expect(ssrContext).toEqual({ status: 200, redirect: null });
+  });
+
+  it('asks for a 301 to the real artist URL when the slug is wrong', async () => {
+    await run('4-wrong');
+    expect(ssrContext.redirect).toBe('/band/4-Raimonds_Pauls');
+  });
+
+  it('reports 404 for a deleted artist instead of an empty 200 page', async () => {
+    getArtist.mockRejectedValue({ response: { status: 404 } });
+    await expect(run('61-ZIEMASSVETKU')).rejects.toBeDefined();
     expect(ssrContext.status).toBe(404);
   });
 });

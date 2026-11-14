@@ -75,8 +75,8 @@ const loadArtist = async () => {
     const artistId = akordiService.parseUrl(artistUrl);
     const artistResp = await akordiService.getArtist(artistId);
 
-    // TODO(SSR): a mismatched slug should become a real HTTP redirect when
-    // rendered server-side (see the same note in SongView.vue).
+    // Server-side, a mismatched slug is a 301 (ssr/prefetch.js); this covers
+    // in-app navigation.
     if (typeof window !== 'undefined' && artistUrl !== artistResp.data.url) {
       const correctUrl = artistResp.data.url.replace(/^\/band\//, '');
       router.replace({

@@ -195,46 +195,48 @@ onUnmounted(() => {
       <p v-for="(paragraph, i) in intro" :key="i">{{ paragraph }}</p>
     </div>
 
-    <ol v-if="topCards.length" class="tag-top" :aria-label="$t('pages.tagView.popular')">
-      <li v-for="card in topCards" :key="card.song.id">
-        <router-link :to="card.link" class="tag-top-card lx-region-component">
-          <img
-            v-if="card.thumb"
-            class="tag-top-thumb"
-            :src="card.thumb"
-            alt=""
-            width="320"
-            height="180"
-            :loading="card.rank === 1 ? 'eager' : 'lazy'"
-            decoding="async"
-          />
-          <span v-else class="tag-top-thumb tag-top-placeholder" aria-hidden="true">♪</span>
-          <span class="tag-top-body">
-            <span class="tag-top-title">
-              <span class="tag-rank" :aria-label="$t('pages.tagView.rank', { rank: card.rank })">
-                {{ card.rank }}
-              </span>
-              <span class="lx-primary">{{ card.song.title }}</span>
-            </span>
-            <span class="lx-secondary">{{ card.song.mainArtist?.title }}</span>
-            <span v-if="card.badges.length" class="tag-badges">
-              <LxBadge
-                v-for="badge in card.badges"
-                :key="badge.key"
-                :icon="badge.icon"
-                :value="badge.label"
-                :tooltip="badge.tooltip"
-              />
-            </span>
-          </span>
-        </router-link>
-      </li>
-    </ol>
-
-    <section v-if="popularItems.length" class="tag-section">
+    <!-- The top three cards and ranks 4-10 are one "most popular" section. -->
+    <section v-if="topCards.length" class="tag-section">
       <h2>{{ $t('pages.tagView.popular') }}</h2>
+      <ol class="tag-top">
+        <li v-for="card in topCards" :key="card.song.id">
+          <router-link :to="card.link" class="tag-top-card lx-region-component">
+            <img
+              v-if="card.thumb"
+              class="tag-top-thumb"
+              :src="card.thumb"
+              alt=""
+              width="320"
+              height="180"
+              :loading="card.rank === 1 ? 'eager' : 'lazy'"
+              decoding="async"
+            />
+            <span v-else class="tag-top-thumb tag-top-placeholder" aria-hidden="true">♪</span>
+            <span class="tag-top-body">
+              <span class="tag-top-title">
+                <span class="tag-rank" :aria-label="$t('pages.tagView.rank', { rank: card.rank })">
+                  {{ card.rank }}
+                </span>
+                <span class="lx-primary">{{ card.song.title }}</span>
+              </span>
+              <span class="lx-secondary">{{ card.song.mainArtist?.title }}</span>
+              <span v-if="card.badges.length" class="tag-badges">
+                <LxBadge
+                  v-for="badge in card.badges"
+                  :key="badge.key"
+                  :icon="badge.icon"
+                  :value="badge.label"
+                  :tooltip="badge.tooltip"
+                />
+              </span>
+            </span>
+          </router-link>
+        </li>
+      </ol>
       <LxList
+        v-if="popularItems.length"
         id="tagPopularSongs"
+        class="tag-popular-rest"
         list-type="2"
         icon="next"
         :items="popularItems"
@@ -310,11 +312,14 @@ onUnmounted(() => {
 .tag-section h2 {
   margin-bottom: 0.5rem;
 }
+.tag-popular-rest {
+  margin-top: 1rem;
+}
 .tag-top {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
   gap: 1rem;
-  margin: 1.5rem 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
 }

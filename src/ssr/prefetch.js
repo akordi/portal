@@ -1,3 +1,4 @@
+import akordiService from '@/services/akordiService';
 import useDashboardStore from '@/stores/useDashboardStore';
 import useSongStore from '@/stores/useSongStore';
 import useTagStore from '@/stores/useTagStore';
@@ -81,6 +82,36 @@ async function prefetchTag({ route, router, pinia, ssrContext, i18n }) {
   viewStore.goBack = true;
 }
 
+// The artist page loads its own songs (onServerPrefetch); this only settles
+// the HTTP outcome (404, or 301 to the real slug) and the layout heading,
+// which is rendered before the view's own prefetch resolves.
+async function prefetchArtist({ route, router, pinia, ssrContext }) {
+  const outcome = ssrContext;
+  let artist;
+  try {
+    artist = (await akordiService.getArtist(akordiService.parseUrl(route.params.url))).data;
+  } catch (err) {
+    if (err?.response?.status === 404) {
+      outcome.status = 404;
+    }
+    throw err;
+  }
+
+  if (artist.url && `/band/${route.params.url}` !== artist.url) {
+    outcome.redirect = router.resolve({
+      name: 'akordiArtistView',
+      params: { url: artist.url.replace(/^\/band\//, '') },
+    }).path;
+  }
+
+  const viewStore = useViewStore(pinia);
+  viewStore.title = artist.title;
+  viewStore.goBack = true;
+  // ArtistView keeps its songs in component state, not a store, so there is
+  // nothing to hydrate it with; the client mounts the page fresh.
+  return false;
+}
+
 async function prefetchDashboard({ pinia }) {
   await useDashboardStore(pinia).load();
 }
@@ -95,20 +126,22 @@ const prefetchers = {
   songListTopSongView: prefetchSong,
   songbookViewSongView: prefetchSong,
   tagView: prefetchTag,
+  akordiArtistView: prefetchArtist,
 };
 
 /**
  * @param {{ route, router, pinia, ssrContext, i18n }} ctx the request's resolved
  *   route, its router, Pinia and i18n, and the per-request HTTP outcome channel
  *   (see entry-server.js) the prefetch may set a status/redirect on.
- * @returns {boolean} whether the route had anything to prefetch — only then
- *   is there state worth transferring to the client.
+ * @returns {boolean} whether the route prefetched state for the client to
+ *   hydrate with — only then is the state transferred.
  */
 export default async function prefetchRoute(ctx) {
   const prefetch = prefetchers[ctx.route.name];
   if (!prefetch) {
     return false;
   }
-  await prefetch(ctx);
-  return true;
+  // A prefetcher returns false when it has no state for the client to
+  // hydrate with (the page then mounts fresh, as before SSR state existed).
+  return (await prefetch(ctx)) !== false;
 }
