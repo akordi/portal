@@ -104,3 +104,42 @@ export function segmentWindow(segments, activeIndex, opts = {}) {
   }
   return { items, start: segments[lo].start, end: segments[hi].end };
 }
+
+/**
+ * Playback clock between player reports. The YouTube API reports the time
+ * only every few hundred milliseconds; in between, the time is extrapolated
+ * from the last report at the playback rate, so the timeline moves every frame
+ * instead of in steps. A report that stops changing (stall, buffering) holds
+ * the extrapolation to at most MAX_EXTRAPOLATION_SEC past it.
+ */
+const MAX_EXTRAPOLATION_SEC = 1;
+
+export function createPlaybackClock() {
+  let reported = null;
+  let reportedAt = 0;
+  return {
+    /** Playback time at `nowMs` (performance.now()), given the player's latest report. */
+    time(report, nowMs, rate = 1) {
+      if (report !== reported) {
+        reported = report;
+        reportedAt = nowMs;
+      }
+      const ahead = ((nowMs - reportedAt) / 1000) * rate;
+      return reported + Math.min(ahead, MAX_EXTRAPOLATION_SEC);
+    },
+  };
+}
+
+/**
+ * Position of a scrolling chord strip at playback time `t`, in percent of the
+ * visible track (`viewSpan` seconds wide): how far the strip has scrolled and
+ * where the playhead sits. The playhead rides in from the left edge until it
+ * reaches `lead` of the track, then stays put while the strip scrolls.
+ */
+export function stripPosition(t, viewSpan, lead) {
+  const scrolled = Math.max(0, t - lead * viewSpan);
+  return {
+    offset: (scrolled / viewSpan) * 100,
+    playhead: ((t - scrolled) / viewSpan) * 100,
+  };
+}

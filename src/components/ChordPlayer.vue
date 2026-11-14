@@ -1,10 +1,9 @@
 <script setup>
 /**
  * Plays a YouTube video and shows which chord to play now and what comes next
- * on a scrolling timeline: the chords within a fixed time span (VIEW_SPAN_SEC)
- * are laid out proportionally on a track that scrolls continuously under a fixed
- * playhead, so the current chord sits at the playhead, the upcoming progression
- * is always visible ahead of it, and nothing jumps when the chord changes.
+ * on a timeline: the song's chords are laid out once, in proportion to their
+ * length, on a strip that scrolls under a fixed playhead every animation
+ * frame. The current chord's name sticks to the playhead until its block ends.
  * Custom markup (iframe + timeline) lives here in a component, per LX UI
  * conventions.
  */
@@ -13,7 +12,12 @@ import { useI18n } from 'vue-i18n';
 import { LxButton, LxValuePicker } from '@akordi/lx-ui';
 
 import ChordSvg from '@/components/ChordSvg.vue';
-import { activeSegmentIndex, youtubeId } from '@/utils/chordSync';
+import {
+  activeSegmentIndex,
+  createPlaybackClock,
+  stripPosition,
+  youtubeId,
+} from '@/utils/chordSync';
 import { capoForOffset, isNoChord, transposeChord } from '@/utils/chordName';
 
 const { t: $t } = useI18n();
@@ -43,9 +47,6 @@ const TRANSPOSE_MAX = 11;
 // Capo suggestions above this fret are impractical on a real neck.
 const CAPO_MAX_FRET = 7;
 
-// Fixed-playhead scroller. The playhead stays put and the chord strip scrolls
-// continuously under it based on playback time, so nothing jumps when the chord
-// changes and the whole upcoming progression stays visible to the right.
 //   VIEW_SPAN_SEC  — seconds of the song visible across the track width
 //   LEAD_FRACTION  — playhead position from the left (a little past context on
 //                    the left, the rest is look-ahead)
@@ -53,13 +54,14 @@ const VIEW_SPAN_SEC = 20;
 const LEAD_FRACTION = 0.15;
 
 const mount = ref(null);
-const currentTime = ref(0);
+const track = ref(null);
+const activeIndex = ref(-1);
 const ready = shallowRef(false);
 let player = null;
-let tick = null;
+let animationFrame = null;
+let clock = createPlaybackClock();
 
 const videoId = computed(() => youtubeId(props.videoUrl));
-const activeIndex = computed(() => activeSegmentIndex(props.segments, currentTime.value));
 
 // Playback speed — applied to the YouTube player, remembered across song
 // switches within the component's lifetime.
@@ -140,60 +142,31 @@ const instrumentOptions = computed(() => [
   { id: 'baritone-ukulele', name: $t('pages.chordsLibrary.showBaritoneUkuleleChords.label') },
 ]);
 
-// Start of the visible time viewport. Clamped at 0 so the intro doesn't scroll
-// in from empty space before playback; once past the lead-in the viewport
-// tracks currentTime so the strip scrolls smoothly and the playhead is fixed.
-const viewStart = computed(() => Math.max(0, currentTime.value - LEAD_FRACTION * VIEW_SPAN_SEC));
-
-// Only the chords overlapping the viewport are rendered; the rest are off-track.
-const visibleSegments = computed(() => {
-  const start = viewStart.value;
-  const end = start + VIEW_SPAN_SEC;
-  const segments = displaySegments.value;
-  const out = [];
-  for (let i = 0; i < segments.length; i += 1) {
-    const seg = segments[i];
-    if (seg.end >= start && seg.start <= end) {
-      out.push({ seg, index: i });
-    }
-  }
-  return out;
-});
-
-// Position/size a chord block as a percentage of the visible time span, so its
-// width stays proportional to its duration and it scrolls left as time passes.
+// Blocks are laid out once in song time; only the strip moves.
 function blockStyle(seg) {
   return {
-    left: `${((seg.start - viewStart.value) / VIEW_SPAN_SEC) * 100}%`,
+    left: `${(seg.start / VIEW_SPAN_SEC) * 100}%`,
     width: `${((seg.end - seg.start) / VIEW_SPAN_SEC) * 100}%`,
   };
 }
 
-// The current chord's name starts at the playhead, so it stays beside the
-// line however long the chord lasts, and the block's end clips it as the chord
-// ends. Other names centre in the visible part of their block, shifted back by
-// the same fraction of their own width so they stay inside it.
-function labelStyle(seg, active) {
-  const length = seg.end - seg.start;
-  if (length <= 0) {
-    return {};
+// Positions are written as CSS variables on the track rather than through Vue
+// state, so a frame costs one style update; Vue re-renders only when the
+// current chord changes.
+function render(time) {
+  const el = track.value;
+  if (!el) {
+    return;
   }
-  const fraction = (at) => Math.min(100, Math.max(0, ((at - seg.start) / length) * 100));
-  if (active) {
-    return { left: `${fraction(currentTime.value)}%` };
-  }
-  const visibleEnd = Math.min(seg.end, viewStart.value + VIEW_SPAN_SEC);
-  const pct = fraction((Math.max(seg.start, viewStart.value) + visibleEnd) / 2);
-  return { left: `${pct}%`, transform: `translateX(-${pct}%)` };
+  const { offset, playhead } = stripPosition(time, VIEW_SPAN_SEC, LEAD_FRACTION);
+  el.style.setProperty('--strip-offset', `${offset}%`);
+  el.style.setProperty('--playhead', `${playhead}%`);
+  const index = activeSegmentIndex(props.segments, time);
+  activeIndex.value = index;
+  const seg = props.segments[index];
+  const progress = seg && seg.end > seg.start ? (time - seg.start) / (seg.end - seg.start) : 0;
+  el.style.setProperty('--active-progress', String(Math.min(1, Math.max(0, progress))));
 }
-
-// The playhead is effectively fixed once past the lead-in (currentTime -
-// viewStart == LEAD_FRACTION * span); during the lead-in it rides from the left
-// edge up to that resting position.
-const playheadStyle = computed(() => {
-  const pct = ((currentTime.value - viewStart.value) / VIEW_SPAN_SEC) * 100;
-  return { left: `${Math.min(100, Math.max(0, pct))}%` };
-});
 
 function fmt(seconds) {
   return `${seconds.toFixed(1)}${$t('pages.playAlong.seconds')}`;
@@ -223,21 +196,24 @@ function loadApi() {
   });
 }
 
-function stopTicking() {
-  if (tick) {
-    clearInterval(tick);
-    tick = null;
+function playerTime() {
+  return player && typeof player.getCurrentTime === 'function' ? player.getCurrentTime() : 0;
+}
+
+function stopFrames() {
+  if (animationFrame) {
+    cancelAnimationFrame(animationFrame);
+    animationFrame = null;
   }
 }
 
-function startTicking() {
-  stopTicking();
-  // 150 ms is smooth enough to track chord changes without busy-looping.
-  tick = setInterval(() => {
-    if (player && typeof player.getCurrentTime === 'function') {
-      currentTime.value = player.getCurrentTime();
-    }
-  }, 150);
+function startFrames() {
+  stopFrames();
+  const step = (now) => {
+    render(clock.time(playerTime(), now, playbackRate.value));
+    animationFrame = requestAnimationFrame(step);
+  };
+  animationFrame = requestAnimationFrame(step);
 }
 
 async function build() {
@@ -272,11 +248,12 @@ async function build() {
         applyPlaybackRate();
       },
       onStateChange: (event) => {
-        // 1 = playing → track time; anything else → stop the ticker.
+        // 1 = playing; otherwise hold the timeline where the player stopped.
         if (event.data === 1) {
-          startTicking();
+          startFrames();
         } else {
-          stopTicking();
+          stopFrames();
+          render(playerTime());
         }
       },
     },
@@ -287,7 +264,8 @@ function seek(seg) {
   if (player && typeof player.seekTo === 'function') {
     player.seekTo(seg.start, true);
     player.playVideo();
-    currentTime.value = seg.start;
+    clock = createPlaybackClock();
+    render(seg.start);
   }
 }
 
@@ -318,7 +296,7 @@ watch(
 );
 
 onBeforeUnmount(() => {
-  stopTicking();
+  stopFrames();
   if (player && typeof player.destroy === 'function') {
     player.destroy();
     player = null;
@@ -333,33 +311,27 @@ onBeforeUnmount(() => {
         <div ref="mount" class="chord-player-frame"></div>
       </div>
 
-      <!-- Scrolling chord track: the chords overlapping the visible time span are
-           laid out proportionally and scroll left under a fixed playhead as the
-           song plays, so the current chord sits at the playhead and the upcoming
-           progression is always visible ahead of it. -->
-      <div class="chord-player-track">
-        <!-- Rendered as role=button divs (not <button>) so the global LX UI
-             button sizing doesn't clamp the proportional width to a min square.
-             The visible text is the label only, so the accessible name matches
-             the chord exactly. -->
-        <div
-          v-for="item in visibleSegments"
-          :key="item.index"
-          class="chord-block"
-          role="button"
-          tabindex="0"
-          :class="{ 'is-active': item.index === activeIndex, 'is-past': item.index < activeIndex }"
-          :style="blockStyle(item.seg)"
-          :title="`${item.seg.label} · ${fmt(item.seg.end - item.seg.start)}`"
-          @click="seek(item.seg)"
-          @keydown.enter.prevent="seek(item.seg)"
-          @keydown.space.prevent="seek(item.seg)"
-        >
-          <span class="chord-block-label" :style="labelStyle(item.seg, item.index === activeIndex)">
-            {{ item.seg.label }}
-          </span>
+      <div ref="track" class="chord-player-track">
+        <div class="chord-strip">
+          <!-- role=button divs, not <button>: LX UI's button sizing would clamp
+               the proportional width to a minimum square. -->
+          <div
+            v-for="(seg, index) in displaySegments"
+            :key="index"
+            class="chord-block"
+            role="button"
+            tabindex="0"
+            :class="{ 'is-active': index === activeIndex, 'is-past': index < activeIndex }"
+            :style="blockStyle(seg)"
+            :title="`${seg.label} · ${fmt(seg.end - seg.start)}`"
+            @click="seek(seg)"
+            @keydown.enter.prevent="seek(seg)"
+            @keydown.space.prevent="seek(seg)"
+          >
+            <span class="chord-block-label">{{ seg.label }}</span>
+          </div>
         </div>
-        <div class="chord-player-playhead" :style="playheadStyle"></div>
+        <div class="chord-player-playhead"></div>
       </div>
 
       <!-- Practice controls: playback speed for everyone; transpose (with a
@@ -532,6 +504,12 @@ onBeforeUnmount(() => {
   overflow: hidden;
   box-sizing: border-box;
 }
+.chord-strip {
+  position: absolute;
+  inset: 0;
+  transform: translateX(calc(-1 * var(--strip-offset, 0%)));
+  will-change: transform;
+}
 .chord-block {
   position: absolute;
   top: 0;
@@ -546,14 +524,7 @@ onBeforeUnmount(() => {
   cursor: pointer;
   overflow: hidden;
   white-space: nowrap;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* left transitions so the strip scrolls smoothly between the 150 ms time
-     samples instead of stepping; background-color for the active highlight. */
-  transition:
-    left 0.15s linear,
-    background-color 0.15s ease;
+  transition: background-color 0.15s ease;
 }
 .chord-block:focus-visible {
   outline: 2px solid var(--color-brand, #18bc9c);
@@ -563,12 +534,14 @@ onBeforeUnmount(() => {
   position: absolute;
   top: 0;
   bottom: 0;
+  left: 0;
   display: flex;
   align-items: center;
   padding: 0 0.35rem;
-  transition:
-    left 0.15s linear,
-    transform 0.15s linear;
+}
+/* Sticks to the playhead until the block's end clips it. */
+.chord-block.is-active .chord-block-label {
+  left: calc(var(--active-progress, 0) * 100%);
 }
 .chord-block.is-past {
   opacity: 0.4;
@@ -589,14 +562,12 @@ onBeforeUnmount(() => {
      the active block, in light and dark themes. */
   background: var(--color-data, #2b2b2b);
   box-shadow: 0 0 0 1px var(--color-region, #fff);
-  transition: left 0.15s linear;
+  left: var(--playhead, 0%);
   pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .chord-player-playhead,
-  .chord-block,
-  .chord-block-label {
+  .chord-block {
     transition: none;
   }
 }

@@ -223,51 +223,52 @@ describe('ChordPlayer transpose', () => {
   });
 });
 
-describe('ChordPlayer long chords', () => {
+describe('ChordPlayer timeline', () => {
   const longChord = [
     { start: 0, end: 2, label: 'A' },
     { start: 2, end: 30, label: 'D' },
     { start: 30, end: 32, label: 'E' },
   ];
 
-  async function playAt(seconds) {
+  // Pausing renders the timeline at the player's time.
+  async function pausedAt(seconds) {
     const wrapper = await mountPlayer({ segments: longChord, duration: 32 });
-    vi.useFakeTimers();
     lastPlayer.getCurrentTime = () => seconds;
-    lastPlayer.events.onStateChange({ data: 1 });
-    vi.advanceTimersByTime(200);
-    vi.useRealTimers();
+    lastPlayer.events.onStateChange({ data: 2 });
     await wrapper.vm.$nextTick();
     return wrapper;
   }
 
-  function labelOf(wrapper, chord) {
-    return wrapper
-      .findAll('.chord-block')
-      .find((b) => b.text() === chord)
-      .find('.chord-block-label');
-  }
-
-  const pct = (style, prop) => Number(style.match(new RegExp(`${prop}: ([\\d.-]+)%`))[1]);
+  const percent = (value) => Number.parseFloat(value);
 
   it.each([3, 9, 16, 25, 29.5])(
     'keeps the current chord name at the playhead line at %ss',
     async (seconds) => {
-      const wrapper = await playAt(seconds);
-      const block = wrapper.findAll('.chord-block').find((b) => b.text() === 'D');
-      const label = block.find('.chord-block-label').attributes('style');
-      const blockStyle = block.attributes('style');
-      // Track coordinates of the name's left edge: block left + offset within the block.
+      const wrapper = await pausedAt(seconds);
+      const track = wrapper.find('.chord-player-track').element.style;
+      const block = wrapper.find('.chord-block.is-active');
+      expect(block.text()).toBe('D');
+      // Track coordinates of the name: the block's place on the strip, minus
+      // how far the strip has scrolled, plus the name's offset in the block.
       const nameAt =
-        pct(blockStyle, 'left') + (pct(label, 'left') * pct(blockStyle, 'width')) / 100;
-      const playhead = pct(wrapper.find('.chord-player-playhead').attributes('style'), 'left');
-      expect(nameAt).toBeCloseTo(playhead, 3);
-      expect(label).not.toContain('transform');
+        percent(block.element.style.left) -
+        percent(track.getPropertyValue('--strip-offset')) +
+        Number(track.getPropertyValue('--active-progress')) * percent(block.element.style.width);
+      expect(nameAt).toBeCloseTo(percent(track.getPropertyValue('--playhead')), 6);
     }
   );
 
-  it('centres other chord names in the visible part of their block', async () => {
-    const wrapper = await playAt(16);
-    expect(labelOf(wrapper, 'E').attributes('style')).toContain('translateX(-');
+  it('dims the chords already played', async () => {
+    const wrapper = await pausedAt(16);
+    const [first, , last] = wrapper.findAll('.chord-block');
+    expect(first.classes()).toContain('is-past');
+    expect(last.classes()).not.toContain('is-past');
+  });
+
+  it('jumps the timeline to a chord when it is clicked', async () => {
+    const wrapper = await pausedAt(16);
+    await wrapper.findAll('.chord-block')[2].trigger('click');
+    expect(lastPlayer.seekTo).toHaveBeenCalledWith(30, true);
+    expect(wrapper.find('.chord-block.is-active').text()).toBe('E');
   });
 });

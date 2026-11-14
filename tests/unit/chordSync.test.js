@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import {
   activeSegmentIndex,
+  createPlaybackClock,
+  stripPosition,
   nextSegment,
   segmentProgress,
   segmentWindow,
@@ -157,5 +159,39 @@ describe('segmentWindow', () => {
   it('handles empty input', () => {
     expect(segmentWindow([], 0)).toEqual({ items: [], start: 0, end: 0 });
     expect(segmentWindow(undefined, 0)).toEqual({ items: [], start: 0, end: 0 });
+  });
+});
+
+describe('createPlaybackClock', () => {
+  it('extrapolates between reports at the playback rate', () => {
+    const clock = createPlaybackClock();
+    expect(clock.time(10, 1000)).toBe(10);
+    expect(clock.time(10, 1100)).toBeCloseTo(10.1);
+    expect(clock.time(10, 1100, 0.5)).toBeCloseTo(10.05);
+  });
+
+  it('rebases on each new report', () => {
+    const clock = createPlaybackClock();
+    clock.time(10, 1000);
+    expect(clock.time(10.25, 1300)).toBe(10.25);
+    expect(clock.time(10.25, 1400)).toBeCloseTo(10.35);
+  });
+
+  it('holds at most a second past a report that stops changing', () => {
+    const clock = createPlaybackClock();
+    clock.time(10, 1000);
+    expect(clock.time(10, 5000)).toBe(11);
+  });
+});
+
+describe('stripPosition', () => {
+  it('moves the playhead in from the left until the lead point', () => {
+    expect(stripPosition(1, 20, 0.15)).toEqual({ offset: 0, playhead: 5 });
+  });
+
+  it('then keeps the playhead fixed and scrolls the strip', () => {
+    const { offset, playhead } = stripPosition(13, 20, 0.15);
+    expect(playhead).toBeCloseTo(15);
+    expect(offset).toBeCloseTo(50);
   });
 });
