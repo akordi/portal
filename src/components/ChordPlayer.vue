@@ -169,6 +169,24 @@ function blockStyle(seg) {
   };
 }
 
+// Where a chord's name sits along its block, as a fraction of the block's
+// duration: at the playhead for the current chord, otherwise in the middle of
+// the block's visible part, so a long chord's name never scrolls out of view.
+// Shifting the label back by the same fraction of its own width keeps it
+// inside the block at both ends.
+function labelStyle(seg, active) {
+  const length = seg.end - seg.start;
+  if (length <= 0) {
+    return {};
+  }
+  const at = active
+    ? currentTime.value
+    : (Math.max(seg.start, viewStart.value) + Math.min(seg.end, viewStart.value + VIEW_SPAN_SEC)) /
+      2;
+  const pct = Math.min(100, Math.max(0, ((at - seg.start) / length) * 100));
+  return { left: `${pct}%`, transform: `translateX(-${pct}%)` };
+}
+
 // The playhead is effectively fixed once past the lead-in (currentTime -
 // viewStart == LEAD_FRACTION * span); during the lead-in it rides from the left
 // edge up to that resting position.
@@ -337,7 +355,9 @@ onBeforeUnmount(() => {
           @keydown.enter.prevent="seek(item.seg)"
           @keydown.space.prevent="seek(item.seg)"
         >
-          <span class="chord-block-label">{{ item.seg.label }}</span>
+          <span class="chord-block-label" :style="labelStyle(item.seg, item.index === activeIndex)">
+            {{ item.seg.label }}
+          </span>
         </div>
         <div class="chord-player-playhead" :style="playheadStyle"></div>
       </div>
@@ -540,7 +560,15 @@ onBeforeUnmount(() => {
   outline-offset: -2px;
 }
 .chord-block-label {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
   padding: 0 0.35rem;
+  transition:
+    left 0.15s linear,
+    transform 0.15s linear;
 }
 .chord-block.is-past {
   opacity: 0.4;
@@ -567,7 +595,8 @@ onBeforeUnmount(() => {
 
 @media (prefers-reduced-motion: reduce) {
   .chord-player-playhead,
-  .chord-block {
+  .chord-block,
+  .chord-block-label {
     transition: none;
   }
 }

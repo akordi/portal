@@ -43,6 +43,7 @@ class FakePlayer {
     this.destroy = vi.fn();
     this.getIframe = () => ({ style: {} });
     this.getCurrentTime = () => 0;
+    this.events = opts.events;
     opts.events.onReady();
   }
 }
@@ -76,9 +77,7 @@ async function mountPlayer(props = {}) {
 }
 
 const speedSwitcher = (wrapper) =>
-  wrapper
-    .findAllComponents({ name: 'LxValuePicker' })
-    .find((c) => c.props('variant') === 'tags');
+  wrapper.findAllComponents({ name: 'LxValuePicker' }).find((c) => c.props('variant') === 'tags');
 
 describe('ChordPlayer chord diagram panel', () => {
   it('is hidden by default so existing usages are unchanged', async () => {
@@ -221,5 +220,45 @@ describe('ChordPlayer transpose', () => {
 
     await wrapper.setProps({ videoUrl: 'https://youtu.be/XYZ123def45' });
     expect(label(wrapper).text()).toBe('0');
+  });
+});
+
+describe('ChordPlayer long chords', () => {
+  const longChord = [
+    { start: 0, end: 2, label: 'A' },
+    { start: 2, end: 30, label: 'D' },
+    { start: 30, end: 32, label: 'E' },
+  ];
+
+  async function playAt(seconds) {
+    const wrapper = await mountPlayer({ segments: longChord, duration: 32 });
+    vi.useFakeTimers();
+    lastPlayer.getCurrentTime = () => seconds;
+    lastPlayer.events.onStateChange({ data: 1 });
+    vi.advanceTimersByTime(200);
+    vi.useRealTimers();
+    await wrapper.vm.$nextTick();
+    return wrapper;
+  }
+
+  function labelOf(wrapper, chord) {
+    return wrapper
+      .findAll('.chord-block')
+      .find((b) => b.text() === chord)
+      .find('.chord-block-label');
+  }
+
+  it('keeps the current chord name at the playhead while the chord lasts', async () => {
+    // 16 s into a 2-30 s chord: half way through it, long after its start
+    // has scrolled off the left edge.
+    const wrapper = await playAt(16);
+    const style = labelOf(wrapper, 'D').attributes('style');
+    expect(style).toContain('left: 50%');
+    expect(style).toContain('translateX(-50%)');
+  });
+
+  it('keeps the name inside the block at its end', async () => {
+    const wrapper = await playAt(29.99);
+    expect(labelOf(wrapper, 'D').attributes('style')).toMatch(/left: 99\.9\d*%/);
   });
 });
