@@ -12,6 +12,7 @@ import lt from '@/locales/lt.json';
 import ee from '@/locales/ee.json';
 import es from '@/locales/es.json';
 import configBool from '@/utils/configBool';
+import gtagPageTracker from '@/utils/gtagPageTracker';
 import { countryCode } from '@/utils/htmlLang';
 import lxLocaleOptions, { lxGlobalTexts } from '@/utils/lxLocale';
 
@@ -70,15 +71,7 @@ export default function createAppInstance(config, { ssr = false, hydrate = false
     const gtag = createGtag({
       initMode: 'manual',
       tagId: config.gtagId,
-      pageTracker: {
-        router,
-        exclude: (route) => route.meta.customPageTracker,
-        template: (route) => ({
-          page_path: route.path,
-          page_title: $t(route.meta.title),
-          page_location: window.location.href,
-        }),
-      },
+      pageTracker: gtagPageTracker(router, $t),
     });
     app.use(gtag);
   }

@@ -86,7 +86,7 @@ function readConfig() {
     authEnabled: process.env.AUTH_ENABLED === 'true',
     environment: process.env.ENVIRONMENT || 'production',
     defaultLanguage: process.env.DEFAULT_LANGUAGE || 'lv',
-    gtagEnabled: false, // SSR never fires analytics — see SongView's loadSong()
+    gtagEnabled: false, // SSR never fires analytics
     gtagId: null,
     // Same internal portal-api URL the API proxy below uses — falls back to
     // SERVICE_URL/'/api' for local runs where API_V2_URL isn't set.
