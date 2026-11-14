@@ -33,4 +33,16 @@ describe('songSummary', () => {
       playAlong: false,
     });
   });
+
+  it('offers play-along only for a timeline with real chords', () => {
+    const timed = (labels) => ({
+      id: 1,
+      title: 'X',
+      url: '/song/1-X',
+      chordTimeline: { segments: labels.map((label, i) => ({ start: i, end: i + 1, label })) },
+    });
+    expect(songSummary(timed(['N'])).playAlong).toBe(false);
+    expect(songSummary(timed(['N', 'N.C.'])).playAlong).toBe(false);
+    expect(songSummary(timed(['N', 'Am'])).playAlong).toBe(true);
+  });
 });

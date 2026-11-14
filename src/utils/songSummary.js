@@ -1,3 +1,5 @@
+import { isNoChord } from '@/utils/chordName';
+
 /**
  * The fields song lists render. Lists keep only these, as their state is
  * serialized into the server-rendered page.
@@ -10,6 +12,7 @@ export default function songSummary(song) {
     artist: song.mainArtist?.title ?? '',
     youtubeLink: song.youtubeLink || '',
     weeklyVisits: song.songTop?.visitsWeekly ?? 0,
-    playAlong: Boolean(song.chordTimeline?.segments?.length),
+    // A timeline of only no-chord markers has nothing to play along to.
+    playAlong: (song.chordTimeline?.segments ?? []).some((seg) => !isNoChord(seg.label)),
   };
 }
