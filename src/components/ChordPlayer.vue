@@ -53,14 +53,15 @@ const CAPO_MAX_FRET = 7;
 const VIEW_SPAN_SEC = 20;
 const LEAD_FRACTION = 0.15;
 // A chord longer than the track left of the playhead would scroll its name
-// out of view while still playing, so its name sticks to the playhead.
-const STICKY_MIN_SEC = LEAD_FRACTION * VIEW_SPAN_SEC;
+// out of view while still playing: its name starts at the block's start and
+// sticks to the playhead while it plays. Shorter chords centre their name.
+const LONG_CHORD_SEC = LEAD_FRACTION * VIEW_SPAN_SEC;
 
 const mount = ref(null);
 const track = ref(null);
 const activeIndex = ref(-1);
-function isSticky(seg, index) {
-  return index === activeIndex.value && seg.end - seg.start > STICKY_MIN_SEC;
+function isLong(seg) {
+  return seg.end - seg.start > LONG_CHORD_SEC;
 }
 const ready = shallowRef(false);
 let player = null;
@@ -330,7 +331,7 @@ onBeforeUnmount(() => {
             :class="{
               'is-active': index === activeIndex,
               'is-past': index < activeIndex,
-              'is-sticky': isSticky(seg, index),
+              'is-long': isLong(seg),
             }"
             :style="blockStyle(seg)"
             :title="`${seg.label} · ${fmt(seg.end - seg.start)}`"
@@ -549,8 +550,12 @@ onBeforeUnmount(() => {
   align-items: center;
   padding: 0 0.35rem;
 }
+.chord-block:not(.is-long) .chord-block-label {
+  left: 50%;
+  transform: translateX(-50%);
+}
 /* Sticks to the playhead until the block's end clips it. */
-.chord-block.is-sticky .chord-block-label {
+.chord-block.is-long.is-active .chord-block-label {
   left: calc(var(--active-progress, 0) * 100%);
 }
 .chord-block.is-past {

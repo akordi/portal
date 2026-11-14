@@ -258,16 +258,14 @@ describe('ChordPlayer timeline', () => {
     }
   );
 
-  it("lets a short chord's name scroll past the playhead with its block", async () => {
+  it('marks only chords longer than the track left of the playhead as long', async () => {
+    // Long chords' names stick to the playhead while playing; short ones are centred.
     const wrapper = await pausedAt(1);
-    const block = wrapper.find('.chord-block.is-active');
-    expect(block.text()).toBe('A');
-    expect(block.classes()).not.toContain('is-sticky');
-  });
-
-  it("sticks only a long chord's name to the playhead", async () => {
-    const wrapper = await pausedAt(16);
-    expect(wrapper.find('.chord-block.is-active').classes()).toContain('is-sticky');
+    const [short, long, after] = wrapper.findAll('.chord-block');
+    expect(short.classes()).toEqual(expect.arrayContaining(['is-active']));
+    expect(short.classes()).not.toContain('is-long');
+    expect(long.classes()).toContain('is-long');
+    expect(after.classes()).not.toContain('is-long');
   });
 
   it('dims the chords already played', async () => {
