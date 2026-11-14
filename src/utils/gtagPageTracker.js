@@ -1,27 +1,20 @@
 /**
- * Page-view payload for vue-gtag's router tracker.
- *
- * Song routes (meta.songPage) report the canonical /song/<slug> path and
- * location (GA4 derives page path from page_location) whichever list they
- * were opened from, and no page_title, so GA takes document.title: on a
- * landing that is the server-rendered song title. Other routes send their
- * translated route title.
+ * Page-view payload for vue-gtag's router tracker. Song views report the
+ * canonical /song/<slug> from whichever list they were opened, keeping the
+ * query (campaign parameters), and leave page_title to document.title, which
+ * is the song title once it has loaded.
  */
 export function pageViewFor(route, t, location) {
   if (route.meta?.songPage) {
-    const path = `/song/${route.params.url}`;
-    return { page_path: path, page_location: new URL(path, location).href };
+    const url = new URL(location);
+    url.pathname = `/song/${route.params.url}`;
+    return { page_path: url.pathname, page_location: url.href };
   }
   return { page_path: route.path, page_title: t(route.meta?.title), page_location: location };
 }
 
-/**
- * Router tracker options. Every route is tracked here — including songs — so
- * the landing page_view is sent by vue-gtag itself once it has queued its
- * config (on consent, or on load for returning visitors). A page_view pushed
- * before that is dropped by gtag.js, which left consenting first-time visitors
- * with no landing page in GA ("(not set)").
- */
+// Song routes are tracked here too, not from the view: vue-gtag sends these
+// only after its config is queued, and gtag.js drops page views queued before.
 export default function gtagPageTracker(router, t) {
   return {
     router,
