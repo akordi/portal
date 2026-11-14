@@ -270,7 +270,8 @@
         },
         "dashboard": {
             "title": "Avaleht",
-            "disclaimer": "Kogu siin leiduva sisu on mõeldud ainult õppeotstarbeks. Paljud siin leiduvaid laule on kasutajate interpretatsioonid ja võivad täpselt ei vasta originaalile. Kui siin on sinu laul ja sa ei taha, et teised seda õpiksid, või on tekkinud küsimusi või kommentaare, kirjuta info[at]akordi.lv."
+            "disclaimer": "Kogu siin leiduva sisu on mõeldud ainult õppeotstarbeks. Paljud siin leiduvaid laule on kasutajate interpretatsioonid ja võivad täpselt ei vasta originaalile. Kui siin on sinu laul ja sa ei taha, et teised seda õpiksid, või on tekkinud küsimusi või kommentaare, kirjuta info[at]akordi.lv.",
+            "featuredLink": "Vaata laule"
         },
         "songs": {
             "title": "Laulude kataloog"
@@ -523,7 +524,11 @@
             "metaDescription": "Laulud akordide ja tabulatuuridega {songTitles}",
             "list": {
                 "error": "Laulude laadimisel tekkis viga. Palun proovige hiljem uuesti."
-            }
+            },
+            "pageTitle": "Teemalaulud: {title}",
+            "popular": "Populaarseimad",
+            "all": "Kõik laulud ({count})",
+            "loadMore": "Näita rohkem"
         },
         "login": {
             "title": "Valige autentimise meetod",

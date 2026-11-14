@@ -8,10 +8,23 @@ import { createPinia } from 'pinia';
 // each starts from an empty module registry to get modules bound to its own.
 vi.hoisted(() => vi.resetModules());
 
-const { getSong, getSongsCount } = vi.hoisted(() => ({ getSong: vi.fn(), getSongsCount: vi.fn() }));
+const { getSong, getSongsCount, getTag, getSongs, getFeaturedTags } = vi.hoisted(() => ({
+  getSong: vi.fn(),
+  getSongsCount: vi.fn(),
+  getTag: vi.fn(),
+  getSongs: vi.fn(),
+  getFeaturedTags: vi.fn(),
+}));
 
 vi.mock('@/services/akordiService', () => ({
-  default: { parseUrl: (url) => Number.parseInt(url, 10), getSong, getSongsCount },
+  default: {
+    parseUrl: (url) => Number.parseInt(url, 10),
+    getSong,
+    getSongsCount,
+    getTag,
+    getSongs,
+    getFeaturedTags,
+  },
 }));
 const viewStore = { title: null, description: null, goBack: null };
 vi.mock('@/stores/useViewStore', () => ({ default: () => viewStore }));
@@ -19,11 +32,13 @@ vi.mock('@/stores/useViewStore', () => ({ default: () => viewStore }));
 import prefetchRoute from '@/ssr/prefetch';
 import useDashboardStore from '@/stores/useDashboardStore';
 import useSongStore from '@/stores/useSongStore';
+import useTagStore from '@/stores/useTagStore';
 
 // resolve() mirrors the real route shapes: the list variants keep their prefix.
 const PATH_BY_ROUTE = {
   akordiSongView: '/song',
   songListTopSongView: '/top/song',
+  tagView: '/tag',
 };
 const router = {
   resolve: ({ name, params }) => ({ path: `${PATH_BY_ROUTE[name]}/${params.url}` }),
@@ -113,6 +128,7 @@ describe('prefetchRoute for the dashboard', () => {
   it('loads the song count into the dashboard store', async () => {
     const pinia = createPinia();
     getSongsCount.mockResolvedValue({ data: { totalElements: 12345 } });
+    getFeaturedTags.mockResolvedValue({ data: { content: [] } });
 
     const prefetched = await prefetchRoute({
       route: { name: 'dashboard', params: {} },
@@ -124,5 +140,122 @@ describe('prefetchRoute for the dashboard', () => {
     expect(prefetched).toBe(true);
     expect(useDashboardStore(pinia).songCountTotal).toBe(12345);
     expect(pinia.state.value.dashboardStore.songCountTotal).toBe(12345);
+  });
+});
+
+describe('prefetchRoute for the dashboard featured tags', () => {
+  const run = (pinia) =>
+    prefetchRoute({
+      route: { name: 'dashboard', params: {} },
+      router,
+      pinia,
+      ssrContext: { status: 200, redirect: null },
+    });
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    getSongsCount.mockResolvedValue({ data: { totalElements: 1 } });
+  });
+
+  it('transfers the featured tags with the dashboard state', async () => {
+    const pinia = createPinia();
+    const featured = [{ id: 4, title: 'ziemassvētku', url: '/tag/4-Ziemassvetku' }];
+    getFeaturedTags.mockResolvedValue({ data: { content: featured } });
+
+    await run(pinia);
+
+    expect(pinia.state.value.dashboardStore.featuredTags).toEqual(featured);
+  });
+
+  it('renders the home page without banners when the featured call fails', async () => {
+    const pinia = createPinia();
+    getFeaturedTags.mockRejectedValue({ response: { status: 404 } });
+
+    await run(pinia);
+
+    expect(useDashboardStore(pinia).featuredTags).toEqual([]);
+    expect(useDashboardStore(pinia).songCountTotal).toBe(1);
+  });
+});
+
+describe('prefetchRoute for a tag page', () => {
+  const i18n = { global: { t: (key, params) => `${key}:${JSON.stringify(params)}` } };
+  const tag = { id: 4, title: 'ziemassvētku', url: '/tag/4-Ziemassvetku', songCount: 3 };
+  const songsPage = (n) => ({
+    data: {
+      content: Array.from({ length: n }, (_, i) => ({
+        id: i + 1,
+        title: `S${i + 1}`,
+        url: `/song/${i + 1}-S`,
+      })),
+      totalElements: n,
+    },
+  });
+  let pinia;
+  let ssrContext;
+  const run = (url = '4-Ziemassvetku') =>
+    prefetchRoute({ route: { name: 'tagView', params: { url } }, router, pinia, ssrContext, i18n });
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    pinia = createPinia();
+    ssrContext = { status: 200, redirect: null };
+    viewStore.title = null;
+    viewStore.goBack = null;
+    getTag.mockResolvedValue({ data: { ...tag } });
+    getSongs.mockImplementation((params) =>
+      Promise.resolve(params.sort === 'title,asc' ? songsPage(3) : songsPage(3))
+    );
+  });
+
+  it('loads tag and songs into the transferred store, header from the tag', async () => {
+    expect(await run()).toBe(true);
+
+    expect(getTag).toHaveBeenCalledWith(4);
+    expect(getSongs).toHaveBeenCalledWith(
+      expect.objectContaining({ 'tag.id': 4, sort: 'title,asc' })
+    );
+    expect(getSongs).toHaveBeenCalledWith(
+      expect.objectContaining({ 'tag.id': 4, sort: 'songTop.visitsWeekly,desc', size: 10 })
+    );
+    expect(pinia.state.value.tagStore.tag).toEqual(tag);
+    expect(pinia.state.value.tagStore.songs).toHaveLength(3);
+    // Popular is only a separate section when it isn't the whole list.
+    expect(pinia.state.value.tagStore.popular).toEqual([]);
+    expect(viewStore.title).toBe('pages.tagView.title:{"title":"ziemassvētku"}');
+    expect(viewStore.goBack).toBe(true);
+    expect(ssrContext).toEqual({ status: 200, redirect: null });
+  });
+
+  it('uses the admin-entered page title as the heading', async () => {
+    getTag.mockResolvedValue({ data: { ...tag, pageTitle: 'Ziemassvētku dziesmas' } });
+
+    await run();
+
+    expect(viewStore.title).toBe('Ziemassvētku dziesmas');
+  });
+
+  it('keeps a popular section for large tags', async () => {
+    getSongs.mockImplementation((params) =>
+      Promise.resolve(params.sort === 'title,asc' ? songsPage(40) : songsPage(10))
+    );
+
+    await run();
+
+    expect(useTagStore(pinia).popular).toHaveLength(10);
+    expect(useTagStore(pinia).total).toBe(40);
+  });
+
+  it('asks for a 301 to the real tag URL when the slug is wrong', async () => {
+    await run('4-wrong');
+
+    expect(ssrContext.redirect).toBe('/tag/4-Ziemassvetku');
+  });
+
+  it('reports 404 for a missing tag', async () => {
+    getTag.mockRejectedValue({ response: { status: 404 } });
+
+    await expect(run('999-Nope')).rejects.toBeDefined();
+    expect(ssrContext.status).toBe(404);
   });
 });

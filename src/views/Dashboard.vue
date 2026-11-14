@@ -4,6 +4,7 @@ import { onMounted, ref } from 'vue';
 
 import useAuthStore from '@/stores/useAuthStore';
 import useDashboardStore from '@/stores/useDashboardStore';
+import { tagUrlParam } from '@/utils/tagUrl';
 import { useI18n } from 'vue-i18n';
 
 const authStore = useAuthStore();
@@ -12,6 +13,10 @@ const dashboardStore = useDashboardStore();
 // client only needs to fetch it itself as a fallback for the rare case prefetch didn't run.
 const songCount = ref(dashboardStore.songCountTotal ?? 0);
 const $t = useI18n().t;
+
+function featuredHeading(tag) {
+  return tag.pageTitle || tag.title.charAt(0).toUpperCase() + tag.title.slice(1);
+}
 
 onMounted(async () => {
   if (dashboardStore.songCountTotal === null) {
@@ -23,6 +28,16 @@ onMounted(async () => {
 
 <template>
   <div>
+    <router-link
+      v-for="tag in dashboardStore.featuredTags"
+      :key="tag.id"
+      class="featured-tag"
+      :to="{ name: 'tagView', params: { url: tagUrlParam(tag) } }"
+    >
+      <strong class="featured-tag-heading">{{ featuredHeading(tag) }}</strong>
+      <span v-if="tag.featuredText">{{ tag.featuredText }}</span>
+      <span class="featured-tag-link">{{ $t('pages.dashboard.featuredLink') }} →</span>
+    </router-link>
     <p>
       {{ $t('pages.dashboard.disclaimer') }}
     </p>
@@ -74,3 +89,31 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.featured-tag {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+  padding: 1rem 1.25rem;
+  border-left: 4px solid var(--color-brand, currentColor);
+  background: var(--color-region, transparent);
+  color: inherit;
+  text-decoration: none;
+}
+.featured-tag:hover {
+  background: var(--color-region-hover, var(--color-region, transparent));
+}
+.featured-tag:hover .featured-tag-link,
+.featured-tag:focus-visible .featured-tag-link {
+  text-decoration: underline;
+}
+.featured-tag-heading {
+  font-size: 1.125rem;
+}
+.featured-tag-link {
+  color: var(--color-interactive-background, inherit);
+  font-weight: 600;
+}
+</style>

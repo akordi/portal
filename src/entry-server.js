@@ -32,7 +32,7 @@ export default async function render(url, config) {
   setSsrApiBaseUrl(config.serviceUrl);
   setSsrApiBaseUrlAnon(config.serviceUrl);
 
-  const { app, router, head, pinia } = createAppInstance(config, { ssr: true });
+  const { app, router, head, pinia, i18n } = createAppInstance(config, { ssr: true });
 
   const ssrContext = { status: 200, redirect: null };
   app.provide('ssrContext', ssrContext);
@@ -51,6 +51,7 @@ export default async function render(url, config) {
       router,
       pinia,
       ssrContext,
+      i18n,
     });
   } catch (err) {
     // A 404 is a reported outcome (ssrContext.status), not a failure worth

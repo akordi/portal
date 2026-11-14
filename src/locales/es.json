@@ -270,7 +270,8 @@
         },
         "dashboard": {
             "title": "Página de inicio",
-            "disclaimer": "Todo el contenido que se encuentra aquí se publica únicamente con fines educativos. Gran parte de las canciones del sitio son interpretaciones de los usuarios y pueden no coincidir exactamente con el original. Si hay alguna canción tuya aquí y no quieres que otros la aprendan, o si tienes alguna pregunta o comentario, escribe a info[at]akordi.es."
+            "disclaimer": "Todo el contenido que se encuentra aquí se publica únicamente con fines educativos. Gran parte de las canciones del sitio son interpretaciones de los usuarios y pueden no coincidir exactamente con el original. Si hay alguna canción tuya aquí y no quieres que otros la aprendan, o si tienes alguna pregunta o comentario, escribe a info[at]akordi.es.",
+            "featuredLink": "Ver canciones"
         },
         "songs": {
             "title": "Catálogo de canciones"
@@ -523,7 +524,11 @@
             "metaDescription": "Canciones con acordes y tablaturas {songTitles}",
             "list": {
                 "error": "Error al cargar las canciones. Por favor, inténtelo de nuevo más tarde."
-            }
+            },
+            "pageTitle": "Canciones temáticas: {title}",
+            "popular": "Más populares",
+            "all": "Todas las canciones ({count})",
+            "loadMore": "Mostrar más"
         },
         "login": {
             "title": "Elija un método de autenticación",

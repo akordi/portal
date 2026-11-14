@@ -270,7 +270,8 @@
         },
         "dashboard": {
             "title": "Pradinis puslapis",
-            "disclaimer": "Visas čia esančios medžiagos yra skirtos tik mokymosi tikslams. Daugelis čia esančių dainų yra vartotojų interpretacijos ir gali tiksliai neatitikti originalo. Jei čia yra tavo daina ir nenori, kad ją mokytųsi kiti, arba turi klausimų ar komentarų, rašyk į info[at]akordi.lv."
+            "disclaimer": "Visas čia esančios medžiagos yra skirtos tik mokymosi tikslams. Daugelis čia esančių dainų yra vartotojų interpretacijos ir gali tiksliai neatitikti originalo. Jei čia yra tavo daina ir nenori, kad ją mokytųsi kiti, arba turi klausimų ar komentarų, rašyk į info[at]akordi.lv.",
+            "featuredLink": "Žiūrėti dainas"
         },
         "songs": {
             "title": "Dainų katalogas"
@@ -523,7 +524,11 @@
             "metaDescription": "Dainos su akordais ir tabulaturėmis {songTitles}",
             "list": {
                 "error": "Klaida įkeliant dainas. Prašome bandyti vėliau."
-            }
+            },
+            "pageTitle": "Teminės dainos: {title}",
+            "popular": "Populiariausios",
+            "all": "Visos dainos ({count})",
+            "loadMore": "Rodyti daugiau"
         },
         "login": {
             "title": "Pasirinkite autentifikavimo būdą",
