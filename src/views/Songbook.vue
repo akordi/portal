@@ -54,6 +54,7 @@ onMounted(async () => {
 
 <template>
   <LxList
+    icon="next"
     id="id"
     list-type="2"
     v-model:items="items"

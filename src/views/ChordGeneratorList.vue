@@ -71,6 +71,7 @@ onMounted(async () => {
 
 <template>
   <LxList
+    icon="next"
     id="chordGeneratorList"
     list-type="2"
     v-model:items="items"

@@ -91,6 +91,7 @@ watch(currentSection, (newVal) => {
   />
   <div class="lx-divider"></div>
   <LxList
+    icon="next"
     id="id"
     list-type="2"
     :loading="loading"

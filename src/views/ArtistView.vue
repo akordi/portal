@@ -145,6 +145,7 @@ onServerPrefetch(async () => {
 <template>
   <LxLoader :loading="loading" />
   <LxList
+    icon="next"
     v-if="!loading"
     id="id"
     list-type="2"
