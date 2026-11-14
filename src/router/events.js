@@ -3,6 +3,8 @@ import { isReloadingForNewVersion } from '@/hooks/useVersionCheck';
 import useAppStore from '@/stores/useAppStore';
 import useAuthStore from '@/stores/useAuthStore';
 import { lxFlowUtils } from '@akordi/lx-ui';
+import useViewStore from '@/stores/useViewStore';
+import shouldResetView from '@/router/viewReset';
 
 export default (router) => {
   // Return-based guard: since lx-ui 2.3 the flow utils no longer take or call
@@ -59,7 +61,10 @@ export default (router) => {
     //   return lxFlowUtils.beforeEach(to, from, appStore, authStore);
   });
 
-  router.afterEach(async (to, from) => {
+  router.afterEach(async (to, from, failure) => {
+    if (shouldResetView(to, from, failure)) {
+      useViewStore().$reset();
+    }
     const appStore = useAppStore();
     await lxFlowUtils.afterEach(to, from, appStore);
   });
