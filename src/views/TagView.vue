@@ -151,19 +151,19 @@ const rankedItems = computed(() =>
 );
 const songItems = computed(() => tagStore.songs.map((song) => listItem(song)));
 
-onMounted(() => {
+onMounted(async () => {
   if (tag.value) {
     showHeader();
   } else {
-    loadTag();
+    await loadTag();
   }
 });
 
 // The view stays mounted when navigating from one tag straight to another.
 watch(
   () => akordiService.parseUrl(urlParam.value),
-  (id, previousId) => {
-    if (id !== previousId && id !== null) loadTag();
+  async (id, previousId) => {
+    if (id !== previousId && id !== null) await loadTag();
   },
   { flush: 'post' }
 );

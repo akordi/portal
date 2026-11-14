@@ -86,20 +86,20 @@ async function loadArtist() {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   viewStore.goBack = true;
   if (artist.value) {
     viewStore.title = artist.value.title;
   } else {
-    loadArtist();
+    await loadArtist();
   }
 });
 
 // Same view, different artist (e.g. picked from the header search).
 watch(
   () => akordiService.parseUrl(artistUrlParam.value),
-  (id, previousId) => {
-    if (id !== previousId) loadArtist();
+  async (id, previousId) => {
+    if (id !== previousId) await loadArtist();
   },
   { flush: 'post' }
 );

@@ -23,6 +23,7 @@ import ChordSvg from '@/components/ChordSvg.vue';
 import siteOrigin from '@/utils/siteOrigin';
 import SongTags from '@/components/SongTags.vue';
 import { youtubeId } from '@/utils/chordSync';
+import { hasPlayableChords } from '@/utils/chordName';
 import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
 import useAuthStore from '@/stores/useAuthStore';
 import akordiAdminListService from '@/services/songbookService';
@@ -109,7 +110,7 @@ const videoUrl = computed(() =>
 );
 const segments = computed(() => item.value.chordTimeline?.segments ?? []);
 // A song is playable only with a resolvable video AND at least one chord segment.
-const playable = computed(() => !!youtubeId(videoUrl.value) && segments.value.length > 0);
+const playable = computed(() => !!youtubeId(videoUrl.value) && hasPlayableChords(segments.value));
 const fontSize = ref(1);
 const offsetFormatted = computed(() => {
   if (bodyTransposedIndex.value > 0) {

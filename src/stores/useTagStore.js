@@ -6,6 +6,10 @@ import songSummary from '@/utils/songSummary';
 
 const PAGE_SIZE = 100;
 
+function songsQuery(id, extra) {
+  return akordiService.getSongs({ 'tag.id': id, ...extra });
+}
+
 /**
  * The tag page's data: the tag, its most visited songs and its song list.
  * Filled before SSR and transferred to the browser like songStore.
@@ -16,10 +20,6 @@ export default defineStore('tagStore', () => {
   const songs = ref([]);
   const total = ref(0);
   const page = ref(0);
-
-  function songsQuery(id, extra) {
-    return akordiService.getSongs({ 'tag.id': id, ...extra });
-  }
 
   async function load(urlParam) {
     const id = akordiService.parseUrl(urlParam);
