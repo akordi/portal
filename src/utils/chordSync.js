@@ -110,22 +110,47 @@ export function segmentWindow(segments, activeIndex, opts = {}) {
  * only every few hundred milliseconds; in between, the time is extrapolated
  * from the last report at the playback rate, so the timeline moves every frame
  * instead of in steps. A report that stops changing (stall, buffering) holds
- * the extrapolation to at most MAX_EXTRAPOLATION_SEC past it.
+ * the extrapolation to at most MAX_EXTRAPOLATION_SEC past it. After a seek,
+ * reports far from the target are the player's stale pre-seek time and are
+ * ignored until it catches up (or SEEK_SETTLE_MS passes).
  */
 const MAX_EXTRAPOLATION_SEC = 1;
+const SEEK_SETTLE_MS = 1000;
+const SEEK_TOLERANCE_SEC = 1;
 
 export function createPlaybackClock() {
   let reported = null;
   let reportedAt = 0;
+  let seek = null;
   return {
     /** Playback time at `nowMs` (performance.now()), given the player's latest report. */
     time(report, nowMs, rate = 1) {
-      if (report !== reported) {
-        reported = report;
+      let value = report;
+      if (seek) {
+        const settled =
+          Math.abs(report - seek.time) <= SEEK_TOLERANCE_SEC || nowMs - seek.at > SEEK_SETTLE_MS;
+        if (settled) {
+          seek = null;
+        } else {
+          value = seek.time;
+        }
+      }
+      if (value !== reported) {
+        reported = value;
         reportedAt = nowMs;
       }
       const ahead = ((nowMs - reportedAt) / 1000) * rate;
       return reported + Math.min(ahead, MAX_EXTRAPOLATION_SEC);
+    },
+    /** Forget the last report's timing, e.g. when playback resumes after a pause. */
+    restart() {
+      reported = null;
+    },
+    /** Continue from `time` (a seek target) as of `nowMs`. */
+    seekTo(time, nowMs) {
+      seek = { time, at: nowMs };
+      reported = time;
+      reportedAt = nowMs;
     },
   };
 }

@@ -245,18 +245,41 @@ describe('ChordPlayer timeline', () => {
     'keeps the current chord name at the playhead line at %ss',
     async (seconds) => {
       const wrapper = await pausedAt(seconds);
-      const track = wrapper.find('.chord-player-track').element.style;
       const block = wrapper.find('.chord-block.is-active');
       expect(block.text()).toBe('D');
+      const scrolled = -percent(
+        wrapper.find('.chord-strip').element.style.transform.match(/translateX\((-?[\d.]+)%\)/)[1]
+      );
       // Track coordinates of the name: the block's place on the strip, minus
       // how far the strip has scrolled, plus the name's offset in the block.
       const nameAt =
         percent(block.element.style.left) -
-        percent(track.getPropertyValue('--strip-offset')) +
-        Number(track.getPropertyValue('--active-progress')) * percent(block.element.style.width);
-      expect(nameAt).toBeCloseTo(percent(track.getPropertyValue('--playhead')), 6);
+        scrolled +
+        Number(block.element.style.getPropertyValue('--progress')) *
+          percent(block.element.style.width);
+      expect(nameAt).toBeCloseTo(
+        percent(wrapper.find('.chord-player-playhead').element.style.left),
+        6
+      );
     }
   );
+
+  it('puts only the current chord in the tab order and marks it current', async () => {
+    const wrapper = await pausedAt(16);
+    const blocks = wrapper.findAll('.chord-block');
+    expect(blocks.map((b) => b.attributes('tabindex'))).toEqual(['-1', '0', '-1']);
+    expect(blocks[1].attributes('aria-current')).toBe('time');
+    expect(blocks[0].attributes('aria-current')).toBeUndefined();
+  });
+
+  it('moves to the next and previous chord with the arrow keys', async () => {
+    const wrapper = await pausedAt(16);
+    await wrapper.find('.chord-block.is-active').trigger('keydown', { key: 'ArrowRight' });
+    expect(lastPlayer.seekTo).toHaveBeenLastCalledWith(30, true);
+    expect(wrapper.find('.chord-block.is-active').text()).toBe('E');
+    await wrapper.find('.chord-block.is-active').trigger('keydown', { key: 'ArrowLeft' });
+    expect(lastPlayer.seekTo).toHaveBeenLastCalledWith(2, true);
+  });
 
   it('marks only chords longer than the track left of the playhead as long', async () => {
     // Long chords' names stick to the playhead while playing; short ones are centred.

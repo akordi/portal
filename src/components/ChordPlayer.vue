@@ -7,7 +7,7 @@
  * Custom markup (iframe + timeline) lives here in a component, per LX UI
  * conventions.
  */
-import { computed, onBeforeUnmount, ref, shallowRef, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, ref, shallowRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { LxButton, LxValuePicker } from '@akordi/lx-ui';
 
@@ -58,15 +58,18 @@ const LEAD_FRACTION = 0.15;
 const LONG_CHORD_SEC = LEAD_FRACTION * VIEW_SPAN_SEC;
 
 const mount = ref(null);
-const track = ref(null);
+const strip = ref(null);
+const playhead = ref(null);
 const activeIndex = ref(-1);
+// The one chord in the tab order; arrow keys move between chords.
+const focusIndex = computed(() => Math.max(0, activeIndex.value));
 function isLong(seg) {
   return seg.end - seg.start > LONG_CHORD_SEC;
 }
 const ready = shallowRef(false);
 let player = null;
 let animationFrame = null;
-let clock = createPlaybackClock();
+const clock = createPlaybackClock();
 
 const videoId = computed(() => youtubeId(props.videoUrl));
 
@@ -157,22 +160,23 @@ function blockStyle(seg) {
   };
 }
 
-// Positions are written as CSS variables on the track rather than through Vue
-// state, so a frame costs one style update; Vue re-renders only when the
-// current chord changes.
+// Frames write positions straight to the strip, the playhead and the current
+// block, not through Vue state; Vue re-renders only when the chord changes.
 function render(time) {
-  const el = track.value;
-  if (!el) {
+  if (!strip.value || !playhead.value) {
     return;
   }
-  const { offset, playhead } = stripPosition(time, VIEW_SPAN_SEC, LEAD_FRACTION);
-  el.style.setProperty('--strip-offset', `${offset}%`);
-  el.style.setProperty('--playhead', `${playhead}%`);
+  const position = stripPosition(time, VIEW_SPAN_SEC, LEAD_FRACTION);
+  strip.value.style.transform = `translateX(-${position.offset}%)`;
+  playhead.value.style.left = `${position.playhead}%`;
   const index = activeSegmentIndex(props.segments, time);
   activeIndex.value = index;
   const seg = props.segments[index];
-  const progress = seg && seg.end > seg.start ? (time - seg.start) / (seg.end - seg.start) : 0;
-  el.style.setProperty('--active-progress', String(Math.min(1, Math.max(0, progress))));
+  const block = strip.value.children[index];
+  if (seg && block && seg.end > seg.start) {
+    const progress = Math.min(1, Math.max(0, (time - seg.start) / (seg.end - seg.start)));
+    block.style.setProperty('--progress', String(progress));
+  }
 }
 
 function fmt(seconds) {
@@ -216,6 +220,7 @@ function stopFrames() {
 
 function startFrames() {
   stopFrames();
+  clock.restart();
   const step = (now) => {
     render(clock.time(playerTime(), now, playbackRate.value));
     animationFrame = requestAnimationFrame(step);
@@ -271,9 +276,16 @@ function seek(seg) {
   if (player && typeof player.seekTo === 'function') {
     player.seekTo(seg.start, true);
     player.playVideo();
-    clock = createPlaybackClock();
+    clock.seekTo(seg.start, performance.now());
     render(seg.start);
   }
+}
+
+async function seekBy(step) {
+  const index = Math.min(props.segments.length - 1, Math.max(0, focusIndex.value + step));
+  seek(props.segments[index]);
+  await nextTick();
+  strip.value?.children[index]?.focus({ preventScroll: true });
 }
 
 watch(playbackRate, () => {
@@ -287,6 +299,7 @@ watch(
     // silently show wrong chords for it.
     if (previous !== undefined) {
       transpose.value = 0;
+      render(0);
     }
     if (!id) {
       return;
@@ -318,8 +331,8 @@ onBeforeUnmount(() => {
         <div ref="mount" class="chord-player-frame"></div>
       </div>
 
-      <div ref="track" class="chord-player-track">
-        <div class="chord-strip">
+      <div class="chord-player-track">
+        <div ref="strip" class="chord-strip">
           <!-- role=button divs, not <button>: LX UI's button sizing would clamp
                the proportional width to a minimum square. -->
           <div
@@ -327,7 +340,8 @@ onBeforeUnmount(() => {
             :key="index"
             class="chord-block"
             role="button"
-            tabindex="0"
+            :tabindex="index === focusIndex ? 0 : -1"
+            :aria-current="index === activeIndex ? 'time' : undefined"
             :class="{
               'is-active': index === activeIndex,
               'is-past': index < activeIndex,
@@ -338,11 +352,13 @@ onBeforeUnmount(() => {
             @click="seek(seg)"
             @keydown.enter.prevent="seek(seg)"
             @keydown.space.prevent="seek(seg)"
+            @keydown.right.prevent="seekBy(1)"
+            @keydown.left.prevent="seekBy(-1)"
           >
             <span class="chord-block-label">{{ seg.label }}</span>
           </div>
         </div>
-        <div class="chord-player-playhead"></div>
+        <div ref="playhead" class="chord-player-playhead"></div>
       </div>
 
       <!-- Practice controls: playback speed for everyone; transpose (with a
@@ -504,7 +520,7 @@ onBeforeUnmount(() => {
   border-radius: 8px;
 }
 
-/* Windowed track --------------------------------------------------------- */
+/* Chord track ------------------------------------------------------------ */
 .chord-player-track {
   position: relative;
   width: 100%;
@@ -512,13 +528,13 @@ onBeforeUnmount(() => {
   background: var(--color-region-2, #eee);
   border: 1px solid var(--color-chrome, #e0e0e0);
   border-radius: 8px;
-  overflow: hidden;
+  /* clip, not hidden: focusing an off-screen chord must not scroll the track. */
+  overflow: clip;
   box-sizing: border-box;
 }
 .chord-strip {
   position: absolute;
   inset: 0;
-  transform: translateX(calc(-1 * var(--strip-offset, 0%)));
   will-change: transform;
 }
 .chord-block {
@@ -556,7 +572,7 @@ onBeforeUnmount(() => {
 }
 /* Sticks to the playhead until the block's end clips it. */
 .chord-block.is-long.is-active .chord-block-label {
-  left: calc(var(--active-progress, 0) * 100%);
+  left: calc(var(--progress, 0) * 100%);
 }
 .chord-block.is-past {
   opacity: 0.4;
@@ -577,7 +593,7 @@ onBeforeUnmount(() => {
      the active block, in light and dark themes. */
   background: var(--color-data, #2b2b2b);
   box-shadow: 0 0 0 1px var(--color-region, #fff);
-  left: var(--playhead, 0%);
+  left: 0;
   pointer-events: none;
 }
 
