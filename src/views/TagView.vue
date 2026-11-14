@@ -1,5 +1,6 @@
 <script setup>
-import { LxButton, LxLoader } from '@akordi/lx-ui';
+import { LxList, LxLoader } from '@akordi/lx-ui';
+import { listTexts } from '@/utils/texts';
 import { computed, inject, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useHead } from '@vueuse/head';
@@ -112,6 +113,19 @@ function songLink(song) {
   return { name: 'akordiSongView', params: { url: song.url.replace(/^\/song\//, '') } };
 }
 
+// LxList renders items with an href as router-links, also under SSR, so the
+// songs are real, crawlable links.
+function listItems(songs) {
+  return songs.map((song) => ({
+    id: String(song.id),
+    title: song.title,
+    description: song.mainArtist?.title,
+    href: songLink(song),
+  }));
+}
+const popularItems = computed(() => listItems(tagStore.popular));
+const songItems = computed(() => listItems(tagStore.songs));
+
 onMounted(() => {
   if (tag.value) {
     showHeader();
@@ -141,33 +155,34 @@ onUnmounted(() => {
       <p v-for="(paragraph, i) in intro" :key="i">{{ paragraph }}</p>
     </div>
 
-    <section v-if="tagStore.popular.length" class="tag-section">
+    <section v-if="popularItems.length" class="tag-section">
       <h2>{{ $t('pages.tagView.popular') }}</h2>
-      <ol class="tag-songs">
-        <li v-for="song in tagStore.popular" :key="song.id">
-          <router-link :to="songLink(song)">{{ song.title }}</router-link>
-          <span class="tag-song-artist">{{ song.mainArtist?.title }}</span>
-        </li>
-      </ol>
+      <LxList
+        id="tagPopularSongs"
+        list-type="2"
+        icon="next"
+        :items="popularItems"
+        name-attribute="title"
+        description-attribute="description"
+        :texts="listTexts()"
+      />
     </section>
 
     <section class="tag-section">
-      <h2 v-if="tagStore.popular.length">
+      <h2 v-if="popularItems.length">
         {{ $t('pages.tagView.all', { count: tagStore.total }) }}
       </h2>
-      <ul class="tag-songs">
-        <li v-for="song in tagStore.songs" :key="song.id">
-          <router-link :to="songLink(song)">{{ song.title }}</router-link>
-          <span class="tag-song-artist">{{ song.mainArtist?.title }}</span>
-        </li>
-      </ul>
-      <LxButton
-        v-if="hasMore"
-        kind="secondary"
+      <LxList
+        id="tagSongs"
+        list-type="2"
         icon="next"
-        :label="$t('pages.tagView.loadMore')"
-        :busy="loadingMore"
-        @click="loadMore"
+        :items="songItems"
+        name-attribute="title"
+        description-attribute="description"
+        :show-load-more="hasMore"
+        :loading="loadingMore"
+        :texts="listTexts()"
+        @load-more="loadMore"
       />
     </section>
   </div>
@@ -185,22 +200,5 @@ onUnmounted(() => {
 }
 .tag-section h2 {
   margin-bottom: 0.5rem;
-}
-.tag-songs {
-  margin: 0 0 1rem;
-  padding-left: 1.5rem;
-}
-ul.tag-songs {
-  list-style: none;
-  padding-left: 0;
-}
-.tag-songs li {
-  padding: 0.35rem 0;
-  border-bottom: 1px solid var(--color-chrome, rgba(0, 0, 0, 0.08));
-}
-.tag-song-artist {
-  display: block;
-  font-size: 0.875em;
-  color: var(--color-label, inherit);
 }
 </style>

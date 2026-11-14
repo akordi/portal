@@ -225,6 +225,7 @@ const routes = [
         meta: {
           title: 'pages.tagView.title',
           anonymous: true,
+          hydrationPreload: ['LxList'],
           breadcrumbs: [{ text: 'pages.tagList.title', to: { name: 'tagList' } }],
         },
         component: () => import('@/views/TagView.vue'),

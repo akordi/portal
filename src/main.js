@@ -1,5 +1,6 @@
 import createAppInstance from '@/createApp';
-import { lxPreloaded } from '@akordi/lx-ui';
+import { LxList, lxPreloaded } from '@akordi/lx-ui';
+import whenLoaded from '@/utils/asyncComponent';
 
 import '@akordi/lx-ui/dist/styles/lx-reset.css';
 import '@akordi/lx-ui/dist/styles/lx-fonts-carbon.css';
@@ -71,7 +72,20 @@ if (initialState) {
   });
 }
 
+// lx-ui components are lazy chunks, and one not yet loaded when the
+// server-rendered page hydrates is re-created by Vue, shifting the layout.
+// Routes list the ones they render in meta.hydrationPreload, so only those
+// pages wait for them.
+const HYDRATION_PRELOAD = { LxList };
+
 Promise.all([router.isReady(), lxPreloaded()])
+  .then(() =>
+    Promise.all(
+      (router.currentRoute.value.meta.hydrationPreload || []).map((name) =>
+        whenLoaded(HYDRATION_PRELOAD[name])
+      )
+    )
+  )
   .then(() => app.mount('#app'))
   // eslint-disable-next-line no-console
   .catch((err) => console.error('Initial navigation failed:', err));
