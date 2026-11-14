@@ -835,16 +835,20 @@ onUnmounted(() => {
         <LxRow :label="$t('song.composer')" v-if="item.composers?.length > 0">
           <p class="lx-data">
             <template v-for="(author, index) in item.composers" :key="author.id">
-              <router-link :to="artistLink(author)">{{ author.title }}</router-link
-              ><template v-if="index < item.composers.length - 1">, </template>
+              <router-link :to="artistLink(author)">{{ author.title }}</router-link><template
+                v-if="index < item.composers.length - 1"
+                >,
+              </template>
             </template>
           </p>
         </LxRow>
         <LxRow :label="$t('song.poet')" v-if="item.poets?.length > 0">
           <p class="lx-data">
             <template v-for="(author, index) in item.poets" :key="author.id">
-              <router-link :to="artistLink(author)">{{ author.title }}</router-link
-              ><template v-if="index < item.poets.length - 1">, </template>
+              <router-link :to="artistLink(author)">{{ author.title }}</router-link><template
+                v-if="index < item.poets.length - 1"
+                >,
+              </template>
             </template>
           </p>
         </LxRow>
