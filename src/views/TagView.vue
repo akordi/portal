@@ -137,13 +137,22 @@ function youtubeThumb(song) {
   return /^[\w-]{11}$/.test(id) ? `https://i.ytimg.com/vi/${id}/mqdefault.jpg` : null;
 }
 
+// A deleted video's thumbnail is a 404 that still loads as YouTube's 120x90
+// grey placeholder; show our own placeholder instead.
+const brokenThumbs = ref(new Set());
+function checkThumb(event, songId) {
+  if (event.target.naturalWidth < 320) {
+    brokenThumbs.value = new Set(brokenThumbs.value).add(songId);
+  }
+}
+
 const topCards = computed(() =>
   tagStore.total > TOP_CARDS
     ? tagStore.popular.slice(0, TOP_CARDS).map((song, i) => ({
         song,
         rank: i + 1,
         link: songLink(song),
-        thumb: youtubeThumb(song),
+        thumb: brokenThumbs.value.has(song.id) ? null : youtubeThumb(song),
         badges: badgesOf(song, i + 1),
       }))
     : []
@@ -170,7 +179,15 @@ const popularItems = computed(() => {
 });
 const songItems = computed(() => tagStore.songs.map((song) => listItem(song)));
 
+// Thumbnails can finish loading before hydration attaches @load.
+function checkLoadedThumbs() {
+  document.querySelectorAll('img.tag-top-thumb[data-song-id]').forEach((img) => {
+    if (img.complete) checkThumb({ target: img }, Number(img.dataset.songId));
+  });
+}
+
 onMounted(() => {
+  checkLoadedThumbs();
   if (tag.value) {
     showHeader();
   } else {
@@ -214,6 +231,8 @@ onUnmounted(() => {
               height="180"
               :loading="card.rank === 1 ? 'eager' : 'lazy'"
               decoding="async"
+              :data-song-id="card.song.id"
+              @load="checkThumb($event, card.song.id)"
             />
             <span v-else class="tag-top-thumb tag-top-placeholder" aria-hidden="true">♪</span>
             <span class="tag-top-body">
