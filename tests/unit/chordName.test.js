@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
+  hasPlayableChords,
   parseChordName,
   transposeChord,
   capoForOffset,
@@ -148,5 +149,16 @@ describe('isNoChord', () => {
     expect(isNoChord('C')).toBe(false);
     expect(isNoChord('')).toBe(false);
     expect(isNoChord(null)).toBe(false);
+  });
+});
+
+describe('hasPlayableChords', () => {
+  const timeline = (...labels) => labels.map((label, i) => ({ start: i, end: i + 1, label }));
+
+  it('needs at least one real chord', () => {
+    expect(hasPlayableChords(timeline('N'))).toBe(false);
+    expect(hasPlayableChords(timeline('N', 'N.C.'))).toBe(false);
+    expect(hasPlayableChords(timeline('N', 'Am'))).toBe(true);
+    expect(hasPlayableChords(undefined)).toBe(false);
   });
 });

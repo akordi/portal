@@ -20,8 +20,10 @@ import { useRoute, useRouter } from 'vue-router';
 
 import { event as gtagEvent } from 'vue-gtag';
 import ChordSvg from '@/components/ChordSvg.vue';
+import siteOrigin from '@/utils/siteOrigin';
 import SongTags from '@/components/SongTags.vue';
 import { youtubeId } from '@/utils/chordSync';
+import { hasPlayableChords } from '@/utils/chordName';
 import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
 import useAuthStore from '@/stores/useAuthStore';
 import akordiAdminListService from '@/services/songbookService';
@@ -108,7 +110,7 @@ const videoUrl = computed(() =>
 );
 const segments = computed(() => item.value.chordTimeline?.segments ?? []);
 // A song is playable only with a resolvable video AND at least one chord segment.
-const playable = computed(() => !!youtubeId(videoUrl.value) && segments.value.length > 0);
+const playable = computed(() => !!youtubeId(videoUrl.value) && hasPlayableChords(segments.value));
 const fontSize = ref(1);
 const offsetFormatted = computed(() => {
   if (bodyTransposedIndex.value > 0) {
@@ -325,10 +327,7 @@ function goToPlayAlong() {
 }
 
 const pagePath = computed(() => `/song/${songUrlParam.value}`);
-const origin =
-  typeof window !== 'undefined'
-    ? window.location.origin
-    : (appConfig?.publicUrl || '').replace(/\/$/, '');
+const origin = siteOrigin(appConfig);
 
 // Puts a fetched song on the page: the sheet, the document head and the
 // layout header. Synchronous so it can run in setup for a prefetched song

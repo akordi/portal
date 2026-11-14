@@ -1,6 +1,10 @@
+import useArtistStore from '@/stores/useArtistStore';
 import useDashboardStore from '@/stores/useDashboardStore';
 import useSongStore from '@/stores/useSongStore';
+import useTagStore from '@/stores/useTagStore';
 import useViewStore from '@/stores/useViewStore';
+import { tagHeading } from '@/utils/tagPage';
+import { tagUrlParam } from '@/utils/tagUrl';
 
 /**
  * Per-route data loading that has to happen *before* renderToString. A
@@ -57,6 +61,51 @@ async function prefetchSong({ route, router, pinia, ssrContext }) {
   viewStore.goBack = true;
 }
 
+async function prefetchTag({ route, router, pinia, ssrContext, i18n }) {
+  const outcome = ssrContext;
+  let tag;
+  try {
+    tag = await useTagStore(pinia).load(route.params.url);
+  } catch (err) {
+    if (err?.response?.status === 404) {
+      outcome.status = 404;
+    }
+    throw err;
+  }
+
+  if (tag.url && `/tag/${route.params.url}` !== tag.url) {
+    outcome.redirect = router.resolve({ name: 'tagView', params: { url: tagUrlParam(tag) } }).path;
+  }
+
+  const viewStore = useViewStore(pinia);
+  viewStore.title = tagHeading(tag, i18n.global.t);
+  viewStore.goBack = true;
+}
+
+async function prefetchArtist({ route, router, pinia, ssrContext }) {
+  const outcome = ssrContext;
+  let artist;
+  try {
+    artist = await useArtistStore(pinia).load(route.params.url);
+  } catch (err) {
+    if (err?.response?.status === 404) {
+      outcome.status = 404;
+    }
+    throw err;
+  }
+
+  if (`/band/${route.params.url}` !== artist.url) {
+    outcome.redirect = router.resolve({
+      name: 'akordiArtistView',
+      params: { url: artist.url.replace(/^\/band\//, '') },
+    }).path;
+  }
+
+  const viewStore = useViewStore(pinia);
+  viewStore.title = artist.title;
+  viewStore.goBack = true;
+}
+
 async function prefetchDashboard({ pinia }) {
   await useDashboardStore(pinia).load();
 }
@@ -70,11 +119,13 @@ const prefetchers = {
   songListNewSongView: prefetchSong,
   songListTopSongView: prefetchSong,
   songbookViewSongView: prefetchSong,
+  tagView: prefetchTag,
+  akordiArtistView: prefetchArtist,
 };
 
 /**
- * @param {{ route, router, pinia, ssrContext }} ctx the request's resolved
- *   route, its router and Pinia, and the per-request HTTP outcome channel
+ * @param {{ route, router, pinia, ssrContext, i18n }} ctx the request's resolved
+ *   route, its router, Pinia and i18n, and the per-request HTTP outcome channel
  *   (see entry-server.js) the prefetch may set a status/redirect on.
  * @returns {boolean} whether the route had anything to prefetch — only then
  *   is there state worth transferring to the client.

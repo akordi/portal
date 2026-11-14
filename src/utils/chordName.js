@@ -39,6 +39,11 @@ export function isNoChord(label) {
   return typeof label === 'string' && /^n\.?c?\.?$/i.test(label.trim());
 }
 
+/** Whether a chord timeline has anything to play along to, not just no-chord markers. */
+export function hasPlayableChords(segments) {
+  return (segments ?? []).some((seg) => !isNoChord(seg.label));
+}
+
 /**
  * Split a chord label into root, suffix, and optional slash bass note.
  * Examples: 'Am7' → {root:'A', suffix:'m7', bass:null};

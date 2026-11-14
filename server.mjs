@@ -65,6 +65,7 @@ const SSR_ROUTE_PATTERNS = [
   /^\/new\/song\/[^/]+\/?$/,
   /^\/top\/song\/[^/]+\/?$/,
   /^\/band\/[^/]+\/?$/,
+  /^\/tag\/[^/]+\/?$/,
 ];
 
 function isSsrRoute(path) {

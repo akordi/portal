@@ -118,6 +118,7 @@ em {
 </style>
 <template>
   <LxList
+    icon="next"
     id="songs-list"
     list-type="1"
     v-model:items="item.songs"

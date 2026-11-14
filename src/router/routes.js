@@ -1,3 +1,5 @@
+import { LxBadge, LxList } from '@akordi/lx-ui';
+
 const routes = [
   {
     path: '/',
@@ -96,6 +98,7 @@ const routes = [
         meta: {
           title: 'pages.akordiArtistLetter.title',
           anonymous: true,
+          hydrationPreload: [LxList],
           breadcrumbs: [
             { text: 'pages.akordiArtistLetter.title', to: { name: 'akordiArtistList' } },
           ],
@@ -225,6 +228,7 @@ const routes = [
         meta: {
           title: 'pages.tagView.title',
           anonymous: true,
+          hydrationPreload: [LxList, LxBadge],
           breadcrumbs: [{ text: 'pages.tagList.title', to: { name: 'tagList' } }],
         },
         component: () => import('@/views/TagView.vue'),

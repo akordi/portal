@@ -4,6 +4,8 @@ import { onMounted, ref } from 'vue';
 
 import useAuthStore from '@/stores/useAuthStore';
 import useDashboardStore from '@/stores/useDashboardStore';
+import songLink from '@/utils/songLink';
+import { tagUrlParam } from '@/utils/tagUrl';
 import { useI18n } from 'vue-i18n';
 
 const authStore = useAuthStore();
@@ -12,6 +14,10 @@ const dashboardStore = useDashboardStore();
 // client only needs to fetch it itself as a fallback for the rare case prefetch didn't run.
 const songCount = ref(dashboardStore.songCountTotal ?? 0);
 const $t = useI18n().t;
+
+function featuredHeading(tag) {
+  return tag.pageTitle || tag.title.charAt(0).toUpperCase() + tag.title.slice(1);
+}
 
 onMounted(async () => {
   if (dashboardStore.songCountTotal === null) {
@@ -23,6 +29,34 @@ onMounted(async () => {
 
 <template>
   <div>
+    <section
+      v-for="tag in dashboardStore.featuredTags"
+      :key="tag.id"
+      class="featured-tag"
+      :aria-labelledby="`featured-tag-${tag.id}`"
+    >
+      <h2 :id="`featured-tag-${tag.id}`" class="featured-tag-heading">
+        <router-link :to="{ name: 'tagView', params: { url: tagUrlParam(tag) } }">
+          {{ featuredHeading(tag) }}
+        </router-link>
+      </h2>
+      <span v-if="tag.featuredText">{{ tag.featuredText }}</span>
+      <p v-if="tag.topSongs?.length" class="featured-tag-songs">
+        <span class="lx-secondary">{{ $t('pages.dashboard.featuredSongs') }}</span>
+        <template v-for="(song, i) in tag.topSongs" :key="song.id">
+          <router-link :to="songLink(song)">{{ song.title }}</router-link><template
+            v-if="i < tag.topSongs.length - 1"
+            >,
+          </template>
+        </template>
+      </p>
+      <router-link
+        class="featured-tag-link"
+        :to="{ name: 'tagView', params: { url: tagUrlParam(tag) } }"
+      >
+        {{ $t('pages.dashboard.featuredLink') }} <span aria-hidden="true">→</span>
+      </router-link>
+    </section>
     <p>
       {{ $t('pages.dashboard.disclaimer') }}
     </p>
@@ -74,3 +108,39 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.featured-tag {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.375rem;
+  margin-bottom: 1rem;
+  padding: 1rem 1.25rem;
+  border-left: 4px solid var(--color-brand, currentColor);
+  background: var(--color-region, transparent);
+}
+.featured-tag-heading {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+.featured-tag-heading a {
+  color: inherit;
+  text-decoration: none;
+}
+.featured-tag-heading a:hover,
+.featured-tag-heading a:focus-visible {
+  text-decoration: underline;
+}
+.featured-tag-songs {
+  margin: 0;
+}
+.featured-tag-songs .lx-secondary {
+  margin-right: 0.25rem;
+}
+.featured-tag-link {
+  color: var(--color-interactive-background, inherit);
+  font-weight: 600;
+}
+</style>

@@ -54,6 +54,7 @@ onMounted(async () => {
 </script>
 <template>
   <LxList
+    icon="next"
     :items="tags"
     v-model="tag"
     v-if="tags"

@@ -47,6 +47,10 @@ export default {
     return http(serviceUrl).get(`/api/v2/tags/${id}`);
   },
 
+  getFeaturedTags() {
+    return http(serviceUrl).get('/api/v2/tags/featured');
+  },
+
   getSongs(reqParams) {
     let params = reqParams;
     if (!params) {

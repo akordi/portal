@@ -8,10 +8,25 @@ import { createPinia } from 'pinia';
 // each starts from an empty module registry to get modules bound to its own.
 vi.hoisted(() => vi.resetModules());
 
-const { getSong, getSongsCount } = vi.hoisted(() => ({ getSong: vi.fn(), getSongsCount: vi.fn() }));
+const { getSong, getSongsCount, getTag, getSongs, getFeaturedTags, getArtist } = vi.hoisted(() => ({
+  getArtist: vi.fn(),
+  getSong: vi.fn(),
+  getSongsCount: vi.fn(),
+  getTag: vi.fn(),
+  getSongs: vi.fn(),
+  getFeaturedTags: vi.fn(),
+}));
 
 vi.mock('@/services/akordiService', () => ({
-  default: { parseUrl: (url) => Number.parseInt(url, 10), getSong, getSongsCount },
+  default: {
+    parseUrl: (url) => Number.parseInt(url, 10),
+    getSong,
+    getSongsCount,
+    getTag,
+    getSongs,
+    getFeaturedTags,
+    getArtist,
+  },
 }));
 const viewStore = { title: null, description: null, goBack: null };
 vi.mock('@/stores/useViewStore', () => ({ default: () => viewStore }));
@@ -24,6 +39,8 @@ import useSongStore from '@/stores/useSongStore';
 const PATH_BY_ROUTE = {
   akordiSongView: '/song',
   songListTopSongView: '/top/song',
+  tagView: '/tag',
+  akordiArtistView: '/band',
 };
 const router = {
   resolve: ({ name, params }) => ({ path: `${PATH_BY_ROUTE[name]}/${params.url}` }),
@@ -113,6 +130,7 @@ describe('prefetchRoute for the dashboard', () => {
   it('loads the song count into the dashboard store', async () => {
     const pinia = createPinia();
     getSongsCount.mockResolvedValue({ data: { totalElements: 12345 } });
+    getFeaturedTags.mockResolvedValue({ data: { content: [] } });
 
     const prefetched = await prefetchRoute({
       route: { name: 'dashboard', params: {} },
@@ -124,5 +142,171 @@ describe('prefetchRoute for the dashboard', () => {
     expect(prefetched).toBe(true);
     expect(useDashboardStore(pinia).songCountTotal).toBe(12345);
     expect(pinia.state.value.dashboardStore.songCountTotal).toBe(12345);
+  });
+});
+
+describe('prefetchRoute for the dashboard featured tags', () => {
+  const run = (pinia) =>
+    prefetchRoute({
+      route: { name: 'dashboard', params: {} },
+      router,
+      pinia,
+      ssrContext: { status: 200, redirect: null },
+    });
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    getSongsCount.mockResolvedValue({ data: { totalElements: 1 } });
+  });
+
+  it('transfers the featured tags with the dashboard state', async () => {
+    const pinia = createPinia();
+    const featured = [
+      {
+        id: 4,
+        title: 'ziemassvētku',
+        url: '/tag/4-Ziemassvetku',
+        topSongs: [{ id: 7, title: 'Klusa nakts', url: '/song/7-K' }],
+      },
+    ];
+    getFeaturedTags.mockResolvedValue({ data: { content: featured } });
+
+    await run(pinia);
+
+    expect(pinia.state.value.dashboardStore.featuredTags).toEqual(featured);
+  });
+
+  it('renders the home page without banners when the featured call fails', async () => {
+    const pinia = createPinia();
+    getFeaturedTags.mockRejectedValue({ response: { status: 404 } });
+
+    await run(pinia);
+
+    expect(useDashboardStore(pinia).featuredTags).toEqual([]);
+    expect(useDashboardStore(pinia).songCountTotal).toBe(1);
+  });
+});
+
+describe('prefetchRoute for a tag page', () => {
+  const i18n = { global: { t: (key, params) => `${key}:${JSON.stringify(params)}` } };
+  const tag = { id: 4, title: 'ziemassvētku', url: '/tag/4-Ziemassvetku', songCount: 3 };
+  const songsPage = (n) => ({
+    data: {
+      content: Array.from({ length: n }, (_, i) => ({
+        id: i + 1,
+        title: `S${i + 1}`,
+        url: `/song/${i + 1}-S`,
+      })),
+      totalElements: n,
+    },
+  });
+  let pinia;
+  let ssrContext;
+  const run = (url = '4-Ziemassvetku') =>
+    prefetchRoute({ route: { name: 'tagView', params: { url } }, router, pinia, ssrContext, i18n });
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    pinia = createPinia();
+    ssrContext = { status: 200, redirect: null };
+    viewStore.title = null;
+    viewStore.goBack = null;
+    getTag.mockResolvedValue({ data: { ...tag } });
+    getSongs.mockResolvedValue(songsPage(3));
+  });
+
+  it('loads tag and songs into the transferred store, header from the tag', async () => {
+    expect(await run()).toBe(true);
+
+    expect(getTag).toHaveBeenCalledWith(4);
+    expect(getSongs).toHaveBeenCalledWith(
+      expect.objectContaining({ 'tag.id': 4, sort: 'title,asc' })
+    );
+    expect(getSongs).toHaveBeenCalledWith(
+      expect.objectContaining({ 'tag.id': 4, sort: 'songTop.visitsWeekly,desc', size: 9 })
+    );
+    expect(pinia.state.value.tagStore.tag).toEqual(tag);
+    // Songs travel with the page as summaries, without bodies or timelines.
+    expect(pinia.state.value.tagStore.songs[0]).toEqual({
+      id: 1,
+      title: 'S1',
+      url: '/song/1-S',
+      artist: '',
+      youtubeLink: '',
+      weeklyVisits: 0,
+      playAlong: false,
+    });
+    expect(pinia.state.value.tagStore.popular).toHaveLength(3);
+    expect(viewStore.title).toBe('pages.tagView.title:{"title":"ziemassvētku"}');
+    expect(viewStore.goBack).toBe(true);
+    expect(ssrContext).toEqual({ status: 200, redirect: null });
+  });
+
+  it('uses the admin-entered page title as the heading', async () => {
+    getTag.mockResolvedValue({ data: { ...tag, pageTitle: 'Ziemassvētku dziesmas' } });
+
+    await run();
+
+    expect(viewStore.title).toBe('Ziemassvētku dziesmas');
+  });
+
+  it('asks for a 301 to the real tag URL when the slug is wrong', async () => {
+    await run('4-wrong');
+
+    expect(ssrContext.redirect).toBe('/tag/4-Ziemassvetku');
+  });
+
+  it('reports 404 for a missing tag', async () => {
+    getTag.mockRejectedValue({ response: { status: 404 } });
+
+    await expect(run('999-Nope')).rejects.toBeDefined();
+    expect(ssrContext.status).toBe(404);
+  });
+});
+
+describe('prefetchRoute for an artist page', () => {
+  const artist = { id: 4, title: 'Raimonds Pauls', url: '/band/4-Raimonds_Pauls' };
+  let pinia;
+  let ssrContext;
+  const run = (url = '4-Raimonds_Pauls') =>
+    prefetchRoute({
+      route: { name: 'akordiArtistView', params: { url } },
+      router,
+      pinia,
+      ssrContext,
+    });
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    pinia = createPinia();
+    ssrContext = { status: 200, redirect: null };
+    viewStore.title = null;
+    getArtist.mockResolvedValue({ data: { ...artist } });
+    getSongs.mockResolvedValue({
+      data: { content: [{ id: 9, title: 'Dziesma', url: '/song/9-D', body: 'long' }] },
+    });
+  });
+
+  it('loads the artist and songs into the transferred store, heading from the artist', async () => {
+    expect(await run()).toBe(true);
+    expect(getArtist).toHaveBeenCalledWith(4);
+    expect(getSongs).toHaveBeenCalledWith(expect.objectContaining({ 'artist.id': 4 }));
+    expect(pinia.state.value.artistStore.artist).toEqual(artist);
+    expect(pinia.state.value.artistStore.songs).toEqual([
+      expect.objectContaining({ id: 9, title: 'Dziesma', url: '/song/9-D' }),
+    ]);
+    expect(viewStore.title).toBe('Raimonds Pauls');
+    expect(ssrContext).toEqual({ status: 200, redirect: null });
+  });
+
+  it('asks for a 301 to the real artist URL when the slug is wrong', async () => {
+    await run('4-wrong');
+    expect(ssrContext.redirect).toBe('/band/4-Raimonds_Pauls');
+  });
+
+  it('reports 404 for a deleted artist instead of an empty 200 page', async () => {
+    getArtist.mockRejectedValue({ response: { status: 404 } });
+    await expect(run('61-ZIEMASSVETKU')).rejects.toBeDefined();
+    expect(ssrContext.status).toBe(404);
   });
 });

@@ -1,5 +1,6 @@
 import createAppInstance from '@/createApp';
 import { lxPreloaded } from '@akordi/lx-ui';
+import whenLoaded from '@/utils/asyncComponent';
 
 import '@akordi/lx-ui/dist/styles/lx-reset.css';
 import '@akordi/lx-ui/dist/styles/lx-fonts-carbon.css';
@@ -20,6 +21,7 @@ import '@akordi/lx-ui/dist/styles/lx-modals.css';
 import '@akordi/lx-ui/dist/styles/lx-loaders.css';
 import '@akordi/lx-ui/dist/styles/lx-state-displays.css';
 import '@akordi/lx-ui/dist/styles/lx-lists.css';
+import '@akordi/lx-ui/dist/styles/lx-badges.css';
 import '@akordi/lx-ui/dist/styles/lx-expanders.css';
 import '@akordi/lx-ui/dist/styles/lx-tabs.css';
 import '@akordi/lx-ui/dist/styles/lx-date-pickers.css';
@@ -71,7 +73,11 @@ if (initialState) {
   });
 }
 
+// lx-ui components are lazy chunks, and one not yet loaded when the page
+// hydrates is re-created, shifting the layout. Routes name the ones their
+// server-rendered markup needs in meta.hydrationPreload.
 Promise.all([router.isReady(), lxPreloaded()])
+  .then(() => Promise.all((router.currentRoute.value.meta.hydrationPreload || []).map(whenLoaded)))
   .then(() => app.mount('#app'))
   // eslint-disable-next-line no-console
   .catch((err) => console.error('Initial navigation failed:', err));

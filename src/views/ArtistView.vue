@@ -1,44 +1,43 @@
 <script setup>
 import { LxList, LxLoader } from '@akordi/lx-ui';
-import { computed, inject, onMounted, onServerPrefetch, ref, watch } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 
 import { useRoute, useRouter } from 'vue-router';
 
 import akordiService from '@/services/akordiService';
+import useArtistStore from '@/stores/useArtistStore';
 import useNotifyStore from '@/stores/useNotifyStore';
 import useViewStore from '@/stores/useViewStore';
+import siteOrigin from '@/utils/siteOrigin';
+import songLink from '@/utils/songLink';
 import { useHead } from '@vueuse/head';
 import { useI18n } from 'vue-i18n';
 import { listTexts } from '@/utils/texts';
 
 const router = useRouter();
 const route = useRoute();
-const appConfig = inject('appConfig', null);
+const origin = siteOrigin(inject('appConfig', null));
 const artistUrlParam = computed(() => route.params.url);
 const viewStore = useViewStore();
 const notificationStore = useNotifyStore();
-const artist = ref(null);
-const items = ref([]);
-const loading = ref(true);
+const artistStore = useArtistStore();
+// Set when the server prefetched this artist; otherwise loaded on mount.
+const artist = computed(() => artistStore.artistFor(artistUrlParam.value));
+const loading = ref(!artist.value);
+const items = computed(() =>
+  artistStore.songs.map((song) => ({
+    id: String(song.id),
+    title: song.title,
+    description: song.artist,
+    href: songLink(song),
+  }))
+);
 const translate = useI18n();
 const $t = translate.t;
 
-// Head tags are registered synchronously here, in setup, with reactive
-// values that the loader fills in below. A useHead() call made after an
-// `await` runs outside the component's setup context: @vueuse/head then
-// can't scope the entry to this component instance and writes it into the
-// shared head — harmless-looking in the browser, but under SSR every
-// concurrent request shares that head, so one artist page could be rendered
-// with another's <title>. Computed refs keep the entry per-instance and let
-// renderHeadToString() see the loaded values once onServerPrefetch resolves.
+// Registered synchronously in setup so the head stays per-request under SSR.
 const pagePath = computed(() => `/band/${artistUrlParam.value}`);
-const canonicalUrl = computed(() => {
-  const origin =
-    typeof window !== 'undefined'
-      ? window.location.origin
-      : (appConfig?.publicUrl || '').replace(/\/$/, '');
-  return `${origin}${pagePath.value}`;
-});
+const canonicalUrl = computed(() => `${origin}${pagePath.value}`);
 const pageTitle = computed(() =>
   artist.value ? $t('pages.artistView.pageTitle', { artist: artist.value.title }) : undefined
 );
@@ -68,91 +67,53 @@ useHead({
   ),
 });
 
-const loadArtist = async () => {
+async function loadArtist() {
   loading.value = true;
   try {
-    const artistUrl = pagePath.value;
-    const artistId = akordiService.parseUrl(artistUrl);
-    const artistResp = await akordiService.getArtist(artistId);
-
-    // TODO(SSR): a mismatched slug should become a real HTTP redirect when
-    // rendered server-side (see the same note in SongView.vue).
-    if (typeof window !== 'undefined' && artistUrl !== artistResp.data.url) {
-      const correctUrl = artistResp.data.url.replace(/^\/band\//, '');
+    const loaded = await artistStore.load(artistUrlParam.value);
+    // Server-side a mismatched slug is a 301; this covers in-app navigation.
+    if (loaded.url !== pagePath.value) {
       router.replace({
         name: 'akordiArtistView',
-        params: { url: correctUrl },
+        params: { url: loaded.url.replace(/^\/band\//, '') },
       });
     }
-
-    // One request for the whole catalogue (no paging on this page), so the
-    // server-rendered list is complete, not a first page.
-    const resp = await akordiService.getSongs({
-      'artist.id': artistId,
-      size: 5000,
-      offset: 0,
-      sort: 'title,asc',
-    });
-    items.value = resp.data.content.map((song) => ({
-      ...song,
-      description: song.mainArtist.title,
-      clickable: true,
-    }));
-
-    artist.value = artistResp.data;
-    viewStore.title = artistResp.data.title;
-  } catch (err) {
+    viewStore.title = loaded.title;
+  } catch {
     notificationStore.pushError('Failed to load songs');
-    throw err;
   } finally {
     loading.value = false;
   }
-};
-function actionClicked(action, id) {
-  if (action === 'click') {
-    const item = items.value.find((i) => String(i.id) === id);
-    item.url = item.url.replace(/^\/song\//, '');
-    router.push({ name: 'akordiSongView', params: { url: item.url } });
-  }
 }
+
 onMounted(async () => {
   viewStore.goBack = true;
-  await loadArtist();
+  if (artist.value) {
+    viewStore.title = artist.value.title;
+  } else {
+    await loadArtist();
+  }
 });
 
 // Same view, different artist (e.g. picked from the header search).
 watch(
   () => akordiService.parseUrl(artistUrlParam.value),
-  (id, previousId) => {
-    if (id !== previousId) loadArtist();
+  async (id, previousId) => {
+    if (id !== previousId) await loadArtist();
   },
   { flush: 'post' }
 );
-
-// Runs only during SSR (renderToString awaits it; the client never calls
-// this hook, so onMounted above still does the client-side fetch as
-// before). Swallow failures so the page still renders its shell/loading
-// state if the API is briefly unreachable during SSR, rather than failing
-// the whole page render.
-onServerPrefetch(async () => {
-  try {
-    await loadArtist();
-  } catch (err) {
-    // already reported via notificationStore inside loadArtist()
-  }
-});
 </script>
 <template>
   <LxLoader :loading="loading" />
   <LxList
-    v-if="!loading"
-    id="id"
+    v-if="artist"
+    id="artistSongs"
+    icon="next"
     list-type="2"
-    v-model:items="items"
+    :items="items"
     name-attribute="title"
     description-attribute="description"
-    @action-click="actionClicked"
     :texts="listTexts()"
-  >
-  </LxList>
+  />
 </template>
