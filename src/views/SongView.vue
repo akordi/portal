@@ -22,6 +22,7 @@ import { event as gtagEvent } from 'vue-gtag';
 import ChordSvg from '@/components/ChordSvg.vue';
 import siteOrigin from '@/utils/siteOrigin';
 import SongTags from '@/components/SongTags.vue';
+import songLink from '@/utils/songLink';
 import { youtubeId } from '@/utils/chordSync';
 import { hasPlayableChords } from '@/utils/chordName';
 import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
@@ -82,6 +83,39 @@ const loading = ref(!prefetchedSong);
 const pageTitle = ref('');
 const metaDescription = ref('');
 const canonicalUrl = ref('');
+// MusicComposition structured data, built only from fields the model
+// actually has — no genre/duration/ISRC/album, don't fabricate those.
+const musicJsonLd = computed(() => {
+  const song = item.value;
+  if (!song.title) {
+    return null;
+  }
+  const node = {
+    '@context': 'https://schema.org',
+    '@type': 'MusicComposition',
+    name: song.title,
+    url: canonicalUrl.value,
+  };
+  if (song.mainArtist?.title) {
+    node.byArtist = { '@type': 'MusicGroup', name: song.mainArtist.title };
+  }
+  if (song.composers?.length > 0) {
+    node.composer = song.composers.map((author) => ({ '@type': 'Person', name: author.title }));
+  }
+  if (song.poets?.length > 0) {
+    node.lyricist = song.poets.map((author) => ({ '@type': 'Person', name: author.title }));
+  }
+  if (song.createdDate) {
+    node.datePublished = song.createdDate;
+  }
+  if (song.updatedDate) {
+    node.dateModified = song.updatedDate;
+  }
+  if (song.bodyLyrics) {
+    node.lyrics = { '@type': 'CreativeWork', text: song.bodyLyrics };
+  }
+  return node;
+});
 useHead(
   computed(() =>
     pageTitle.value
@@ -93,7 +127,14 @@ useHead(
             { property: 'og:title', content: pageTitle.value },
             { property: 'og:description', content: metaDescription.value },
             { property: 'og:url', content: canonicalUrl.value },
+            {
+              name: 'robots',
+              content: item.value.indexable === false ? 'noindex,follow' : 'index,follow',
+            },
           ],
+          script: musicJsonLd.value
+            ? [{ type: 'application/ld+json', children: JSON.stringify(musicJsonLd.value) }]
+            : [],
         }
       : {}
   )
@@ -382,7 +423,10 @@ const loadSong = async () => {
     const song = await songStore.load(songUrlParam.value);
     applySong(song);
     redirectToCanonicalSlug(song);
-    await restoreTransposePreference();
+    await Promise.all([
+      restoreTransposePreference(),
+      songStore.loadRelated(song.mainArtist.id, song.id),
+    ]);
   } catch (err) {
     notificationStore.pushError('Failed to load song');
     throw err;
@@ -683,8 +727,13 @@ onUnmounted(() => {
   margin-top: 1.25rem;
 }
 
-.song-reference {
+.song-related {
   margin-top: 1rem;
+}
+
+.song-related-list {
+  margin: 0.25rem 0 0;
+  padding-left: 1.25rem;
 }
 
 /* Transposed-song indicator: the footer transpose label is picked out while
@@ -891,11 +940,15 @@ onUnmounted(() => {
         <p class="pre" v-html="item.bodyWithMarkup" :style="{ fontSize: fontSize + 'em' }"></p>
       </LxSection>
     </LxForm>
-    <section class="song-reference" v-if="item.reference">
+    <section class="song-related" v-if="songStore.relatedSongs.length > 0">
       <p class="lx-description">
-        {{ $t('song.reference') }}:
-        <a :href="item.reference" target="_blank" rel="noopener noreferrer">{{ item.reference }}</a>
+        {{ $t('song.moreByArtist', { artist: item.mainArtist.title }) }}
       </p>
+      <ul class="song-related-list">
+        <li v-for="related in songStore.relatedSongs" :key="related.id">
+          <router-link :to="songLink(related)">{{ related.title }}</router-link>
+        </li>
+      </ul>
     </section>
   </LxLoaderView>
 

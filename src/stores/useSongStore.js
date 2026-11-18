@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import akordiService from '@/services/akordiService';
+import songSummary from '@/utils/songSummary';
 
 /**
  * Holds the most recently fetched song so it can travel from the SSR render
@@ -11,6 +12,7 @@ import akordiService from '@/services/akordiService';
  */
 export default defineStore('songStore', () => {
   const song = ref(null);
+  const relatedSongs = ref([]);
 
   async function load(urlParam) {
     const resp = await akordiService.getSong(akordiService.parseUrl(urlParam));
@@ -30,5 +32,24 @@ export default defineStore('songStore', () => {
     return song.value;
   }
 
-  return { song, load, songFor };
+  /**
+   * A capped "more by this artist" list for the song page — loaded here
+   * (not useArtistStore, which pages the whole catalogue) and transferred
+   * the same way as the song itself so it's in the initial SSR HTML, where
+   * it actually counts as crawlable content rather than a client-only extra.
+   */
+  async function loadRelated(mainArtistId, excludeSongId) {
+    const resp = await akordiService.getSongs({
+      'artist.id': mainArtistId,
+      size: 11,
+      offset: 0,
+      sort: 'title,asc',
+    });
+    relatedSongs.value = resp.data.content
+      .filter((related) => related.id !== excludeSongId)
+      .slice(0, 10)
+      .map(songSummary);
+  }
+
+  return { song, relatedSongs, load, songFor, loadRelated };
 });
