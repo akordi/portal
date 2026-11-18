@@ -62,6 +62,10 @@ useHead({
           { property: 'og:title', content: pageTitle.value },
           { property: 'og:description', content: metaDescription.value },
           { property: 'og:url', content: canonicalUrl.value },
+          {
+            name: 'robots',
+            content: artist.value.indexable === false ? 'noindex,follow' : 'index,follow',
+          },
         ]
       : []
   ),
