@@ -59,6 +59,8 @@ async function prefetchSong({ route, router, pinia, ssrContext }) {
   viewStore.title = header.title;
   viewStore.description = header.description;
   viewStore.goBack = true;
+
+  await useSongStore(pinia).loadRelated(song.mainArtist.id, song.id);
 }
 
 async function prefetchTag({ route, router, pinia, ssrContext, i18n }) {

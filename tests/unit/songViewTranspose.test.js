@@ -10,10 +10,21 @@ import { createPinia, setActivePinia } from 'pinia';
 // each starts from an empty module registry to get modules bound to its own.
 vi.hoisted(() => vi.resetModules());
 
-const { getSong, getSongPreferences, saveSongTransposeOffset, useHead, routerReplace, routeState } =
-  vi.hoisted(() => ({
-    getSong: vi.fn(),
-    getSongPreferences: vi.fn(),
+const {
+  getSong,
+  getSongs,
+  getSongPreferences,
+  saveSongTransposeOffset,
+  useHead,
+  routerReplace,
+  routeState,
+} = vi.hoisted(() => ({
+  getSong: vi.fn(),
+  // "More by this artist" — unrelated to the transpose behaviour this file
+  // tests, so an empty list is enough to keep loadSong()'s loadRelated() call
+  // from rejecting.
+  getSongs: vi.fn().mockResolvedValue({ data: { content: [] } }),
+  getSongPreferences: vi.fn(),
     saveSongTransposeOffset: vi.fn(),
     useHead: vi.fn(),
     routerReplace: vi.fn(),
@@ -88,7 +99,7 @@ vi.mock('vue-router', () => ({
   }),
 }));
 vi.mock('@/services/akordiService', () => ({
-  default: { parseUrl: (url) => Number.parseInt(url, 10), getSong },
+  default: { parseUrl: (url) => Number.parseInt(url, 10), getSong, getSongs },
 }));
 vi.mock('@/services/songbookService', () => ({
   default: { findAll: vi.fn(), getSongSongbooks: vi.fn(), addSong: vi.fn(), removeSong: vi.fn() },
@@ -240,8 +251,35 @@ describe('SongView head tags', () => {
         { property: 'og:title', content: pageTitle },
         { property: 'og:description', content: description },
         { property: 'og:url', content: canonicalUrl },
+        { name: 'robots', content: 'index,follow' },
+      ],
+      script: [
+        {
+          type: 'application/ld+json',
+          children: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'MusicComposition',
+            name: song.title,
+            url: canonicalUrl,
+            byArtist: { '@type': 'MusicGroup', name: song.mainArtist.title },
+            datePublished: song.createdDate,
+            dateModified: song.updatedDate,
+            lyrics: { '@type': 'CreativeWork', text: description },
+          }),
+        },
       ],
     });
+  });
+
+  it('marks a non-indexable song noindex,follow instead of dropping the page', async () => {
+    getSong.mockResolvedValue({ data: { ...song, indexable: false } });
+    getSongPreferences.mockResolvedValue({ transposeOffset: 0 });
+
+    mount(SongView);
+    await flushPromises();
+
+    const input = useHead.mock.calls[0][0];
+    expect(unref(input).meta).toContainEqual({ name: 'robots', content: 'noindex,follow' });
   });
 });
 

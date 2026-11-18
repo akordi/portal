@@ -780,6 +780,7 @@
         "createdAt": "Loodud",
         "updatedAt": "Viimati muudetud",
         "reference": "Viide",
+        "moreByArtist": "Rohkem laule esitajalt {artist}",
         "lyrics": "Laulusõnad",
         "body": "Laulu tekst akordidega",
         "bodyTooltip": "Eelistatav on lisada laule täielike laulusõnadega. Teksti paigutamiseks kasutage tühikuid, mitte tabeldusklahvi."

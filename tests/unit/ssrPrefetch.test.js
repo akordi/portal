@@ -70,6 +70,9 @@ describe('prefetchRoute for a song page', () => {
     viewStore.description = null;
     viewStore.goBack = null;
     getSong.mockResolvedValue({ data: { ...song } });
+    // "More by this artist" — prefetchSong loads it alongside the song itself
+    // so it's in the initial SSR HTML; unrelated to what these tests assert.
+    getSongs.mockResolvedValue({ data: { content: [] } });
   });
 
   it('loads the song into the store and the header into the view store', async () => {
