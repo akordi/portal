@@ -16,7 +16,7 @@
     "test-watch": "vitest"
   },
   "dependencies": {
-    "@akordi/lx-ui": "2.3.12-akordi.2",
+    "@akordi/lx-ui": "2.3.14-akordi.2",
     "@ory/client": "^1.22.66",
     "@tombatossals/chords-db": "^0.5.1",
     "@vue/devtools-api": "^8.2.1",
@@ -26,7 +26,7 @@
     "@vueuse/core": "^15.0.0",
     "@vueuse/head": "^2.0.0",
     "@zzdats/prettier-config": "^1.0.0",
-    "abcjs": "^6.7.2",
+    "abcjs": "^6.7.3",
     "axios": "1.21.1",
     "chord-transposer": "^3.0.9",
     "http-proxy": "^1.18.1",
@@ -34,17 +34,17 @@
     "sirv": "^3.0.2",
     "vue": "^3.5.45",
     "vue-gtag": "3.7.1",
-    "vue-i18n": "11.4.19",
+    "vue-i18n": "11.4.23",
     "vue-router": "5.5.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.7",
-    "@eslint/js": "^9.39.5",
-    "@vercel/nft": "^1.11.2",
+    "@eslint/js": "^10.0.1",
+    "@vercel/nft": "^1.11.10",
     "@vitejs/plugin-vue": "^6.0.11",
-    "@vue/test-utils": "^2.5.1",
+    "@vue/test-utils": "^2.6.0",
     "@zzdats/prettier-config": "^1.0.0",
-    "eslint": "^9.39.5",
+    "eslint": "^10.15.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-alias": "^1.1.2",
@@ -60,7 +60,7 @@
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-mkcert": "^2.1.0",
     "vite-plugin-mock-server": "^1.3.1",
-    "vitest": "^5.1.0"
+    "vitest": "^5.1.1"
   },
   "overrides": {
     "axios": "1.21.1"
