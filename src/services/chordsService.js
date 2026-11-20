@@ -46,11 +46,16 @@ function chordToString(chord, usesH) {
   return chord.bass ? `${root}${chord.suffix}/${note(chord.bass)}` : `${root}${chord.suffix}`;
 }
 
+const escapeTags = (text) => String(text).replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+
 export default {
   transpose(body, i) {
-    const { normalized, usesH } = normalizeH(body);
-    let transposer = Transposer.transpose(normalized);
+    if (body == null) {
+      return body;
+    }
     try {
+      const { normalized, usesH } = normalizeH(body);
+      let transposer = Transposer.transpose(normalized);
       if (i >= 0) {
         transposer = transposer.up(i);
       } else {
@@ -61,15 +66,15 @@ export default {
           line
             .map((token) => {
               if (typeof token === 'object') {
-                return `<b>${chordToString(token, usesH)}</b>`;
+                return `<b>${escapeTags(chordToString(token, usesH))}</b>`;
               }
-              return token.toString();
+              return escapeTags(token.toString());
             })
             .join('')
         )
         .join('\n');
     } catch (err) {
-      return body;
+      return escapeTags(body);
     }
   },
 
