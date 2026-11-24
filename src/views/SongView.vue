@@ -3,6 +3,7 @@ import {
   LxButton,
   lxDateUtils,
   LxForm,
+  LxList,
   LxLoaderView,
   LxModal,
   LxCheckbox,
@@ -23,6 +24,7 @@ import ChordSvg from '@/components/ChordSvg.vue';
 import siteOrigin from '@/utils/siteOrigin';
 import SongTags from '@/components/SongTags.vue';
 import songLink from '@/utils/songLink';
+import { listTexts } from '@/utils/texts';
 import { youtubeId } from '@/utils/chordSync';
 import { hasPlayableChords } from '@/utils/chordName';
 import useAccountPreferencesStore from '@/stores/useAccountPreferencesStore';
@@ -44,6 +46,13 @@ const viewStore = useViewStore();
 const notificationStore = useNotifyStore();
 const settingsStore = useSettingsStore();
 const songStore = useSongStore();
+const relatedItems = computed(() =>
+  songStore.relatedSongs.map((related) => ({
+    id: String(related.id),
+    title: related.title,
+    href: songLink(related),
+  }))
+);
 const accountPreferencesStore = useAccountPreferencesStore();
 const router = useRouter();
 const route = useRoute();
@@ -728,12 +737,11 @@ onUnmounted(() => {
 }
 
 .song-related {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 
-.song-related-list {
-  margin: 0.25rem 0 0;
-  padding-left: 1.25rem;
+.song-related h2 {
+  margin-bottom: 0.5rem;
 }
 
 /* Transposed-song indicator: the footer transpose label is picked out while
@@ -940,15 +948,16 @@ onUnmounted(() => {
         <p class="pre" v-html="item.bodyWithMarkup" :style="{ fontSize: fontSize + 'em' }"></p>
       </LxSection>
     </LxForm>
-    <section class="song-related" v-if="songStore.relatedSongs.length > 0">
-      <p class="lx-description">
-        {{ $t('song.moreByArtist', { artist: item.mainArtist.title }) }}
-      </p>
-      <ul class="song-related-list">
-        <li v-for="related in songStore.relatedSongs" :key="related.id">
-          <router-link :to="songLink(related)">{{ related.title }}</router-link>
-        </li>
-      </ul>
+    <section class="song-related" v-if="relatedItems.length > 0">
+      <h2>{{ $t('song.moreByArtist', { artist: item.mainArtist.title }) }}</h2>
+      <LxList
+        id="relatedSongs"
+        list-type="2"
+        icon="next"
+        :items="relatedItems"
+        name-attribute="title"
+        :texts="listTexts()"
+      />
     </section>
   </LxLoaderView>
 
