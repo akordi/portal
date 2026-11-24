@@ -16,14 +16,14 @@
     "test-watch": "vitest"
   },
   "dependencies": {
-    "@akordi/lx-ui": "2.3.14-akordi.2",
+    "@akordi/lx-ui": "2.3.14-akordi.3",
     "@ory/client": "^1.22.66",
     "@tombatossals/chords-db": "^0.5.1",
     "@vue/devtools-api": "^8.2.1",
-    "@vue/server-renderer": "^3.5.45",
+    "@vue/server-renderer": "^3.5.46",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
-    "@vueuse/core": "^15.0.0",
+    "@vueuse/core": "^15.1.0",
     "@vueuse/head": "^2.0.0",
     "@zzdats/prettier-config": "^1.0.0",
     "abcjs": "^6.7.3",
@@ -32,7 +32,7 @@
     "http-proxy": "^1.18.1",
     "pinia": "^4.1.0",
     "sirv": "^3.0.2",
-    "vue": "^3.5.45",
+    "vue": "^3.5.46",
     "vue-gtag": "3.7.1",
     "vue-i18n": "11.4.23",
     "vue-router": "5.5.1"
@@ -40,7 +40,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.7",
     "@eslint/js": "^10.0.1",
-    "@vercel/nft": "^1.11.10",
+    "@vercel/nft": "^1.11.12",
     "@vitejs/plugin-vue": "^6.0.11",
     "@vue/test-utils": "^2.6.0",
     "@zzdats/prettier-config": "^1.0.0",
