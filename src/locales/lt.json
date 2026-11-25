@@ -272,7 +272,13 @@
             "title": "Pradinis puslapis",
             "disclaimer": "Visas čia esančios medžiagos yra skirtos tik mokymosi tikslams. Daugelis čia esančių dainų yra vartotojų interpretacijos ir gali tiksliai neatitikti originalo. Jei čia yra tavo daina ir nenori, kad ją mokytųsi kiti, arba turi klausimų ar komentarų, rašyk į info[at]akordi.lv.",
             "featuredLink": "Žiūrėti dainas",
-            "featuredSongs": "Populiariausios:"
+            "featuredSongs": "Populiariausios:",
+            "search": {
+                "label": "Ieškoti dainos",
+                "placeholder": "Daina arba atlikėjas",
+                "placeholderCount": "Ieškok tarp {songCount} dainų",
+                "button": "Ieškoti"
+            }
         },
         "songs": {
             "title": "Dainų katalogas"

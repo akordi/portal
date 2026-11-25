@@ -272,7 +272,13 @@
             "title": "Sākumlapa",
             "disclaimer": "Viss šeit atrodamais saturs izvietots tikai izglītošanās nolūkā. Liela daļa lapā atrodamo dziesmu ir lietotāju interpretācijas un var precīzi nesakrist ar oriģinālu. Ja te ir kāda Tava dziesma, un negribi, lai to mācās citi, vai arī ir radušies kādi jautājumi vai komentāri, tad raksti uz info[at]akordi.lv.",
             "featuredLink": "Skatīt dziesmas",
-            "featuredSongs": "Populārākās:"
+            "featuredSongs": "Populārākās:",
+            "search": {
+                "label": "Meklēt dziesmu",
+                "placeholder": "Dziesma vai izpildītājs",
+                "placeholderCount": "Meklē starp {songCount} dziesmām",
+                "button": "Meklēt"
+            }
         },
         "songs": {
             "title": "Dziesmu katalogs"

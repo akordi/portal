@@ -2,6 +2,7 @@
 import { LxTile } from '@akordi/lx-ui';
 import { onMounted, ref } from 'vue';
 
+import HomeSearch from '@/components/HomeSearch.vue';
 import useAuthStore from '@/stores/useAuthStore';
 import useDashboardStore from '@/stores/useDashboardStore';
 import songLink from '@/utils/songLink';
@@ -29,6 +30,7 @@ onMounted(async () => {
 
 <template>
   <div>
+    <HomeSearch :song-count="songCount" />
     <section
       v-for="tag in dashboardStore.featuredTags"
       :key="tag.id"
@@ -57,17 +59,7 @@ onMounted(async () => {
         {{ $t('pages.dashboard.featuredLink') }} <span aria-hidden="true">→</span>
       </router-link>
     </section>
-    <p>
-      {{ $t('pages.dashboard.disclaimer') }}
-    </p>
-    <div class="lx-divider"></div>
     <div class="lx-dashboard">
-      <LxTile
-        icon="search-details"
-        :label="$t('pages.songSearch.title')"
-        :description="$t('pages.songSearch.description', { songCount: songCount })"
-        :to="{ name: 'songSearch' }"
-      />
       <LxTile
         icon="time"
         :label="$t('pages.songListNew.title')"
@@ -106,6 +98,10 @@ onMounted(async () => {
         :to="{ name: 'songNew' }"
       />
     </div>
+    <div class="lx-divider"></div>
+    <p class="lx-description">
+      {{ $t('pages.dashboard.disclaimer') }}
+    </p>
   </div>
 </template>
 
