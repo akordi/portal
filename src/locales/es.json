@@ -272,7 +272,13 @@
             "title": "Página de inicio",
             "disclaimer": "Todo el contenido que se encuentra aquí se publica únicamente con fines educativos. Gran parte de las canciones del sitio son interpretaciones de los usuarios y pueden no coincidir exactamente con el original. Si hay alguna canción tuya aquí y no quieres que otros la aprendan, o si tienes alguna pregunta o comentario, escribe a info[at]akordi.es.",
             "featuredLink": "Ver canciones",
-            "featuredSongs": "Más populares:"
+            "featuredSongs": "Más populares:",
+            "search": {
+                "label": "Buscar canción",
+                "placeholder": "Canción o artista",
+                "placeholderCount": "Busca entre {songCount} canciones",
+                "button": "Buscar"
+            }
         },
         "songs": {
             "title": "Catálogo de canciones"
